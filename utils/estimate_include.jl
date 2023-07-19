@@ -4,6 +4,7 @@ include("../estimate/estimate_MICP.jl")
 # include("../estimate/estimate_MICP_lazyconstr.jl")
 include("../estimate/estimate_MICP_polyapprox.jl")
 include("../estimate/estimate_MICP_IGA.jl")
+include("../estimate/estimate_MICP_IGA_polyapprox.jl")
 
 
 include("initial.jl")

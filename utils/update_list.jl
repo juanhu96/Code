@@ -12,7 +12,7 @@ function update_list(I_prev, theta, num_feature, num_order, max_point, delta)
             count = 0
         
             for p in 1:max_point
-                if theta[j,t,p] >= delta && count == 0
+                if theta[j,t,p] >= delta && theta[j,t,p] < 1 && count == 0 # if any p of the j,t violates, add all p of j,t pair
                     push!(I_temp[j], t)
                     count = count + 1
                 end
