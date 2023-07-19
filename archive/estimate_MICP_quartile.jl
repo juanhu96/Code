@@ -1,25 +1,20 @@
-using CSV, Dates, DataFrames, LinearAlgebra, JuMP, MosekTools
+using CSV, Dates, DataFrames, LinearAlgebra, JuMP, MosekTools, Statistics
 
 
-function estimate_MICP(N, C0, max_point, feature_case, integer_relaxation, max_runtime, tol_gap, num_threads)
-
+function estimate_MICP_quartile(z, C0, max_point, num_feature, num_obs, num_attr,
+    x_order, num_order, v_order, max_runtime, tol_gap, num_threads)
+    
 
     model = Model(Mosek.Optimizer)
     set_attribute(model, "MSK_IPAR_NUM_THREADS", num_threads)
-    set_attribute(model, "QUIET", false)
+    set_attribute(model, "QUIET", true)
     set_attribute(model, "MSK_DPAR_MIO_TOL_REL_GAP", tol_gap) # 3%
     set_attribute(model, "MSK_DPAR_OPTIMIZER_MAX_TIME", max_runtime) # MSK_DPAR_MIO_MAX_TIME
 
     # variables
-    if integer_relaxation == true
-        theta = @variable(model, theta[j = 1:num_feature, t = 1:num_order[j], p = 1:max_point], lower_bound = 0, upper_bound = 1.0)
-        q = @variable(model, q[1:num_feature, 1:max_point], lower_bound = 0, upper_bound = 1.0)
-        v = @variable(model, v[1:num_feature], lower_bound = 0, upper_bound = 1.0)
-    else
-        theta = @variable(model, theta[j = 1:num_feature, t = 1:num_order[j], p = 1:max_point], Bin)
-        q = @variable(model, q[1:num_feature, 1:max_point], Bin)
-        v = @variable(model, v[1:num_feature], Bin)
-    end
+    theta = @variable(model, theta[j = 1:num_feature, t = 1:num_order[j], p = 1:max_point], Bin)
+    q = @variable(model, q[1:num_feature, 1:max_point], Bin)
+    v = @variable(model, v[1:num_feature], Bin)
 
     u0 = @variable(model, u0, Int)
     u = @variable(model, u[1:num_obs])
@@ -42,11 +37,11 @@ function estimate_MICP(N, C0, max_point, feature_case, integer_relaxation, max_r
     obj = @objective(model, Min, sum(-z[i] * u[i] + phi[i] for i=1:num_obs) + 
         C0 * sum(v[j] for j=1:num_feature))
 
-    t = Dates.now() - t_start
-    println("The time for constructing optimization model is $t, start solving the model")
 
     optimize!(model)
 
     return JuMP.value.(u0), JuMP.value.(theta), solution_summary(model)
 
 end
+
+

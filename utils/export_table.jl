@@ -21,6 +21,6 @@ function export_table(x_order, feature_list, intercept, theta, N, feature_case, 
     end
 
     df = DataFrame(selected_feature = selected_feature, cutoff = cutoff, intercept = intercept, point = point)
-    CSV.write(expdirpath * "conic_opt_" * string(N) * "_" * feature_case * "_" * filename * ".csv", df)
+    CSV.write(expdirpath * "N" * string(N) * "_" * feature_case * "_" * filename * ".csv", df)
 
 end
