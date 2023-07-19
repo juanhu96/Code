@@ -3,7 +3,7 @@ include("utils/main_include.jl")
 
 dataset = "SAMPLE"
 feature_case = "basic"
-expdirpath = "../../Results/"
+expdirpath = "/mnt/phd/jihu/opioid_conic/Results/"
 
 C0 = 10
 max_point = 5
@@ -14,7 +14,7 @@ tol_gap = 1e-4
 
 function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath)
 
-    N_list = [1000]
+    N_list = [10000, 20000, 50000]
 
     for N in N_list
         

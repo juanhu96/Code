@@ -1,12 +1,16 @@
 using CSV, Dates, DataFrames, LinearAlgebra
 
 
+workdir = "/mnt/phd/jihu/opioid_conic/"
+
+
 function initial(dataset, N, feature_case)
 
     if dataset == "SAMPLE"
-        df = DataFrame(CSV.File("../../Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
+        
+        df = DataFrame(CSV.File(workdir * "Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
     elseif dataset == "FULL"
-        df = DataFrame(CSV.File("../../Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
+        df = DataFrame(CSV.File(workdir * "Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
     else
         println("Warning: case undefined")
     end
@@ -57,7 +61,6 @@ function initial(dataset, N, feature_case)
     x_min = collect(minimum(eachrow(x)))
     x_max = collect(maximum(eachrow(x)))
 
-    t_start = Dates.now()
     x_order = []
     num_order = []
     v_order = []
@@ -68,9 +71,6 @@ function initial(dataset, N, feature_case)
         push!(num_order, length(x_order_item))
         push!(v_order, v_order_item)
     end
-    t = Dates.now() - t_start
-    println("The time for constructing x_order and v_order $t")
-
 
     return z, feature_list, num_feature, num_obs, num_attr, x_order, num_order, v_order
 
@@ -84,9 +84,9 @@ end
 function initial_quartile(dataset, N, feature_case, quantile_list)
     
     if dataset == "SAMPLE"
-        df = DataFrame(CSV.File("../../Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
+        df = DataFrame(CSV.File(workdir * "Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
     elseif dataset == "FULL"
-        df = DataFrame(CSV.File("../../Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
+        df = DataFrame(CSV.File(workdir * "Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
     else
         println("Warning: case undefined")
     end
@@ -137,7 +137,6 @@ function initial_quartile(dataset, N, feature_case, quantile_list)
     x_min = collect(minimum(eachrow(x)))
     x_max = collect(maximum(eachrow(x)))
 
-    t_start = Dates.now()
     x_order = []
     num_order = []
     v_order = []
@@ -158,10 +157,6 @@ function initial_quartile(dataset, N, feature_case, quantile_list)
         push!(v_order, v_order_item)
     end
 
-    t = Dates.now() - t_start
-    println("The time for constructing x_order and v_order $t")
-
-    
     return z, feature_list, num_feature, num_obs, num_attr, x_order, num_order, v_order
 
 end

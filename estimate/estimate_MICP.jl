@@ -7,7 +7,7 @@ function estimate_MICP(z, C0, max_point, num_feature, num_obs, num_attr,
 
     model = Model(Mosek.Optimizer)
     set_attribute(model, "MSK_IPAR_NUM_THREADS", num_threads)
-    set_attribute(model, "QUIET", true)
+    set_attribute(model, "QUIET", false)
     set_attribute(model, "MSK_DPAR_MIO_TOL_REL_GAP", tol_gap) # 3%
     set_attribute(model, "MSK_DPAR_OPTIMIZER_MAX_TIME", max_runtime) # MSK_DPAR_MIO_MAX_TIME
 
@@ -46,7 +46,7 @@ function estimate_MICP(z, C0, max_point, num_feature, num_obs, num_attr,
     elseif termination_status(model) == max_runtime && has_values(model)
         println("Solution is suboptimal due to a time limit, but a primal solution is available")
     else
-        error("The model was not solved correctly.")
+        println("Something else")
     end
     println("  objective value = ", objective_value(model))
 
