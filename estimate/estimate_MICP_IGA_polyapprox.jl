@@ -7,7 +7,7 @@ function estimate_MICP_IGApolyapprox(z, nu, nu_tilde, I_list, C0, max_point, num
 
     model = Model(Mosek.Optimizer)
     set_attribute(model, "MSK_IPAR_NUM_THREADS", num_threads)
-    set_attribute(model, "QUIET", false)
+    set_attribute(model, "QUIET", true)
     set_attribute(model, "MSK_DPAR_MIO_TOL_REL_GAP", tol_gap) # 3%
     set_attribute(model, "MSK_DPAR_OPTIMIZER_MAX_TIME", max_runtime) # MSK_DPAR_MIO_MAX_TIME
 
@@ -15,8 +15,8 @@ function estimate_MICP_IGApolyapprox(z, nu, nu_tilde, I_list, C0, max_point, num
     # variables 
     theta = @variable(model, theta[j = 1:num_feature, t = 1:num_order[j], p = 1:max_point], lower_bound = 0, upper_bound = 1)
     for j = 1:num_feature
-        for t in I_list[j]
-            for p = 1:max_point
+        for p = 1:max_point
+            for t in I_list[j][p]
                 set_binary(theta[j,t,p])
             end
         end
@@ -51,14 +51,14 @@ function estimate_MICP_IGApolyapprox(z, nu, nu_tilde, I_list, C0, max_point, num
 
     optimize!(model)
 
-    if termination_status(model) == OPTIMAL
-        println("Solution is optimal")
-    elseif termination_status(model) == max_runtime && has_values(model)
-        println("Solution is suboptimal due to a time limit, but a primal solution is available")
-    else
-        println("Something else")
-    end
-    println("  objective value = ", objective_value(model))
+    # if termination_status(model) == OPTIMAL
+    #     println("Solution is optimal")
+    # elseif termination_status(model) == max_runtime && has_values(model)
+    #     println("Solution is suboptimal due to a time limit, but a primal solution is available")
+    # else
+    #     println("Something else")
+    # end
+    # println("  objective value = ", objective_value(model))
     
     return JuMP.value.(u0), JuMP.value.(theta), solution_summary(model)
 

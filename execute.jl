@@ -2,11 +2,11 @@ include("utils/main_include.jl")
 
 
 dataset = "SAMPLE"
-feature_case = "basic"
+feature_case = "core"
 expdirpath = "/mnt/phd/jihu/opioid_conic/Results/"
 
 C0 = 10
-max_point = 5
+max_point = 2
 max_runtime = 7200
 num_threads = 20
 tol_gap = 1e-4
@@ -41,14 +41,14 @@ function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_thr
     N = 1000
     println("IGA_POLYAPPROX")
     
-    quantile_list = collect(0.1:0.1:1)
-    MAX_ITER = 3
+    MAX_ITER = 10
+    MAX_RUNTIME = 7200
     delta = 1e-1
 
     nu = collect(1:1:20)
     epsilon = 1e-3
 
-    main_IGApolyapprox(dataset, N, feature_case, quantile_list, MAX_ITER, delta, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGApolyapprox")
+    main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGApolyapprox")
 
 end
 
