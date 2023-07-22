@@ -14,8 +14,8 @@ function estimate_MICP_IGA(z, I_list, C0, max_point, num_feature, num_obs, num_a
     # variables 
     theta = @variable(model, theta[j = 1:num_feature, t = 1:num_order[j], p = 1:max_point], lower_bound = 0, upper_bound = 1)
     for j = 1:num_feature
-        for t in I_list[j]
-            for p = 1:max_point
+        for p = 1:max_point
+            for t in I_list[j][p]
                 set_binary(theta[j,t,p])
             end
         end

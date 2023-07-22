@@ -1,0 +1,66 @@
+IGA_POLYAPPROX
+Optimal found for feature 2
+Optimal found for feature 3
+Max iteration achieved
+6551* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : -2.24823e+04
+  Objective bound    : -2.24823e+04
+  Relative gap       : 0.00000e+00
+
+* Work counters
+  Solve time (sec)   : 1.34673e+03
+  Simplex iterations : 360412
+  Barrier iterations : 21
+  Node count         : 150
+Max runtime achieved
+8745* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : -4.52372e+04
+  Objective bound    : -4.52372e+04
+  Relative gap       : 0.00000e+00
+
+* Work counters
+  Solve time (sec)   : 3.17073e+03
+  Simplex iterations : 310780
+  Barrier iterations : 41
+  Node count         : 120
+Max runtime achieved
+7219* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : -1.11739e+05
+  Objective bound    : -1.12699e+05
+  Relative gap       : 8.58954e-03
+
+* Work counters
+  Solve time (sec)   : 7.20577e+03
+  Simplex iterations : 24
+  Barrier iterations : 69
+  Node count         : 0

@@ -7,16 +7,16 @@ average_precision_score, accuracy_score
 workdir = "/mnt/phd/jihu/opioid_conic/"
 
 
-# [MME, methadone_MME, prescribers, pharmacies, benzo', 'consecutive_days']
+# [0, MME, methadone_MME, prescribers, pharmacies, benzo, consecutive_days]
 
 
-cutoffs = {10000: {'original': [0, 9.8, 41, 0, 0, 0, 14], 'quartiles': [0, 45, 0, 0, 0, 1, 16], 'polyapprox': [0, 38, 41, 0, 0, 1, 14]},
-20000: {'original': [0, 20, 0, 0, 0, 1, 14], 'quartiles': [0, 0, 0, 0, 5, 1, 30], 'polyapprox': [0, 58, 8, 0, 0, 1, 14]},
-50000: {'original': [0, 38, 5, 0, 0, 1, 15], 'quartiles': [0, 0, 0, 0, 0, 1, 30], 'polyapprox': [0, 0, 13, 0, 0, 1, 15]}}
+cutoffs = {10000: {'original': [0, 9.8, 41, 0, 0, 0, 14], 'quartiles': [0, 45, 0, 0, 0, 1, 16], 'polyapprox': [0, 38, 41, 0, 0, 1, 14], 'IGApolyapprox': [0, 69, 40, 0, 0, 4, 26]},
+20000: {'original': [0, 20, 0, 0, 0, 1, 14], 'quartiles': [0, 0, 0, 0, 5, 1, 30], 'polyapprox': [0, 58, 8, 0, 0, 1, 14], 'IGApolyapprox': [0, 0.6, 8, 0, 0, 1, 17]},
+50000: {'original': [0, 38, 5, 0, 0, 1, 15], 'quartiles': [0, 0, 0, 0, 0, 1, 30], 'polyapprox': [0, 0, 13, 0, 0, 1, 15], 'IGApolyapprox': [0, 27, 5.3, 0, 0, 1, 10]}}
 
-scores = {10000: {'original': [-2, 1, 2, 0, 0, 0, 3], 'quartiles': [-2, 1, 0, 0, 0, 1, 3], 'polyapprox': [-3, 1, 5, 0, 0, 4, 5]},
-20000: {'original': [-2, 1, 0, 0, 0, 1, 3], 'quartiles': [-1, 0, 1, 0, 5, 1, 3], 'polyapprox': [-3, 1, 5, 0, 0, 4, 5]},
-50000: {'original': [-2, 1, 1, 0, 0, 1, 3], 'quartiles': [-1, 0, 1, 0, 0, 1, 3], 'polyapprox': [-2, 0, 5, 0, 0, 5, 5]}}
+scores = {10000: {'original': [-2, 1, 2, 0, 0, 0, 3], 'quartiles': [-2, 1, 0, 0, 0, 1, 3], 'polyapprox': [-3, 1, 5, 0, 0, 4, 5], 'IGApolyapprox': [-6, 3, 5, 0, 0, 4, 3]},
+20000: {'original': [-2, 1, 0, 0, 0, 1, 3], 'quartiles': [-1, 0, 1, 0, 5, 1, 3], 'polyapprox': [-3, 1, 5, 0, 0, 4, 5], 'IGApolyapprox': [-4, 1, 4, 0, 0, 5, 3]},
+50000: {'original': [-2, 1, 1, 0, 0, 1, 3], 'quartiles': [-1, 0, 1, 0, 0, 1, 3], 'polyapprox': [-2, 0, 5, 0, 0, 5, 5], 'IGApolyapprox': [-3, 4, 5, 0, 0, 5, 4]}}
 
 
 
@@ -24,7 +24,7 @@ def main():
 
     year = 2018
     N_list = [10000, 20000, 50000]
-    model_list = ['original', 'quartiles', 'polyapprox']
+    model_list = ['original', 'quartiles', 'polyapprox', 'IGApolyapprox']
 
     results = []
     for N in N_list:

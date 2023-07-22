@@ -39,6 +39,8 @@ function main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, del
                 println("Converged")
             end
             
+            print(time.value)
+
             break   
         end
 
@@ -51,6 +53,7 @@ function main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, del
     end
 
     # export
+    print(summary)
     export_table(x_order, feature_list, intercept, theta, N, feature_case, num_feature, num_order, max_point, expdirpath, filename)
 
 end
