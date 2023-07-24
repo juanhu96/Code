@@ -24,8 +24,8 @@ function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0,
         # update I and I tilde
         global I_next, I_tilde_next, n_min_next, n_max_next, optimal_feature = update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature, theta, num_feature, num_order, max_point, delta)
 
-        # terminate if max iteration / max runtime reached, or no indicies added
         time = round(Dates.now() - t_start, Second, RoundUp)
+
         if iter >= MAX_ITER || time.value >= MAX_RUNTIME || I_tilde_next == I_tilde_prev 
             if iter >= MAX_ITER 
                 println("Max iteration achieved")
@@ -35,7 +35,7 @@ function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0,
                 println("Converged")
             end
             
-            print(time.value)
+            println("Time spent: " * string(time.value) * "; Iteration spent: " * string(iter))
 
             break   
         end

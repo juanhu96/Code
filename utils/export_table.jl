@@ -10,7 +10,7 @@ function export_table(x_order, feature_list, intercept, theta, N, feature_case, 
         found = 0
         for p in 1:max_point
             for t in 1:num_order[j]
-                if theta[j,t,p] > 0 && found == 0
+                if theta[j,t,p] > 0.5 && found == 0
                     push!(cutoff, x_order[j][t])
                     push!(point, p)
                     push!(selected_feature, feature_list[j])

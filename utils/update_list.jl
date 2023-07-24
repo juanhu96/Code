@@ -128,7 +128,7 @@ function update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature,
                     push!(I[j][p], n+1)
 
             elseif theta_one <= epsilon && theta_two >= 1-epsilon
-                println("Optimal found for feature " * string(j))
+                println("Optimal found for feature " * string(j) * " with point " * string(p))
                 push!(optimal_feature, j)
             end    
         

@@ -1,0 +1,22 @@
+IGAConverged
+Time spent: 123; Iteration spent: 6
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 4.48139e+02
+  Objective bound    : 4.48139e+02
+  Relative gap       : 0.00000e+00
+
+* Work counters
+  Solve time (sec)   : 1.37541e+01
+  Simplex iterations : 0
+  Barrier iterations : 2189
+  Node count         : 63

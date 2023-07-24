@@ -9,7 +9,7 @@ C0 = 10
 max_point = 5
 max_runtime = 7200
 num_threads = 20
-tol_gap = 1e-4
+tol_gap = 1e-2
 
 
 function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath)
@@ -22,7 +22,7 @@ function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_thr
         # main_original(dataset, N, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "original")
         
         print("IGA")
-        MAX_ITER = 6
+        MAX_ITER = 10
         MAX_RUNTIME = 7200
         delta = 1e-1
         main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGA")
