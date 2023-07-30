@@ -1,0 +1,66 @@
+IGAMax runtime achieved
+Time spent: 8388; Iteration spent: 5
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 4.49213e+03
+  Objective bound    : 4.45071e+03
+  Relative gap       : 9.21952e-03
+
+* Work counters
+  Solve time (sec)   : 1.41075e+03
+  Simplex iterations : 0
+  Barrier iterations : 62994
+  Node count         : 602
+IGAMax runtime achieved
+Time spent: 8305; Iteration spent: 3
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 8.65635e+03
+  Objective bound    : 8.57967e+03
+  Relative gap       : 8.85846e-03
+
+* Work counters
+  Solve time (sec)   : 1.81609e+03
+  Simplex iterations : 0
+  Barrier iterations : 48134
+  Node count         : 571
+IGAMax runtime achieved
+Time spent: 7500; Iteration spent: 3
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 2.18584e+04
+  Objective bound    : 2.16885e+04
+  Relative gap       : 7.77102e-03
+
+* Work counters
+  Solve time (sec)   : 3.02346e+03
+  Simplex iterations : 0
+  Barrier iterations : 19152
+  Node count         : 279

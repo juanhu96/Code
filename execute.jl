@@ -2,7 +2,7 @@ include("utils/main_include.jl")
 
 
 dataset = "SAMPLE"
-feature_case = "basic"
+feature_case = "full"
 expdirpath = "/mnt/phd/jihu/opioid_conic/Results/"
 
 C0 = 10
@@ -18,32 +18,32 @@ function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_thr
 
     for N in N_list
         
-        # println("ORIGINAL")
-        # main_original(dataset, N, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "original")
+        println("****************************** ORIGINAL ******************************")
+        main_original(dataset, N, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "original")
         
-        print("IGA")
+        print("****************************** IGA ******************************")
         MAX_ITER = 10
         MAX_RUNTIME = 7200
         delta = 1e-1
         main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGA")
 
-        # println("QUARTILE")
+        # println("****************************** QUARTILE ******************************")
         # quantile_list = collect(0.1:0.1:1)
         # main_quartile(dataset, N, feature_case, quantile_list, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "qaurtile")
 
-        # println("POLYAPPROX")
-        # nu = collect(1:1:20)
-        # epsilon = 1e-3
-        # main_polyapprox(dataset, N, feature_case, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "polyapprox")
+        println("****************************** POLYAPPROX ******************************")
+        nu = collect(1:1:20)
+        epsilon = 1e-3
+        main_polyapprox(dataset, N, feature_case, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "polyapprox")
 
-        # println("IGA_POLYAPPROX")
-        # MAX_ITER = 6
-        # MAX_RUNTIME = 7200
-        # delta = 1e-1
-        # nu = collect(1:1:20)
-        # epsilon = 1e-3
-        # main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGApolyapprox")
-    
+        println("****************************** IGA_POLYAPPROX ******************************")
+        MAX_ITER = 10
+        MAX_RUNTIME = 7200
+        delta = 1e-1
+        nu = collect(1:1:20)
+        epsilon = 1e-3
+        main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "IGApolyapprox")
+        
     end
     
 end

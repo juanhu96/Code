@@ -1,0 +1,647 @@
+ORIGINAL
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : CONIC (conic optimization problem)
+  Constraints            : 43836           
+  Affine conic cons.     : 20000           
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 51919           
+  Matrix variables       : 0               
+  Integer variables      : 11919           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 4.15, probing time =  2.96
+Presolved problem: 71721 variables, 31648 constraints, 463660 non-zeros
+Presolved problem: 1 general integer, 11720 binary, 60000 continuous
+Presolved problem: 20000 cones
+Clique table size: 11648
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        1        1        0        NA                   4.2575893013e+03     NA          16.7  
+0        1        1        0        5.4210992583e+03     4.2575893013e+03     21.46       80.2  
+0        1        1        0        5.3530526386e+03     4.2575893013e+03     20.46       108.5 
+Cut generation started.
+0        1        1        0        5.3530526386e+03     4.2575893014e+03     20.46       199.2 
+Cut generation terminated. Time = 23.37
+8        12       9        2        5.3530526386e+03     4.2727503938e+03     20.18       338.0 
+19       23       18       3        5.3530526386e+03     4.2925498221e+03     19.81       404.1 
+31       35       26       5        5.3530526386e+03     4.2925498221e+03     19.81       440.1 
+51       55       32       4        5.3530526386e+03     4.2925498221e+03     19.81       480.4 
+62       66       41       4        5.3530526386e+03     4.2925498221e+03     19.81       502.3 
+88       92       59       6        5.3530526386e+03     4.2925498221e+03     19.81       565.3 
+127      131      82       4        5.3530526386e+03     4.3323152475e+03     19.07       665.0 
+205      209      120      12       5.3530526386e+03     4.3323152475e+03     19.07       776.6 
+325      330      198      16       5.3386252367e+03     4.3323152475e+03     18.85       984.4 
+496      483      217      21       4.9728914512e+03     4.3323152475e+03     12.88       1241.2
+695      646      232      22       4.9434775041e+03     4.3332744505e+03     12.34       1466.0
+910      858      269      23       4.8525187968e+03     4.3332744505e+03     10.70       1772.7
+1157     1083     280      28       4.8525187968e+03     4.3332744505e+03     10.70       1957.8
+1397     1315     322      29       4.8013672325e+03     4.3332744505e+03     9.75        2171.6
+1670     1552     345      12       4.8013672325e+03     4.3853829868e+03     8.66        2377.7
+1919     1799     374      39       4.7941330695e+03     4.3853829868e+03     8.53        2630.2
+2196     2064     429      10       4.7936817881e+03     4.3877438782e+03     8.47        2854.1
+2450     2317     481      11       4.7666185443e+03     4.3924196620e+03     7.85        3045.9
+2737     2575     516      17       4.7532699799e+03     4.3928369583e+03     7.58        3259.4
+3022     2828     535      27       4.7499594030e+03     4.3928369583e+03     7.52        3428.5
+3306     3091     543      38       4.7240102747e+03     4.4751375586e+03     5.27        3657.3
+3618     3349     545      37       4.7018856792e+03     4.4978042791e+03     4.34        4138.2
+3917     3580     524      33       4.7018856792e+03     4.5022975786e+03     4.24        4353.8
+4171     3833     566      19       4.7018856792e+03     4.5028866210e+03     4.23        4556.7
+4425     4086     638      28       4.7018856792e+03     4.5028866210e+03     4.23        4754.9
+4674     4336     665      37       4.7018856792e+03     4.5034961739e+03     4.22        4934.2
+4957     4619     698      53       4.7018856792e+03     4.5039144630e+03     4.21        5368.7
+5249     4915     722      59       4.6965537875e+03     4.5039144630e+03     4.10        5604.1
+5544     5204     739      68       4.6896439026e+03     4.5039144630e+03     3.96        5745.9
+5840     5487     753      39       4.6896439026e+03     4.5057585793e+03     3.92        6006.8
+6140     5789     769      44       4.6895332199e+03     4.5057585793e+03     3.92        6168.6
+6447     6094     784      49       4.6837368287e+03     4.5057585793e+03     3.80        6334.4
+6742     6373     807      54       4.6727804940e+03     4.5057585793e+03     3.57        6574.9
+7038     6661     831      23       4.6727804940e+03     4.5060221103e+03     3.57        6847.8
+
+Objective of best integer solution : 4.672780494023e+03      
+Best objective bound               : 4.506098736676e+03      
+Initial feasible solution objective: Undefined
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 0
+Number of branches                 : 7038
+Number of relaxations solved       : 6661
+Number of interior point iterations: 396326
+Number of simplex iterations       : 0
+Time spend presolving the root     : 4.15
+Time spend optimizing the root     : 12.21
+Mixed integer optimizer terminated. Time: 7200.21
+
+Optimizer terminated. Time: 7200.86 
+
+Something else
+  objective value = 4672.780494023329
+MOSEK error 2950: No dual information is available for the integer solution.
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 4.67278e+03
+  Objective bound    : 4.50610e+03
+  Relative gap       : 3.56872e-02
+
+* Work counters
+  Solve time (sec)   : 7.20086e+03
+  Simplex iterations : 0
+  Barrier iterations : 396326
+  Node count         : 7038
+IGAMax runtime achieved
+Time spent: 7204; Iteration spent: 0
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 4.35999e+03
+  Objective bound    : 4.29182e+03
+  Relative gap       : 1.56344e-02
+
+* Work counters
+  Solve time (sec)   : 7.20106e+03
+  Simplex iterations : 0
+  Barrier iterations : 201316
+  Node count         : 3727
+POLYAPPROX
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : LO (linear optimization problem)
+  Constraints            : 443836          
+  Affine conic cons.     : 0               
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 51919           
+  Matrix variables       : 0               
+  Integer variables      : 11919           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 14.17, probing time =  3.56
+Presolved problem: 41721 variables, 421648 constraints, 1433660 non-zeros
+Presolved problem: 10001 general integer, 11720 binary, 20000 continuous
+Clique table size: 11648
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        0        1        0        0.0000000000e+00     NA                   NA          15.1  
+0        1        1        0        0.0000000000e+00     -2.2932966442e+04    2.29e+16    44.9  
+0        1        1        0        -2.1643499470e+04    -2.2932966442e+04    5.96        76.5  
+Cut generation started.
+0        1        1        0        -2.1643499470e+04    -2.2932966442e+04    5.96        158.1 
+Cut generation terminated. Time = 6.19
+0        12       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        359.0 
+10       24       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        460.0 
+25       39       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        487.1 
+37       51       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        493.4 
+54       68       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        515.0 
+65       79       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        525.8 
+77       91       1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        528.1 
+90       104      1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        530.7 
+103      117      1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        533.0 
+117      131      1        0        -2.1643499470e+04    -2.2931172459e+04    5.95        534.7 
+131      145      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        536.6 
+147      158      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        539.6 
+161      171      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        543.3 
+173      183      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        552.2 
+193      203      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        558.4 
+214      224      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        566.9 
+226      236      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        569.6 
+246      256      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        586.6 
+264      274      1        0        -2.1656853778e+04    -2.2931172459e+04    5.88        591.7 
+277      287      1        0        -2.1668646398e+04    -2.2931172459e+04    5.83        610.5 
+291      298      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        613.7 
+314      319      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        622.3 
+332      337      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        654.0 
+349      354      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        688.0 
+369      373      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        713.3 
+381      385      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        720.9 
+394      398      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        776.7 
+408      412      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        806.6 
+419      423      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        819.4 
+430      434      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        836.9 
+443      447      1        0        -2.1669279533e+04    -2.2931172459e+04    5.82        857.0 
+454      458      2        0        -2.1669279533e+04    -2.2931172459e+04    5.82        866.0 
+465      469      11       4        -2.1669279533e+04    -2.2928443581e+04    5.81        938.8 
+473      477      17       6        -2.1860611253e+04    -2.2928443581e+04    4.88        950.1 
+485      489      25       6        -2.1887861716e+04    -2.2928443581e+04    4.75        961.4 
+503      507      27       8        -2.1932733715e+04    -2.2928443581e+04    4.54        974.8 
+516      520      32       8        -2.1932733715e+04    -2.2928443581e+04    4.54        984.2 
+527      531      31       3        -2.1974650852e+04    -2.2926920487e+04    4.33        1004.6
+540      543      32       8        -2.2003099058e+04    -2.2926920487e+04    4.20        1009.4
+564      562      26       9        -2.2003099058e+04    -2.2926920487e+04    4.20        1018.2
+585      580      21       8        -2.2003099058e+04    -2.2926920487e+04    4.20        1056.1
+596      591      24       4        -2.2005036841e+04    -2.2926558519e+04    4.19        1147.6
+616      611      30       6        -2.2005036841e+04    -2.2922108752e+04    4.17        1253.1
+641      636      43       8        -2.2005036841e+04    -2.2922108752e+04    4.17        1339.8
+669      664      57       10       -2.2525336780e+04    -2.2922108752e+04    1.76        1371.6
+707      683      45       11       -2.2527202785e+04    -2.2922108752e+04    1.75        1405.5
+743      711      43       6        -2.2542591100e+04    -2.2914026124e+04    1.65        1466.5
+773      733      39       7        -2.2544457106e+04    -2.2914026124e+04    1.64        1530.6
+789      746      37       8        -2.2544457106e+04    -2.2914026124e+04    1.64        1550.4
+804      760      38       13       -2.2544457106e+04    -2.2914026124e+04    1.64        1599.3
+819      775      35       13       -2.2544457106e+04    -2.2914026124e+04    1.64        1610.0
+834      789      36       11       -2.2544457106e+04    -2.2914026124e+04    1.64        1649.9
+848      803      44       4        -2.2548514453e+04    -2.2912494799e+04    1.61        1685.6
+876      831      54       5        -2.2644100334e+04    -2.2912494799e+04    1.19        1719.7
+905      853      55       5        -2.2728334384e+04    -2.2912494799e+04    0.81        1777.7
+An optimal solution satisfying the relative gap tolerance of 1.00e+00(%) has been located.
+The relative gap is 8.10e-01(%).
+
+Objective of best integer solution : -2.272833438444e+04     
+Best objective bound               : -2.291249479922e+04     
+Initial feasible solution objective: 0.000000000000e+00      
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 167
+  Number of Gomory cuts            : 167
+Number of branches                 : 905
+Number of relaxations solved       : 853
+Number of interior point iterations: 93
+Number of simplex iterations       : 203635
+Time spend presolving the root     : 14.17
+Time spend optimizing the root     : 29.88
+Mixed integer optimizer terminated. Time: 1777.66
+
+Optimizer terminated. Time: 1778.96 
+
+Solution is optimal
+  objective value = -22728.33438443813
+MOSEK error 2950: No dual information is available for the integer solution.
+IGA_POLYAPPROX
+Optimal found for feature 16 with point 5
+Optimal found for feature 6 with point 5
+Optimal found for feature 2 with point 5
+Optimal found for feature 3 with point 5
+Max runtime achieved
+Time spent: 8246; Iteration spent: 5
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : -2.32743e+04
+  Objective bound    : -2.34862e+04
+  Relative gap       : 9.10311e-03
+
+* Work counters
+  Solve time (sec)   : 1.86431e+03
+  Simplex iterations : 290512
+  Barrier iterations : 106
+  Node count         : 696
+ORIGINAL
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : CONIC (conic optimization problem)
+  Constraints            : 75946           
+  Affine conic cons.     : 40000           
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 97974           
+  Matrix variables       : 0               
+  Integer variables      : 17974           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 4.83, probing time =  2.68
+Presolved problem: 137776 variables, 57703 constraints, 916750 non-zeros
+Presolved problem: 1 general integer, 17775 binary, 120000 continuous
+Presolved problem: 40000 cones
+Clique table size: 17703
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        1        1        0        NA                   8.2378505790e+03     NA          32.0  
+0        1        1        0        1.0110990225e+04     8.2378505790e+03     18.53       222.8 
+Cut generation started.
+0        1        1        0        1.0110990225e+04     8.2378505794e+03     18.53       546.1 
+Cut generation terminated. Time = 23.69
+8        12       9        2        1.0110990225e+04     8.2701107472e+03     18.21       961.2 
+23       27       18       4        1.0110990225e+04     8.3206278041e+03     17.71       1206.0
+36       40       29       6        1.0110990225e+04     8.3206278041e+03     17.71       1313.6
+57       61       42       8        1.0110990225e+04     8.3206278041e+03     17.71       1404.9
+85       89       54       10       1.0110990225e+04     8.3206278041e+03     17.71       1495.9
+125      129      58       12       1.0110990225e+04     8.3206278041e+03     17.71       1581.4
+165      169      86       4        1.0110990225e+04     8.3216510250e+03     17.70       1692.0
+245      249      114      5        1.0110990225e+04     8.3216510250e+03     17.70       1906.3
+344      340      149      12       9.5881589316e+03     8.3216510250e+03     13.21       2276.1
+480      441      157      17       9.5881589316e+03     8.3221302875e+03     13.20       2710.4
+611      572      214      20       9.5881589316e+03     8.3221302875e+03     13.20       3404.0
+768      730      263      25       9.5813972455e+03     8.3221302875e+03     13.14       4137.9
+944      905      307      16       9.5813972455e+03     8.3227820692e+03     13.14       4596.6
+1136     1099     343      22       9.5813972455e+03     8.3227820692e+03     13.14       5437.9
+1337     1306     376      28       9.5528127763e+03     8.3227820692e+03     12.88       5949.2
+1566     1510     383      35       9.5528127763e+03     8.3242439578e+03     12.86       6379.9
+1780     1725     437      38       9.5466514931e+03     8.3246033048e+03     12.80       6737.5
+2008     1946     463      43       9.5332737819e+03     8.3246033048e+03     12.68       7138.0
+
+Objective of best integer solution : 9.533273781862e+03      
+Best objective bound               : 8.324603304763e+03      
+Initial feasible solution objective: Undefined
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 0
+Number of branches                 : 2008
+Number of relaxations solved       : 1946
+Number of interior point iterations: 178986
+Number of simplex iterations       : 0
+Time spend presolving the root     : 4.83
+Time spend optimizing the root     : 26.57
+Mixed integer optimizer terminated. Time: 7200.56
+
+Optimizer terminated. Time: 7201.24 
+
+Something else
+  objective value = 9533.273781860455
+MOSEK error 2950: No dual information is available for the integer solution.
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 9.53327e+03
+  Objective bound    : 8.32460e+03
+  Relative gap       : 1.26784e-01
+
+* Work counters
+  Solve time (sec)   : 7.20124e+03
+  Simplex iterations : 0
+  Barrier iterations : 178986
+  Node count         : 2008
+IGAOptimal found for feature 16 with point 1
+Max runtime achieved
+Time spent: 7204; Iteration spent: 0
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 8.38021e+03
+  Objective bound    : 8.26100e+03
+  Relative gap       : 1.44948e-02
+
+* Work counters
+  Solve time (sec)   : 7.20111e+03
+  Simplex iterations : 0
+  Barrier iterations : 277091
+  Node count         : 4019
+POLYAPPROX
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : LO (linear optimization problem)
+  Constraints            : 875946          
+  Affine conic cons.     : 0               
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 97974           
+  Matrix variables       : 0               
+  Integer variables      : 17974           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 15.84, probing time =  2.66
+Presolved problem: 77776 variables, 837703 constraints, 2856750 non-zeros
+Presolved problem: 20001 general integer, 17775 binary, 40000 continuous
+Clique table size: 17703
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        0        1        0        0.0000000000e+00     NA                   NA          17.4  
+0        1        1        0        0.0000000000e+00     -4.6225590126e+04    4.62e+16    110.3 
+0        1        1        0        -4.3115752222e+04    -4.6225590126e+04    7.21        272.1 
+0        1        1        0        -4.3126757585e+04    -4.6225590126e+04    7.19        411.1 
+Cut generation started.
+0        1        1        0        -4.3126757585e+04    -4.6225590126e+04    7.19        649.5 
+Cut generation terminated. Time = 23.51
+0        12       1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        1428.4
+11       25       1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        1825.0
+27       41       1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        2116.8
+47       61       1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        2259.8
+75       89       1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        2355.8
+130      144      1        0        -4.3126757585e+04    -4.6223797548e+04    7.18        2471.6
+149      163      1        0        -4.3167167992e+04    -4.6223797548e+04    7.08        2630.9
+234      245      1        0        -4.3167167992e+04    -4.6223797548e+04    7.08        2672.6
+339      349      1        0        -4.3199426527e+04    -4.6223797548e+04    7.00        2722.4
+478      476      1        0        -4.3210705871e+04    -4.6223797548e+04    6.97        2776.1
+624      615      1        0        -4.3210705871e+04    -4.6223797548e+04    6.97        2832.7
+739      729      1        0        -4.3218611997e+04    -4.6223797548e+04    6.95        2957.0
+845      834      1        0        -4.3218611997e+04    -4.6223797548e+04    6.95        3062.8
+971      960      1        0        -4.3310765754e+04    -4.6223797548e+04    6.73        3216.9
+1102     1053     1        0        -4.3310765754e+04    -4.6223797548e+04    6.73        3296.2
+1115     1066     12       3        -4.3310765754e+04    -4.6222715571e+04    6.72        3610.3
+1130     1081     15       4        -4.3310765754e+04    -4.6222715571e+04    6.72        3639.2
+1142     1093     23       3        -4.3310765754e+04    -4.6220912276e+04    6.72        3722.0
+1160     1111     35       5        -4.3310765754e+04    -4.6218389907e+04    6.71        3819.1
+1174     1125     43       6        -4.3310765754e+04    -4.6218389907e+04    6.71        3934.1
+1196     1147     55       7        -4.3310765754e+04    -4.6218389907e+04    6.71        4169.7
+1225     1176     78       8        -4.3310765754e+04    -4.6218389907e+04    6.71        4378.8
+1276     1227     117      11       -4.5605802250e+04    -4.6218389907e+04    1.34        4506.7
+1373     1239     40       9        -4.5605802250e+04    -4.6216173253e+04    1.34        4996.4
+1409     1256     28       5        -4.5659171611e+04    -4.6216173253e+04    1.22        5179.7
+1411     1258     28       5        -4.5675153447e+04    -4.6216173253e+04    1.18        5530.8
+1433     1275     28       13       -4.5675153447e+04    -4.6213862873e+04    1.18        5744.2
+1445     1287     32       7        -4.5675153447e+04    -4.6213862873e+04    1.18        6023.6
+1456     1298     35       8        -4.5675153447e+04    -4.6213862873e+04    1.18        6063.2
+1470     1312     41       9        -4.5675153447e+04    -4.6213862873e+04    1.18        6181.3
+1494     1336     51       11       -4.5675153447e+04    -4.6213862873e+04    1.18        6377.1
+1524     1366     65       6        -4.5675153447e+04    -4.6207002955e+04    1.16        6531.3
+1577     1419     78       6        -4.5751398427e+04    -4.6172873598e+04    0.92        6803.6
+An optimal solution satisfying the relative gap tolerance of 1.00e+00(%) has been located.
+The relative gap is 9.21e-01(%).
+
+Objective of best integer solution : -4.575139842698e+04     
+Best objective bound               : -4.617287359789e+04     
+Initial feasible solution objective: 0.000000000000e+00      
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 152
+  Number of Gomory cuts            : 152
+Number of branches                 : 1577
+Number of relaxations solved       : 1419
+Number of interior point iterations: 149
+Number of simplex iterations       : 541163
+Time spend presolving the root     : 15.84
+Time spend optimizing the root     : 92.94
+Mixed integer optimizer terminated. Time: 6803.57
+
+Optimizer terminated. Time: 6805.94 
+
+Solution is optimal
+  objective value = -45751.398426989355
+MOSEK error 2950: No dual information is available for the integer solution.
+IGA_POLYAPPROX
+Optimal found for feature 16 with point 5
+Max runtime achieved
+Time spent: 7527; Iteration spent: 1
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : -4.69035e+04
+  Objective bound    : -4.75251e+04
+  Relative gap       : 1.32521e-02
+
+* Work counters
+  Solve time (sec)   : 7.21619e+03
+  Simplex iterations : 419197
+  Barrier iterations : 142
+  Node count         : 41
+ORIGINAL
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : CONIC (conic optimization problem)
+  Constraints            : 160876          
+  Affine conic cons.     : 100000          
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 230439          
+  Matrix variables       : 0               
+  Integer variables      : 30439           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 8.90, probing time =  2.80
+Presolved problem: 330241 variables, 130168 constraints, 2261340 non-zeros
+Presolved problem: 1 general integer, 30240 binary, 300000 continuous
+Presolved problem: 100000 cones
+Clique table size: 30168
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        1        1        0        NA                   2.0829469849e+04     NA          103.5 
+0        1        1        0        2.6807953018e+04     2.0829469849e+04     22.30       677.5 
+0        1        1        0        2.6190233586e+04     2.0829469849e+04     20.47       1077.4
+Cut generation started.
+0        1        1        0        2.6190233586e+04     2.0829469850e+04     20.47       1828.2
+Cut generation terminated. Time = 24.66
+8        12       9        3        2.6190233586e+04     2.0915968713e+04     20.14       3550.0
+19       23       18       3        2.6190233586e+04     2.0917182678e+04     20.13       4352.0
+31       35       30       5        2.6190233586e+04     2.0917182678e+04     20.13       4807.4
+53       57       52       7        2.6190233586e+04     2.0917182678e+04     20.13       5341.4
+89       93       76       8        2.6190233586e+04     2.0917182678e+04     20.13       5887.2
+149      153      100      11       2.6190233586e+04     2.0917182678e+04     20.13       6656.5
+
+Objective of best integer solution : 2.619023358569e+04      
+Best objective bound               : 2.091718267789e+04      
+Initial feasible solution objective: Undefined
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 0
+Number of branches                 : 149
+Number of relaxations solved       : 153
+Number of interior point iterations: 21517
+Number of simplex iterations       : 0
+Time spend presolving the root     : 8.90
+Time spend optimizing the root     : 93.12
+Mixed integer optimizer terminated. Time: 7201.70
+
+Optimizer terminated. Time: 7203.10 
+
+Something else
+  objective value = 26190.233585692247
+MOSEK error 2950: No dual information is available for the integer solution.
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 2.61902e+04
+  Objective bound    : 2.09172e+04
+  Relative gap       : 2.01337e-01
+
+* Work counters
+  Solve time (sec)   : 7.20310e+03
+  Simplex iterations : 0
+  Barrier iterations : 21517
+  Node count         : 149
+IGAMax runtime achieved
+Time spent: 7208; Iteration spent: 0
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 2.11649e+04
+  Objective bound    : 2.07869e+04
+  Relative gap       : 1.78687e-02
+
+* Work counters
+  Solve time (sec)   : 7.20258e+03
+  Simplex iterations : 0
+  Barrier iterations : 61536
+  Node count         : 666
+POLYAPPROX
+Problem
+  Name                   :                 
+  Objective sense        : minimize        
+  Type                   : LO (linear optimization problem)
+  Constraints            : 2160876         
+  Affine conic cons.     : 0               
+  Disjunctive cons.      : 0               
+  Cones                  : 0               
+  Scalar variables       : 230439          
+  Matrix variables       : 0               
+  Integer variables      : 30439           
+
+Optimizer started.
+Mixed integer optimizer started.
+Threads used: 20
+Presolve started.
+Presolve terminated. Time = 37.27, probing time =  4.30
+Presolved problem: 180241 variables, 2080168 constraints, 7111340 non-zeros
+Presolved problem: 50001 general integer, 30240 binary, 100000 continuous
+Clique table size: 30168
+BRANCHES RELAXS   ACT_NDS  DEPTH    BEST_INT_OBJ         BEST_RELAX_OBJ       REL_GAP(%)  TIME  
+0        0        1        0        0.0000000000e+00     NA                   NA          42.5  
+0        1        1        0        0.0000000000e+00     -1.1489754637e+05    1.15e+17    547.4 
+0        1        1        0        -1.0779689835e+05    -1.1489754637e+05    6.59        1388.8
+Cut generation started.
+0        1        1        0        -1.0779689835e+05    -1.1489754637e+05    6.59        3591.4
+Cut generation terminated. Time = 181.51
+
+Objective of best integer solution : -1.077968983530e+05     
+Best objective bound               : -1.148954648209e+05     
+Initial feasible solution objective: 0.000000000000e+00      
+Construct solution objective       : Not employed
+User objective cut value           : Not employed
+Number of cuts generated           : 194
+  Number of Gomory cuts            : 194
+Number of branches                 : 0
+Number of relaxations solved       : 10
+Number of interior point iterations: 307
+Number of simplex iterations       : 14252
+Time spend presolving the root     : 37.27
+Time spend optimizing the root     : 504.88
+Mixed integer optimizer terminated. Time: 7200.93
+
+Optimizer terminated. Time: 7207.30 
+
+Something else
+  objective value = -107796.89835280433
+MOSEK error 2950: No dual information is available for the integer solution.
+IGA_POLYAPPROX
+Optimal found for feature 16 with point 5
+Optimal found for feature 11 with point 5
+Max runtime achieved
+Time spent: 9965; Iteration spent: 2
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : -1.16181e+05
+  Objective bound    : -1.18207e+05
+  Relative gap       : 1.74378e-02
+
+* Work counters
+  Solve time (sec)   : 7.23000e+03
+  Simplex iterations : 90
+  Barrier iterations : 221
+  Node count         : 0
