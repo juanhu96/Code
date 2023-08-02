@@ -27,10 +27,11 @@ scores = {10000: {'original': [-2, 1, 2, 0, 0, 0, 3], 'quartiles': [-2, 1, 0, 0,
 
 def main():
     
-    '''
     year = 2018
     N_list = [10000, 20000, 50000]
-    model_list = ['original', 'quartiles', 'polyapprox', 'IGA', 'IGApolyapprox', 'original1e2']
+    # model_list = ['original', 'quartiles', 'polyapprox', 'IGA', 'IGApolyapprox', 'original1e2']
+    model_list = ['original', 'polyapprox', 'IGA', 'IGApolyapprox']
+    feature_case = 'basic'
 
     results = []
     for N in N_list:
@@ -41,48 +42,37 @@ def main():
                                     'concurrent_benzo': int, 'consecutive_days': int})
         
         SAMPLE = SAMPLE.fillna(0)
-        x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
-                    'num_pharmacies', 'concurrent_benzo', 'consecutive_days']] 
+        
+        if feature_case == 'core':
+            x = SAMPLE[['concurrent_MME', 'consecutive_days']]
+
+        elif feature_case == 'basic':
+            x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
+                        'num_pharmacies', 'concurrent_benzo', 'consecutive_days']]
+
+        elif feature_case == 'full':
+            x = SAMPLE
+
+        else: print('Warning: Undefined')
+
         y = SAMPLE[['long_term_180']].to_numpy().astype('int')
 
         for model in model_list:
-            results.append(test_table(x=x, y=y, model=model, N=N, cutoffs=cutoffs[N][model], scores=scores[N][model]))
+            results.append(test_table(x=x, y=y, feature_case=feature_case, model=model, N=N))
 
 
     results = pd.DataFrame(results)
-    results.to_csv(f'{workdir}Results/test_{str(year)}.csv')
-    '''
-
-
-    year = 2018
-    N_list = [10000]
-    model_list = ['original', 'IGA']
-    results = []
-    for N in N_list:
-
-        SAMPLE = pd.read_csv(f'{workdir}Data/SAMPLE_{str(year)}_LONGTERM_stratified_{str(N)}.csv', delimiter = ",", 
-                            dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
-                                    'num_prescribers': int, 'num_pharmacies': int,
-                                    'concurrent_benzo': int, 'consecutive_days': int})
-        
-        SAMPLE = SAMPLE.fillna(0)
-        x = SAMPLE
-        y = SAMPLE[['long_term_180']].to_numpy().astype('int')
-
-        for model in model_list:
-            results.append(test_table_full(x=x, y=y, model=model, N=N))
-        
-
-    results = pd.DataFrame(results)
-    results.to_csv(f'{workdir}Results/test_full_{str(year)}.csv')
+    results.to_csv(f'{workdir}Results/test_{feature_case}_{str(year)}.csv')
 
     print("Finished.")
     
     
 
-def test_table(x, y, model, N, cutoffs, scores):
+def test_table(x, y, feature_case, model, N):
 
-    x['Prob'] = x.apply(compute_score, axis=1, args=(cutoffs, scores,))
+    scoring_table = pd.read_csv(f'{workdir}Results/N{str(N)}_{feature_case}_{model}.csv', delimiter = ",")
+
+    x['Prob'] = x.apply(compute_score, axis=1, args=(scoring_table,))
     x['Pred'] = (x['Prob'] > 0.5)
     y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
     
@@ -94,91 +84,33 @@ def test_table(x, y, model, N, cutoffs, scores):
     # "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
     
     results = {"N": N, "Model": model,
-    "Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-    "ROC AUC": str(round(roc_auc_score(y, y_prob), 4))}
+    "Accuracy": str(round(accuracy_score(y, y_pred), 3)),
+    "ROC AUC": str(round(roc_auc_score(y, y_prob), 3))}
 
     return results
 
 
 
-def compute_score(row, cutoff, scores):
-       
-    score = 0
-    intercept = scores[0]
-    
-    if row['concurrent_MME'] >= cutoff[1]:
-        score += scores[1]
-    if row['concurrent_methadone_MME'] >= cutoff[2]:
-        score += scores[2]
-    if row['num_prescribers'] >= cutoff[3]:
-        score += scores[3]
-    if row['num_pharmacies'] >= cutoff[4]:
-        score += scores[4]
-    if row['concurrent_benzo'] >= cutoff[5]:
-        score += scores[5]
-    if row['consecutive_days'] >= cutoff[6]:
-        score += scores[6]
-    
-    return 1 / (1+np.exp(-(score + intercept)))
-
-
-
-
-
-def test_table_full(x, y, model, N):
-
-    if model == 'original': x['Prob'] = x.apply(compute_full_original, axis=1)
-    if model == 'IGA': x['Prob'] = x.apply(compute_full_IGA, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    # results = {"N": N, "Model": model,
-    # "Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-    # "Recall": str(round(recall_score(y, y_pred), 4)),
-    # "Precision": str(round(precision_score(y, y_pred), 4)),
-    # "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-    # "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    
-    results = {"N": N, "Model": model,
-    "Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-    "ROC AUC": str(round(roc_auc_score(y, y_prob), 4))}
-
-    return results
-
-
-
-def compute_full_original(row):
+def compute_score(row, scoring_table):
 
     score = 0
-    intercept = -5
+    intercept = scoring_table['intercept'][0]
 
-    if row['concurrent_methadone_MME'] >= 40.9:
-        score += 3
-    if row['consecutive_days'] >= 15:
-        score += 3
-    if row['concurrent_benzo'] >= 2:
-        score += 1
-    if row['age'] >= 25:
-        score += 3
-    if row['MME_diff'] >= -0.21:
-        score += 1
+    for index, table_row in scoring_table.iterrows():
 
+        selected_feature = table_row['selected_feature']
+        cutoff = table_row['cutoff']
+        point = table_row['point']
+
+        if row[selected_feature] >= cutoff: score += point
+
+    
     return 1 / (1+np.exp(-(score + intercept)))
+        
 
 
-def compute_full_IGA(row):
 
-    score = 0
-    intercept = -6
 
-    if row['consecutive_days'] >= 14:
-        score += 5
-    if row['age'] >= 24:
-        score += 3
-    if row['MME_diff'] >= -0.21:
-        score += 1
-
-    return 1 / (1+np.exp(-(score + intercept)))
 
 
 
