@@ -30,8 +30,8 @@ def main():
     year = 2018
     N_list = [10000, 20000, 50000]
     # model_list = ['original', 'quartiles', 'polyapprox', 'IGA', 'IGApolyapprox', 'original1e2']
-    model_list = ['original', 'polyapprox', 'IGA', 'IGApolyapprox']
-    feature_case = 'basic'
+    model_list = ['original', 'IGA']
+    feature_case = 'full'
 
     results = []
     for N in N_list:

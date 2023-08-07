@@ -6,11 +6,15 @@ workdir = "/mnt/phd/jihu/opioid_conic/"
 
 function initial(dataset, N, feature_case)
 
-    if dataset == "SAMPLE"
-        
+    if dataset == "SAMPLE"     
         df = DataFrame(CSV.File(workdir * "Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
+        z = df[!, :long_term_180]
     elseif dataset == "FULL"
         df = DataFrame(CSV.File(workdir * "Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
+        z = df[!, :long_term_180]
+    elseif dataset == "Framingham"
+        df = DataFrame(CSV.File(workdir * "Data/framingham.csv"))
+        z = df[!, :TenYearCHD]
     else
         println("Warning: case undefined")
     end
@@ -47,7 +51,16 @@ function initial(dataset, N, feature_case)
         :Codeine, :Hydrocodone, :Oxycodone, :Morphine, :HMFO,
         :Medicaid, :CommercialIns, :Medicare, :CashCredit, :MilitaryIns,
         :WorkersComp, :Other, :IndianNation, :switch_drug, :switch_payment,
-        :ever_switch_drug, :ever_switch_payment, :long_term_180]]
+        :ever_switch_drug, :ever_switch_payment]]
+
+    elseif feature_case == "Framingham"
+
+        feature_list = ["male", "age", "education", "currentSmoker", "cigsPerDay",
+        "BPMeds", "prevalentStroke", "prevalentHyp", "diabetes", "totChol", 
+        "sysBP", "diaBP", "BMI", "heartRate", "glucose", "TenYearCHD"]
+        df = df[!, Symbol.(feature_list)]        
+        x = select!(df, Not([:TenYearCHD]))
+        deleteat!(feature_list, findall(x->x=="TenYearCHD",feature_list))
 
     else
         println("Warning: case undefined")
@@ -56,7 +69,7 @@ function initial(dataset, N, feature_case)
 
     num_feature = length(feature_list)
     num_obs, num_attr = size(df)
-    z = df[!, :long_term_180]
+    
 
     x_min = collect(minimum(eachrow(x)))
     x_max = collect(maximum(eachrow(x)))

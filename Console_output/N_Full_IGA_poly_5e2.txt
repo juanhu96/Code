@@ -1,0 +1,154 @@
+****************************** IGA ******************************Optimal found for feature 12 with point 5
+Optimal found for feature 13 with point 5
+Optimal found for feature 14 with point 5
+Optimal found for feature 15 with point 5
+Optimal found for feature 16 with point 5
+Max runtime achieved
+Time spent: 7796; Iteration spent: 5
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 4.47654e+03
+  Objective bound    : 4.26313e+03
+  Relative gap       : 4.76723e-02
+
+* Work counters
+  Solve time (sec)   : 1.56662e+03
+  Simplex iterations : 0
+  Barrier iterations : 37604
+  Node count         : 736
+Max runtime achieved
+Time spent: 11655; Iteration spent: 3
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : -1.58020e+04
+  Objective bound    : -1.60424e+04
+  Relative gap       : 1.52132e-02
+
+* Work counters
+  Solve time (sec)   : 5.52382e+03
+  Simplex iterations : 539417
+  Barrier iterations : 92
+  Node count         : 98
+****************************** IGA ******************************Optimal found for feature 16 with point 1
+Optimal found for feature 6 with point 1
+Optimal found for feature 12 with point 5
+Optimal found for feature 13 with point 5
+Optimal found for feature 14 with point 5
+Optimal found for feature 15 with point 5
+Optimal found for feature 5 with point 5
+Max runtime achieved
+Time spent: 8157; Iteration spent: 4
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 8.51795e+03
+  Objective bound    : 8.24615e+03
+  Relative gap       : 3.19089e-02
+
+* Work counters
+  Solve time (sec)   : 2.23122e+03
+  Simplex iterations : 0
+  Barrier iterations : 33819
+  Node count         : 546
+Optimal found for feature 13 with point 1
+Optimal found for feature 14 with point 1
+Optimal found for feature 15 with point 1
+Optimal found for feature 16 with point 2
+Optimal found for feature 6 with point 1
+Max runtime achieved
+Time spent: 12067; Iteration spent: 3
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : -3.06567e+04
+  Objective bound    : -3.23354e+04
+  Relative gap       : 5.47578e-02
+
+* Work counters
+  Solve time (sec)   : 7.20443e+03
+  Simplex iterations : 145
+  Barrier iterations : 121
+  Node count         : 0
+****************************** IGA ******************************Optimal found for feature 16 with point 1
+Optimal found for feature 12 with point 5
+Optimal found for feature 13 with point 5
+Optimal found for feature 14 with point 5
+Optimal found for feature 15 with point 5
+Max runtime achieved
+Time spent: 12989; Iteration spent: 3
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 2.12794e+04
+  Objective bound    : 2.08051e+04
+  Relative gap       : 2.22870e-02
+
+* Work counters
+  Solve time (sec)   : 6.15060e+03
+  Simplex iterations : 0
+  Barrier iterations : 35083
+  Node count         : 404
+Max runtime achieved
+Time spent: 7240; Iteration spent: 0
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : TIME_LIMIT
+  Message from the solver:
+  "Mosek.MSK_RES_TRM_MAX_TIME"
+
+* Candidate solution (result #1)
+  Primal status      : UNKNOWN_RESULT_STATUS
+  Dual status        : UNKNOWN_RESULT_STATUS
+  Objective value    : 0.00000e+00
+  Objective bound    : -8.06468e+04
+  Relative gap       : -1.00000e+00
+
+* Work counters
+  Solve time (sec)   : 7.22548e+03
+  Simplex iterations : 0
+  Barrier iterations : 400
+  Node count         : 0
