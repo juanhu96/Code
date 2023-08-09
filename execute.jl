@@ -5,7 +5,7 @@ include("utils/main_include.jl")
 # feature_case = "full"
 dataset = "Framingham"
 feature_case = "Framingham"
-expdirpath = "/mnt/phd/jihu/opioid_conic/Results/Farmningham/"
+expdirpath = "/mnt/phd/jihu/opioid_conic/Results/Framningham/"
 
 C0 = 10
 max_point = 5
@@ -31,7 +31,7 @@ function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_thr
 
         # println("****************************** QUARTILE ******************************\n")
         # quantile_list = collect(0.1:0.1:1)
-        # main_quartile(dataset, N, feature_case, quantile_list, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "qaurtile")
+        # main_quartile(dataset, N, feature_case, quantile_list, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "quartile")
 
         println("****************************** POLYAPPROX ******************************\n")
         nu = collect(1:1:20)
