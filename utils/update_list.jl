@@ -85,7 +85,7 @@ end
 
 
 
-function update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature, theta, num_feature, num_order, max_point, delta)
+function update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature, theta, num_feature, num_order, max_point)
     
     epsilon = 1e-5 # case where theta = 1.588151832265794e-11, or theta = 0.9999999999439342
 

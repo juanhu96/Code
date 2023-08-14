@@ -3,7 +3,7 @@ include("../utils/estimate_include.jl")
 # using Statistics
 # using Dates
 
-function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0, 
+function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, C0, 
     max_point, max_runtime, num_threads, tol_gap, expdirpath, filename)
 
     # initialization
@@ -22,7 +22,7 @@ function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, C0,
         global intercept, theta, summary = estimate_MICP_IGA(z, I_prev, C0, max_point, num_feature, num_obs, num_attr, x_order, num_order, v_order, max_runtime, tol_gap, num_threads)
 
         # update I and I tilde
-        global I_next, I_tilde_next, n_min_next, n_max_next, optimal_feature = update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature, theta, num_feature, num_order, max_point, delta)
+        global I_next, I_tilde_next, n_min_next, n_max_next, optimal_feature = update_I(I_prev, I_tilde_prev, n_min_prev, n_max_prev, optimal_feature, theta, num_feature, num_order, max_point)
 
         time = round(Dates.now() - t_start, Second, RoundUp)
 

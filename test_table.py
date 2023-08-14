@@ -9,7 +9,7 @@ workdir = "/mnt/phd/jihu/opioid_conic/"
 
 def main():
     
-    test_dataset(dataset='Opioid', model_list=['original', 'polyapprox', 'IGA'], feature = 'full', N_list = [10000, 20000, 50000])
+    # test_dataset(dataset='Opioid', model_list=['original', 'polyapprox', 'IGA'], feature = 'full', N_list = [10000, 20000, 50000])
     test_dataset(dataset='Framingham', model_list=['original', 'IGA'])
     
     

@@ -24,7 +24,7 @@ function estimate_MICP_IGApolyapprox(z, nu, nu_tilde, I_list, C0, max_point, num
 
     q = @variable(model, q[1:num_feature, 1:max_point], Bin)
     v = @variable(model, v[1:num_feature], Bin)
-    u0 = @variable(model, u0, Int)
+    u0 = @variable(model, -max_point <= u0 <= max_point, Int)
     u = @variable(model, u[1:num_obs])
     eta = @variable(model, eta[1:num_obs, 1:2])
     phi = @variable(model, phi[1:num_obs])
