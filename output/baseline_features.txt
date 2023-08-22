@@ -1,0 +1,14 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:24: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/scipy/optimize/linesearch.py:327: LineSearchWarning: The line search algorithm did not converge
+  warn('The line search algorithm did not converge', LineSearchWarning)
+LinearSVM iteration 0...23
+
+LinearSVM iteration 1...25
+
+LinearSVM iteration 2...24
+
+LinearSVM iteration 3...23
+
+LinearSVM iteration 4...22
+

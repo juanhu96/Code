@@ -1,0 +1,153 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Index(['(Intercept)', 'concurrent_MME10', 'concurrent_MME15',
+       'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30',
+       'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45',
+       'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100',
+       'concurrent_MME200', 'concurrent_MME300', 'concurrent_benzo1',
+       'avgMME15', 'avgMME20', 'avgMME25', 'avgMME30', 'avgMME35', 'avgMME40',
+       'avgMME50', 'avgMME70', 'avgMME90', 'avgDays1', 'avgDays3', 'avgDays5',
+       'avgDays7', 'avgDays10', 'avgDays14', 'avgDays21', 'avgDays25',
+       'avgDays30', 'avgDays60', 'avgDays90', 'Medicare', 'WorkersComp',
+       'HMFO'],
+      dtype='object')
+Start training 2018singleselected
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+06/02/23 @ 03:49 PM | switching loss computation from lookup to weighted
+06/02/23 @ 03:49 PM | ------------------------------------------------------------
+06/02/23 @ 03:49 PM | runnning initialization procedure
+06/02/23 @ 03:49 PM | ------------------------------------------------------------
+06/02/23 @ 03:51 PM | CPA produced 2 cuts
+06/02/23 @ 03:51 PM | running naive rounding on 31 solutions
+06/02/23 @ 03:51 PM | best objective value: 0.4077
+06/02/23 @ 03:51 PM | rounding produced 5 integer solutions
+06/02/23 @ 03:51 PM | best objective value is 0.4254
+06/02/23 @ 03:51 PM | running sequential rounding on 31 solutions
+06/02/23 @ 03:51 PM | best objective value: 0.4077
+06/02/23 @ 03:52 PM | sequential rounding produced 2 integer solutions
+06/02/23 @ 03:52 PM | best objective value: 0.4107
+06/02/23 @ 03:52 PM | polishing 7 solutions
+06/02/23 @ 03:52 PM | best objective value: 0.4107
+06/02/23 @ 03:53 PM | polishing produced 4 integer solutions
+06/02/23 @ 03:53 PM | initialization produced 10 feasible solutions
+06/02/23 @ 03:53 PM | best objective value: 0.4099
+06/02/23 @ 03:53 PM | ------------------------------------------------------------
+06/02/23 @ 03:53 PM | completed initialization procedure
+06/02/23 @ 03:53 PM | ------------------------------------------------------------
+06/02/23 @ 03:53 PM | switching loss computation from lookup to weighted
+06/02/23 @ 03:53 PM | adding 249 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays25                                    |         3 points |   + ..... |
+| avgDays10                                    |         2 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| Medicare                                     |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+233.8 seconds
+Index(['(Intercept)', 'concurrent_MME10', 'concurrent_MME15',
+       'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30',
+       'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45',
+       'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100',
+       'concurrent_MME200', 'concurrent_MME300', 'concurrent_benzo1',
+       'avgMME15', 'avgMME20', 'avgMME25', 'avgMME30', 'avgMME35', 'avgMME40',
+       'avgMME50', 'avgMME70', 'avgMME90', 'avgDays1', 'avgDays3', 'avgDays5',
+       'avgDays7', 'avgDays10', 'avgDays14', 'avgDays21', 'avgDays25',
+       'avgDays30', 'avgDays60', 'avgDays90', 'Medicare', 'WorkersComp',
+       'HMFO'],
+      dtype='object')
+Start training 2018singleselected
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+06/02/23 @ 03:56 PM | switching loss computation from lookup to weighted
+06/02/23 @ 03:56 PM | ------------------------------------------------------------
+06/02/23 @ 03:56 PM | runnning initialization procedure
+06/02/23 @ 03:56 PM | ------------------------------------------------------------
+06/02/23 @ 03:58 PM | CPA produced 2 cuts
+06/02/23 @ 03:58 PM | running naive rounding on 31 solutions
+06/02/23 @ 03:58 PM | best objective value: 0.4077
+06/02/23 @ 03:58 PM | rounding produced 5 integer solutions
+06/02/23 @ 03:58 PM | best objective value is 0.4254
+06/02/23 @ 03:58 PM | running sequential rounding on 31 solutions
+06/02/23 @ 03:58 PM | best objective value: 0.4077
+06/02/23 @ 03:58 PM | sequential rounding produced 2 integer solutions
+06/02/23 @ 03:58 PM | best objective value: 0.4107
+06/02/23 @ 03:58 PM | polishing 7 solutions
+06/02/23 @ 03:58 PM | best objective value: 0.4107
+06/02/23 @ 03:59 PM | polishing produced 4 integer solutions
+06/02/23 @ 03:59 PM | initialization produced 10 feasible solutions
+06/02/23 @ 03:59 PM | best objective value: 0.4099
+06/02/23 @ 03:59 PM | ------------------------------------------------------------
+06/02/23 @ 03:59 PM | completed initialization procedure
+06/02/23 @ 03:59 PM | ------------------------------------------------------------
+06/02/23 @ 03:59 PM | switching loss computation from lookup to weighted
+06/02/23 @ 03:59 PM | adding 249 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays25                                    |         3 points |   + ..... |
+| avgDays10                                    |         2 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| Medicare                                     |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+230.8 seconds
+Index(['(Intercept)', 'concurrent_MME10', 'concurrent_MME15',
+       'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30',
+       'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45',
+       'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100',
+       'concurrent_MME200', 'concurrent_MME300', 'concurrent_benzo1',
+       'avgMME15', 'avgMME20', 'avgMME25', 'avgMME30', 'avgMME35', 'avgMME40',
+       'avgMME50', 'avgMME70', 'avgMME90', 'avgDays1', 'avgDays3', 'avgDays5',
+       'avgDays7', 'avgDays10', 'avgDays14', 'avgDays21', 'avgDays25',
+       'avgDays30', 'avgDays60', 'avgDays90', 'Medicare', 'WorkersComp',
+       'HMFO'],
+      dtype='object')
+Start training 2018singleselected
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+06/02/23 @ 04:02 PM | switching loss computation from lookup to weighted
+06/02/23 @ 04:02 PM | ------------------------------------------------------------
+06/02/23 @ 04:02 PM | runnning initialization procedure
+06/02/23 @ 04:02 PM | ------------------------------------------------------------
+06/02/23 @ 04:04 PM | CPA produced 2 cuts
+06/02/23 @ 04:04 PM | running naive rounding on 31 solutions
+06/02/23 @ 04:04 PM | best objective value: 0.4077
+06/02/23 @ 04:04 PM | rounding produced 5 integer solutions
+06/02/23 @ 04:04 PM | best objective value is 0.4254
+06/02/23 @ 04:04 PM | running sequential rounding on 31 solutions
+06/02/23 @ 04:04 PM | best objective value: 0.4077
+06/02/23 @ 04:05 PM | sequential rounding produced 2 integer solutions
+06/02/23 @ 04:05 PM | best objective value: 0.4107
+06/02/23 @ 04:05 PM | polishing 7 solutions
+06/02/23 @ 04:05 PM | best objective value: 0.4107
+06/02/23 @ 04:05 PM | polishing produced 4 integer solutions
+06/02/23 @ 04:05 PM | initialization produced 10 feasible solutions
+06/02/23 @ 04:05 PM | best objective value: 0.4099
+06/02/23 @ 04:05 PM | ------------------------------------------------------------
+06/02/23 @ 04:05 PM | completed initialization procedure
+06/02/23 @ 04:05 PM | ------------------------------------------------------------
+06/02/23 @ 04:05 PM | switching loss computation from lookup to weighted
+06/02/23 @ 04:05 PM | adding 249 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays25                                    |         3 points |   + ..... |
+| avgDays10                                    |         2 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| Medicare                                     |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+232.3 seconds

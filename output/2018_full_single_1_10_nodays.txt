@@ -1,0 +1,123 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start training 2018singlespeical
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/21/23 @ 03:04 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:05 PM | ------------------------------------------------------------
+05/21/23 @ 03:05 PM | runnning initialization procedure
+05/21/23 @ 03:05 PM | ------------------------------------------------------------
+05/21/23 @ 03:10 PM | CPA produced 2 cuts
+05/21/23 @ 03:10 PM | running naive rounding on 4 solutions
+05/21/23 @ 03:10 PM | best objective value: 0.6931
+05/21/23 @ 03:10 PM | rounding produced 4 integer solutions
+05/21/23 @ 03:10 PM | best objective value is 0.6931
+05/21/23 @ 03:10 PM | running sequential rounding on 4 solutions
+05/21/23 @ 03:10 PM | best objective value: 0.6931
+05/21/23 @ 03:10 PM | sequential rounding produced 1 integer solutions
+05/21/23 @ 03:10 PM | best objective value: 0.6931
+05/21/23 @ 03:10 PM | polishing 5 solutions
+05/21/23 @ 03:10 PM | best objective value: 0.6931
+05/21/23 @ 03:11 PM | polishing produced 2 integer solutions
+05/21/23 @ 03:11 PM | initialization produced 5 feasible solutions
+05/21/23 @ 03:11 PM | best objective value: 0.6931
+05/21/23 @ 03:11 PM | ------------------------------------------------------------
+05/21/23 @ 03:11 PM | completed initialization procedure
+05/21/23 @ 03:11 PM | ------------------------------------------------------------
+05/21/23 @ 03:11 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:11 PM | adding 239 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age40                                        |         1 points |   + ..... |
+| concurrent_methadone_MME10                   |         1 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| days_diff14                                  |         1 points |   + ..... |
+| Fentanyl                                     |         1 points |   + ..... |
+| MilitaryIns                                  |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+630.9 seconds
+Start training 2018singlespeical
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/21/23 @ 03:17 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:18 PM | ------------------------------------------------------------
+05/21/23 @ 03:18 PM | runnning initialization procedure
+05/21/23 @ 03:18 PM | ------------------------------------------------------------
+05/21/23 @ 03:23 PM | CPA produced 2 cuts
+05/21/23 @ 03:23 PM | running naive rounding on 4 solutions
+05/21/23 @ 03:23 PM | best objective value: 0.6931
+05/21/23 @ 03:23 PM | rounding produced 4 integer solutions
+05/21/23 @ 03:23 PM | best objective value is 0.6931
+05/21/23 @ 03:23 PM | running sequential rounding on 4 solutions
+05/21/23 @ 03:23 PM | best objective value: 0.6931
+05/21/23 @ 03:23 PM | sequential rounding produced 1 integer solutions
+05/21/23 @ 03:23 PM | best objective value: 0.6931
+05/21/23 @ 03:23 PM | polishing 5 solutions
+05/21/23 @ 03:23 PM | best objective value: 0.6931
+05/21/23 @ 03:24 PM | polishing produced 2 integer solutions
+05/21/23 @ 03:24 PM | initialization produced 5 feasible solutions
+05/21/23 @ 03:24 PM | best objective value: 0.6931
+05/21/23 @ 03:24 PM | ------------------------------------------------------------
+05/21/23 @ 03:24 PM | completed initialization procedure
+05/21/23 @ 03:24 PM | ------------------------------------------------------------
+05/21/23 @ 03:24 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:24 PM | adding 242 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age40                                        |         1 points |   + ..... |
+| concurrent_methadone_MME10                   |         1 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| days_diff14                                  |         1 points |   + ..... |
+| Fentanyl                                     |         1 points |   + ..... |
+| MilitaryIns                                  |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+576.1 seconds
+Start training 2018singlespeical
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/21/23 @ 03:30 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:30 PM | ------------------------------------------------------------
+05/21/23 @ 03:30 PM | runnning initialization procedure
+05/21/23 @ 03:30 PM | ------------------------------------------------------------
+05/21/23 @ 03:35 PM | CPA produced 2 cuts
+05/21/23 @ 03:35 PM | running naive rounding on 4 solutions
+05/21/23 @ 03:35 PM | best objective value: 0.6931
+05/21/23 @ 03:35 PM | rounding produced 4 integer solutions
+05/21/23 @ 03:35 PM | best objective value is 0.6931
+05/21/23 @ 03:35 PM | running sequential rounding on 4 solutions
+05/21/23 @ 03:35 PM | best objective value: 0.6931
+05/21/23 @ 03:35 PM | sequential rounding produced 1 integer solutions
+05/21/23 @ 03:35 PM | best objective value: 0.6931
+05/21/23 @ 03:35 PM | polishing 5 solutions
+05/21/23 @ 03:35 PM | best objective value: 0.6931
+05/21/23 @ 03:36 PM | polishing produced 2 integer solutions
+05/21/23 @ 03:36 PM | initialization produced 5 feasible solutions
+05/21/23 @ 03:36 PM | best objective value: 0.6931
+05/21/23 @ 03:36 PM | ------------------------------------------------------------
+05/21/23 @ 03:36 PM | completed initialization procedure
+05/21/23 @ 03:36 PM | ------------------------------------------------------------
+05/21/23 @ 03:36 PM | switching loss computation from lookup to weighted
+05/21/23 @ 03:36 PM | adding 231 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age40                                        |         1 points |   + ..... |
+| concurrent_methadone_MME10                   |         1 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| days_diff14                                  |         1 points |   + ..... |
+| Fentanyl                                     |         1 points |   + ..... |
+| MilitaryIns                                  |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+565.0 seconds

@@ -1,0 +1,39 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/16/23 @ 11:34 PM | switching loss computation from lookup to weighted
+03/16/23 @ 11:38 PM | ------------------------------------------------------------
+03/16/23 @ 11:38 PM | runnning initialization procedure
+03/16/23 @ 11:38 PM | ------------------------------------------------------------
+03/16/23 @ 11:43 PM | CPA produced 2 cuts
+03/16/23 @ 11:43 PM | running naive rounding on 8 solutions
+03/16/23 @ 11:43 PM | best objective value: 0.4790
+03/16/23 @ 11:43 PM | rounding produced 5 integer solutions
+03/16/23 @ 11:43 PM | best objective value is 0.4740
+03/16/23 @ 11:43 PM | running sequential rounding on 8 solutions
+03/16/23 @ 11:43 PM | best objective value: 0.4790
+03/16/23 @ 11:43 PM | sequential rounding produced 3 integer solutions
+03/16/23 @ 11:43 PM | best objective value: 0.4436
+03/16/23 @ 11:43 PM | polishing 8 solutions
+03/16/23 @ 11:43 PM | best objective value: 0.4436
+03/16/23 @ 11:44 PM | polishing produced 2 integer solutions
+03/16/23 @ 11:44 PM | initialization produced 10 feasible solutions
+03/16/23 @ 11:44 PM | best objective value: 0.4138
+03/16/23 @ 11:44 PM | ------------------------------------------------------------
+03/16/23 @ 11:44 PM | completed initialization procedure
+03/16/23 @ 11:44 PM | ------------------------------------------------------------
+03/16/23 @ 11:44 PM | switching loss computation from lookup to weighted
+03/16/23 @ 11:44 PM | adding 51 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age20                                        |         2 points |   + ..... |
+| total_dose190                                |         2 points |   + ..... |
+| consecutive_days20                           |         2 points |   + ..... |
+| num_presc3                                   |         2 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 4                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1725.9 seconds

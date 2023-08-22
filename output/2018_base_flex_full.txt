@@ -1,0 +1,115 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+Start training 2018singlebase
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/16/23 @ 09:11 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:11 PM | ------------------------------------------------------------
+03/16/23 @ 09:11 PM | runnning initialization procedure
+03/16/23 @ 09:11 PM | ------------------------------------------------------------
+03/16/23 @ 09:12 PM | CPA produced 2 cuts
+03/16/23 @ 09:12 PM | running naive rounding on 52 solutions
+03/16/23 @ 09:12 PM | best objective value: 0.6332
+03/16/23 @ 09:12 PM | rounding produced 2 integer solutions
+03/16/23 @ 09:12 PM | best objective value is 0.6576
+03/16/23 @ 09:12 PM | running sequential rounding on 52 solutions
+03/16/23 @ 09:12 PM | best objective value: 0.6332
+03/16/23 @ 09:13 PM | sequential rounding produced 1 integer solutions
+03/16/23 @ 09:13 PM | best objective value: 0.6576
+03/16/23 @ 09:13 PM | polishing 3 solutions
+03/16/23 @ 09:13 PM | best objective value: 0.6576
+03/16/23 @ 09:13 PM | polishing produced 1 integer solutions
+03/16/23 @ 09:13 PM | initialization produced 3 feasible solutions
+03/16/23 @ 09:13 PM | best objective value: 0.6503
+03/16/23 @ 09:13 PM | ------------------------------------------------------------
+03/16/23 @ 09:13 PM | completed initialization procedure
+03/16/23 @ 09:13 PM | ------------------------------------------------------------
+03/16/23 @ 09:13 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:13 PM | adding 51 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
++---------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(0 + score))   |                  |           |
+| =========================================== | ================ | ========= |
+| alert5                                      |         5 points |   + ..... |
+| alert1                                      |         1 points |   + ..... |
+| alert2                                      |         1 points |   + ..... |
+| alert3                                      |         1 points |   + ..... |
+| =========================================== | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 4                 |            SCORE |   = ..... |
++---------------------------------------------+------------------+-----------+
+136.4 seconds
+Start training 2018singleflexible
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/16/23 @ 09:21 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:22 PM | ------------------------------------------------------------
+03/16/23 @ 09:22 PM | runnning initialization procedure
+03/16/23 @ 09:22 PM | ------------------------------------------------------------
+03/16/23 @ 09:27 PM | CPA produced 2 cuts
+03/16/23 @ 09:27 PM | running naive rounding on 9 solutions
+03/16/23 @ 09:27 PM | best objective value: 0.3808
+03/16/23 @ 09:27 PM | rounding produced 5 integer solutions
+03/16/23 @ 09:27 PM | best objective value is 0.3769
+03/16/23 @ 09:27 PM | running sequential rounding on 9 solutions
+03/16/23 @ 09:27 PM | best objective value: 0.3808
+03/16/23 @ 09:27 PM | sequential rounding produced 2 integer solutions
+03/16/23 @ 09:27 PM | best objective value: 0.3744
+03/16/23 @ 09:27 PM | polishing 7 solutions
+03/16/23 @ 09:27 PM | best objective value: 0.3744
+03/16/23 @ 09:28 PM | polishing produced 1 integer solutions
+03/16/23 @ 09:28 PM | initialization produced 7 feasible solutions
+03/16/23 @ 09:28 PM | best objective value: 0.3744
+03/16/23 @ 09:28 PM | ------------------------------------------------------------
+03/16/23 @ 09:28 PM | completed initialization procedure
+03/16/23 @ 09:28 PM | ------------------------------------------------------------
+03/16/23 @ 09:28 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:28 PM | adding 143 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days20                           |         3 points |   + ..... |
+| concurrent_MME40                             |         1 points |   + ..... |
+| concurrent_methadone_MME80                   |         1 points |   + ..... |
+| num_prescribers3                             |         1 points |   + ..... |
+| concurrent_benzo2                            |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+451.9 seconds
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/16/23 @ 09:37 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:41 PM | ------------------------------------------------------------
+03/16/23 @ 09:41 PM | runnning initialization procedure
+03/16/23 @ 09:41 PM | ------------------------------------------------------------
+03/16/23 @ 09:46 PM | CPA produced 2 cuts
+03/16/23 @ 09:46 PM | running naive rounding on 9 solutions
+03/16/23 @ 09:46 PM | best objective value: 0.3811
+03/16/23 @ 09:47 PM | rounding produced 5 integer solutions
+03/16/23 @ 09:47 PM | best objective value is 0.5345
+03/16/23 @ 09:47 PM | running sequential rounding on 9 solutions
+03/16/23 @ 09:47 PM | best objective value: 0.3811
+03/16/23 @ 09:47 PM | sequential rounding produced 2 integer solutions
+03/16/23 @ 09:47 PM | best objective value: 0.4443
+03/16/23 @ 09:47 PM | polishing 7 solutions
+03/16/23 @ 09:47 PM | best objective value: 0.4443
+03/16/23 @ 09:48 PM | polishing produced 3 integer solutions
+03/16/23 @ 09:48 PM | initialization produced 8 feasible solutions
+03/16/23 @ 09:48 PM | best objective value: 0.4443
+03/16/23 @ 09:48 PM | ------------------------------------------------------------
+03/16/23 @ 09:48 PM | completed initialization procedure
+03/16/23 @ 09:48 PM | ------------------------------------------------------------
+03/16/23 @ 09:48 PM | switching loss computation from lookup to weighted
+03/16/23 @ 09:48 PM | adding 55 initial cuts
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-65 + score))   |                  |           |
+| ============================================= | ================ | ========= |
+| opioid_days                                   |         0 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 1                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+756.6 seconds

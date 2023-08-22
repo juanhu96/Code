@@ -1,0 +1,99 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:24: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'age90', 'concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'concurrent_methadone_MME10', 'concurrent_methadone_MME15', 'concurrent_methadone_MME20', 'concurrent_methadone_MME25', 'concurrent_methadone_MME30', 'concurrent_methadone_MME35', 'concurrent_methadone_MME40', 'concurrent_methadone_MME45', 'concurrent_methadone_MME50', 'concurrent_methadone_MME75', 'concurrent_methadone_MME100', 'concurrent_methadone_MME200', 'concurrent_methadone_MME300', 'num_prescribers2', 'num_prescribers3', 'num_prescribers4', 'num_prescribers5', 'num_prescribers6', 'num_prescribers7', 'num_prescribers8', 'num_prescribers9', 'num_prescribers10', 'num_pharmacies2', 'num_pharmacies3', 'num_pharmacies4', 'num_pharmacies5', 'num_pharmacies6', 'num_pharmacies7', 'num_pharmacies8', 'num_pharmacies9', 'num_pharmacies10', 'concurrent_benzo1', 'consecutive_days3', 'consecutive_days5', 'consecutive_days7', 'consecutive_days10', 'consecutive_days14', 'consecutive_days21', 'consecutive_days25', 'consecutive_days30', 'consecutive_days60', 'consecutive_days90', 'num_presc2', 'num_presc3', 'num_presc4', 'num_presc5', 'num_presc6', 'num_presc10', 'num_presc15', 'MME_diff10', 'MME_diff25', 'MME_diff50', 'MME_diff75', 'MME_diff100', 'MME_diff150', 'days_diff1', 'days_diff3', 'days_diff5', 'days_diff7', 'days_diff10', 'days_diff14', 'days_diff21', 'days_diff25', 'days_diff30', 'quantity_diff10', 'quantity_diff25', 'quantity_diff50', 'quantity_diff75', 'quantity_diff100', 'quantity_diff150', 'patient_gender', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'Hydromorphone', 'Methadone', 'Fentanyl', 'Oxymorphone', 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'switch_drug', 'switch_payment', 'Codeine_Medicaid', 'Codeine_CommercialIns', 'Codeine_Medicare', 'Codeine_CashCredit', 'Codeine_MilitaryIns', 'Codeine_WorkersComp', 'Codeine_Other', 'Codeine_IndianNation', 'Hydrocodone_Medicaid', 'Hydrocodone_CommercialIns', 'Hydrocodone_Medicare', 'Hydrocodone_CashCredit', 'Hydrocodone_MilitaryIns', 'Hydrocodone_WorkersComp', 'Hydrocodone_Other', 'Hydrocodone_IndianNation', 'Oxycodone_Medicaid', 'Oxycodone_CommercialIns', 'Oxycodone_Medicare', 'Oxycodone_CashCredit', 'Oxycodone_MilitaryIns', 'Oxycodone_WorkersComp', 'Oxycodone_Other', 'Oxycodone_IndianNation', 'Morphine_Medicaid', 'Morphine_CommercialIns', 'Morphine_Medicare', 'Morphine_CashCredit', 'Morphine_MilitaryIns', 'Morphine_WorkersComp', 'Morphine_Other', 'Morphine_IndianNation', 'Hydromorphone_Medicaid', 'Hydromorphone_CommercialIns', 'Hydromorphone_Medicare', 'Hydromorphone_CashCredit', 'Hydromorphone_MilitaryIns', 'Hydromorphone_WorkersComp', 'Hydromorphone_Other', 'Hydromorphone_IndianNation', 'Methadone_Medicaid', 'Methadone_CommercialIns', 'Methadone_Medicare', 'Methadone_CashCredit', 'Methadone_MilitaryIns', 'Methadone_WorkersComp', 'Methadone_Other', 'Methadone_IndianNation', 'Fentanyl_Medicaid', 'Fentanyl_CommercialIns', 'Fentanyl_Medicare', 'Fentanyl_CashCredit', 'Fentanyl_MilitaryIns', 'Fentanyl_WorkersComp', 'Fentanyl_Other', 'Fentanyl_IndianNation', 'Oxymorphone_Medicaid', 'Oxymorphone_CommercialIns', 'Oxymorphone_Medicare', 'Oxymorphone_CashCredit', 'Oxymorphone_MilitaryIns', 'Oxymorphone_WorkersComp', 'Oxymorphone_Other', 'Oxymorphone_IndianNation']
+XGB iteration 0...[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  31  32  33  34  35  36  37
+  38  39  40  41  44  45  46  47  48  49  53  54  55  56  57  58  59  60
+  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78
+  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96
+  97  98  99 100 101 102 103 104 105 106 107 109 110 112 113 114 115 116
+ 117 119 120 121 122 123 124 125 127 128 129 130 131 132 133 136 137 138
+ 139 140 141 143 144 145 146 148 149 151 152 153 154 157 160 161 162 164]
+
+XGB iteration 1...[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  44  45  46  48  53  54  55  56  57  58  59  60  61  62
+  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80
+  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98
+  99 100 101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117
+ 119 120 121 122 123 124 125 127 128 129 130 131 132 133 135 136 137 138
+ 139 140 141 144 145 146 148 149 151 152 153 154 156 157 160 161 164 165]
+
+XGB iteration 2...[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  31  32  33  34  35  36  37
+  38  39  40  42  44  45  46  47  49  53  54  55  56  57  58  59  60  61
+  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79
+  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97
+  98  99 100 101 102 103 104 105 106 107 109 110 111 112 113 114 115 116
+ 117 119 120 121 122 123 124 125 127 128 129 130 131 132 133 135 136 137
+ 138 139 140 141 143 144 145 146 147 148 149 151 152 153 154 155 157 160
+ 161 162 164 165 168]
+
+XGB iteration 3...[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  44  45  46  48  53  54  55  56  57  58  59  60  61
+  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79
+  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97
+  98  99 100 101 102 103 104 105 106 107 109 110 111 112 113 114 115 116
+ 117 119 120 121 122 123 124 125 127 128 130 131 133 136 137 138 139 140
+ 141 143 144 146 148 149 151 152 153 154 157 160 161 162 164 165]
+
+XGB iteration 4...[  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  27  28  29  30  31  32  33  34  35  36  37
+  38  39  40  41  43  44  45  46  47  48  49  53  54  55  56  57  58  59
+  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77
+  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95
+  96  97  98  99 100 101 102 103 104 105 106 107 109 110 111 112 113 114
+ 115 116 117 119 120 121 122 123 124 125 127 128 129 130 131 132 133 135
+ 136 137 138 139 140 141 143 144 146 147 148 149 151 152 153 154 155 156
+ 157 160 161 162 164 165 168]
+
+28831.6 seconds

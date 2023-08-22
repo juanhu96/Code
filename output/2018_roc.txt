@@ -1,0 +1,60 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407081, 438)
+(407080, 438)
+(407080, 438)
+(407080, 438)
+(407080, 438)
+Start training 2018singleflexible
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/15/23 @ 03:22 PM | switching loss computation from lookup to weighted
+03/15/23 @ 03:23 PM | ------------------------------------------------------------
+03/15/23 @ 03:23 PM | runnning initialization procedure
+03/15/23 @ 03:23 PM | ------------------------------------------------------------
+03/15/23 @ 03:28 PM | CPA produced 2 cuts
+03/15/23 @ 03:28 PM | running naive rounding on 10 solutions
+03/15/23 @ 03:28 PM | best objective value: 0.3780
+03/15/23 @ 03:28 PM | rounding produced 5 integer solutions
+03/15/23 @ 03:28 PM | best objective value is 0.3954
+03/15/23 @ 03:28 PM | running sequential rounding on 10 solutions
+03/15/23 @ 03:28 PM | best objective value: 0.3780
+03/15/23 @ 03:28 PM | sequential rounding produced 4 integer solutions
+03/15/23 @ 03:28 PM | best objective value: 0.3802
+03/15/23 @ 03:28 PM | polishing 9 solutions
+03/15/23 @ 03:28 PM | best objective value: 0.3802
+03/15/23 @ 03:29 PM | polishing produced 3 integer solutions
+03/15/23 @ 03:29 PM | initialization produced 12 feasible solutions
+03/15/23 @ 03:29 PM | best objective value: 0.3799
+03/15/23 @ 03:29 PM | ------------------------------------------------------------
+03/15/23 @ 03:29 PM | completed initialization procedure
+03/15/23 @ 03:29 PM | ------------------------------------------------------------
+03/15/23 @ 03:29 PM | switching loss computation from lookup to weighted
+03/15/23 @ 03:29 PM | adding 222 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| num_prescribers6                             |         3 points |   + ..... |
+| consecutive_days20                           |         3 points |   + ..... |
+| concurrent_MME60                             |         1 points |   + ..... |
+| num_pharmacies2                              |         1 points |   + ..... |
+| concurrent_benzo_same2                       |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+439.2 seconds

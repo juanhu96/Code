@@ -1,0 +1,20 @@
+/mnt/phd/jihu/opioid/Code/iterative_table.py:122: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Index(['prescription_id', 'patient_id', 'patient_birth_year', 'age',
+       'patient_gender', 'patient_zip', 'prescriber_id', 'prescriber_zip',
+       'pharmacy_id', 'pharmacy_zip',
+       ...
+       'Other', 'IndianNation', 'ever_switch_drug', 'ever_switch_payment',
+       'first_switch_drug', 'first_switch_payment', 'avgMME', 'avgDays',
+       'HMFO', 'long_term_180_date'],
+      dtype='object', length=158)
+(2431, 162)
+(1542, 5)
+(2442, 162)
+(1543, 5)
+(2431, 162)
+(1542, 5)
+(2442, 162)
+(1543, 5)
+(2426, 162)
+(1541, 5)

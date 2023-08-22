@@ -1,0 +1,198 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:24: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1153: UserWarning: 'n_jobs' > 1 does not have any effect when 'solver' is set to 'liblinear'. Got 'n_jobs' = 40.
+  warnings.warn(
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/xgboost/sklearn.py:1421: UserWarning: `use_label_encoder` is deprecated in 1.7.0.
+  warnings.warn("`use_label_encoder` is deprecated in 1.7.0.")
+DT iteration 0...[0 2 4]
+
+<sklearn.tree._tree.Tree object at 0x7f6114e97dc0>
+DT iteration 1...[0 2 4]
+
+<sklearn.tree._tree.Tree object at 0x7f611860a340>
+DT iteration 2...[0 2 4]
+
+<sklearn.tree._tree.Tree object at 0x7f61109e4650>
+DT iteration 3...[0 2 4]
+
+<sklearn.tree._tree.Tree object at 0x7f61109e40a0>
+DT iteration 4...[0 2 4]
+
+<sklearn.tree._tree.Tree object at 0x7f6112661f10>
+Logistic iteration 0...[0 1 2 3 4 5]
+
+Logistic iteration 1...[0 1 2 3 4 5]
+
+Logistic iteration 2...[0 1 2 3 4 5]
+
+Logistic iteration 3...[0 1 2 3 4 5]
+
+Logistic iteration 4...[0 1 2 3 4 5]
+
+Lasso iteration 0...[0 1 2 3 4 5]
+
+Lasso iteration 1...[0 1 2 3 4 5]
+
+Lasso iteration 2...[0 1 2 3 4 5]
+
+Lasso iteration 3...[0 1 2 3 4 5]
+
+Lasso iteration 4...[0 1 2 3 4 5]
+
+LinearSVM iteration 0...2
+
+LinearSVM iteration 1...2
+
+LinearSVM iteration 2...2
+
+LinearSVM iteration 3...2
+
+LinearSVM iteration 4...2
+
+RF iteration 0...[0 1 2 3 4 5]
+
+RF iteration 1...[0 1 2 3 4 5]
+
+RF iteration 2...[0 1 2 3 4 5]
+
+RF iteration 3...[0 1 2 3 4 5]
+
+RF iteration 4...[0 1 2 3 4 5]
+
+XGB iteration 0...[0 1 2 3 4 5]
+
+XGB iteration 1...[0 1 2 3 4 5]
+
+XGB iteration 2...[0 1 2 3 4 5]
+
+XGB iteration 3...[0 1 2 3 4 5]
+
+XGB iteration 4...[0 1 2 3 4 5]
+
+18506.1 seconds

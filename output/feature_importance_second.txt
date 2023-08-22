@@ -1,0 +1,7 @@
+/mnt/phd/jihu/opioid/Code/feature_importance_second.py:35: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+Dropping feature concurrent_MME
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/feature_importance_second.py", line 86, in <module>
+    all_features.remove(feature)
+ValueError: list.remove(x): x not in list

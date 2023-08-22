@@ -1,0 +1,822 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:983: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+Start training 2018nestedflexible
+Start CV with hyperparameter 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 04:05 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:07 PM | ------------------------------------------------------------
+04/19/23 @ 04:07 PM | runnning initialization procedure
+04/19/23 @ 04:07 PM | ------------------------------------------------------------
+04/19/23 @ 04:12 PM | CPA produced 2 cuts
+04/19/23 @ 04:12 PM | running naive rounding on 8 solutions
+04/19/23 @ 04:12 PM | best objective value: 0.5156
+04/19/23 @ 04:12 PM | rounding produced 5 integer solutions
+04/19/23 @ 04:12 PM | best objective value is 0.4704
+04/19/23 @ 04:12 PM | running sequential rounding on 8 solutions
+04/19/23 @ 04:12 PM | best objective value: 0.5156
+04/19/23 @ 04:13 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 04:13 PM | best objective value: 0.4653
+04/19/23 @ 04:13 PM | polishing 6 solutions
+04/19/23 @ 04:13 PM | best objective value: 0.4653
+04/19/23 @ 04:13 PM | polishing produced 2 integer solutions
+04/19/23 @ 04:13 PM | initialization produced 8 feasible solutions
+04/19/23 @ 04:13 PM | best objective value: 0.4326
+04/19/23 @ 04:13 PM | ------------------------------------------------------------
+04/19/23 @ 04:13 PM | completed initialization procedure
+04/19/23 @ 04:13 PM | ------------------------------------------------------------
+04/19/23 @ 04:13 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:13 PM | adding 174 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 04:16 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:17 PM | ------------------------------------------------------------
+04/19/23 @ 04:17 PM | runnning initialization procedure
+04/19/23 @ 04:17 PM | ------------------------------------------------------------
+04/19/23 @ 04:22 PM | CPA produced 2 cuts
+04/19/23 @ 04:22 PM | running naive rounding on 8 solutions
+04/19/23 @ 04:22 PM | best objective value: 0.5152
+04/19/23 @ 04:22 PM | rounding produced 5 integer solutions
+04/19/23 @ 04:22 PM | best objective value is 0.4704
+04/19/23 @ 04:22 PM | running sequential rounding on 8 solutions
+04/19/23 @ 04:22 PM | best objective value: 0.5152
+04/19/23 @ 04:22 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 04:22 PM | best objective value: 0.4653
+04/19/23 @ 04:22 PM | polishing 6 solutions
+04/19/23 @ 04:22 PM | best objective value: 0.4653
+04/19/23 @ 04:23 PM | polishing produced 2 integer solutions
+04/19/23 @ 04:23 PM | initialization produced 8 feasible solutions
+04/19/23 @ 04:23 PM | best objective value: 0.4327
+04/19/23 @ 04:23 PM | ------------------------------------------------------------
+04/19/23 @ 04:23 PM | completed initialization procedure
+04/19/23 @ 04:23 PM | ------------------------------------------------------------
+04/19/23 @ 04:23 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:23 PM | adding 176 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 04:25 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:26 PM | ------------------------------------------------------------
+04/19/23 @ 04:26 PM | runnning initialization procedure
+04/19/23 @ 04:26 PM | ------------------------------------------------------------
+04/19/23 @ 04:31 PM | CPA produced 2 cuts
+04/19/23 @ 04:31 PM | running naive rounding on 8 solutions
+04/19/23 @ 04:31 PM | best objective value: 0.5147
+04/19/23 @ 04:31 PM | rounding produced 5 integer solutions
+04/19/23 @ 04:31 PM | best objective value is 0.4702
+04/19/23 @ 04:31 PM | running sequential rounding on 8 solutions
+04/19/23 @ 04:31 PM | best objective value: 0.5147
+04/19/23 @ 04:31 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 04:31 PM | best objective value: 0.4651
+04/19/23 @ 04:31 PM | polishing 7 solutions
+04/19/23 @ 04:31 PM | best objective value: 0.4651
+04/19/23 @ 04:32 PM | polishing produced 2 integer solutions
+04/19/23 @ 04:32 PM | initialization produced 8 feasible solutions
+04/19/23 @ 04:32 PM | best objective value: 0.4324
+04/19/23 @ 04:32 PM | ------------------------------------------------------------
+04/19/23 @ 04:32 PM | completed initialization procedure
+04/19/23 @ 04:32 PM | ------------------------------------------------------------
+04/19/23 @ 04:32 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:32 PM | adding 178 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541373404195123
+04/19/23 @ 04:34 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:35 PM | ------------------------------------------------------------
+04/19/23 @ 04:35 PM | runnning initialization procedure
+04/19/23 @ 04:35 PM | ------------------------------------------------------------
+04/19/23 @ 04:40 PM | CPA produced 2 cuts
+04/19/23 @ 04:40 PM | running naive rounding on 8 solutions
+04/19/23 @ 04:40 PM | best objective value: 0.5155
+04/19/23 @ 04:40 PM | rounding produced 5 integer solutions
+04/19/23 @ 04:40 PM | best objective value is 0.4706
+04/19/23 @ 04:40 PM | running sequential rounding on 8 solutions
+04/19/23 @ 04:40 PM | best objective value: 0.5155
+04/19/23 @ 04:40 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 04:40 PM | best objective value: 0.4655
+04/19/23 @ 04:40 PM | polishing 6 solutions
+04/19/23 @ 04:40 PM | best objective value: 0.4655
+04/19/23 @ 04:41 PM | polishing produced 2 integer solutions
+04/19/23 @ 04:41 PM | initialization produced 8 feasible solutions
+04/19/23 @ 04:41 PM | best objective value: 0.4328
+04/19/23 @ 04:41 PM | ------------------------------------------------------------
+04/19/23 @ 04:41 PM | completed initialization procedure
+04/19/23 @ 04:41 PM | ------------------------------------------------------------
+04/19/23 @ 04:41 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:41 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 04:47 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:48 PM | ------------------------------------------------------------
+04/19/23 @ 04:48 PM | runnning initialization procedure
+04/19/23 @ 04:48 PM | ------------------------------------------------------------
+04/19/23 @ 04:53 PM | CPA produced 2 cuts
+04/19/23 @ 04:53 PM | running naive rounding on 8 solutions
+04/19/23 @ 04:53 PM | best objective value: 0.5148
+04/19/23 @ 04:53 PM | rounding produced 5 integer solutions
+04/19/23 @ 04:53 PM | best objective value is 0.4703
+04/19/23 @ 04:53 PM | running sequential rounding on 8 solutions
+04/19/23 @ 04:53 PM | best objective value: 0.5148
+04/19/23 @ 04:53 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 04:53 PM | best objective value: 0.4652
+04/19/23 @ 04:53 PM | polishing 6 solutions
+04/19/23 @ 04:53 PM | best objective value: 0.4652
+04/19/23 @ 04:54 PM | polishing produced 2 integer solutions
+04/19/23 @ 04:54 PM | initialization produced 8 feasible solutions
+04/19/23 @ 04:54 PM | best objective value: 0.4326
+04/19/23 @ 04:54 PM | ------------------------------------------------------------
+04/19/23 @ 04:54 PM | completed initialization procedure
+04/19/23 @ 04:54 PM | ------------------------------------------------------------
+04/19/23 @ 04:54 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:54 PM | adding 180 initial cuts
+The best c selected through inner CV is 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368797857782
+04/19/23 @ 04:58 PM | switching loss computation from lookup to weighted
+04/19/23 @ 04:59 PM | ------------------------------------------------------------
+04/19/23 @ 04:59 PM | runnning initialization procedure
+04/19/23 @ 04:59 PM | ------------------------------------------------------------
+04/19/23 @ 05:04 PM | CPA produced 2 cuts
+04/19/23 @ 05:04 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:04 PM | best objective value: 0.5152
+04/19/23 @ 05:05 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:05 PM | best objective value is 0.4704
+04/19/23 @ 05:05 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:05 PM | best objective value: 0.5152
+04/19/23 @ 05:05 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 05:05 PM | best objective value: 0.4653
+04/19/23 @ 05:05 PM | polishing 7 solutions
+04/19/23 @ 05:05 PM | best objective value: 0.4653
+04/19/23 @ 05:05 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:05 PM | initialization produced 8 feasible solutions
+04/19/23 @ 05:05 PM | best objective value: 0.4326
+04/19/23 @ 05:05 PM | ------------------------------------------------------------
+04/19/23 @ 05:05 PM | completed initialization procedure
+04/19/23 @ 05:05 PM | ------------------------------------------------------------
+04/19/23 @ 05:06 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:06 PM | adding 144 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| concurrent_methadone_MME10_20                |         5 points |   + ..... |
+| consecutive_days20_80                        |         3 points |   + ..... |
+| concurrent_MME_ge_190                        |         2 points |   + ..... |
+| num_pharmacies3                              |         2 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 4                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+Start CV with hyperparameter 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 05:08 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:09 PM | ------------------------------------------------------------
+04/19/23 @ 05:09 PM | runnning initialization procedure
+04/19/23 @ 05:09 PM | ------------------------------------------------------------
+04/19/23 @ 05:14 PM | CPA produced 2 cuts
+04/19/23 @ 05:14 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:14 PM | best objective value: 0.5154
+04/19/23 @ 05:14 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:14 PM | best objective value is 0.4701
+04/19/23 @ 05:14 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:14 PM | best objective value: 0.5154
+04/19/23 @ 05:14 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 05:14 PM | best objective value: 0.4701
+04/19/23 @ 05:14 PM | polishing 7 solutions
+04/19/23 @ 05:14 PM | best objective value: 0.4701
+04/19/23 @ 05:15 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:15 PM | initialization produced 7 feasible solutions
+04/19/23 @ 05:15 PM | best objective value: 0.4323
+04/19/23 @ 05:15 PM | ------------------------------------------------------------
+04/19/23 @ 05:15 PM | completed initialization procedure
+04/19/23 @ 05:15 PM | ------------------------------------------------------------
+04/19/23 @ 05:15 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:15 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 05:17 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:18 PM | ------------------------------------------------------------
+04/19/23 @ 05:18 PM | runnning initialization procedure
+04/19/23 @ 05:18 PM | ------------------------------------------------------------
+04/19/23 @ 05:23 PM | CPA produced 2 cuts
+04/19/23 @ 05:23 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:23 PM | best objective value: 0.5152
+04/19/23 @ 05:23 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:23 PM | best objective value is 0.4702
+04/19/23 @ 05:23 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:23 PM | best objective value: 0.5152
+04/19/23 @ 05:23 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 05:23 PM | best objective value: 0.4651
+04/19/23 @ 05:23 PM | polishing 7 solutions
+04/19/23 @ 05:23 PM | best objective value: 0.4651
+04/19/23 @ 05:24 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:24 PM | initialization produced 8 feasible solutions
+04/19/23 @ 05:24 PM | best objective value: 0.4324
+04/19/23 @ 05:24 PM | ------------------------------------------------------------
+04/19/23 @ 05:24 PM | completed initialization procedure
+04/19/23 @ 05:24 PM | ------------------------------------------------------------
+04/19/23 @ 05:24 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:24 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 05:27 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:28 PM | ------------------------------------------------------------
+04/19/23 @ 05:28 PM | runnning initialization procedure
+04/19/23 @ 05:28 PM | ------------------------------------------------------------
+04/19/23 @ 05:33 PM | CPA produced 2 cuts
+04/19/23 @ 05:33 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:33 PM | best objective value: 0.5148
+04/19/23 @ 05:33 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:33 PM | best objective value is 0.4701
+04/19/23 @ 05:33 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:33 PM | best objective value: 0.5148
+04/19/23 @ 05:33 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 05:33 PM | best objective value: 0.4650
+04/19/23 @ 05:33 PM | polishing 6 solutions
+04/19/23 @ 05:33 PM | best objective value: 0.4650
+04/19/23 @ 05:34 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:34 PM | initialization produced 8 feasible solutions
+04/19/23 @ 05:34 PM | best objective value: 0.4323
+04/19/23 @ 05:34 PM | ------------------------------------------------------------
+04/19/23 @ 05:34 PM | completed initialization procedure
+04/19/23 @ 05:34 PM | ------------------------------------------------------------
+04/19/23 @ 05:34 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:34 PM | adding 181 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541373404195123
+04/19/23 @ 05:36 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:37 PM | ------------------------------------------------------------
+04/19/23 @ 05:37 PM | runnning initialization procedure
+04/19/23 @ 05:37 PM | ------------------------------------------------------------
+04/19/23 @ 05:42 PM | CPA produced 2 cuts
+04/19/23 @ 05:42 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:42 PM | best objective value: 0.5153
+04/19/23 @ 05:42 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:42 PM | best objective value is 0.4702
+04/19/23 @ 05:42 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:42 PM | best objective value: 0.5153
+04/19/23 @ 05:42 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 05:42 PM | best objective value: 0.4651
+04/19/23 @ 05:42 PM | polishing 6 solutions
+04/19/23 @ 05:42 PM | best objective value: 0.4651
+04/19/23 @ 05:43 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:43 PM | initialization produced 8 feasible solutions
+04/19/23 @ 05:43 PM | best objective value: 0.4324
+04/19/23 @ 05:43 PM | ------------------------------------------------------------
+04/19/23 @ 05:43 PM | completed initialization procedure
+04/19/23 @ 05:43 PM | ------------------------------------------------------------
+04/19/23 @ 05:43 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:43 PM | adding 181 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 05:45 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:46 PM | ------------------------------------------------------------
+04/19/23 @ 05:46 PM | runnning initialization procedure
+04/19/23 @ 05:46 PM | ------------------------------------------------------------
+04/19/23 @ 05:51 PM | CPA produced 2 cuts
+04/19/23 @ 05:51 PM | running naive rounding on 8 solutions
+04/19/23 @ 05:51 PM | best objective value: 0.5151
+04/19/23 @ 05:51 PM | rounding produced 5 integer solutions
+04/19/23 @ 05:51 PM | best objective value is 0.4700
+04/19/23 @ 05:51 PM | running sequential rounding on 8 solutions
+04/19/23 @ 05:51 PM | best objective value: 0.5151
+04/19/23 @ 05:51 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 05:51 PM | best objective value: 0.4650
+04/19/23 @ 05:51 PM | polishing 6 solutions
+04/19/23 @ 05:51 PM | best objective value: 0.4650
+04/19/23 @ 05:52 PM | polishing produced 2 integer solutions
+04/19/23 @ 05:52 PM | initialization produced 8 feasible solutions
+04/19/23 @ 05:52 PM | best objective value: 0.4323
+04/19/23 @ 05:52 PM | ------------------------------------------------------------
+04/19/23 @ 05:52 PM | completed initialization procedure
+04/19/23 @ 05:52 PM | ------------------------------------------------------------
+04/19/23 @ 05:52 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:52 PM | adding 181 initial cuts
+The best c selected through inner CV is 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368797857782
+04/19/23 @ 05:54 PM | switching loss computation from lookup to weighted
+04/19/23 @ 05:56 PM | ------------------------------------------------------------
+04/19/23 @ 05:56 PM | runnning initialization procedure
+04/19/23 @ 05:56 PM | ------------------------------------------------------------
+04/19/23 @ 06:01 PM | CPA produced 2 cuts
+04/19/23 @ 06:01 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:01 PM | best objective value: 0.5152
+04/19/23 @ 06:01 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:01 PM | best objective value is 0.4701
+04/19/23 @ 06:01 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:01 PM | best objective value: 0.5152
+04/19/23 @ 06:01 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 06:01 PM | best objective value: 0.4650
+04/19/23 @ 06:01 PM | polishing 7 solutions
+04/19/23 @ 06:01 PM | best objective value: 0.4650
+04/19/23 @ 06:02 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:02 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:02 PM | best objective value: 0.4324
+04/19/23 @ 06:02 PM | ------------------------------------------------------------
+04/19/23 @ 06:02 PM | completed initialization procedure
+04/19/23 @ 06:02 PM | ------------------------------------------------------------
+04/19/23 @ 06:02 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:02 PM | adding 144 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| concurrent_methadone_MME20_60                |         3 points |   + ..... |
+| consecutive_days20_80                        |         3 points |   + ..... |
+| num_pharmacies5                              |         3 points |   + ..... |
+| concurrent_benzo1                            |         2 points |   + ..... |
+| concurrent_MME40_180                         |         1 points |   + ..... |
+| num_prescribers2                             |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+Start CV with hyperparameter 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 06:04 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:05 PM | ------------------------------------------------------------
+04/19/23 @ 06:05 PM | runnning initialization procedure
+04/19/23 @ 06:05 PM | ------------------------------------------------------------
+04/19/23 @ 06:10 PM | CPA produced 2 cuts
+04/19/23 @ 06:10 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:10 PM | best objective value: 0.5157
+04/19/23 @ 06:10 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:10 PM | best objective value is 0.4705
+04/19/23 @ 06:10 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:10 PM | best objective value: 0.5157
+04/19/23 @ 06:10 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 06:10 PM | best objective value: 0.4654
+04/19/23 @ 06:10 PM | polishing 6 solutions
+04/19/23 @ 06:10 PM | best objective value: 0.4654
+04/19/23 @ 06:11 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:11 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:11 PM | best objective value: 0.4326
+04/19/23 @ 06:11 PM | ------------------------------------------------------------
+04/19/23 @ 06:11 PM | completed initialization procedure
+04/19/23 @ 06:11 PM | ------------------------------------------------------------
+04/19/23 @ 06:11 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:11 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 06:14 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:15 PM | ------------------------------------------------------------
+04/19/23 @ 06:15 PM | runnning initialization procedure
+04/19/23 @ 06:15 PM | ------------------------------------------------------------
+04/19/23 @ 06:20 PM | CPA produced 2 cuts
+04/19/23 @ 06:20 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:20 PM | best objective value: 0.5157
+04/19/23 @ 06:20 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:20 PM | best objective value is 0.4703
+04/19/23 @ 06:20 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:20 PM | best objective value: 0.5157
+04/19/23 @ 06:20 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 06:20 PM | best objective value: 0.4653
+04/19/23 @ 06:20 PM | polishing 7 solutions
+04/19/23 @ 06:20 PM | best objective value: 0.4653
+04/19/23 @ 06:21 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:21 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:21 PM | best objective value: 0.4326
+04/19/23 @ 06:21 PM | ------------------------------------------------------------
+04/19/23 @ 06:21 PM | completed initialization procedure
+04/19/23 @ 06:21 PM | ------------------------------------------------------------
+04/19/23 @ 06:21 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:21 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 06:23 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:24 PM | ------------------------------------------------------------
+04/19/23 @ 06:24 PM | runnning initialization procedure
+04/19/23 @ 06:24 PM | ------------------------------------------------------------
+04/19/23 @ 06:29 PM | CPA produced 2 cuts
+04/19/23 @ 06:29 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:29 PM | best objective value: 0.5149
+04/19/23 @ 06:29 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:29 PM | best objective value is 0.4700
+04/19/23 @ 06:29 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:29 PM | best objective value: 0.5149
+04/19/23 @ 06:29 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 06:29 PM | best objective value: 0.4649
+04/19/23 @ 06:29 PM | polishing 7 solutions
+04/19/23 @ 06:29 PM | best objective value: 0.4649
+04/19/23 @ 06:30 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:30 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:30 PM | best objective value: 0.4323
+04/19/23 @ 06:30 PM | ------------------------------------------------------------
+04/19/23 @ 06:30 PM | completed initialization procedure
+04/19/23 @ 06:30 PM | ------------------------------------------------------------
+04/19/23 @ 06:30 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:30 PM | adding 179 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541373404195123
+04/19/23 @ 06:32 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:33 PM | ------------------------------------------------------------
+04/19/23 @ 06:33 PM | runnning initialization procedure
+04/19/23 @ 06:33 PM | ------------------------------------------------------------
+04/19/23 @ 06:38 PM | CPA produced 2 cuts
+04/19/23 @ 06:38 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:38 PM | best objective value: 0.5160
+04/19/23 @ 06:38 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:38 PM | best objective value is 0.4707
+04/19/23 @ 06:38 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:38 PM | best objective value: 0.5160
+04/19/23 @ 06:38 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 06:38 PM | best objective value: 0.4656
+04/19/23 @ 06:38 PM | polishing 6 solutions
+04/19/23 @ 06:38 PM | best objective value: 0.4656
+04/19/23 @ 06:39 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:39 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:39 PM | best objective value: 0.4329
+04/19/23 @ 06:39 PM | ------------------------------------------------------------
+04/19/23 @ 06:39 PM | completed initialization procedure
+04/19/23 @ 06:39 PM | ------------------------------------------------------------
+04/19/23 @ 06:39 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:39 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 06:40 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:41 PM | ------------------------------------------------------------
+04/19/23 @ 06:41 PM | runnning initialization procedure
+04/19/23 @ 06:41 PM | ------------------------------------------------------------
+04/19/23 @ 06:46 PM | CPA produced 2 cuts
+04/19/23 @ 06:46 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:46 PM | best objective value: 0.5147
+04/19/23 @ 06:46 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:46 PM | best objective value is 0.4703
+04/19/23 @ 06:46 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:46 PM | best objective value: 0.5147
+04/19/23 @ 06:47 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 06:47 PM | best objective value: 0.4652
+04/19/23 @ 06:47 PM | polishing 6 solutions
+04/19/23 @ 06:47 PM | best objective value: 0.4652
+04/19/23 @ 06:47 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:47 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:47 PM | best objective value: 0.4325
+04/19/23 @ 06:47 PM | ------------------------------------------------------------
+04/19/23 @ 06:47 PM | completed initialization procedure
+04/19/23 @ 06:47 PM | ------------------------------------------------------------
+04/19/23 @ 06:47 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:47 PM | adding 180 initial cuts
+The best c selected through inner CV is 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368797857782
+04/19/23 @ 06:49 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:50 PM | ------------------------------------------------------------
+04/19/23 @ 06:50 PM | runnning initialization procedure
+04/19/23 @ 06:50 PM | ------------------------------------------------------------
+04/19/23 @ 06:55 PM | CPA produced 2 cuts
+04/19/23 @ 06:55 PM | running naive rounding on 8 solutions
+04/19/23 @ 06:55 PM | best objective value: 0.5154
+04/19/23 @ 06:56 PM | rounding produced 5 integer solutions
+04/19/23 @ 06:56 PM | best objective value is 0.4704
+04/19/23 @ 06:56 PM | running sequential rounding on 8 solutions
+04/19/23 @ 06:56 PM | best objective value: 0.5154
+04/19/23 @ 06:56 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 06:56 PM | best objective value: 0.4653
+04/19/23 @ 06:56 PM | polishing 7 solutions
+04/19/23 @ 06:56 PM | best objective value: 0.4653
+04/19/23 @ 06:56 PM | polishing produced 2 integer solutions
+04/19/23 @ 06:56 PM | initialization produced 8 feasible solutions
+04/19/23 @ 06:56 PM | best objective value: 0.4326
+04/19/23 @ 06:56 PM | ------------------------------------------------------------
+04/19/23 @ 06:56 PM | completed initialization procedure
+04/19/23 @ 06:56 PM | ------------------------------------------------------------
+04/19/23 @ 06:57 PM | switching loss computation from lookup to weighted
+04/19/23 @ 06:57 PM | adding 142 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days20_80                        |         3 points |   + ..... |
+| concurrent_benzo3                            |         3 points |   + ..... |
+| concurrent_MME60_190                         |         2 points |   + ..... |
+| concurrent_methadone_MME_ge_80               |         1 points |   + ..... |
+| num_prescribers2                             |         1 points |   + ..... |
+| num_pharmacies3                              |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+Start CV with hyperparameter 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 07:00 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:01 PM | ------------------------------------------------------------
+04/19/23 @ 07:01 PM | runnning initialization procedure
+04/19/23 @ 07:01 PM | ------------------------------------------------------------
+04/19/23 @ 07:06 PM | CPA produced 2 cuts
+04/19/23 @ 07:06 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:06 PM | best objective value: 0.5151
+04/19/23 @ 07:06 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:06 PM | best objective value is 0.4704
+04/19/23 @ 07:06 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:06 PM | best objective value: 0.5151
+04/19/23 @ 07:06 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 07:06 PM | best objective value: 0.4653
+04/19/23 @ 07:06 PM | polishing 6 solutions
+04/19/23 @ 07:06 PM | best objective value: 0.4653
+04/19/23 @ 07:06 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:06 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:06 PM | best objective value: 0.4327
+04/19/23 @ 07:06 PM | ------------------------------------------------------------
+04/19/23 @ 07:06 PM | completed initialization procedure
+04/19/23 @ 07:06 PM | ------------------------------------------------------------
+04/19/23 @ 07:07 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:07 PM | adding 181 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 07:09 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:10 PM | ------------------------------------------------------------
+04/19/23 @ 07:10 PM | runnning initialization procedure
+04/19/23 @ 07:10 PM | ------------------------------------------------------------
+04/19/23 @ 07:15 PM | CPA produced 2 cuts
+04/19/23 @ 07:15 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:15 PM | best objective value: 0.5150
+04/19/23 @ 07:15 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:15 PM | best objective value is 0.4703
+04/19/23 @ 07:15 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:15 PM | best objective value: 0.5150
+04/19/23 @ 07:16 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 07:16 PM | best objective value: 0.4652
+04/19/23 @ 07:16 PM | polishing 7 solutions
+04/19/23 @ 07:16 PM | best objective value: 0.4652
+04/19/23 @ 07:16 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:16 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:16 PM | best objective value: 0.4326
+04/19/23 @ 07:16 PM | ------------------------------------------------------------
+04/19/23 @ 07:16 PM | completed initialization procedure
+04/19/23 @ 07:16 PM | ------------------------------------------------------------
+04/19/23 @ 07:16 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:16 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541367374231887
+04/19/23 @ 07:19 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:20 PM | ------------------------------------------------------------
+04/19/23 @ 07:20 PM | runnning initialization procedure
+04/19/23 @ 07:20 PM | ------------------------------------------------------------
+04/19/23 @ 07:25 PM | CPA produced 2 cuts
+04/19/23 @ 07:25 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:25 PM | best objective value: 0.5153
+04/19/23 @ 07:25 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:25 PM | best objective value is 0.4705
+04/19/23 @ 07:25 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:25 PM | best objective value: 0.5153
+04/19/23 @ 07:25 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 07:25 PM | best objective value: 0.4654
+04/19/23 @ 07:25 PM | polishing 7 solutions
+04/19/23 @ 07:25 PM | best objective value: 0.4654
+04/19/23 @ 07:26 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:26 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:26 PM | best objective value: 0.4327
+04/19/23 @ 07:26 PM | ------------------------------------------------------------
+04/19/23 @ 07:26 PM | completed initialization procedure
+04/19/23 @ 07:26 PM | ------------------------------------------------------------
+04/19/23 @ 07:26 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:26 PM | adding 180 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541373404195123
+04/19/23 @ 07:28 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:29 PM | ------------------------------------------------------------
+04/19/23 @ 07:29 PM | runnning initialization procedure
+04/19/23 @ 07:29 PM | ------------------------------------------------------------
+04/19/23 @ 07:34 PM | CPA produced 2 cuts
+04/19/23 @ 07:34 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:34 PM | best objective value: 0.5149
+04/19/23 @ 07:34 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:34 PM | best objective value is 0.4701
+04/19/23 @ 07:34 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:34 PM | best objective value: 0.5149
+04/19/23 @ 07:34 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 07:34 PM | best objective value: 0.4651
+04/19/23 @ 07:34 PM | polishing 6 solutions
+04/19/23 @ 07:34 PM | best objective value: 0.4651
+04/19/23 @ 07:35 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:35 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:35 PM | best objective value: 0.4325
+04/19/23 @ 07:35 PM | ------------------------------------------------------------
+04/19/23 @ 07:35 PM | completed initialization procedure
+04/19/23 @ 07:35 PM | ------------------------------------------------------------
+04/19/23 @ 07:35 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:35 PM | adding 178 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 07:38 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:40 PM | ------------------------------------------------------------
+04/19/23 @ 07:40 PM | runnning initialization procedure
+04/19/23 @ 07:40 PM | ------------------------------------------------------------
+04/19/23 @ 07:45 PM | CPA produced 2 cuts
+04/19/23 @ 07:45 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:45 PM | best objective value: 0.5152
+04/19/23 @ 07:45 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:45 PM | best objective value is 0.4701
+04/19/23 @ 07:45 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:45 PM | best objective value: 0.5152
+04/19/23 @ 07:45 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 07:45 PM | best objective value: 0.4650
+04/19/23 @ 07:45 PM | polishing 6 solutions
+04/19/23 @ 07:45 PM | best objective value: 0.4650
+04/19/23 @ 07:46 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:46 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:46 PM | best objective value: 0.4324
+04/19/23 @ 07:46 PM | ------------------------------------------------------------
+04/19/23 @ 07:46 PM | completed initialization procedure
+04/19/23 @ 07:46 PM | ------------------------------------------------------------
+04/19/23 @ 07:46 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:47 PM | adding 177 initial cuts
+The best c selected through inner CV is 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368797857782
+04/19/23 @ 07:49 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:51 PM | ------------------------------------------------------------
+04/19/23 @ 07:51 PM | runnning initialization procedure
+04/19/23 @ 07:51 PM | ------------------------------------------------------------
+04/19/23 @ 07:56 PM | CPA produced 2 cuts
+04/19/23 @ 07:56 PM | running naive rounding on 8 solutions
+04/19/23 @ 07:56 PM | best objective value: 0.5151
+04/19/23 @ 07:56 PM | rounding produced 5 integer solutions
+04/19/23 @ 07:56 PM | best objective value is 0.4703
+04/19/23 @ 07:56 PM | running sequential rounding on 8 solutions
+04/19/23 @ 07:56 PM | best objective value: 0.5151
+04/19/23 @ 07:57 PM | sequential rounding produced 2 integer solutions
+04/19/23 @ 07:57 PM | best objective value: 0.4652
+04/19/23 @ 07:57 PM | polishing 7 solutions
+04/19/23 @ 07:57 PM | best objective value: 0.4652
+04/19/23 @ 07:57 PM | polishing produced 2 integer solutions
+04/19/23 @ 07:57 PM | initialization produced 8 feasible solutions
+04/19/23 @ 07:57 PM | best objective value: 0.4326
+04/19/23 @ 07:57 PM | ------------------------------------------------------------
+04/19/23 @ 07:57 PM | completed initialization procedure
+04/19/23 @ 07:57 PM | ------------------------------------------------------------
+04/19/23 @ 07:57 PM | switching loss computation from lookup to weighted
+04/19/23 @ 07:57 PM | adding 144 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days20_80                        |         3 points |   + ..... |
+| concurrent_MME60_190                         |         1 points |   + ..... |
+| concurrent_methadone_MME_ge_80               |         1 points |   + ..... |
+| num_prescribers2                             |         1 points |   + ..... |
+| num_pharmacies2                              |         1 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+Start CV with hyperparameter 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 08:00 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:01 PM | ------------------------------------------------------------
+04/19/23 @ 08:01 PM | runnning initialization procedure
+04/19/23 @ 08:01 PM | ------------------------------------------------------------
+04/19/23 @ 08:06 PM | CPA produced 2 cuts
+04/19/23 @ 08:06 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:06 PM | best objective value: 0.5150
+04/19/23 @ 08:06 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:06 PM | best objective value is 0.4702
+04/19/23 @ 08:06 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:06 PM | best objective value: 0.5150
+04/19/23 @ 08:07 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:07 PM | best objective value: 0.4652
+04/19/23 @ 08:07 PM | polishing 6 solutions
+04/19/23 @ 08:07 PM | best objective value: 0.4652
+04/19/23 @ 08:07 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:07 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:07 PM | best objective value: 0.4325
+04/19/23 @ 08:07 PM | ------------------------------------------------------------
+04/19/23 @ 08:07 PM | completed initialization procedure
+04/19/23 @ 08:07 PM | ------------------------------------------------------------
+04/19/23 @ 08:07 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:07 PM | adding 179 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 08:11 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:12 PM | ------------------------------------------------------------
+04/19/23 @ 08:12 PM | runnning initialization procedure
+04/19/23 @ 08:12 PM | ------------------------------------------------------------
+04/19/23 @ 08:17 PM | CPA produced 2 cuts
+04/19/23 @ 08:17 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:17 PM | best objective value: 0.5151
+04/19/23 @ 08:18 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:18 PM | best objective value is 0.4700
+04/19/23 @ 08:18 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:18 PM | best objective value: 0.5151
+04/19/23 @ 08:18 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:18 PM | best objective value: 0.4650
+04/19/23 @ 08:18 PM | polishing 6 solutions
+04/19/23 @ 08:18 PM | best objective value: 0.4650
+04/19/23 @ 08:18 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:18 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:18 PM | best objective value: 0.4324
+04/19/23 @ 08:18 PM | ------------------------------------------------------------
+04/19/23 @ 08:18 PM | completed initialization procedure
+04/19/23 @ 08:18 PM | ------------------------------------------------------------
+04/19/23 @ 08:18 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:18 PM | adding 179 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 08:20 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:21 PM | ------------------------------------------------------------
+04/19/23 @ 08:21 PM | runnning initialization procedure
+04/19/23 @ 08:21 PM | ------------------------------------------------------------
+04/19/23 @ 08:26 PM | CPA produced 2 cuts
+04/19/23 @ 08:26 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:26 PM | best objective value: 0.5147
+04/19/23 @ 08:26 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:26 PM | best objective value is 0.4700
+04/19/23 @ 08:26 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:26 PM | best objective value: 0.5147
+04/19/23 @ 08:27 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:27 PM | best objective value: 0.4649
+04/19/23 @ 08:27 PM | polishing 6 solutions
+04/19/23 @ 08:27 PM | best objective value: 0.4649
+04/19/23 @ 08:27 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:27 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:27 PM | best objective value: 0.4323
+04/19/23 @ 08:27 PM | ------------------------------------------------------------
+04/19/23 @ 08:27 PM | completed initialization procedure
+04/19/23 @ 08:27 PM | ------------------------------------------------------------
+04/19/23 @ 08:27 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:27 PM | adding 177 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541368462403139
+04/19/23 @ 08:29 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:30 PM | ------------------------------------------------------------
+04/19/23 @ 08:30 PM | runnning initialization procedure
+04/19/23 @ 08:30 PM | ------------------------------------------------------------
+04/19/23 @ 08:35 PM | CPA produced 2 cuts
+04/19/23 @ 08:35 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:35 PM | best objective value: 0.5148
+04/19/23 @ 08:35 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:35 PM | best objective value is 0.4700
+04/19/23 @ 08:35 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:35 PM | best objective value: 0.5148
+04/19/23 @ 08:36 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:36 PM | best objective value: 0.4649
+04/19/23 @ 08:36 PM | polishing 6 solutions
+04/19/23 @ 08:36 PM | best objective value: 0.4649
+04/19/23 @ 08:36 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:36 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:36 PM | best objective value: 0.4323
+04/19/23 @ 08:36 PM | ------------------------------------------------------------
+04/19/23 @ 08:36 PM | completed initialization procedure
+04/19/23 @ 08:36 PM | ------------------------------------------------------------
+04/19/23 @ 08:36 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:36 PM | adding 175 initial cuts
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.5413744923675585
+04/19/23 @ 08:39 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:40 PM | ------------------------------------------------------------
+04/19/23 @ 08:40 PM | runnning initialization procedure
+04/19/23 @ 08:40 PM | ------------------------------------------------------------
+04/19/23 @ 08:45 PM | CPA produced 2 cuts
+04/19/23 @ 08:45 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:45 PM | best objective value: 0.5156
+04/19/23 @ 08:45 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:45 PM | best objective value is 0.4704
+04/19/23 @ 08:45 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:45 PM | best objective value: 0.5156
+04/19/23 @ 08:45 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:45 PM | best objective value: 0.4653
+04/19/23 @ 08:45 PM | polishing 6 solutions
+04/19/23 @ 08:45 PM | best objective value: 0.4653
+04/19/23 @ 08:45 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:45 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:45 PM | best objective value: 0.4326
+04/19/23 @ 08:45 PM | ------------------------------------------------------------
+04/19/23 @ 08:45 PM | completed initialization procedure
+04/19/23 @ 08:45 PM | ------------------------------------------------------------
+04/19/23 @ 08:45 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:46 PM | adding 176 initial cuts
+The best c selected through inner CV is 0.0001
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.541369668394974
+04/19/23 @ 08:47 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:48 PM | ------------------------------------------------------------
+04/19/23 @ 08:48 PM | runnning initialization procedure
+04/19/23 @ 08:48 PM | ------------------------------------------------------------
+04/19/23 @ 08:53 PM | CPA produced 2 cuts
+04/19/23 @ 08:53 PM | running naive rounding on 8 solutions
+04/19/23 @ 08:53 PM | best objective value: 0.5150
+04/19/23 @ 08:53 PM | rounding produced 5 integer solutions
+04/19/23 @ 08:53 PM | best objective value is 0.4701
+04/19/23 @ 08:53 PM | running sequential rounding on 8 solutions
+04/19/23 @ 08:53 PM | best objective value: 0.5150
+04/19/23 @ 08:54 PM | sequential rounding produced 1 integer solutions
+04/19/23 @ 08:54 PM | best objective value: 0.4651
+04/19/23 @ 08:54 PM | polishing 6 solutions
+04/19/23 @ 08:54 PM | best objective value: 0.4651
+04/19/23 @ 08:54 PM | polishing produced 2 integer solutions
+04/19/23 @ 08:54 PM | initialization produced 8 feasible solutions
+04/19/23 @ 08:54 PM | best objective value: 0.4324
+04/19/23 @ 08:54 PM | ------------------------------------------------------------
+04/19/23 @ 08:54 PM | completed initialization procedure
+04/19/23 @ 08:54 PM | ------------------------------------------------------------
+04/19/23 @ 08:55 PM | switching loss computation from lookup to weighted
+04/19/23 @ 08:55 PM | adding 142 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days20_80                        |         4 points |   + ..... |
+| concurrent_methadone_MME_ge_80               |         2 points |   + ..... |
+| num_pharmacies4                              |         2 points |   + ..... |
+| concurrent_MME30_140                         |         1 points |   + ..... |
+| num_prescribers2                             |         1 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+17570.8 seconds

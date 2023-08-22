@@ -1,0 +1,41 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:42: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",
+Start training 2018singleflexible
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive4.651023472079837
+03/21/23 @ 10:50 AM | switching loss computation from lookup to weighted
+03/21/23 @ 10:50 AM | ------------------------------------------------------------
+03/21/23 @ 10:50 AM | runnning initialization procedure
+03/21/23 @ 10:50 AM | ------------------------------------------------------------
+03/21/23 @ 10:55 AM | CPA produced 2 cuts
+03/21/23 @ 10:55 AM | running naive rounding on 9 solutions
+03/21/23 @ 10:55 AM | best objective value: 0.3808
+03/21/23 @ 10:55 AM | rounding produced 5 integer solutions
+03/21/23 @ 10:55 AM | best objective value is 0.3769
+03/21/23 @ 10:55 AM | running sequential rounding on 9 solutions
+03/21/23 @ 10:55 AM | best objective value: 0.3808
+03/21/23 @ 10:56 AM | sequential rounding produced 5 integer solutions
+03/21/23 @ 10:56 AM | best objective value: 0.3744
+03/21/23 @ 10:56 AM | polishing 10 solutions
+03/21/23 @ 10:56 AM | best objective value: 0.3744
+03/21/23 @ 10:56 AM | polishing produced 3 integer solutions
+03/21/23 @ 10:56 AM | initialization produced 10 feasible solutions
+03/21/23 @ 10:56 AM | best objective value: 0.3744
+03/21/23 @ 10:56 AM | ------------------------------------------------------------
+03/21/23 @ 10:56 AM | completed initialization procedure
+03/21/23 @ 10:56 AM | ------------------------------------------------------------
+03/21/23 @ 10:56 AM | switching loss computation from lookup to weighted
+03/21/23 @ 10:56 AM | adding 246 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| num_prescribers8                             |         5 points |   + ..... |
+| consecutive_days20                           |         3 points |   + ..... |
+| concurrent_methadone_MME80                   |         2 points |   + ..... |
+| num_pharmacies3                              |         2 points |   + ..... |
+| concurrent_benzo2                            |         2 points |   + ..... |
+| concurrent_MME40                             |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+405.7 seconds

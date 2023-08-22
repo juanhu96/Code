@@ -1,0 +1,569 @@
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 12:50 AM | switching loss computation from lookup to weighted
+05/17/23 @ 12:50 AM | ------------------------------------------------------------
+05/17/23 @ 12:50 AM | runnning initialization procedure
+05/17/23 @ 12:50 AM | ------------------------------------------------------------
+05/17/23 @ 12:55 AM | CPA produced 2 cuts
+05/17/23 @ 12:55 AM | running naive rounding on 5 solutions
+05/17/23 @ 12:55 AM | best objective value: 0.5329
+05/17/23 @ 12:55 AM | rounding produced 5 integer solutions
+05/17/23 @ 12:55 AM | best objective value is 0.5295
+05/17/23 @ 12:55 AM | running sequential rounding on 5 solutions
+05/17/23 @ 12:55 AM | best objective value: 0.5329
+05/17/23 @ 12:55 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 12:55 AM | best objective value: 0.5048
+05/17/23 @ 12:55 AM | polishing 8 solutions
+05/17/23 @ 12:55 AM | best objective value: 0.5048
+05/17/23 @ 12:56 AM | polishing produced 3 integer solutions
+05/17/23 @ 12:56 AM | initialization produced 10 feasible solutions
+05/17/23 @ 12:56 AM | best objective value: 0.4402
+05/17/23 @ 12:56 AM | ------------------------------------------------------------
+05/17/23 @ 12:56 AM | completed initialization procedure
+05/17/23 @ 12:56 AM | ------------------------------------------------------------
+05/17/23 @ 12:56 AM | switching loss computation from lookup to weighted
+05/17/23 @ 12:56 AM | adding 235 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| Oxymorphone                                  |         2 points |   + ..... |
+| age30                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1388.5 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 01:15 AM | switching loss computation from lookup to weighted
+05/17/23 @ 01:16 AM | ------------------------------------------------------------
+05/17/23 @ 01:16 AM | runnning initialization procedure
+05/17/23 @ 01:16 AM | ------------------------------------------------------------
+05/17/23 @ 01:21 AM | CPA produced 2 cuts
+05/17/23 @ 01:21 AM | running naive rounding on 5 solutions
+05/17/23 @ 01:21 AM | best objective value: 0.5329
+05/17/23 @ 01:21 AM | rounding produced 5 integer solutions
+05/17/23 @ 01:21 AM | best objective value is 0.5295
+05/17/23 @ 01:21 AM | running sequential rounding on 5 solutions
+05/17/23 @ 01:21 AM | best objective value: 0.5329
+05/17/23 @ 01:21 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 01:21 AM | best objective value: 0.5048
+05/17/23 @ 01:21 AM | polishing 8 solutions
+05/17/23 @ 01:21 AM | best objective value: 0.5048
+05/17/23 @ 01:22 AM | polishing produced 3 integer solutions
+05/17/23 @ 01:22 AM | initialization produced 10 feasible solutions
+05/17/23 @ 01:22 AM | best objective value: 0.4402
+05/17/23 @ 01:22 AM | ------------------------------------------------------------
+05/17/23 @ 01:22 AM | completed initialization procedure
+05/17/23 @ 01:22 AM | ------------------------------------------------------------
+05/17/23 @ 01:22 AM | switching loss computation from lookup to weighted
+05/17/23 @ 01:22 AM | adding 246 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| age25                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1387.7 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 01:41 AM | switching loss computation from lookup to weighted
+05/17/23 @ 01:42 AM | ------------------------------------------------------------
+05/17/23 @ 01:42 AM | runnning initialization procedure
+05/17/23 @ 01:42 AM | ------------------------------------------------------------
+05/17/23 @ 01:47 AM | CPA produced 2 cuts
+05/17/23 @ 01:47 AM | running naive rounding on 5 solutions
+05/17/23 @ 01:47 AM | best objective value: 0.5329
+05/17/23 @ 01:47 AM | rounding produced 5 integer solutions
+05/17/23 @ 01:47 AM | best objective value is 0.5295
+05/17/23 @ 01:47 AM | running sequential rounding on 5 solutions
+05/17/23 @ 01:47 AM | best objective value: 0.5329
+05/17/23 @ 01:47 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 01:47 AM | best objective value: 0.5048
+05/17/23 @ 01:47 AM | polishing 8 solutions
+05/17/23 @ 01:47 AM | best objective value: 0.5048
+05/17/23 @ 01:47 AM | polishing produced 3 integer solutions
+05/17/23 @ 01:47 AM | initialization produced 10 feasible solutions
+05/17/23 @ 01:47 AM | best objective value: 0.4402
+05/17/23 @ 01:47 AM | ------------------------------------------------------------
+05/17/23 @ 01:47 AM | completed initialization procedure
+05/17/23 @ 01:47 AM | ------------------------------------------------------------
+05/17/23 @ 01:47 AM | switching loss computation from lookup to weighted
+05/17/23 @ 01:47 AM | adding 243 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-4 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age25                                        |         2 points |   + ..... |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1386.4 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 02:07 AM | switching loss computation from lookup to weighted
+05/17/23 @ 02:07 AM | ------------------------------------------------------------
+05/17/23 @ 02:07 AM | runnning initialization procedure
+05/17/23 @ 02:07 AM | ------------------------------------------------------------
+05/17/23 @ 02:12 AM | CPA produced 2 cuts
+05/17/23 @ 02:12 AM | running naive rounding on 6 solutions
+05/17/23 @ 02:12 AM | best objective value: 0.5911
+05/17/23 @ 02:12 AM | rounding produced 5 integer solutions
+05/17/23 @ 02:12 AM | best objective value is 0.6604
+05/17/23 @ 02:12 AM | running sequential rounding on 6 solutions
+05/17/23 @ 02:12 AM | best objective value: 0.5911
+05/17/23 @ 02:13 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 02:13 AM | best objective value: 0.5220
+05/17/23 @ 02:13 AM | polishing 8 solutions
+05/17/23 @ 02:13 AM | best objective value: 0.5220
+05/17/23 @ 02:13 AM | polishing produced 4 integer solutions
+05/17/23 @ 02:13 AM | initialization produced 10 feasible solutions
+05/17/23 @ 02:13 AM | best objective value: 0.4577
+05/17/23 @ 02:13 AM | ------------------------------------------------------------
+05/17/23 @ 02:13 AM | completed initialization procedure
+05/17/23 @ 02:13 AM | ------------------------------------------------------------
+05/17/23 @ 02:13 AM | switching loss computation from lookup to weighted
+05/17/23 @ 02:13 AM | adding 244 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age25                                        |         2 points |   + ..... |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| concurrent_MME15                             |         1 points |   + ..... |
+| concurrent_methadone_MME100                  |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 7                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1386.2 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 02:33 AM | switching loss computation from lookup to weighted
+05/17/23 @ 02:33 AM | ------------------------------------------------------------
+05/17/23 @ 02:33 AM | runnning initialization procedure
+05/17/23 @ 02:33 AM | ------------------------------------------------------------
+05/17/23 @ 02:38 AM | CPA produced 2 cuts
+05/17/23 @ 02:38 AM | running naive rounding on 6 solutions
+05/17/23 @ 02:38 AM | best objective value: 0.5911
+05/17/23 @ 02:38 AM | rounding produced 5 integer solutions
+05/17/23 @ 02:38 AM | best objective value is 0.6604
+05/17/23 @ 02:38 AM | running sequential rounding on 6 solutions
+05/17/23 @ 02:38 AM | best objective value: 0.5911
+05/17/23 @ 02:38 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 02:38 AM | best objective value: 0.5220
+05/17/23 @ 02:38 AM | polishing 8 solutions
+05/17/23 @ 02:38 AM | best objective value: 0.5220
+05/17/23 @ 02:39 AM | polishing produced 4 integer solutions
+05/17/23 @ 02:39 AM | initialization produced 10 feasible solutions
+05/17/23 @ 02:39 AM | best objective value: 0.4577
+05/17/23 @ 02:39 AM | ------------------------------------------------------------
+05/17/23 @ 02:39 AM | completed initialization procedure
+05/17/23 @ 02:39 AM | ------------------------------------------------------------
+05/17/23 @ 02:39 AM | switching loss computation from lookup to weighted
+05/17/23 @ 02:39 AM | adding 244 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age25                                        |         2 points |   + ..... |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| concurrent_MME15                             |         1 points |   + ..... |
+| concurrent_methadone_MME100                  |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 7                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1385.9 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 02:59 AM | switching loss computation from lookup to weighted
+05/17/23 @ 02:59 AM | ------------------------------------------------------------
+05/17/23 @ 02:59 AM | runnning initialization procedure
+05/17/23 @ 02:59 AM | ------------------------------------------------------------
+05/17/23 @ 03:04 AM | CPA produced 2 cuts
+05/17/23 @ 03:04 AM | running naive rounding on 6 solutions
+05/17/23 @ 03:04 AM | best objective value: 0.5911
+05/17/23 @ 03:04 AM | rounding produced 5 integer solutions
+05/17/23 @ 03:04 AM | best objective value is 0.6604
+05/17/23 @ 03:04 AM | running sequential rounding on 6 solutions
+05/17/23 @ 03:04 AM | best objective value: 0.5911
+05/17/23 @ 03:04 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 03:04 AM | best objective value: 0.5220
+05/17/23 @ 03:04 AM | polishing 8 solutions
+05/17/23 @ 03:04 AM | best objective value: 0.5220
+05/17/23 @ 03:05 AM | polishing produced 4 integer solutions
+05/17/23 @ 03:05 AM | initialization produced 10 feasible solutions
+05/17/23 @ 03:05 AM | best objective value: 0.4577
+05/17/23 @ 03:05 AM | ------------------------------------------------------------
+05/17/23 @ 03:05 AM | completed initialization procedure
+05/17/23 @ 03:05 AM | ------------------------------------------------------------
+05/17/23 @ 03:05 AM | switching loss computation from lookup to weighted
+05/17/23 @ 03:05 AM | adding 245 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| age30                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1386.2 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 03:24 AM | switching loss computation from lookup to weighted
+05/17/23 @ 03:25 AM | ------------------------------------------------------------
+05/17/23 @ 03:25 AM | runnning initialization procedure
+05/17/23 @ 03:25 AM | ------------------------------------------------------------
+05/17/23 @ 03:30 AM | CPA produced 2 cuts
+05/17/23 @ 03:30 AM | running naive rounding on 8 solutions
+05/17/23 @ 03:30 AM | best objective value: 0.6038
+05/17/23 @ 03:30 AM | rounding produced 5 integer solutions
+05/17/23 @ 03:30 AM | best objective value is 0.5649
+05/17/23 @ 03:30 AM | running sequential rounding on 8 solutions
+05/17/23 @ 03:30 AM | best objective value: 0.6038
+05/17/23 @ 03:30 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 03:30 AM | best objective value: 0.5510
+05/17/23 @ 03:30 AM | polishing 8 solutions
+05/17/23 @ 03:30 AM | best objective value: 0.5510
+05/17/23 @ 03:30 AM | polishing produced 3 integer solutions
+05/17/23 @ 03:30 AM | initialization produced 9 feasible solutions
+05/17/23 @ 03:30 AM | best objective value: 0.4862
+05/17/23 @ 03:30 AM | ------------------------------------------------------------
+05/17/23 @ 03:30 AM | completed initialization procedure
+05/17/23 @ 03:30 AM | ------------------------------------------------------------
+05/17/23 @ 03:30 AM | switching loss computation from lookup to weighted
+05/17/23 @ 03:30 AM | adding 234 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| Oxymorphone                                  |         3 points |   + ..... |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days30                           |         2 points |   + ..... |
+| age30                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1371.8 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 03:50 AM | switching loss computation from lookup to weighted
+05/17/23 @ 03:50 AM | ------------------------------------------------------------
+05/17/23 @ 03:50 AM | runnning initialization procedure
+05/17/23 @ 03:50 AM | ------------------------------------------------------------
+05/17/23 @ 03:55 AM | CPA produced 2 cuts
+05/17/23 @ 03:55 AM | running naive rounding on 8 solutions
+05/17/23 @ 03:55 AM | best objective value: 0.6038
+05/17/23 @ 03:55 AM | rounding produced 5 integer solutions
+05/17/23 @ 03:55 AM | best objective value is 0.5649
+05/17/23 @ 03:55 AM | running sequential rounding on 8 solutions
+05/17/23 @ 03:55 AM | best objective value: 0.6038
+05/17/23 @ 03:55 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 03:55 AM | best objective value: 0.5510
+05/17/23 @ 03:55 AM | polishing 8 solutions
+05/17/23 @ 03:55 AM | best objective value: 0.5510
+05/17/23 @ 03:56 AM | polishing produced 3 integer solutions
+05/17/23 @ 03:56 AM | initialization produced 9 feasible solutions
+05/17/23 @ 03:56 AM | best objective value: 0.4862
+05/17/23 @ 03:56 AM | ------------------------------------------------------------
+05/17/23 @ 03:56 AM | completed initialization procedure
+05/17/23 @ 03:56 AM | ------------------------------------------------------------
+05/17/23 @ 03:56 AM | switching loss computation from lookup to weighted
+05/17/23 @ 03:56 AM | adding 243 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days10                           |         2 points |   + ..... |
+| consecutive_days21                           |         2 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 4                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1372.1 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 04:15 AM | switching loss computation from lookup to weighted
+05/17/23 @ 04:15 AM | ------------------------------------------------------------
+05/17/23 @ 04:15 AM | runnning initialization procedure
+05/17/23 @ 04:15 AM | ------------------------------------------------------------
+05/17/23 @ 04:20 AM | CPA produced 2 cuts
+05/17/23 @ 04:20 AM | running naive rounding on 8 solutions
+05/17/23 @ 04:20 AM | best objective value: 0.6038
+05/17/23 @ 04:21 AM | rounding produced 5 integer solutions
+05/17/23 @ 04:21 AM | best objective value is 0.5649
+05/17/23 @ 04:21 AM | running sequential rounding on 8 solutions
+05/17/23 @ 04:21 AM | best objective value: 0.6038
+05/17/23 @ 04:21 AM | sequential rounding produced 3 integer solutions
+05/17/23 @ 04:21 AM | best objective value: 0.5510
+05/17/23 @ 04:21 AM | polishing 8 solutions
+05/17/23 @ 04:21 AM | best objective value: 0.5510
+05/17/23 @ 04:21 AM | polishing produced 3 integer solutions
+05/17/23 @ 04:21 AM | initialization produced 9 feasible solutions
+05/17/23 @ 04:21 AM | best objective value: 0.4862
+05/17/23 @ 04:21 AM | ------------------------------------------------------------
+05/17/23 @ 04:21 AM | completed initialization procedure
+05/17/23 @ 04:21 AM | ------------------------------------------------------------
+05/17/23 @ 04:21 AM | switching loss computation from lookup to weighted
+05/17/23 @ 04:21 AM | adding 243 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days10                           |         2 points |   + ..... |
+| consecutive_days21                           |         2 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 4                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1371.7 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 04:40 AM | switching loss computation from lookup to weighted
+05/17/23 @ 04:41 AM | ------------------------------------------------------------
+05/17/23 @ 04:41 AM | runnning initialization procedure
+05/17/23 @ 04:41 AM | ------------------------------------------------------------
+05/17/23 @ 04:46 AM | CPA produced 2 cuts
+05/17/23 @ 04:46 AM | running naive rounding on 13 solutions
+05/17/23 @ 04:46 AM | best objective value: 0.6038
+05/17/23 @ 04:46 AM | rounding produced 5 integer solutions
+05/17/23 @ 04:46 AM | best objective value is 0.5649
+05/17/23 @ 04:46 AM | running sequential rounding on 13 solutions
+05/17/23 @ 04:46 AM | best objective value: 0.6038
+05/17/23 @ 04:46 AM | sequential rounding produced 2 integer solutions
+05/17/23 @ 04:46 AM | best objective value: 0.5510
+05/17/23 @ 04:46 AM | polishing 7 solutions
+05/17/23 @ 04:46 AM | best objective value: 0.5510
+05/17/23 @ 04:46 AM | polishing produced 3 integer solutions
+05/17/23 @ 04:46 AM | initialization produced 8 feasible solutions
+05/17/23 @ 04:46 AM | best objective value: 0.4862
+05/17/23 @ 04:46 AM | ------------------------------------------------------------
+05/17/23 @ 04:46 AM | completed initialization procedure
+05/17/23 @ 04:46 AM | ------------------------------------------------------------
+05/17/23 @ 04:46 AM | switching loss computation from lookup to weighted
+05/17/23 @ 04:46 AM | adding 241 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| age25                                        |         3 points |   + ..... |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1367.8 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 05:06 AM | switching loss computation from lookup to weighted
+05/17/23 @ 05:06 AM | ------------------------------------------------------------
+05/17/23 @ 05:06 AM | runnning initialization procedure
+05/17/23 @ 05:06 AM | ------------------------------------------------------------
+05/17/23 @ 05:11 AM | CPA produced 2 cuts
+05/17/23 @ 05:11 AM | running naive rounding on 13 solutions
+05/17/23 @ 05:11 AM | best objective value: 0.6038
+05/17/23 @ 05:11 AM | rounding produced 5 integer solutions
+05/17/23 @ 05:11 AM | best objective value is 0.5649
+05/17/23 @ 05:11 AM | running sequential rounding on 13 solutions
+05/17/23 @ 05:11 AM | best objective value: 0.6038
+05/17/23 @ 05:11 AM | sequential rounding produced 2 integer solutions
+05/17/23 @ 05:11 AM | best objective value: 0.5510
+05/17/23 @ 05:11 AM | polishing 7 solutions
+05/17/23 @ 05:11 AM | best objective value: 0.5510
+05/17/23 @ 05:12 AM | polishing produced 3 integer solutions
+05/17/23 @ 05:12 AM | initialization produced 8 feasible solutions
+05/17/23 @ 05:12 AM | best objective value: 0.4862
+05/17/23 @ 05:12 AM | ------------------------------------------------------------
+05/17/23 @ 05:12 AM | completed initialization procedure
+05/17/23 @ 05:12 AM | ------------------------------------------------------------
+05/17/23 @ 05:12 AM | switching loss computation from lookup to weighted
+05/17/23 @ 05:12 AM | adding 240 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_utils.py:64: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",",
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days21                           |         2 points |   + ..... |
+| age30                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1366.9 seconds
+Index(['(Intercept)', 'age25', 'age30', 'age40', 'age50', 'age60', 'age70',
+       'age80', 'age90', 'concurrent_MME10',
+       ...
+       'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other',
+       'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug',
+       'ever_switch_payment'],
+      dtype='object', length=113)
+Start training 2018singlefull
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+The weight is for positive53.34883003441926
+05/17/23 @ 05:31 AM | switching loss computation from lookup to weighted
+05/17/23 @ 05:32 AM | ------------------------------------------------------------
+05/17/23 @ 05:32 AM | runnning initialization procedure
+05/17/23 @ 05:32 AM | ------------------------------------------------------------
+05/17/23 @ 05:37 AM | CPA produced 2 cuts
+05/17/23 @ 05:37 AM | running naive rounding on 13 solutions
+05/17/23 @ 05:37 AM | best objective value: 0.6038
+05/17/23 @ 05:37 AM | rounding produced 5 integer solutions
+05/17/23 @ 05:37 AM | best objective value is 0.5649
+05/17/23 @ 05:37 AM | running sequential rounding on 13 solutions
+05/17/23 @ 05:37 AM | best objective value: 0.6038
+05/17/23 @ 05:37 AM | sequential rounding produced 2 integer solutions
+05/17/23 @ 05:37 AM | best objective value: 0.5510
+05/17/23 @ 05:37 AM | polishing 7 solutions
+05/17/23 @ 05:37 AM | best objective value: 0.5510
+05/17/23 @ 05:37 AM | polishing produced 3 integer solutions
+05/17/23 @ 05:37 AM | initialization produced 8 feasible solutions
+05/17/23 @ 05:37 AM | best objective value: 0.4862
+05/17/23 @ 05:37 AM | ------------------------------------------------------------
+05/17/23 @ 05:37 AM | completed initialization procedure
+05/17/23 @ 05:37 AM | ------------------------------------------------------------
+05/17/23 @ 05:37 AM | switching loss computation from lookup to weighted
+05/17/23 @ 05:37 AM | adding 242 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-3 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| consecutive_days14                           |         2 points |   + ..... |
+| consecutive_days25                           |         2 points |   + ..... |
+| age30                                        |         1 points |   + ..... |
+| ever_switch_drug                             |         1 points |   + ..... |
+| ever_switch_payment                          |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+1367.5 seconds
