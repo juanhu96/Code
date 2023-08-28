@@ -15,11 +15,9 @@ import random
 import numpy as np
 import pandas as pd
 
-from risk_utils import risk_train, risk_train_two_stage, risk_train_last_stage, \
-    risk_train_patient, create_stumps, create_stumps_patient, create_intervals, risk_train_intervals,\
-        create_stumps_uptofirst
+from risk_utils import risk_train, risk_train_two_stage, risk_train_last_stage, risk_train_patient
 from iterative_table import iterative_table, test_table, test_table_full, test_table_extra
-
+from stumps_new import create_stumps
 
 def main():
     
@@ -356,8 +354,8 @@ def main():
     
     # risk_train(year = 2018, features = 'speical', scenario = 'nested', c = [1e-4], max_points=3, max_features=10, interaction_effects=False, name='')
     
-
-    create_stumps(year = 2019) 
+    test_table(year=2019, cutoffs=[0, 90, 40, 6, 6, 1, 90], scores=[0, 1, 1, 1, 1, 1, 1], case = 'base', output_table = True) # base
+    # test_table_full(year=2019, output_table = True) # full
 
     pass
     

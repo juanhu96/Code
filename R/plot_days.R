@@ -9,7 +9,7 @@ setwd("/mnt/phd/jihu/opioid/Code")
 
 PATIENT_CURES_INSAMPLE <- read.csv("../Data/PATIENT_2018_LONGTERM_base_output.csv") %>% dplyr::select(-c(first_long_term_date))
 write.csv(PATIENT_CURES_INSAMPLE, "../Data/PATIENT_CURES_INSAMPLE.csv", row.names = FALSE)
-PATIENT_CURES_OUTSAMPLE <- read.csv("../Data/PATIENT_2019_LONGTERM_base_output.csv") %>% dplyr::select(-c(first_long_term_date))
+PATIENT_CURES_OUTSAMPLE <- read.csv("../Data/PATIENT_2019_LONGTERM_base_output_.csv") %>% dplyr::select(-c(first_long_term_date))
 write.csv(PATIENT_CURES_OUTSAMPLE, "../Data/PATIENT_CURES_OUTSAMPLE.csv", row.names = FALSE)
 
 
@@ -48,6 +48,14 @@ PATIENT_LTOUR_OUTSAMPLE_FIVE <- read.csv("../Data/PATIENT_2019_LONGTERM_full_out
 write.csv(PATIENT_LTOUR_OUTSAMPLE_FIVE, "../Data/PATIENT_LTOUR_OUTSAMPLE_FIVE.csv", row.names = FALSE)
 
 ################################################################################
+PATIENT_CURES_OUTSAMPLE <- read.csv("../Data/PATIENT_CURES_OUTSAMPLE.csv")
+
+PATIENT_LTOUR_OUTSAMPLE_ONE <- read.csv("../Data/PATIENT_LTOUR_OUTSAMPLE_ONE.csv")
+PATIENT_LTOUR_OUTSAMPLE_TWO <- read.csv("../Data/PATIENT_LTOUR_OUTSAMPLE_TWO.csv")
+PATIENT_LTOUR_OUTSAMPLE_THREE <- read.csv("../Data/PATIENT_LTOUR_OUTSAMPLE_THREE.csv")
+PATIENT_LTOUR_OUTSAMPLE_FOUR <- read.csv("../Data/PATIENT_LTOUR_OUTSAMPLE_FOUR.csv")
+PATIENT_LTOUR_OUTSAMPLE_FIVE <- read.csv("../Data/PATIENT_LTOUR_OUTSAMPLE_FIVE.csv")
+
 
 ### Days from first prescription to first positive prediction
 
@@ -78,6 +86,38 @@ round(c(mean(PATIENT_CURES_OUTSAMPLE$day_to_long_term_180), sd(PATIENT_CURES_OUT
 
 round(c(mean(PATIENT_LTOUR_INSAMPLE_ONE$day_to_long_term_180), sd(PATIENT_LTOUR_INSAMPLE_ONE$day_to_long_term_180)))
 round(c(mean(PATIENT_LTOUR_OUTSAMPLE_ONE$day_to_long_term_180), sd(PATIENT_LTOUR_OUTSAMPLE_ONE$day_to_long_term_180)))
+round(mean(c(mean(PATIENT_LTOUR_OUTSAMPLE_ONE$day_to_long_term_180), mean(PATIENT_LTOUR_OUTSAMPLE_TWO$day_to_long_term_180), mean(PATIENT_LTOUR_OUTSAMPLE_THREE$day_to_long_term_180), mean(PATIENT_LTOUR_OUTSAMPLE_FOUR$day_to_long_term_180), mean(PATIENT_LTOUR_OUTSAMPLE_FIVE$day_to_long_term_180))))
+
+
+
+round(c(mean(PATIENT_CURES_OUTSAMPLE$first_long_term_180_date - PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc), sd(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc)))
+
+################################################################################
+
+
+### Number of prescriptions (start from 0)
+round(c(mean(PATIENT_CURES_OUTSAMPLE$first_pred_presc), sd(PATIENT_CURES_OUTSAMPLE$first_pred_presc)), 2)
+round(c(mean(PATIENT_LTOUR_OUTSAMPLE_ONE$first_pred_presc), sd(PATIENT_LTOUR_OUTSAMPLE_ONE$first_pred_presc)), 2)
+round(mean(c(mean(PATIENT_LTOUR_OUTSAMPLE_ONE$first_pred_presc), mean(PATIENT_LTOUR_OUTSAMPLE_TWO$first_pred_presc), mean(PATIENT_LTOUR_OUTSAMPLE_THREE$first_pred_presc), mean(PATIENT_LTOUR_OUTSAMPLE_FOUR$first_pred_presc), mean(PATIENT_LTOUR_OUTSAMPLE_FIVE$first_pred_presc))), 2)
+
+
+ggplot(PATIENT_CURES_OUTSAMPLE, aes(first_pred_presc+1)) + geom_bar()
+table(PATIENT_CURES_OUTSAMPLE$first_pred_presc+1) / 1505
+table(PATIENT_LTOUR_OUTSAMPLE_ONE$first_pred_presc+1) / 1542
+table(PATIENT_LTOUR_OUTSAMPLE_TWO$first_pred_presc+1) / 1543
+
+
+### Number of patients detected by x days
+table(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc)
+table(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc)
+
+table(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc) / 1505
+table(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc) / 1542
+
+TEMP1 <- PATIENT_CURES_OUTSAMPLE %>% filter(firstpred_from_firstpresc <= 180)
+TEMP2 <- PATIENT_LTOUR_OUTSAMPLE_ONE %>% filter(firstpred_from_firstpresc <= 180)
+
+
 
 ################################################################################
 
@@ -209,5 +249,17 @@ PATIENT_all %>% ggplot(aes(x = -day_to_long_term_180, fill = factor(Scenario))) 
 
 ggsave("../Figs/histogram_daystolongterm180.pdf", bg="white", width=8, height=6, dpi=300)
 
+
+################################################################################
+################################################################################
+################################################################################
+
+PATIENT_CURES_OUTSAMPLE <- read.csv("../Data/PATIENT_2019_LONGTERM_base_output_temp.csv") %>% dplyr::select(-c(first_long_term_date))
+SAMPLE_2019 <-  read.csv("../Data/SAMPLE_2019_LONGTERM_base_output_temp.csv")
+SAMPLE_2019 <-  read.csv("../Data/SAMPLE_2019_LONGTERM_base_output_temp.csv")
+
+round((c(1344593, 33091, 12800, 559, 2170, 669378) / 6616129) * 100)
+
+round((c(327, 47, 0, 0, 1933, 503) / 2358) * 100)
 
 

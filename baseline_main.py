@@ -1,39 +1,35 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 31 14:57:11 2022
-
-@author: jingyuanhu
+Created on Aug 22 2023
+Baseline comparisons
 """
 
-import os
 import time
 import numpy as np
 import pandas as pd
-from sklearn import tree
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
-from joblib import parallel_backend
+from sklearn import tree, metrics
+from sklearn.model_selection import train_test_split, GridSearchCV
 import utils.baseline_functions as base
-os.chdir('/mnt/phd/jihu/opioid')
-year = 2019
 
-with parallel_backend('threading', n_jobs=40):
-    
-    SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+feature_list = ['age', 'quantity', 'days_supply', 'concurrent_MME', 'concurrent_methadone_MME', 
+'num_prescribers', 'num_pharmacies', 'concurrent_benzo', 'consecutive_days', 'num_presc', 
+'MME_diff', 'days_diff', 'quantity_diff', 'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 
+'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME', 'avgMME', 'avgDays']
+
+
+def baseline_main(year, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic (L1)', 'SVM', 'Random Forest', 'XGB'], N=20, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+
+
+    SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
                          dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
                                 'num_prescribers': int, 'num_pharmacies': int,
                                 'concurrent_benzo': int, 'consecutive_days': int,
-                                'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    SAMPLE = SAMPLE.fillna(0)
+                                'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int}).fillna(0)
     
-    ###########################################################################
-    
-    N = 20
-    SAMPLE_STUMPS = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(0) + '.csv', delimiter = ",")
+    SAMPLE_STUMPS = pd.read_csv(f'{datadir}FULL_{str(year)}_STUMPS_UPTOFIRST{str(0)}.csv', delimiter = ",")
     for i in range(1, N):
-        TEMP = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(i) + '.csv', delimiter = ",")
+        TEMP = pd.read_csv(f'{datadir}FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
         SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
     
     SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([col for col in SAMPLE_STUMPS if col.startswith(('long_term_180', 'age', 'days_supply', 'daily_dose',
@@ -82,151 +78,68 @@ with parallel_backend('threading', n_jobs=40):
     
     print(SAMPLE_STUMPS.columns.tolist()) # so that we know the order of features
     
-    ## Use stumps instead of 
-    # x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 'num_pharmacies', 'consecutive_days', 'concurrent_benzo']]
-    
-    ###########################################################################
-    
     y = SAMPLE['long_term_180'].values
     
     start = time.time()
+    
+    for model in Model_list:
+        
+        if model == 'Decision Tree':
 
-    # Decision Tree
-    depth = [3,4,5,6]
-    min_samples = [5,10]
-    impurity = [0.001,0.01,0.1]
-    dt_summary_balanced = base.DecisionTree(X=x, Y=y, 
-                                    depth=depth, 
-                                    min_samples=min_samples, 
-                                    impurity=impurity,
-                                    class_weight="balanced",
-                                    seed=42)
-    
-    # os.chdir('/mnt/phd/jihu/opioid')
-    # np.savetxt("Result/dt_y.csv", dt_summary_balanced, delimiter=",")
+            depth = [3,4,5,6]
+            min_samples = [5,10]
+            impurity = [0.001,0.01,0.1]
+            summary = base.DecisionTree(X=x, Y=y, depth=depth, min_samples=min_samples, impurity=impurity, class_weight="balanced", seed=42)
 
-    # L2 logistic
-    # c = np.linspace(1e-5,1,5).tolist()
-    # c = [1e-5, 1e-3, 1e-1, 10]
-    # logistic_summary_balanced = base.Logistic(X=x, Y=y, C=c, class_weight="balanced", seed=42)
-    # np.savetxt("Result/l2_y.csv", logistic_summary_balanced, delimiter=",")
-    
-    # L1 logistic
-    # c = np.linspace(1e-5,1,5).tolist()
-    # c = [1e-5, 1e-3, 1e-1, 10]
-    # lasso_summary_balanced = base.Lasso(X=x, Y=y, C=c, class_weight="balanced", seed=42)
-    # np.savetxt("Result/l1_y.csv", lasso_summary_balanced, delimiter=",")
-    
-    # LinearSVM
-    # c = np.linspace(1e-6,1e-2,5).tolist()
-    # svm_summary_balanced = base.LinearSVM(X=x, Y=y, C=c, class_weight="balanced", seed=42)
-    # np.savetxt("Result/svm_y.csv", svm_summary_balanced, delimiter=",")
-    
-    # Random Forest 
-    # depth = [3,4,5,6]
-    # n_estimators = [50,100,200]
-    # impurity = [0.001,0.01]
-    # rf_summary_balanced = base.RF(X=x, Y=y,
-    #                               depth=depth,
-    #                               estimators=n_estimators,
-    #                               impurity=impurity,
-    #                               class_weight="balanced",
-    #                               seed=42)
-    # np.savetxt("Result/rf_y.csv", rf_summary_balanced, delimiter=",")
-    
-    # XGBoost
-    # depth = [4,5,6]
-    # n_estimators =  [50,100]
-    # gamma = [5,10]
-    # child_weight = [5,10]
-    # xgb_summary_balanced = base.XGB(X=x, Y=y,
-    #                                 depth=depth,
-    #                                 estimators=n_estimators,
-    #                                 gamma=gamma,
-    #                                 child_weight=child_weight,
-    #                                 class_weight="balanced",
-    #                                 seed=42)
-    # np.savetxt("Result/xgb_y.csv", xgb_summary_balanced, delimiter=",")
-    
+        if model == 'Logistic (L2)':
+
+            # c = np.linspace(1e-5,1,5).tolist()
+            c = [1e-5, 1e-3, 1e-1, 10]
+            summary = base.Logistic(X=x, Y=y, C=c, class_weight="balanced", seed=42)
+
+        if model == 'Logistic (L1)':
+
+            # c = np.linspace(1e-5,1,5).tolist()
+            c = [1e-5, 1e-3, 1e-1, 10]
+            summary = base.Lasso(X=x, Y=y, C=c, class_weight="balanced", seed=42)
+
+        if model == 'SVM':
+
+            c = np.linspace(1e-6,1e-2,5).tolist()
+            summary = base.LinearSVM(X=x, Y=y, C=c, class_weight="balanced", seed=42)
+
+        if model == 'Random Forest':
+            depth = [3,4,5,6]
+            n_estimators = [50,100,200]
+            impurity = [0.001,0.01]
+            summary = base.RF(X=x, Y=y, depth=depth, estimators=n_estimators, impurity=impurity, class_weight="balanced", seed=42)
+
+        if model == 'XGB':
+            depth = [4,5,6]
+            n_estimators =  [50,100]
+            gamma = [5,10]
+            child_weight = [5,10]
+            summary = base.XGB(X=x, Y=y, depth=depth, estimators=n_estimators, gamma=gamma, child_weight=child_weight, class_weight="balanced", seed=42)
+
+        
+        balanced = {"Accuracy": str(round(np.mean(summary['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(summary['holdout_test_accuracy']), 4)) + ")",
+        "Recall": str(round(np.mean(summary['holdout_test_recall']), 4)) + " (" + str(round(np.std(summary['holdout_test_recall']), 4)) + ")",
+        "Precision": str(round(np.mean(summary['holdout_test_precision']), 4)) + " (" + str(round(np.std(summary['holdout_test_precision']), 4)) + ")",
+        "ROC AUC": str(round(np.mean(summary['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_roc_auc']), 4)) + ")",
+        "PR AUC": str(round(np.mean(summary['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_pr_auc']), 4)) + ")",
+        "Brier": str(round(np.mean(summary['holdout_test_brier']), 4)) + " (" + str(round(np.std(summary['holdout_test_brier']), 4)) + ")",
+        "F2": str(round(np.mean(summary['holdout_test_f2']), 4)) + " (" + str(round(np.std(summary['holdout_test_f2']), 4)) + ")"}
+        
+        balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=[model])
+        results = pd.concat([results, balanced], axis=1)
+
+    results = results.T
+    results.to_csv(f"{resultdir}Final/baseline_results.csv")
+
     end = time.time()
     print(str(round(end - start,1)) + ' seconds')
     
 
-    ###########################################################################
-    
-    # DT
-    balanced = {"Accuracy": str(round(np.mean(dt_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-               "Recall": str(round(np.mean(dt_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_recall']), 4)) + ")",
-               "Precision": str(round(np.mean(dt_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_precision']), 4)) + ")",
-               "ROC AUC": str(round(np.mean(dt_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-               "PR AUC": str(round(np.mean(dt_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-               "Brier": str(round(np.mean(dt_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_brier']), 4)) + ")",
-               "F2": str(round(np.mean(dt_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(dt_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['Decision Tree'])
-    dt_results = balanced 
-    print(dt_results)
-
-    # L2
-    # balanced = {"Accuracy": str(round(np.mean(logistic_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-    #             "Recall": str(round(np.mean(logistic_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_recall']), 4)) + ")",
-    #             "Precision": str(round(np.mean(logistic_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_precision']), 4)) + ")",
-    #             "ROC AUC": str(round(np.mean(logistic_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-    #             "PR AUC": str(round(np.mean(logistic_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-    #             "Brier": str(round(np.mean(logistic_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_brier']), 4)) + ")",
-    #             "F2": str(round(np.mean(logistic_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(logistic_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['Logistic (L2)'])
-    # logistic_results = balanced
-    
-
-    # L1
-    # balanced = {"Accuracy": str(round(np.mean(lasso_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-    #             "Recall": str(round(np.mean(lasso_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_recall']), 4)) + ")",
-    #             "Precision": str(round(np.mean(lasso_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_precision']), 4)) + ")",
-    #             "ROC AUC": str(round(np.mean(lasso_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-    #             "PR AUC": str(round(np.mean(lasso_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-    #             "Brier": str(round(np.mean(lasso_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_brier']), 4)) + ")",
-    #             "F2": str(round(np.mean(lasso_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(lasso_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['Logistic (L1)'])
-    # lasso_results = balanced
-
-    # SVM
-    # balanced = {"Accuracy": str(round(np.mean(svm_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-    #            "Recall": str(round(np.mean(svm_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_recall']), 4)) + ")",
-    #            "Precision": str(round(np.mean(svm_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_precision']), 4)) + ")",
-    #            "ROC AUC": str(round(np.mean(svm_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-    #            "PR AUC": str(round(np.mean(svm_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-    #            "Brier": str(round(np.mean(svm_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_brier']), 4)) + ")",
-    #            "F2": str(round(np.mean(svm_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(svm_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['SVM'])
-    # svm_results = balanced
-    
-    # RF
-    # balanced = {"Accuracy": str(round(np.mean(rf_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-    #            "Recall": str(round(np.mean(rf_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_recall']), 4)) + ")",
-    #            "Precision": str(round(np.mean(rf_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_precision']), 4)) + ")",
-    #            "ROC AUC": str(round(np.mean(rf_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-    #            "PR AUC": str(round(np.mean(rf_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-    #            "Brier": str(round(np.mean(rf_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_brier']), 4)) + ")",
-    #            "F2": str(round(np.mean(rf_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(rf_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['Random Forest'])
-    # rf_results = balanced
-    
-    # XGB
-    # balanced = {"Accuracy": str(round(np.mean(xgb_summary_balanced['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_accuracy']), 4)) + ")",
-    #            "Recall": str(round(np.mean(xgb_summary_balanced['holdout_test_recall']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_recall']), 4)) + ")",
-    #            "Precision": str(round(np.mean(xgb_summary_balanced['holdout_test_precision']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_precision']), 4)) + ")",
-    #            "ROC AUC": str(round(np.mean(xgb_summary_balanced['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_roc_auc']), 4)) + ")",
-    #            "PR AUC": str(round(np.mean(xgb_summary_balanced['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_pr_auc']), 4)) + ")",
-    #            "Brier": str(round(np.mean(xgb_summary_balanced['holdout_test_brier']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_brier']), 4)) + ")",
-    #            "F2": str(round(np.mean(xgb_summary_balanced['holdout_test_f2']), 4)) + " (" + str(round(np.std(xgb_summary_balanced['holdout_test_f2']), 4)) + ")"}
-    
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=['XGB'])
-    # xgb_results = balanced
     
     # results = pd.concat([dt_results, logistic_results], axis=1)
     # results = pd.concat([results, lasso_results], axis=1)

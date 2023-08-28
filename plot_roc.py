@@ -44,7 +44,7 @@ LTOUR_fn = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_
 ################################################################################################
 
 
-fig, ax = plt.subplots(figsize=(20, 8))
+fig, ax = plt.subplots(figsize=(8, 8))
 ax.set_aspect('equal')
 
 plt.plot(CURES_fpr, CURES_tpr, linestyle='solid', color='red', label="CURES (AUC = 0.533)" )
@@ -62,7 +62,7 @@ plt.yticks(fontsize=20)
 # plt.text(CURES_fpr[5] + 0.02, CURES_tpr[5] - 0.03, "A", fontsize=24)
 # plt.text(CURES_fpr[8] + 0.02, CURES_tpr[8] + 0.03, "B", fontsize=24)
 plt.plot([CURES_fpr[5]],
-         [CURES_tpr[5]], 'o', markersize=8)
+         [CURES_tpr[5]], 'o', color='red', markersize=8)
 plt.text(CURES_fpr[5] + 0.02, CURES_tpr[5] - 0.02, "A", fontsize=24)
 
 # LTOUR
@@ -71,7 +71,7 @@ plt.text(CURES_fpr[5] + 0.02, CURES_tpr[5] - 0.02, "A", fontsize=24)
 # plt.text(LTOUR_fpr[5] + 0.02, LTOUR_tpr[5], "a", fontsize=24)
 # plt.text(LTOUR_fpr[8] + 0.01, LTOUR_tpr[8], "b", fontsize=24)
 plt.plot([LTOUR_fpr[5]],
-         [LTOUR_tpr[5]], 'o', markersize=8)
+         [LTOUR_tpr[5]], 'o', color='blue', markersize=8)
 plt.text(LTOUR_fpr[5] + 0.02, LTOUR_tpr[5], "B", fontsize=24)
 
 # plot a diagonal line from (0,0) to (1,1)
@@ -95,16 +95,16 @@ plt.legend(loc='lower right', fontsize=18)
 #         ['b', LTOUR_threshold[8], round(LTOUR_tp[8]/1000000,2), round(LTOUR_tn[8]/1000000,2),
 #          round(LTOUR_fp[8]/1000000,2), round(LTOUR_fn[8]/1000000,2)]]
 
-data = [['', 'Threshold', 'TP', 'TN', 'FP', 'FN'],
-        ['A', round(CURES_threshold[5],1), round(CURES_tp[5]/1000000,2), round(CURES_tn[5]/1000000,2),
-         round(CURES_fp[5]/1000000,2), round(CURES_fn[5]/1000000,2)],
-        ['B', round(LTOUR_threshold[5],1), round(LTOUR_tp[5]/1000000,2), round(LTOUR_tn[5]/1000000,2),
-         round(LTOUR_fp[5]/1000000,2), round(LTOUR_fn[5]/1000000,2)]]
-table = plt.table(cellText=data, loc='center right', colWidths=[0.1,0.4,0.2,0.2,0.2,0.2],
-                  rowLabels=None, cellLoc='center', bbox=[1.05, 0, 1, 1])
-table.auto_set_font_size(False)
-table.set_fontsize(22)
-table.auto_set_column_width(range(len(data[0])))
+# data = [['', 'Threshold', 'TP', 'TN', 'FP', 'FN'],
+#         ['A', round(CURES_threshold[5],1), round(CURES_tp[5]/1000000,2), round(CURES_tn[5]/1000000,2),
+#          round(CURES_fp[5]/1000000,2), round(CURES_fn[5]/1000000,2)],
+#         ['B', round(LTOUR_threshold[5],1), round(LTOUR_tp[5]/1000000,2), round(LTOUR_tn[5]/1000000,2),
+#          round(LTOUR_fp[5]/1000000,2), round(LTOUR_fn[5]/1000000,2)]]
+# table = plt.table(cellText=data, loc='center right', colWidths=[0.1,0.4,0.2,0.2,0.2,0.2],
+#                   rowLabels=None, cellLoc='center', bbox=[1.05, 0, 1, 1])
+# table.auto_set_font_size(False)
+# table.set_fontsize(22)
+# table.auto_set_column_width(range(len(data[0])))
 
 plt.show()
 fig.savefig(f'{resultdir}ROC_CURES_LTOUR.pdf', dpi=300)

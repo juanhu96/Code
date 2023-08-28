@@ -21,35 +21,27 @@ average_precision_score, accuracy_score, confusion_matrix
 ###############################################################################
 ###############################################################################
 
-def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_table=False, roc=False):
+def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_table=False, roc=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     '''
     Compute the performance metric given a scoring table for a given year
     '''
-    os.chdir('/mnt/phd/jihu/opioid')
+
     
     ### Import 
-    
-    # 2019
-    SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+    SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
                          dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
                                 'num_prescribers': int, 'num_pharmacies': int,
                                 'concurrent_benzo': int, 'consecutive_days': int,
                                 'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    
-    # 2018
-    # SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",", 
-    #                      dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
-    #                             'num_prescribers': int, 'num_pharmacies': int,
-    #                             'concurrent_benzo': int, 'consecutive_days': int,
-    #                             'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    
-    # SAMPLE['concurrent_methadone_MME'] = SAMPLE['concurrent_MME_methadone']
-
+    if year == 2018: SAMPLE['concurrent_methadone_MME'] = SAMPLE['concurrent_MME_methadone']
     SAMPLE = SAMPLE.fillna(0)
+    print(SAMPLE.shape)
+
     x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
                 'num_pharmacies', 'concurrent_benzo', 'consecutive_days']] 
     y = SAMPLE[[outcome]].to_numpy().astype('int')
+
 
     ### Performance
     x['Prob'] = x.apply(compute_score, axis=1, args=(cutoffs, scores,))
@@ -63,8 +55,9 @@ def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_tabl
                "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
     results = pd.DataFrame.from_dict(results, orient='index', columns=['Test'])
     results = results.T
-    results.to_csv('Result/results_test_' + str(year) + '_' + case + '.csv')
+    results.to_csv(f'{resultdir}results_test_{str(year)}_{case}.csv')
     
+
     ### Store the predicted table
     if output_table == True:
         store_predicted_table(year=year, case=case, SAMPLE=SAMPLE, x=x)
@@ -96,42 +89,39 @@ def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_tabl
         FPR_list = np.array(FPR_list)
         TPR_list = np.array(TPR_list)
                    
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_tn.csv', TN_list, delimiter = ",")
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_fp.csv', FP_list, delimiter = ",")
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_fn.csv', FN_list, delimiter = ",")
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_tp.csv', TP_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tn.csv', TN_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fp.csv', FP_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fn.csv', FN_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tp.csv', TP_list, delimiter = ",")
         
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_fpr.csv', FPR_list, delimiter = ",")
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_tpr.csv', TPR_list, delimiter = ",")
-        np.savetxt('Result/result_' + str(year) + '_' + case + '_single_balanced_thresholds.csv', thresholds, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fpr.csv', FPR_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tpr.csv', TPR_list, delimiter = ",")
+        np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_thresholds.csv', thresholds, delimiter = ",")
         
 
 ###############################################################################
 ###############################################################################
 ###############################################################################
 
-def test_table_full(year, outcome='long_term_180', output_table=False):
+
+def test_table_full(year, outcome='long_term_180', output_table=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     '''
     Compute the performance metric given a scoring table for a given year
     '''
-    os.chdir('/mnt/phd/jihu/opioid')
     
     ### Import 
     
-    SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+    SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
                          dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
                                 'num_prescribers': int, 'num_pharmacies': int,
                                 'concurrent_benzo': int, 'consecutive_days': int,
                                 'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    
-    # SAMPLE['concurrent_methadone_MME'] = SAMPLE['concurrent_MME_methadone']
-    
     SAMPLE = SAMPLE.fillna(0)
+
     x = SAMPLE
     y = SAMPLE[[outcome]].to_numpy().astype('int')
     
-    print(x.columns)
     
     ### Performance
     x['Prob'] = x.apply(compute_score_full_one, axis=1)
@@ -209,13 +199,13 @@ def test_table_full(year, outcome='long_term_180', output_table=False):
     results = pd.concat([results, results_four], axis=1)
     results = pd.concat([results, results_five], axis=1)
     results = results.T
-    results.to_csv('Result/results_test_' + str(year) + '_full.csv')
+    results.to_csv(f'{resultdir}results_test_{str(year)}_full.csv')
     
 
+###############################################################################
+###############################################################################
+###############################################################################
 
-###############################################################################
-###############################################################################
-###############################################################################
 
 def test_table_full_final(year, case, outcome='long_term_180', output_table=False, roc=False):
     
@@ -600,11 +590,16 @@ def store_predicted_table(year, case, SAMPLE, x, name=''):
     
     SAMPLE = pd.merge(SAMPLE, PATIENT, on='patient_id', how='left')
     SAMPLE_SUB = SAMPLE[(SAMPLE['long_term_ever'] > 0) & (SAMPLE['predicted_ever'] > 0)]        
-    print(SAMPLE_SUB.shape)
     
+    print(SAMPLE_SUB.shape)
+    print(SAMPLE_SUB['alert1'].sum(), SAMPLE_SUB['alert2'].sum(), SAMPLE_SUB['alert3'].sum(), SAMPLE_SUB['alert4'].sum(), SAMPLE_SUB['alert5'].sum(), SAMPLE_SUB['alert6'].sum())
+
+    SAMPLE_SUB.to_csv('Data/SAMPLE_' + str(year) +'_LONGTERM_' + case + '_output_' + name + 'temp.csv') ## TEMP
+
     PATIENT_SUB = SAMPLE_SUB.groupby('patient_id').apply(lambda x: pd.Series({
         'first_presc_date': x['date_filled'].iloc[0],
         'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
+        'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min(),
         'first_long_term_date': x.loc[x['long_term'] == 1, 'date_filled'].iloc[0],
         'first_long_term_180_date': x.loc[x['long_term_180'] == 1, 'date_filled'].iloc[0]
     })).reset_index()
@@ -612,11 +607,14 @@ def store_predicted_table(year, case, SAMPLE, x, name=''):
     PATIENT_SUB = PATIENT_SUB.groupby('patient_id').agg(
         first_presc_date=('first_presc_date', 'first'),
         first_pred_date=('first_pred_date', 'first'),
+        first_pred_presc=('first_pred_presc', 'first'),
         first_long_term_date=('first_long_term_date', 'first'),
         first_long_term_180_date=('first_long_term_180_date', 'first')
     ).reset_index()
-    print(PATIENT_SUB.shape)
     
+
+    # PATIENT_SUB = PATIENT_SUB[PATIENT_SUB['first_pred_presc'] == 0] ## TEMP
+
     PATIENT_SUB['day_to_long_term'] = (pd.to_datetime(PATIENT_SUB['first_long_term_date'], format='%m/%d/%Y')
                                        - pd.to_datetime(PATIENT_SUB['first_pred_date'], format='%m/%d/%Y')).dt.days
 
@@ -629,7 +627,7 @@ def store_predicted_table(year, case, SAMPLE, x, name=''):
     
     
     os.chdir('/mnt/phd/jihu/opioid')
-    PATIENT_SUB.to_csv('Data/PATIENT_' + str(year) +'_LONGTERM_' + case + '_output_' + name + '.csv')
+    PATIENT_SUB.to_csv('Data/PATIENT_' + str(year) +'_LONGTERM_' + case + '_output_' + name + 'temp.csv')
     
     
     
