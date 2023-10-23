@@ -40,7 +40,11 @@ def main():
     ###########################################################################
     # CURES vs. Full (nested)
     # risk_train(year = 2018, features = 'base', scenario = 'nested', c = [1e-4])
-    risk_train(year = 2018, features = 'full', scenario = 'nested', c = [1e-4])
+    # risk_train(year = 2018, features = 'full', scenario = 'nested', c = [1e-4])
+
+    ###########################################################################
+
+    
     
     
     pass

@@ -21,7 +21,7 @@ average_precision_score, accuracy_score, confusion_matrix
 ###############################################################################
 ###############################################################################
 
-def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_table=False, roc=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     '''
     Compute the performance metric given a scoring table for a given year
@@ -36,18 +36,17 @@ def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_tabl
                                 'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
     if year == 2018: SAMPLE['concurrent_methadone_MME'] = SAMPLE['concurrent_MME_methadone']
     SAMPLE = SAMPLE.fillna(0)
-    print(SAMPLE.shape)
 
     x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
                 'num_pharmacies', 'concurrent_benzo', 'consecutive_days']] 
-    y = SAMPLE[[outcome]].to_numpy().astype('int')
+    y = SAMPLE[outcome].values
 
-
+    
     ### Performance
     x['Prob'] = x.apply(compute_score, axis=1, args=(cutoffs, scores,))
     x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
+    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy().astype(int)
+
     results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
                "Recall": str(round(recall_score(y, y_pred), 4)),
                "Precision": str(round(precision_score(y, y_pred), 4)),
@@ -56,7 +55,6 @@ def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_tabl
     results = pd.DataFrame.from_dict(results, orient='index', columns=['Test'])
     results = results.T
     results.to_csv(f'{resultdir}results_test_{str(year)}_{case}.csv')
-    
 
     ### Store the predicted table
     if output_table == True:
@@ -97,7 +95,10 @@ def test_table(year, cutoffs, scores, case, outcome='long_term_180', output_tabl
         np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fpr.csv', FPR_list, delimiter = ",")
         np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tpr.csv', TPR_list, delimiter = ",")
         np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_thresholds.csv', thresholds, delimiter = ",")
-        
+    
+    if calibration == True:
+        compute_calibration(y, y_prob, y_pred, resultdir)
+
 
 ###############################################################################
 ###############################################################################
@@ -572,7 +573,7 @@ def compute_score_full_extra(row):
 ###############################################################################
 ###############################################################################
 
-def store_predicted_table(year, case, SAMPLE, x, name=''):
+def store_predicted_table(year, case, SAMPLE, x, name='', datadir='/mnt/phd/jihu/opioid/Data/'):
     
     '''
     Returns a patient table with date & days
@@ -581,57 +582,91 @@ def store_predicted_table(year, case, SAMPLE, x, name=''):
     
     # Convert column to integer
     SAMPLE['Pred'] = x['Pred'].astype(int)
-    
-    # Focus on patient that is long term user & ever predicted long term
-    PATIENT = SAMPLE.groupby('patient_id').agg(
-        long_term_ever=('long_term', lambda x: int(sum(x) > 0)),
-        predicted_ever=('Pred', lambda x: int(sum(x) > 0))
-    ).reset_index()
-    
-    SAMPLE = pd.merge(SAMPLE, PATIENT, on='patient_id', how='left')
-    SAMPLE_SUB = SAMPLE[(SAMPLE['long_term_ever'] > 0) & (SAMPLE['predicted_ever'] > 0)]        
-    
-    print(SAMPLE_SUB.shape)
-    print(SAMPLE_SUB['alert1'].sum(), SAMPLE_SUB['alert2'].sum(), SAMPLE_SUB['alert3'].sum(), SAMPLE_SUB['alert4'].sum(), SAMPLE_SUB['alert5'].sum(), SAMPLE_SUB['alert6'].sum())
 
-    SAMPLE_SUB.to_csv('Data/SAMPLE_' + str(year) +'_LONGTERM_' + case + '_output_' + name + 'temp.csv') ## TEMP
+    # Focus on TP prescriptions (42778 prescriptions from 29296 patients in 2019)
+    # SAMPLE_TP = SAMPLE[(SAMPLE['long_term_180'] == 1) & (SAMPLE['Pred'] == 1)] # presc from TP patient 
+    # print(SAMPLE_TP.shape)
+    # print(SAMPLE_TP['alert1'].sum(), SAMPLE_TP['alert2'].sum(), SAMPLE_TP['alert3'].sum(), SAMPLE_TP['alert4'].sum(), SAMPLE_TP['alert5'].sum(), SAMPLE_TP['alert6'].sum())
+    # SAMPLE_ALERT16 = SAMPLE_TP[(SAMPLE_TP['alert1'] == 1) | (SAMPLE_TP['alert6'] == 1)]
+    # print(SAMPLE_ALERT16.shape, SAMPLE_ALERT16['patient_id'].unique().shape)
 
-    PATIENT_SUB = SAMPLE_SUB.groupby('patient_id').apply(lambda x: pd.Series({
+    # find the unique patient id and left join with the full SAMPLE
+    # SAMPLE = pd.merge(SAMPLE, PATIENT, on='patient_id', how='left') # need to think more on this
+    # TP_PATIENT_ID = SAMPLE_TP['patient_id'].unique()
+    # SAMPLE = SAMPLE[SAMPLE.patient_id.isin(TP_PATIENT_ID)] # 51349 prescriptions (including TP) from 29296 patients
+    # print(SAMPLE.shape)
+
+    # PATIENT_TP = SAMPLE.groupby('patient_id').apply(lambda x: pd.Series({
+    #     'first_presc_date': x['date_filled'].iloc[0],
+    #     'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
+    #     'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min(),
+    #     'first_long_term_180_date': x.loc[x['long_term_180'] == 1, 'date_filled'].iloc[0]
+    # })).reset_index()
+    
+    # PATIENT_TP = PATIENT_TP.groupby('patient_id').agg(
+    #     first_presc_date=('first_presc_date', 'first'),
+    #     first_pred_date=('first_pred_date', 'first'),
+    #     first_pred_presc=('first_pred_presc', 'first'),
+    #     first_long_term_180_date=('first_long_term_180_date', 'first')
+    # ).reset_index()    
+
+    # PATIENT_TP['day_to_long_term'] = (pd.to_datetime(PATIENT_TP['first_long_term_date'], format='%m/%d/%Y')
+    #                                    - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+
+    # PATIENT_TP['day_to_long_term_180'] = (pd.to_datetime(PATIENT_TP['first_long_term_180_date'], format='%m/%d/%Y')
+    #                                         - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+    
+    ## how long it takes the model to predict long term
+    # PATIENT_TP['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')
+    #                                             - pd.to_datetime(PATIENT_TP['first_presc_date'], format='%m/%d/%Y')).dt.days
+    
+    # print(PATIENT_TP.shape)
+    # PATIENT_TP.to_csv(f'{datadir}PATIENT_{str(year)}_LONGTERM_{case}_output_{name}.csv')
+    
+    
+    SAMPLE_FP = SAMPLE[(SAMPLE['long_term_180'] == 0) & (SAMPLE['Pred'] == 1)] # presc from FP patient 
+    print(SAMPLE_FP.shape, SAMPLE_FP['patient_id'].unique().shape)
+    SAMPLE_ALERT16 = SAMPLE_FP[(SAMPLE_FP['alert1'] == 1) | (SAMPLE_FP['alert6'] == 1)]
+    print(SAMPLE_ALERT16.shape, SAMPLE_ALERT16['patient_id'].unique().shape)
+    
+    FP_PATIENT_ID = SAMPLE_FP['patient_id'].unique()
+    SAMPLE = SAMPLE[SAMPLE.patient_id.isin(FP_PATIENT_ID)]
+
+    PATIENT_FP = SAMPLE.groupby('patient_id').apply(lambda x: pd.Series({
         'first_presc_date': x['date_filled'].iloc[0],
         'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
-        'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min(),
-        'first_long_term_date': x.loc[x['long_term'] == 1, 'date_filled'].iloc[0],
-        'first_long_term_180_date': x.loc[x['long_term_180'] == 1, 'date_filled'].iloc[0]
+        'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min()
     })).reset_index()
     
-    PATIENT_SUB = PATIENT_SUB.groupby('patient_id').agg(
+    PATIENT_FP = PATIENT_FP.groupby('patient_id').agg(
         first_presc_date=('first_presc_date', 'first'),
         first_pred_date=('first_pred_date', 'first'),
         first_pred_presc=('first_pred_presc', 'first'),
-        first_long_term_date=('first_long_term_date', 'first'),
-        first_long_term_180_date=('first_long_term_180_date', 'first')
-    ).reset_index()
+    ).reset_index()    
+
+    PATIENT_FP['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_FP['first_pred_date'], format='%m/%d/%Y')
+                                                - pd.to_datetime(PATIENT_FP['first_presc_date'], format='%m/%d/%Y')).dt.days
+    
+    print(PATIENT_FP.shape)
+    PATIENT_FP.to_csv(f'{datadir}PATIENT_{str(year)}_LONGTERM_{case}_output_FP.csv')
+    
     
 
-    # PATIENT_SUB = PATIENT_SUB[PATIENT_SUB['first_pred_presc'] == 0] ## TEMP
 
-    PATIENT_SUB['day_to_long_term'] = (pd.to_datetime(PATIENT_SUB['first_long_term_date'], format='%m/%d/%Y')
-                                       - pd.to_datetime(PATIENT_SUB['first_pred_date'], format='%m/%d/%Y')).dt.days
 
-    PATIENT_SUB['day_to_long_term_180'] = (pd.to_datetime(PATIENT_SUB['first_long_term_180_date'], format='%m/%d/%Y')
-                                            - pd.to_datetime(PATIENT_SUB['first_pred_date'], format='%m/%d/%Y')).dt.days
+def compute_calibration(y, y_prob, y_pred, resultdir):
     
-    ## how long it takes the model to predict long term
-    PATIENT_SUB['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_SUB['first_pred_date'], format='%m/%d/%Y')
-                                                - pd.to_datetime(PATIENT_SUB['first_presc_date'], format='%m/%d/%Y')).dt.days
-    
-    
-    os.chdir('/mnt/phd/jihu/opioid')
-    PATIENT_SUB.to_csv('Data/PATIENT_' + str(year) +'_LONGTERM_' + case + '_output_' + name + 'temp.csv')
-    
-    
-    
-    
-    
-    
-    
+    table = []
+
+    for prob in unique(y_prob):
+        
+        y_temp = y[y_prob == prob]
+        y_pred_temp = y_pred[y_prob == prob]
+
+        TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp).ravel() 
+
+        table.append({'Prob': prob, 'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP})
+
+
+    table = pd.DataFrame.from_dict(table, orient='index', columns=['Test'])
+    table.to_csv(f'{resultdir}calibration.csv')

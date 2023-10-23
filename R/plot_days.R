@@ -94,6 +94,13 @@ round(c(mean(PATIENT_CURES_OUTSAMPLE$first_long_term_180_date - PATIENT_CURES_OU
 
 ################################################################################
 
+### New results
+PATIENT_CURES_OUTSAMPLE <- read.csv("../Data/PATIENT_2019_LONGTERM_base_output_.csv")
+PATIENT_LTOUR_OUTSAMPLE_ONE <- read.csv("../Data/PATIENT_2019_LONGTERM_full_output_one.csv")
+
+###
+round(c(mean(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc), sd(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc)), 2)
+round(c(mean(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc), sd(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc)), 2)
 
 ### Number of prescriptions (start from 0)
 round(c(mean(PATIENT_CURES_OUTSAMPLE$first_pred_presc), sd(PATIENT_CURES_OUTSAMPLE$first_pred_presc)), 2)
@@ -114,8 +121,11 @@ table(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc)
 table(PATIENT_CURES_OUTSAMPLE$firstpred_from_firstpresc) / 1505
 table(PATIENT_LTOUR_OUTSAMPLE_ONE$firstpred_from_firstpresc) / 1542
 
-TEMP1 <- PATIENT_CURES_OUTSAMPLE %>% filter(firstpred_from_firstpresc <= 180)
-TEMP2 <- PATIENT_LTOUR_OUTSAMPLE_ONE %>% filter(firstpred_from_firstpresc <= 180)
+TEMP1 <- PATIENT_CURES_OUTSAMPLE %>% filter(firstpred_from_firstpresc <= 30)
+TEMP2 <- PATIENT_LTOUR_OUTSAMPLE_ONE %>% filter(firstpred_from_firstpresc <= 30)
+
+TEMP1 <- PATIENT_CURES_OUTSAMPLE %>% filter(firstpred_from_firstpresc == 0)
+
 
 
 
