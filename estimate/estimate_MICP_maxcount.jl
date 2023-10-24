@@ -1,11 +1,10 @@
 using CSV, Dates, DataFrames, LinearAlgebra, JuMP, MosekTools
 
 
-function estimate_MICP_lpm(z, C0, max_point, num_feature, num_obs, 
+function estimate_MICP_maxcount(z, C0, max_point, num_feature, num_obs, 
     x_order, num_order, v_order, max_runtime, tol_gap, num_threads)
 
     model = Model(Mosek.Optimizer)
-    # model = Model(HiGHS.Optimizer)
     
     set_attribute(model, "MSK_IPAR_NUM_THREADS", num_threads)
     set_attribute(model, "QUIET", false)
@@ -32,8 +31,7 @@ function estimate_MICP_lpm(z, C0, max_point, num_feature, num_obs,
         sum(p * sum(theta[j, v_order[j][i], p] for j=1:num_feature) for p=1:max_point))
 
     # objective
-    # obj = @objective(model, Min, sum(-z[i] * u[i] + phi[i] for i=1:num_obs) + C0 * sum(v[j] for j=1:num_feature))
-    obj = @objective(model, Min, sum(u[i]^2 - 2*z[i]*u[i] for i=1:num_obs) / num_obs + C0 * sum(v[j] for j=1:num_feature))
+    obj = @objective(model, Min, sum(-z[i] * u[i] for i=1:num_obs)/num_obs + C0 * sum(v[j] for j=1:num_feature))
 
     optimize!(model)
 

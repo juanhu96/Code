@@ -8,6 +8,7 @@ include("../estimate/estimate_MICP_IGA_polyapprox.jl")
 # include("../estimate/estimate_MICP_IGA_polyapprox_flexible.jl")
 include("../estimate/estimate_MICP_socapprox.jl")
 include("../estimate/estimate_MICP_lpm.jl")
+include("../estimate/estimate_MICP_maxcount.jl")
 
 
 

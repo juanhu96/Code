@@ -8,13 +8,38 @@ function initial(dataset, N, feature_case)
 
     if dataset == "SAMPLE"     
         df = DataFrame(CSV.File(workdir * "Data/SAMPLE_2018_LONGTERM_stratified_$N.csv"))
+
+        df = dropmissing!(df, disallowmissing=true)
+        filter!(row -> all(x -> x != "NA", row), df)
+        for col in names(df)
+            df[!, col] = parse.(Float64, df[!, col])
+        end
+
         z = df[!, :long_term_180]
+
     elseif dataset == "FULL"
         df = DataFrame(CSV.File(workdir * "Data/FULL_2018_LONGTERM_UPTOFIRST.csv"))
+
+        df = dropmissing!(df, disallowmissing=true)
+        filter!(row -> all(x -> x != "NA", row), df)
+        for col in names(df)
+            df[!, col] = parse.(Float64, df[!, col])
+        end
+
         z = df[!, :long_term_180]
+
     elseif dataset == "Framingham"
         df = DataFrame(CSV.File(workdir * "Data/framingham.csv"))
+        
+        # drop missing, drop 'NA', convert numerics
+        df = dropmissing!(df, disallowmissing=true)
+        filter!(row -> all(x -> x != "NA", row), df)
+        for c ∈ names(df, String3)
+            df[!, c]= parse.(Float64, df[!, c])
+        end
+
         z = df[!, :TenYearCHD]
+
     else
         println("Warning: case undefined")
     end
@@ -74,15 +99,18 @@ function initial(dataset, N, feature_case)
     x_min = collect(minimum(eachrow(x)))
     x_max = collect(maximum(eachrow(x)))
 
+
     x_order = []
     num_order = []
     v_order = []
     for feature in feature_list
+
         x_order_item = sort(unique(x[:, feature]))
         v_order_item = map(x_i -> findfirst(c_j -> x_i == c_j, x_order_item), x[:, feature])
         push!(x_order, x_order_item)
         push!(num_order, length(x_order_item))
         push!(v_order, v_order_item)
+        
     end
 
     return z, feature_list, num_feature, num_obs, num_attr, x_order, num_order, v_order

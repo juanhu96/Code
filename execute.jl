@@ -7,7 +7,7 @@ dataset = "Framingham"
 feature_case = "Framingham"
 expdirpath = "/mnt/phd/jihu/opioid_conic/Results/Framingham/"
 
-C0 = 10
+C0 = 1e-4
 max_point = 5
 max_runtime = 7200
 num_threads = 20
@@ -55,9 +55,15 @@ function execute_main(dataset, feature_case, C0, max_point, max_runtime, num_thr
         # epsilon = 1e-3
         # main_IGApolyapprox(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, delta, nu, epsilon, C0, max_point, max_runtime, num_threads, 5e-2, expdirpath, "IGApoly")
         
-        println("****************************** SOC APPROX ******************************\n")
-        L = 5
-        main_socapprox(dataset, N, feature_case, L, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "SOC")
+        # println("****************************** SOC APPROX ******************************\n")
+        # L = 5
+        # main_socapprox(dataset, N, feature_case, L, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "SOC")
+
+        # println("****************************** LPM ******************************\n")
+        # main_lpm(dataset, N, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "LPM")
+
+        println("****************************** Max Count ******************************\n")
+        main_maxcount(dataset, N, feature_case, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, "MaxCount")
 
     end
     
