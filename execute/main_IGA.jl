@@ -26,7 +26,21 @@ function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, C0,
 
         time = round(Dates.now() - t_start, Second, RoundUp)
 
-        if iter >= MAX_ITER || time.value >= MAX_RUNTIME || I_tilde_next == I_tilde_prev 
+        # if iter >= MAX_ITER || time.value >= MAX_RUNTIME || I_tilde_next == I_tilde_prev 
+        #     if iter >= MAX_ITER 
+        #         println("Max iteration achieved")
+        #     elseif time.value >= MAX_RUNTIME
+        #         println("Max runtime achieved")
+        #     else
+        #         println("Converged")
+        #     end
+            
+        #     println("Time spent: " * string(time.value) * "; Iteration spent: " * string(iter))
+
+        #     break   
+        # end
+
+        if iter >= MAX_ITER || I_tilde_next == I_tilde_prev 
             if iter >= MAX_ITER 
                 println("Max iteration achieved")
             elseif time.value >= MAX_RUNTIME
@@ -46,11 +60,13 @@ function main_IGA(dataset, N, feature_case, MAX_ITER, MAX_RUNTIME, C0,
         global n_max_prev = n_max_next
         global iter = iter + 1
 
+        export_table(x_order, feature_list, intercept, theta, N, feature_case, num_feature, num_order, max_point, expdirpath, filename * string(iter))
+
     end
 
     # export
     print(summary)
-    export_table(x_order, feature_list, intercept, theta, N, feature_case, num_feature, num_order, max_point, expdirpath, filename)
+    export_table(x_order, feature_list, intercept, theta, N, feature_case, num_feature, num_order, max_point, expdirpath, filename * string(iter))
 
 end
 

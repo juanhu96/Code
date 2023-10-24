@@ -2,6 +2,7 @@ include("../utils/estimate_include.jl")
 
 
 
+# Initial fixed cut
 function main_polyapprox(dataset, N, feature_case, nu, epsilon, C0, max_point, max_runtime, num_threads, tol_gap, expdirpath, filename)
 
     z, feature_list, num_feature, num_obs, num_attr, x_order, num_order, v_order = initial(dataset, N, feature_case)

@@ -1,0 +1,74 @@
+****************************** IGA (20%) ******************************
+Optimal found for feature 1 with point 1
+Optimal found for feature 10 with point 2
+Optimal found for feature 13 with point 3
+Converged
+Time spent: 1617; Iteration spent: 9
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 1.98054e+03
+  Objective bound    : 1.60145e+03
+  Relative gap       : 1.91408e-01
+
+* Work counters
+  Solve time (sec)   : 2.59900e+02
+  Simplex iterations : 0
+  Barrier iterations : 70
+  Node count         : 0
+****************************** IGA (10%) ******************************
+Optimal found for feature 1 with point 1
+Max runtime achieved
+Time spent: 15299; Iteration spent: 9
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 1.72072e+03
+  Objective bound    : 1.61356e+03
+  Relative gap       : 6.22724e-02
+
+* Work counters
+  Solve time (sec)   : 1.43040e+03
+  Simplex iterations : 0
+  Barrier iterations : 18895
+  Node count         : 473
+****************************** IGA (5%) ******************************
+Optimal found for feature 1 with point 1
+Max runtime achieved
+Time spent: 31965; Iteration spent: 9
+* Solver : Mosek
+
+* Status
+  Result count       : 1
+  Termination status : OPTIMAL
+  Message from the solver:
+  "Mosek.MSK_SOL_STA_INTEGER_OPTIMAL"
+
+* Candidate solution (result #1)
+  Primal status      : FEASIBLE_POINT
+  Dual status        : NO_SOLUTION
+  Objective value    : 1.70595e+03
+  Objective bound    : 1.62396e+03
+  Relative gap       : 4.80650e-02
+
+* Work counters
+  Solve time (sec)   : 2.48771e+03
+  Simplex iterations : 0
+  Barrier iterations : 72153
+  Node count         : 1873

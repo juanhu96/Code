@@ -5,6 +5,10 @@ include("../estimate/estimate_MICP.jl")
 include("../estimate/estimate_MICP_polyapprox.jl")
 include("../estimate/estimate_MICP_IGA.jl")
 include("../estimate/estimate_MICP_IGA_polyapprox.jl")
+# include("../estimate/estimate_MICP_IGA_polyapprox_flexible.jl")
+include("../estimate/estimate_MICP_socapprox.jl")
+include("../estimate/estimate_MICP_lpm.jl")
+
 
 
 include("initial.jl")
