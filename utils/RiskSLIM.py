@@ -107,15 +107,17 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
     
     # create coefficient set and set the value of the offset parameter
     coef_set = CoefficientSet(variable_names = data['variable_names'], lb = 0, ub = max_coefficient, sign = 0)
-    # Jingyuan: get_conservative_offset is not defined
+    # JH: get_conservative_offset is not defined
     # conservative_offset = get_conservative_offset(data, coef_set, max_L0_value)   
     # max_offset = min(max_offset, conservative_offset)
+
     '''
     coef_set['(Intercept)'].ub = max_offset
     coef_set['(Intercept)'].lb = -max_offset
     '''
-    coef_set['(Intercept)'].lb = -max_offset-1 # JH: if we have ub first this would lead to assertion error
-    coef_set['(Intercept)'].ub = -max_offset+1
+    coef_set['(Intercept)'].lb = -max_offset-0.5 # JH: if we have ub first this would lead to assertion error
+    coef_set['(Intercept)'].ub = -max_offset+0.5
+
     # coef_set.update_intercept_bounds(X = data['X'], y = data['Y'], max_offset = max_offset)
     
     constraints = {
@@ -311,7 +313,7 @@ def risk_nested_cv_constrain(X,
                              c,
                              seed,
                              max_runtime=1000,
-                             max_offset=100,
+                             max_offset=5,
                              score = 'roc_auc',
                              class_weight = None,
                              new_constraints = None,

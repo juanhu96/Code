@@ -1,2 +1,0 @@
-/mnt/phd/jihu/opioid/Code/iterative_table.py:190: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
-  SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM.csv', delimiter = ",",

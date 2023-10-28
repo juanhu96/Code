@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/mnt/phd/jihu/opioid/Code/test.py", line 15, in <module>
-    import gurobipy as gp
-ModuleNotFoundError: No module named 'gurobipy'

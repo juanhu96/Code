@@ -81,7 +81,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
     elif features == 'full':
          
         N = 20
-        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST_0.csv', delimiter = ",")
+        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST0.csv', delimiter = ",")
         for i in range(1, N):
             TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
             SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
@@ -194,7 +194,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         # ================================== LTOUR ======================================
         
         N = 20
-        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST_0.csv', delimiter = ",")
+        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST0.csv', delimiter = ",")
         for i in range(1, N):
             TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
             SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
@@ -314,7 +314,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                     "PR AUC": str(round(average_precision_score(outer_train_y, outer_train_prob), 4))}
         train_results = pd.DataFrame.from_dict(train_results, orient='index', columns=['Train'])
         riskslim_results = train_results.T
-        riskslim_results.to_csv(f'{workdir}Result/Explore/result_{str(year)}_{features}_{scenario}_{weight}{name}.csv')
+        riskslim_results.to_csv(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv')
         
 
         if roc == True:        
@@ -344,18 +344,18 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
             TP_list = np.array(TP_list)
             FPR_list = np.array(FPR_list)
             TPR_list = np.array(TPR_list)
-                       
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_tn.csv', TN_list, delimiter = ",")
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_fp.csv', FP_list, delimiter = ",")
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_fn.csv', FN_list, delimiter = ",")
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_tp.csv', TP_list, delimiter = ",")
-            
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_fpr.csv', FPR_list, delimiter = ",")
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_tpr.csv', TPR_list, delimiter = ",")
-            np.savetxt('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '_thresholds.csv', thresholds, delimiter = ",")
-            
+
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tn.csv', TN_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fp.csv', FP_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fn.csv', FN_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tp.csv', TP_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fpr.csv', FPR_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tpr.csv', TPR_list, delimiter = ",")
+            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_thresholds.csv', thresholds, delimiter = ",")
+
+
         if output_y == True:
-            np.savetxt("Result/riskSLIM_y.csv", outer_train_pred, delimiter=",")
+            np.savetxt(f'{workdir}Result/riskSLIM_y.csv', outer_train_pred, delimiter=",")
         
 
     elif scenario == 'nested':
@@ -388,5 +388,5 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         results = pd.DataFrame.from_dict(results, orient='index', columns=['riskSLIM'])
         
         riskslim_results = results.T
-        riskslim_results.to_csv(f'{workdir}Result/Explore/result_{str(year)}_{features}_{scenario}_{weight}{name}.csv')
+        riskslim_results.to_csv(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv')
     

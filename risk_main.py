@@ -21,8 +21,8 @@ from risk_test import test_table, test_table_full
 def main():
 
     # =================================== Train LTOUR (nested) ===================================
-    risk_train(year = 2018, features = 'LTOUR', scenario = 'single', c = 1e-4)
-    # risk_train(year = 2018, features = 'full', scenario = 'nested', c = [1e-4])
+    # risk_train(year = 2018, features = 'LTOUR', scenario = 'single', c = 1e-4)
+    risk_train(year = 2018, features = 'LTOUR', scenario = 'nested', c = [1e-4], max_points=3, max_features=10)
 
     # =================================== Test CURES ============================================
     # test_table(year=2019, cutoffs=[0, 90, 40, 6, 6, 1, 90], scores=[0, 1, 1, 1, 1, 1, 1], case = 'CURES', calibration = True) # base  
