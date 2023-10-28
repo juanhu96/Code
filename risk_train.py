@@ -28,13 +28,9 @@ from riskslim.utils import print_model
 
 
 
-
-
-
-
 def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True, max_points=5,
                max_features=6, outcome = 'long_term_180', alpha='', beta='', output_y=False, name='', 
-               selected_feautres=None, interaction_effects=True, roc=False):
+               selected_feautres=None, interaction_effects=False, roc=False, workdir='/mnt/phd/jihu/opioid/'):
     
     '''
     Train a riskSLIM model
@@ -59,66 +55,57 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
     roc: export fpr, tpr for roc visualization (only for single)
     '''
     
-    
-    os.chdir('/mnt/phd/jihu/opioid')
-    
-    ###############################################################################
-    ###############################################################################
-    ###############################################################################
 
-    SAMPLE = pd.read_csv('Data/FULL_' + str(year) +'_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+    SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
                          dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
                                 'num_prescribers': int, 'num_pharmacies': int,
                                 'concurrent_benzo': int, 'consecutive_days': int,
                                 'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
     SAMPLE = SAMPLE.fillna(0)
 
-    ###############################################################################
-    ################################## X input ####################################
-    ###############################################################################
+
+    # ================================ X INPUT ====================================
+
 
     if features == 'base':
         
-        ### X
         SAMPLE['(Intercept)'] = 1
         intercept = SAMPLE.pop('(Intercept)')
         SAMPLE.insert(0, '(Intercept)', intercept)
         x = SAMPLE[['(Intercept)', 'alert1', 'alert2', 'alert3', 'alert4', 'alert5', 'alert6']] 
         
-        ### Constraints (no constraints for base)
         new_constraints = None
         new_constraints_multiple = None
         essential_constraints = None
             
     elif features == 'full':
          
-        ### X
         N = 20
-        SAMPLE_STUMPS = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(0) + '.csv', delimiter = ",")
+        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST_0.csv', delimiter = ",")
         for i in range(1, N):
-            TEMP = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(i) + '.csv', delimiter = ",")
+            TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
             SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
         
+
         # Drop colinear & undisired
         SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([col for col in SAMPLE_STUMPS if col.startswith(('long_term_180', 'days_supply', 'daily_dose',
                                                                                                                   'quantity_per_day', 'total_dose', 'dose_diff',
                                                                                                                   'concurrent_benzo_same', 'concurrent_benzo_diff'))])]
         
-        ## Drop the meaningless cutoffs & quantity
+        # Drop the meaningless cutoffs & quantity
         SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop(['age18', 'num_prescribers1', 'num_pharmacies1', 'consecutive_days1', 'num_presc1'])]
         SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop(['quantity10', 'quantity15', 'quantity20', 'quantity25', 'quantity30',
                                                                   'quantity40', 'quantity50', 'quantity75', 'quantity100', 'quantity150',
                                                                   'quantity200', 'quantity300'])]
         
-        
-        ### Interaction
+        # Interaction
         if interaction_effects == False:
             SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([col for col in SAMPLE_STUMPS if col.startswith(('Codeine_MME', 'Hydrocodone_MME',
                                                                                                                       'Oxycodone_MME', 'Morphine_MME', 
                                                                                                                       'Hydromorphone_MME', 'Methadone_MME',
                                                                                                                       'Fentanyl_MME', 'Oxymorphone_MME'))])]
             
-            ## Drop the other interaction
+            # other interaction
             SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop(['Codeine_Medicaid', 'Codeine_CommercialIns', 
                                                                       'Codeine_Medicare', 'Codeine_CashCredit', 'Codeine_MilitaryIns', 'Codeine_WorkersComp', 'Codeine_Other',
                                                                       'Codeine_IndianNation', 'Hydrocodone_Medicaid', 'Hydrocodone_CommercialIns', 'Hydrocodone_Medicare',
@@ -140,21 +127,17 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         intercept = SAMPLE_STUMPS.pop('(Intercept)')
         SAMPLE_STUMPS.insert(0, '(Intercept)', intercept)
         x = SAMPLE_STUMPS
-        # print(SAMPLE_STUMPS.columns)
+
         
-        ### Constraints
+        # Constraints
         if constraint == True and interaction_effects == True:
+            
             # Single cutoff
             selected_features = ['age', 'num_prescribers', 'num_pharmacies', 
                                  'concurrent_methadone_MME', 'consecutive_days',
                                  'num_presc', 'MME_diff', 'days_diff', 'quantity_diff',
                                  'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 
                                  'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME']
-            
-            # selected_features = ['age', 'num_prescribers', 'num_pharmacies', 'concurrent_methadone_MME',
-            #                       'num_presc', 'MME_diff', 'days_diff', 'quantity_diff',
-            #                       'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 
-            #                       'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME']
             
             new_constraints = []
             for feature in selected_features:
@@ -164,28 +147,22 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                                     'Hydromorphone', 'Methadone', 'Fentanyl', 'Oxymorphone'])         
             new_constraints.append(['Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',
                                     'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation'])
-            # new_constraints.append(['Methadone', 'concurrent_methadone_MME'])
-            
-            new_constraints_multiple = None
-            
+
+
             # Multiple cutoffs
-            # selected_features_multiple = ['consecutive_days']
-            # new_constraints_multiple = []
-            # for feature in selected_features_multiple:
-            #     new_constraints_multiple.append([col for col in x if col.startswith(feature)])
+            new_constraints_multiple = None
+    
             
+            # Essential features (NOTE: not working)
             essential_constraints = []
             essential_constraints.append([col for col in x if col.startswith('concurrent_MME')])
             
+
         elif constraint == True and interaction_effects == False:
             # Single cutoff
             selected_features = ['age', 'num_prescribers', 'num_pharmacies', 
                                  'concurrent_methadone_MME', 'consecutive_days',
                                  'num_presc', 'MME_diff', 'days_diff', 'quantity_diff']
-            
-            # selected_features = ['age', 'num_prescribers', 'num_pharmacies', 'concurrent_methadone_MME',
-            #                       'num_presc', 'MME_diff', 'days_diff', 'quantity_diff']
-            
             
             new_constraints = []
             for feature in selected_features:
@@ -195,16 +172,13 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                                     'Hydromorphone', 'Methadone', 'Fentanyl', 'Oxymorphone'])         
             new_constraints.append(['Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',
                                     'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation'])
-            # new_constraints.append(['Methadone', 'concurrent_methadone_MME'])            
-            
+  
+
+            # Multiple cutoffs
             new_constraints_multiple = None
             
-            # Multiple cutoffs
-            # selected_features_multiple = ['consecutive_days']
-            # new_constraints_multiple = []
-            # for feature in selected_features_multiple:
-            #     new_constraints_multiple.append([col for col in x if col.startswith(feature)])
-                
+            
+            # Essential features (NOTE: not working)
             essential_constraints = []
             essential_constraints.append([col for col in x if col.startswith('concurrent_MME')])
             essential_constraints.append([col for col in x if col.startswith('ever_switch')])
@@ -214,15 +188,17 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
             new_constraints_multiple = None
             essential_constraints = None
     
-    else: ### special, withtout consecutive_days, MME
-    
-        ### X
-        N = 20
-        SAMPLE_STUMPS = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(0) + '.csv', delimiter = ",")
-        for i in range(1, N):
-            TEMP = pd.read_csv('Data/FULL_' + str(year) + '_STUMPS_UPTOFIRST' + str(i) + '.csv', delimiter = ",")
-            SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
+
+    else:
         
+        # ================================== LTOUR ======================================
+        
+        N = 20
+        SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST_0.csv', delimiter = ",")
+        for i in range(1, N):
+            TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
+            SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
+
         SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([col for col in SAMPLE_STUMPS if col.startswith(('long_term_180', 'age', 'days_supply', 'daily_dose',
                                                                                                                   'quantity_per_day', 'total_dose', 'dose_diff',
                                                                                                                   'concurrent_benzo_same', 'concurrent_benzo_diff',
@@ -262,14 +238,15 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                                                                   'quantity_diff25', 'quantity_diff50', 'quantity_diff75', 'quantity_diff100', 'quantity_diff150',
                                                                   'days_diff3', 'days_diff5', 'days_diff7', 'days_diff10', 'days_diff14', 'days_diff21', 'days_diff25', 'days_diff30'])]
         
+
         SAMPLE_STUMPS['(Intercept)'] = 1
         intercept = SAMPLE_STUMPS.pop('(Intercept)')
         SAMPLE_STUMPS.insert(0, '(Intercept)', intercept)
         x = SAMPLE_STUMPS
-        print(SAMPLE_STUMPS.columns)
         
+
+        # Single cutoff
         selected_features = ['num_prescribers', 'num_pharmacies', 'num_presc']
-               
         new_constraints = []
         for feature in selected_features:
             new_constraints.append([col for col in x if col.startswith(feature)])
@@ -278,21 +255,20 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         new_constraints.append(['Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',
                                 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation'])
         
+
         # Multiple cutoffs
-        # new_constraints_multiple = None
         selected_features_multiple = ['concurrent_MME', 'avgDays']
         new_constraints_multiple = []
         for feature in selected_features_multiple:
             new_constraints_multiple.append([col for col in x if col.startswith(feature)])
         
-        
-        # essential_constraints = []
-        # essential_constraints.append([col for col in x if col.startswith('concurrent_MME')])
+
+        # Essential features (NOTE: not working)
         essential_constraints = None
-        
-    ###############################################################################
-    ################################## Scenario ###################################
-    ###############################################################################
+
+    
+    # =============================== SCENARIOS ====================================
+
         
     if scenario == 'single':
         
@@ -317,7 +293,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                                                                    max_L0_value=max_features,
                                                                    c0_value=c, 
                                                                    max_runtime=1000, 
-                                                                   max_offset=100,
+                                                                   max_offset=5,
                                                                    class_weight=weight,
                                                                    new_constraints=new_constraints,
                                                                    new_constraints_multiple=new_constraints_multiple,
@@ -327,7 +303,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         
         ## Results
         outer_train_x = outer_train_x[:,1:]
-        outer_train_y[outer_train_y == -1] = 0 ## change -1 to 0
+        outer_train_y[outer_train_y == -1] = 0
         outer_train_prob = slim.riskslim_prediction(outer_train_x, np.array(cols), model_info).reshape(-1,1)
         outer_train_pred = (outer_train_prob > 0.5)
         
@@ -337,11 +313,10 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
                     "ROC AUC": str(round(roc_auc_score(outer_train_y, outer_train_prob), 4)),
                     "PR AUC": str(round(average_precision_score(outer_train_y, outer_train_prob), 4))}
         train_results = pd.DataFrame.from_dict(train_results, orient='index', columns=['Train'])
-        
         riskslim_results = train_results.T
-        os.chdir('/mnt/phd/jihu/opioid')
-        riskslim_results.to_csv('Result/Explore/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '.csv')
+        riskslim_results.to_csv(f'{workdir}Result/Explore/result_{str(year)}_{features}_{scenario}_{weight}{name}.csv')
         
+
         if roc == True:        
             # to make it more consistent we have to manually compute fpr, tpr
             FPR_list = []
@@ -382,6 +357,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         if output_y == True:
             np.savetxt("Result/riskSLIM_y.csv", outer_train_pred, delimiter=",")
         
+
     elif scenario == 'nested':
         
         y = SAMPLE[[outcome]].to_numpy().astype('int')    
@@ -412,6 +388,5 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         results = pd.DataFrame.from_dict(results, orient='index', columns=['riskSLIM'])
         
         riskslim_results = results.T
-        os.chdir('/mnt/phd/jihu/opioid')
-        riskslim_results.to_csv('Result/result_' + str(year) + '_' + features + '_' + scenario + '_' + weight + name + '.csv')
+        riskslim_results.to_csv(f'{workdir}Result/Explore/result_{str(year)}_{features}_{scenario}_{weight}{name}.csv')
     

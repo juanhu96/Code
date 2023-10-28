@@ -36,8 +36,9 @@ def test_table(year, cutoffs, scores, case, output_table=False, roc=False, calib
     if year == 2018: SAMPLE['concurrent_methadone_MME'] = SAMPLE['concurrent_MME_methadone']
     SAMPLE = SAMPLE.fillna(0)
 
-    x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
-                'num_pharmacies', 'concurrent_benzo', 'consecutive_days']] 
+    # x = SAMPLE[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
+    #             'num_pharmacies', 'concurrent_benzo', 'consecutive_days']] 
+    x = SAMPLE
     y = SAMPLE['long_term_180'].values
 
     
@@ -63,7 +64,7 @@ def test_table(year, cutoffs, scores, case, output_table=False, roc=False, calib
         compute_roc(y, y_prob, y_pred, resultdir)
     
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, case)
+        compute_calibration(x, y, y_prob, y_pred, resultdir, case)
         
 
 
@@ -89,7 +90,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
     x = SAMPLE
     y = SAMPLE[['long_term_180']].to_numpy().astype('int')
     
-    
+
     ### Performance
     x['Prob'] = x.apply(compute_score_full_one, axis=1)
     x['Pred'] = (x['Prob'] > 0.5)
@@ -105,7 +106,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
         store_predicted_table(year, 'LTOUR', SAMPLE, x, 'one')
 
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, 'LTOUR_one')
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_one')
     
     # ========================================================================================
 
@@ -123,8 +124,8 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
         store_predicted_table(year, 'LTOUR', SAMPLE, x, 'two')
 
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, 'LTOUR_two')
-    
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_two')
+        
     # ========================================================================================
 
     x['Prob'] = x.apply(compute_score_full_three, axis=1)
@@ -141,7 +142,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
         store_predicted_table(year, 'LTOUR', SAMPLE, x, 'three')
     
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, 'LTOUR_three')
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_three')
     
     # ========================================================================================
 
@@ -159,7 +160,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
         store_predicted_table(year, 'LTOUR', SAMPLE, x, 'four')
     
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, 'LTOUR_four')
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_four')
     
     # ========================================================================================
 
@@ -177,7 +178,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
         store_predicted_table(year, 'LTOUR', SAMPLE, x, 'five')
     
     if calibration == True:
-        compute_calibration(y, y_prob, y_pred, resultdir, 'LTOUR_five')
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_five')
     
     # ========================================================================================
 
@@ -490,7 +491,7 @@ def compute_roc(y, y_prob, y_pred, resultdir):
 
 
 
-def compute_calibration(y, y_prob, y_pred, resultdir, case):
+def compute_calibration(x, y, y_prob, y_pred, resultdir, case):
     
     table = []
 
@@ -499,12 +500,19 @@ def compute_calibration(y, y_prob, y_pred, resultdir, case):
         y_temp = y[y_prob == prob]
         y_pred_temp = y_pred[y_prob == prob]
         
+        # prescription-level results 
         accuracy = round(accuracy_score(y_temp, y_pred_temp), 4)
         TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp).ravel() 
         observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
 
+        # patient-level results
+        x_bucket = x[y_prob == prob]
+        num_patients = len(pd.unique(x_bucket['patient_id']))
+        num_longterm = len(pd.unique(x_bucket[x_bucket['days_to_long_term'] > 0]['patient_id']))
+
         table.append({'Prob': prob, 'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP,
-        'Accuracy': accuracy, 'Observed Risk': observed_risk})
+        'Accuracy': accuracy, 'Observed Risk': observed_risk, 
+        'Num_patients': num_patients, 'Num_longterm': num_longterm})
 
 
     table = pd.DataFrame(table)

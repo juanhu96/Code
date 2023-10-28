@@ -40,7 +40,9 @@ def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, new_con
 
     mip_objects = setup_lattice_cpa(data, constraints, settings)
     
-    
+    # =====================================================================
+
+
     ### add operational constraints
     if new_constraints != None:        
         mip, indices = mip_objects['mip'], mip_objects['indices']

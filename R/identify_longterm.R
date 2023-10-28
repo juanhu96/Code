@@ -481,3 +481,7 @@ write.csv(FULL, "../Data/FULL_2019_LONGTERM.csv", row.names = FALSE)
 
 
 
+test <- read.csv("../Data/FULL_2019_LONGTERM_UPTOFIRST.csv")
+temp <- test[1:200,]
+colnames(test)
+
