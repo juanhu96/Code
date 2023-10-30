@@ -72,7 +72,7 @@ def test_table(year, cutoffs, scores, case, output_table=False, roc=False, calib
 
 
 
-def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+def test_table_full(year, output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     '''
     Compute the performance metric given a scoring table for a given year
@@ -194,7 +194,7 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
 # ========================================================================================
 
 
-def test_table_temp(year, output_table=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+def test_table_temp(year, output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     
     SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
@@ -220,11 +220,9 @@ def test_table_temp(year, output_table=False, calibration=False, datadir='/mnt/p
     results = results.T
     results.to_csv(f'{resultdir}results_test_{str(year)}_LTOUR_temp.csv')
 
-    if output_table == True:
-        store_predicted_table(year, 'LTOUR', SAMPLE, x, 'one')
-
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_temp')
+    if output_table: store_predicted_table(year, 'LTOUR', SAMPLE, x, 'one')
+    if roc: compute_roc(y, y_prob, y_pred, resultdir)
+    if calibration: compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_temp')
 
     return
 
