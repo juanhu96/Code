@@ -194,6 +194,45 @@ def test_table_full(year, output_table=False, calibration=False, datadir='/mnt/p
 # ========================================================================================
 
 
+def test_table_temp(year, output_table=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+    
+    
+    SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+                         dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
+                                'num_prescribers': int, 'num_pharmacies': int,
+                                'concurrent_benzo': int, 'consecutive_days': int,
+                                'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
+    SAMPLE = SAMPLE.fillna(0)
+
+    x = SAMPLE
+    y = SAMPLE[['long_term_180']].to_numpy().astype('int')
+    
+    x['Prob'] = x.apply(compute_score_full_temp, axis=1)
+    x['Pred'] = (x['Prob'] > 0.5)
+    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
+    
+    results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
+                "Recall": str(round(recall_score(y, y_pred), 4)),
+                "Precision": str(round(precision_score(y, y_pred), 4)),
+                "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
+                "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
+    results = pd.DataFrame.from_dict(results, orient='index', columns=['Test'])
+    results = results.T
+    results.to_csv(f'{resultdir}results_test_{str(year)}_LTOUR_temp.csv')
+
+    if output_table == True:
+        store_predicted_table(year, 'LTOUR', SAMPLE, x, 'one')
+
+    if calibration == True:
+        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_temp')
+
+    return
+
+
+
+# ========================================================================================
+
+
 
 def compute_score(row, cutoff, scores):
     
@@ -347,29 +386,35 @@ def compute_score_full_five(row):
     return 1 / (1+np.exp(-(score + intercept)))
 
 
-def compute_score_full_extra(row):
-    
-    '''
-    For the extra round when we are doing iterative method.
-    '''
-       
+# ========================================================================================
+
+
+def compute_score_full_temp(row):
+
     score = 0
-    intercept = -3
+    intercept = -5
     
-    if row['consecutive_days'] >= 20:
-        score += 4
-    if row['age'] >= 30:
-        score += 1
-    if row['num_presc'] >= 4:
+    if row['concurrent_MME'] >= 10:
+        score += 3
+    if row['avgDays'] >= 21:
+        score += 3
+    if row['avgDays'] >= 10:
         score += 2
+    if row['concurrent_benzo'] >= 1:
+        score += 1
+    if row['drug'] == 'Hydromorphone' or row['drug'] == 'Methadone' or row['drug'] == 'Fentanyl' or row['drug'] == 'Oxymorphone':
+        score += 1
+    if row['payment'] == 'Medicare':
+        score += 1
     
     return 1 / (1+np.exp(-(score + intercept)))
 
 
 
-###############################################################################
-###############################################################################
-###############################################################################
+
+# ========================================================================================
+# ========================================================================================
+# ========================================================================================
 
 
 
@@ -489,6 +534,8 @@ def compute_roc(y, y_prob, y_pred, resultdir):
     np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tpr.csv', TPR_list, delimiter = ",")
     np.savetxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_thresholds.csv', thresholds, delimiter = ",")
 
+    return 
+
 
 
 def compute_calibration(x, y, y_prob, y_pred, resultdir, case):
@@ -504,16 +551,20 @@ def compute_calibration(x, y, y_prob, y_pred, resultdir, case):
         accuracy = round(accuracy_score(y_temp, y_pred_temp), 4)
         TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp).ravel() 
         observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
+        num_presc = TP + FP + FN + TP
 
         # patient-level results
         x_bucket = x[y_prob == prob]
         num_patients = len(pd.unique(x_bucket['patient_id']))
         num_longterm = len(pd.unique(x_bucket[x_bucket['days_to_long_term'] > 0]['patient_id']))
 
-        table.append({'Prob': prob, 'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP,
+        table.append({'Prob': prob, 'Num_presc': num_presc,
+        'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP,
         'Accuracy': accuracy, 'Observed Risk': observed_risk, 
         'Num_patients': num_patients, 'Num_longterm': num_longterm})
 
 
     table = pd.DataFrame(table)
     table.to_csv(f'{resultdir}calibration_{case}.csv')
+
+    return 

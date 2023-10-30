@@ -318,41 +318,7 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         
 
         if roc == True:        
-            # to make it more consistent we have to manually compute fpr, tpr
-            FPR_list = []
-            TPR_list = []
-            TN_list, FP_list, FN_list, TP_list = [],[],[],[]
-            thresholds = np.arange(0, 1.1, 0.1)
-            for threshold in thresholds:
-                y_pred = (outer_train_prob > threshold)
-
-                TN, FP, FN, TP = confusion_matrix(outer_train_y, y_pred).ravel()   
-                
-                TN_list.append(TN)
-                FP_list.append(FP)
-                FN_list.append(FN)
-                TP_list.append(TP)
-                
-                FPR = FP/(FP+TN)
-                TPR = TP/(TP+FN)
-                FPR_list.append(FPR)
-                TPR_list.append(TPR)                
-                
-            TN_list = np.array(TN_list)
-            FP_list = np.array(FP_list)
-            FN_list = np.array(FN_list)
-            TP_list = np.array(TP_list)
-            FPR_list = np.array(FPR_list)
-            TPR_list = np.array(TPR_list)
-
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tn.csv', TN_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fp.csv', FP_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fn.csv', FN_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tp.csv', TP_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fpr.csv', FPR_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tpr.csv', TPR_list, delimiter = ",")
-            np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_thresholds.csv', thresholds, delimiter = ",")
-
+            compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenario, weight, name)
 
         if output_y == True:
             np.savetxt(f'{workdir}Result/riskSLIM_y.csv', outer_train_pred, delimiter=",")
@@ -390,3 +356,46 @@ def risk_train(year, features, scenario, c, weight = 'balanced', constraint=True
         riskslim_results = results.T
         riskslim_results.to_csv(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv')
     
+
+
+
+def compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenario, weight, name, workdir='/mnt/phd/jihu/opioid/'):
+
+    # to make it more consistent we have to manually compute fpr, tpr
+    FPR_list = []
+    TPR_list = []
+    TN_list, FP_list, FN_list, TP_list = [],[],[],[]
+    thresholds = np.arange(0, 1.1, 0.1)
+    
+    for threshold in thresholds:
+
+        y_pred = (outer_train_prob > threshold)
+
+        TN, FP, FN, TP = confusion_matrix(outer_train_y, y_pred).ravel()   
+                
+        TN_list.append(TN)
+        FP_list.append(FP)
+        FN_list.append(FN)
+        TP_list.append(TP)
+                
+        FPR = FP/(FP+TN)
+        TPR = TP/(TP+FN)
+        FPR_list.append(FPR)
+        TPR_list.append(TPR)                
+                
+        TN_list = np.array(TN_list)
+        FP_list = np.array(FP_list)
+        FN_list = np.array(FN_list)
+        TP_list = np.array(TP_list)
+        FPR_list = np.array(FPR_list)
+        TPR_list = np.array(TPR_list)
+
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tn.csv', TN_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fp.csv', FP_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fn.csv', FN_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tp.csv', TP_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fpr.csv', FPR_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tpr.csv', TPR_list, delimiter = ",")
+    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_thresholds.csv', thresholds, delimiter = ",")
+
+    return 

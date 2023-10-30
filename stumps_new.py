@@ -18,14 +18,13 @@ feature_list = ['age', 'quantity', 'days_supply', 'concurrent_MME', 'concurrent_
 
 
 
-def create_stumps(year, scenario='', feature_list=feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
+def create_stumps(year, feature_list=feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
     
     '''
     year = 2019
-    scenario = '' # default empty, FIRST, SECOND, THIRD
     '''
         
-    FULL = pd.read_csv(f'{datadir}FULL_{str(year)}{scenario}_LONGTERM_INPUT_UPTOFIRST.csv', delimiter = ",",\
+    FULL = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_INPUT_UPTOFIRST.csv', delimiter = ",",\
     dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 'num_prescribers': int,\
     'num_pharmacies': int, 'concurrent_benzo': int, 'consecutive_days': int}).fillna(0)
 
@@ -72,13 +71,13 @@ def create_stumps(year, scenario='', feature_list=feature_list, datadir='/mnt/ph
         
         new_data = pd.concat([x_stumps.reset_index(drop=True), x_rest.reset_index(drop=True)], axis = 1)
         print(new_data.shape)
-        new_data.to_csv(f'{datadir}FULL_{str(year)}{scenario}_STUMPS_UPTOFIRST{str(i)}.csv', header=True, index=False)
+        new_data.to_csv(f'{datadir}FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', header=True, index=False)
         
-        
+    return     
 
-###############################################################################
-###############################################################################
-###############################################################################
+
+
+# ========================================================================================
 
     
 
