@@ -1,0 +1,42 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:59: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+flexible
+Start training 2018singleLTOURflexible
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+******************* FLEXIBLE *******************
+The weight is for positive53.34883003441926
+10/30/23 @ 11:43 PM | switching loss computation from lookup to weighted
+10/30/23 @ 11:45 PM | ------------------------------------------------------------
+10/30/23 @ 11:45 PM | runnning initialization procedure
+10/30/23 @ 11:45 PM | ------------------------------------------------------------
+10/30/23 @ 11:50 PM | CPA produced 2 cuts
+10/30/23 @ 11:50 PM | running naive rounding on 9 solutions
+10/30/23 @ 11:50 PM | best objective value: 0.5591
+10/30/23 @ 11:50 PM | rounding produced 5 integer solutions
+10/30/23 @ 11:50 PM | best objective value is 0.5541
+10/30/23 @ 11:50 PM | running sequential rounding on 9 solutions
+10/30/23 @ 11:50 PM | best objective value: 0.5591
+10/30/23 @ 11:50 PM | sequential rounding produced 2 integer solutions
+10/30/23 @ 11:50 PM | best objective value: 0.5541
+10/30/23 @ 11:50 PM | polishing 7 solutions
+10/30/23 @ 11:50 PM | best objective value: 0.5541
+10/30/23 @ 11:50 PM | polishing produced 5 integer solutions
+10/30/23 @ 11:50 PM | initialization produced 10 feasible solutions
+10/30/23 @ 11:50 PM | best objective value: 0.4544
+10/30/23 @ 11:50 PM | ------------------------------------------------------------
+10/30/23 @ 11:50 PM | completed initialization procedure
+10/30/23 @ 11:50 PM | ------------------------------------------------------------
+10/30/23 @ 11:50 PM | switching loss computation from lookup to weighted
+10/30/23 @ 11:50 PM | adding 277 initial cuts
++----------------------------------------------+-------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                   |           |
+| ============================================ | ================= | ========= |
+| avgDays21                                    |          3 points |   + ..... |
+| avgDays10                                    |          2 points |   + ..... |
+| ever_switch_drug                             |          1 points |   + ..... |
+| concurrent_MME10                             |         -1 points |   + ..... |
+| num_presc4                                   |         -2 points |   + ..... |
+| ============================================ | ================= | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |             SCORE |   = ..... |
++----------------------------------------------+-------------------+-----------+
+1421.0 seconds

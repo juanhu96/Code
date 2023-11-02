@@ -1,0 +1,44 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:59: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start training 2018singleLTOURflexible
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+******************* FLEXIBLE *******************
+The weight is for positive1
+10/31/23 @ 03:40 PM | 711 rows in lookup table
+10/31/23 @ 03:40 PM | ------------------------------------------------------------
+10/31/23 @ 03:40 PM | runnning initialization procedure
+10/31/23 @ 03:40 PM | ------------------------------------------------------------
+10/31/23 @ 03:45 PM | CPA produced 2 cuts
+10/31/23 @ 03:45 PM | running naive rounding on 9 solutions
+10/31/23 @ 03:45 PM | best objective value: 0.0987
+10/31/23 @ 03:45 PM | rounding produced 5 integer solutions
+10/31/23 @ 03:45 PM | best objective value is 0.0987
+10/31/23 @ 03:45 PM | running sequential rounding on 9 solutions
+10/31/23 @ 03:45 PM | best objective value: 0.0987
+10/31/23 @ 03:45 PM | sequential rounding produced 5 integer solutions
+10/31/23 @ 03:45 PM | best objective value: 0.0987
+10/31/23 @ 03:45 PM | polishing 10 solutions
+10/31/23 @ 03:45 PM | best objective value: 0.0987
+10/31/23 @ 03:45 PM | polishing produced 5 integer solutions
+10/31/23 @ 03:45 PM | initialization produced 12 feasible solutions
+10/31/23 @ 03:45 PM | best objective value: 0.0657
+10/31/23 @ 03:45 PM | ------------------------------------------------------------
+10/31/23 @ 03:45 PM | completed initialization procedure
+10/31/23 @ 03:45 PM | ------------------------------------------------------------
+10/31/23 @ 03:45 PM | 711 rows in lookup table
+10/31/23 @ 03:45 PM | adding 818 initial cuts
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1334: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
++----------------------------------------------+-------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                   |           |
+| ============================================ | ================= | ========= |
+| avgDays10                                    |          2 points |   + ..... |
+| avgDays25                                    |          2 points |   + ..... |
+| ever_switch_drug                             |          1 points |   + ..... |
+| num_presc2                                   |         -1 points |   + ..... |
+| MME_diff10                                   |         -1 points |   + ..... |
+| Codeine                                      |         -1 points |   + ..... |
+| ============================================ | ================= | ========= |
+| ADD POINTS FROM ROWS 1 to 6                  |             SCORE |   = ..... |
++----------------------------------------------+-------------------+-----------+
+1328.0 seconds

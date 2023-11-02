@@ -194,7 +194,7 @@ def test_table_full(year, output_table=False, roc=False, calibration=False, data
 # ========================================================================================
 
 
-def test_table_temp(year, output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+def test_table_temp(year, intercept='temp', output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     
     SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
@@ -207,7 +207,21 @@ def test_table_temp(year, output_table=False, roc=False, calibration=False, data
     x = SAMPLE
     y = SAMPLE[['long_term_180']].to_numpy().astype('int')
     
-    x['Prob'] = x.apply(compute_score_full_temp, axis=1)
+
+    if intercept == 'flexible':
+        x['Prob'] = x.apply(compute_score_full_flexible, axis=1)
+    elif intercept == 'fixed0':
+        x['Prob'] = x.apply(compute_score_full_fixed, axis=1)
+    elif intercept == 'flexible_original':
+        x['Prob'] = x.apply(compute_score_full_flexible_original, axis=1)
+    elif intercept == 'fixed0_original':
+        x['Prob'] = x.apply(compute_score_full_fixed_original, axis=1)
+    elif intercept == 'flexible_original_20':
+        x['Prob'] = x.apply(compute_score_full_flexible_original_20, axis=1)
+    else:
+        x['Prob'] = x.apply(compute_score_full_temp, axis=1)
+    
+
     x['Pred'] = (x['Prob'] > 0.5)
     y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
     
@@ -218,11 +232,11 @@ def test_table_temp(year, output_table=False, roc=False, calibration=False, data
                 "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
     results = pd.DataFrame.from_dict(results, orient='index', columns=['Test'])
     results = results.T
-    results.to_csv(f'{resultdir}results_test_{str(year)}_LTOUR_temp.csv')
+    results.to_csv(f'{resultdir}results_test_{str(year)}_LTOUR_{intercept}.csv')
 
     if output_table: store_predicted_table(year, 'LTOUR', SAMPLE, x, 'one')
     if roc: compute_roc(y, y_prob, y_pred, resultdir)
-    if calibration: compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_temp')
+    if calibration: compute_calibration(x, y, y_prob, y_pred, resultdir, f'LTOUR_{intercept}')
 
     return
 
@@ -409,6 +423,274 @@ def compute_score_full_temp(row):
 
 
 
+def compute_score_full_flexible(row):
+
+    '''
+    +----------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(-1 + score))   |                   |           |
+    | ============================================ | ================= | ========= |
+    | avgDays21                                    |          3 points |   + ..... |
+    | avgDays10                                    |          2 points |   + ..... |
+    | ever_switch_drug                             |          1 points |   + ..... |
+    | concurrent_MME10                             |         -1 points |   + ..... |
+    | num_presc4                                   |         -2 points |   + ..... |
+    | ============================================ | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 5                  |             SCORE |   = ..... |
+    +----------------------------------------------+-------------------+-----------+
+    '''
+
+    score = 0
+    intercept = -1
+    
+    
+    if row['avgDays'] >= 21:
+        score += 3
+    if row['avgDays'] >= 10:
+        score += 2
+    if row['ever_switch_drug'] >= 1:
+        score += 1
+    if row['concurrent_MME'] >= 10:
+        score -= -1
+    if row['num_presc'] >= 4:
+        score -= 2
+    
+    return 1 / (1+np.exp(-(score + intercept)))
+
+
+
+def compute_score_full_fixed(row):
+
+    '''
+    +---------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(0 + score))   |                   |           |
+    | =========================================== | ================= | ========= |
+    | avgDays14                                   |          3 points |   + ..... |
+    | concurrent_MME35                            |          1 points |   + ..... |
+    | avgDays25                                   |          1 points |   + ..... |
+    | Codeine                                     |         -1 points |   + ..... |
+    | concurrent_MME15                            |         -2 points |   + ..... |
+    | num_presc10                                 |         -3 points |   + ..... |
+    | =========================================== | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 6                 |             SCORE |   = ..... |
+    +---------------------------------------------+-------------------+-----------+
+    '''
+
+    score = 0
+    intercept = 0
+    
+    if row['avgDays'] >= 14:
+        score += 3
+    if row['concurrent_MME'] >= 35:
+        score += 1
+    if row['avgDays'] >= 25:
+        score += 1
+    if row['drug'] == 'Codeine':
+        score -= 1
+    if row['concurrent_MME'] >= 15:
+        score -= 2
+    if row['num_presc'] >= 10:
+        score -= 3
+    
+    return 1 / (1+np.exp(-(score + intercept)))
+
+
+
+def compute_score_full_flexible_original(row):
+
+    '''
+    +----------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                   |           |
+    | ============================================ | ================= | ========= |
+    | avgDays10                                    |          2 points |   + ..... |
+    | avgDays25                                    |          2 points |   + ..... |
+    | ever_switch_drug                             |          1 points |   + ..... |
+    | num_presc2                                   |         -1 points |   + ..... |
+    | MME_diff10                                   |         -1 points |   + ..... |
+    | Codeine                                      |         -1 points |   + ..... |
+    | ============================================ | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 6                  |             SCORE |   = ..... |
+    +----------------------------------------------+-------------------+-----------+
+
+    c = 1e-8
+    +----------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(-4 + score))   |                   |           |
+    | ============================================ | ================= | ========= |
+    | avgDays7                                     |          2 points |   + ..... |
+    | avgDays25                                    |          2 points |   + ..... |
+    | concurrent_MME20                             |          1 points |   + ..... |
+    | concurrent_benzo1                            |          1 points |   + ..... |
+    | quantity50                                   |          1 points |   + ..... |
+    | concurrent_MME15                             |         -1 points |   + ..... |
+    | MME_diff1                                    |         -1 points |   + ..... |
+    | Codeine                                      |         -1 points |   + ..... |
+    | quantity10                                   |         -2 points |   + ..... |
+    | num_presc3                                   |         -2 points |   + ..... |
+    | ============================================ | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 10                 |             SCORE |   = ..... |
+    +----------------------------------------------+-------------------+-----------+
+
+    '''
+
+    # score = 0
+    # intercept = -5
+    
+    # if row['avgDays'] >= 10:
+    #     score += 2
+    # if row['avgDays'] >= 25:
+    #     score += 2
+    # if row['ever_switch_drug'] >= 1:
+    #     score += 1
+    # if row['num_presc'] >= 2:
+    #     score -= 1
+    # if row['MME_diff'] >= 10:
+    #     score -= 1
+    # if row['drug'] == 'Codeine':
+    #     score -= 1
+
+
+    score = 0
+    intercept = -4
+
+    if row['avgDays'] >= 7:
+        score += 2
+    if row['avgDays'] >= 25:
+        score += 2
+    if row['concurrent_MME'] >= 20:
+        score += 1
+    if row['concurrent_benzo'] >= 1:
+        score += 1
+    if row['quantity'] >= 50:
+        score += 1
+    if row['concurrent_MME'] >= 15:
+        score -= 1
+    if row['MME_diff'] >= 1:
+        score -= 1
+    if row['drug'] == 'Codeine':
+        score -= 1
+    if row['quantity'] >= 10:
+        score -= 2
+    if row['num_presc'] >= 3:
+        score -= 2
+
+    
+    return 1 / (1+np.exp(-(score + intercept)))
+
+
+
+
+def compute_score_full_fixed_original(row):
+
+    '''
+    +---------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(0 + score))   |                   |           |
+    | =========================================== | ================= | ========= |
+    | avgDays21                                   |          3 points |   + ..... |
+    | ever_switch_drug                            |          2 points |   + ..... |
+    | days_diff1                                  |          1 points |   + ..... |
+    | concurrent_MME25                            |         -1 points |   + ..... |
+    | MME_diff10                                  |         -1 points |   + ..... |
+    | CashCredit                                  |         -1 points |   + ..... |
+    | concurrent_MME10                            |         -2 points |   + ..... |
+    | num_presc2                                  |         -2 points |   + ..... |
+    | avgDays3                                    |         -2 points |   + ..... |
+    | Codeine                                     |         -2 points |   + ..... |
+    | =========================================== | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 10                |             SCORE |   = ..... |
+    +---------------------------------------------+-------------------+-----------+
+    '''
+
+    score = 0
+    intercept = 0
+    
+    if row['avgDays'] >= 21:
+        score += 3
+    if row['ever_switch_drug'] >= 1:
+        score += 2
+    if row['days_diff'] >= 1:
+        score += 1
+    if row['concurrent_MME'] >= 25:
+        score -= 1
+    if row['MME_diff'] >= 10:
+        score -= 1
+    if row['payment'] == 'CashCredit':
+        score -= 1
+    if row['concurrent_MME'] >= 10:
+        score -= 2
+    if row['num_presc'] >= 2:
+        score -= 2
+    if row['avgDays'] >= 3:
+        score -= 2
+    if row['drug'] == 'Codeine':
+        score -= 2
+    
+    return 1 / (1+np.exp(-(score + intercept)))
+
+
+
+
+def compute_score_full_flexible_original_20(row):
+
+    '''
+    +----------------------------------------------+-------------------+-----------+
+    | Pr(Y = +1) = 1.0/(1.0 + exp(-(-4 + score))   |                   |           |
+    | ============================================ | ================= | ========= |
+    | avgDays90                                    |          5 points |   + ..... |
+    | avgDays10                                    |          3 points |   + ..... |
+    | concurrent_MME30                             |          2 points |   + ..... |
+    | num_pharmacies4                              |          2 points |   + ..... |
+    | avgDays30                                    |          2 points |   + ..... |
+    | num_prescribers4                             |          1 points |   + ..... |
+    | num_prescribers6                             |         -1 points |   + ..... |
+    | num_pharmacies5                              |         -1 points |   + ..... |
+    | num_presc2                                   |         -1 points |   + ..... |
+    | num_presc5                                   |         -1 points |   + ..... |
+    | num_presc15                                  |         -1 points |   + ..... |
+    | num_prescribers7                             |         -2 points |   + ..... |
+    | num_presc1                                   |         -3 points |   + ..... |
+    | num_prescribers9                             |         -5 points |   + ..... |
+    | num_prescribers10                            |         -5 points |   + ..... |
+    | ============================================ | ================= | ========= |
+    | ADD POINTS FROM ROWS 1 to 15                 |             SCORE |   = ..... |
+    +----------------------------------------------+-------------------+-----------+
+    '''
+
+    score = 0
+    intercept = -4
+    
+    if row['avgDays'] >= 90:
+        score += 5
+    if row['avgDays'] >= 10:
+        score += 3
+    if row['concurrent_MME'] >= 30:
+        score += 2
+    if row['num_pharmacies'] >= 4:
+        score += 2
+    if row['avgDays'] >= 30:
+        score += 2
+    if row['num_prescribers'] >= 4:
+        score += 1
+    if row['num_prescribers'] >= 6:
+        score -= 1
+    if row['num_pharmacies'] >= 5:
+        score -= 1
+    if row['num_presc'] >= 2:
+        score -= 1
+    if row['num_presc'] >= 5:
+        score -= 1
+    if row['num_presc'] >= 15:
+        score -= 1
+    if row['num_prescribers'] >= 7:
+        score -= 2 
+    if row['num_presc'] >= 1:
+        score -= 3
+    if row['num_prescribers'] >= 9:
+        score -= 5
+    if row['num_prescribers'] >= 10:
+        score -= 5 
+    
+    return 1 / (1+np.exp(-(score + intercept)))
+
+
 
 # ========================================================================================
 # ========================================================================================
@@ -547,7 +829,7 @@ def compute_calibration(x, y, y_prob, y_pred, resultdir, case):
         
         # prescription-level results 
         accuracy = round(accuracy_score(y_temp, y_pred_temp), 4)
-        TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp).ravel() 
+        TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp, labels=[0,1]).ravel() 
         observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
         num_presc = TP + FP + FN + TP
 

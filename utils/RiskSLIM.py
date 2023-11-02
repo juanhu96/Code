@@ -85,7 +85,7 @@ def riskslim_accuracy(X, Y, feature_name, model_info, threshold=0.5):
 ###############################################################################################################################
 
     
-def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offset, 
+def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offset, intercept='flexible',
                         class_weight=None, new_constraints=None, new_constraints_multiple=None, essential_constraints=None,
                         max_runtime = 120, w_pos = 1):
     
@@ -106,18 +106,26 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
     """
     
     # create coefficient set and set the value of the offset parameter
-    coef_set = CoefficientSet(variable_names = data['variable_names'], lb = 0, ub = max_coefficient, sign = 0)
+    coef_set = CoefficientSet(variable_names = data['variable_names'], lb = -max_coefficient, ub = max_coefficient, sign = 0)
     # JH: get_conservative_offset is not defined
     # conservative_offset = get_conservative_offset(data, coef_set, max_L0_value)   
     # max_offset = min(max_offset, conservative_offset)
 
-    '''
-    coef_set['(Intercept)'].ub = max_offset
-    coef_set['(Intercept)'].lb = -max_offset
-    '''
-    coef_set['(Intercept)'].lb = -max_offset-0.5 # JH: if we have ub first this would lead to assertion error
-    coef_set['(Intercept)'].ub = -max_offset+0.5
+    if intercept == 'fixed':
+        coef_set['(Intercept)'].lb = -max_offset-0.5
+        coef_set['(Intercept)'].ub = -max_offset+0.5
 
+    elif intercept == 'fixed0':
+        print("******************* FIXED 0 *******************")
+        coef_set['(Intercept)'].lb = -0.5
+        coef_set['(Intercept)'].ub = 0.5
+    
+    else:
+        print("******************* FLEXIBLE *******************")
+        coef_set['(Intercept)'].ub = max_offset
+        coef_set['(Intercept)'].lb = -max_offset
+
+    
     # coef_set.update_intercept_bounds(X = data['X'], y = data['Y'], max_offset = max_offset)
     
     constraints = {
@@ -318,6 +326,7 @@ def risk_nested_cv_constrain(X,
                              class_weight = None,
                              new_constraints = None,
                              new_constraints_multiple = None,
+                             intercept='flexible',
                              fairness_indicator = 0,
                              y_alert_1=None, 
                              y_alert_2=None,
@@ -458,7 +467,8 @@ def risk_nested_cv_constrain(X,
                                                                       max_offset=max_offset,
                                                                       class_weight=class_weight,
                                                                       new_constraints=new_constraints,
-                                                                      new_constraints_multiple=new_constraints_multiple)
+                                                                      new_constraints_multiple=new_constraints_multiple,
+                                                                      intercept=intercept)
                 
                 ## check validation auc
                 validation_x = validation_x[:,1:] ## remove the first column, which is "intercept"
@@ -523,7 +533,8 @@ def risk_nested_cv_constrain(X,
                                                               max_offset=max_offset,
                                                               class_weight=class_weight,
                                                               new_constraints=new_constraints,
-                                                              new_constraints_multiple=new_constraints_multiple)
+                                                              new_constraints_multiple=new_constraints_multiple,
+                                                              intercept=intercept)
         
         print_model(model_info['solution'], new_train_data)  
 

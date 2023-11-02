@@ -11,53 +11,47 @@ import pandas as pd
 import utils.stumps as stumps
 
 
-feature_list = ['age', 'quantity', 'days_supply', 'concurrent_MME', 'concurrent_methadone_MME', 
-'num_prescribers', 'num_pharmacies', 'concurrent_benzo', 'consecutive_days', 'num_presc', 
-'MME_diff', 'days_diff', 'quantity_diff', 'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 
-'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME', 'avgMME', 'avgDays']
+LTOUR_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
+'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
+'quantity', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',\
+'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',\
+'num_presc', 'avgDays', 'MME_diff', 'quantity_diff', 'days_diff',\
+'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
+
+stumps_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
+'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
+'quantity', 'num_presc', 'avgDays', 'MME_diff', 'quantity_diff', 'days_diff']
 
 
-
-def create_stumps(year, feature_list=feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
-    
-    '''
-    year = 2019
-    '''
+def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stumps_feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
         
     FULL = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_INPUT_UPTOFIRST.csv', delimiter = ",",\
     dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 'num_prescribers': int,\
     'num_pharmacies': int, 'concurrent_benzo': int, 'consecutive_days': int}).fillna(0)
 
-    
-    FULL = FULL[FULL.columns.drop(list(FULL.filter(regex='alert')))] # drop columns start with alert
-    FULL = FULL.drop(columns = ['drug_payment'])
-    x_all = FULL[feature_list]
+    FULL = FULL[feature_list]
 
     cutoffs = []
-    for column_name in x_all.columns:
-        if column_name == 'age':
-            cutoffs.append([18, 25, 30, 40, 50, 60, 70, 80, 90])
-        elif column_name == 'quantity':
-            cutoffs.append([10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300])
-        elif column_name == 'days_supply':
-            cutoffs.append([1, 3, 5, 7, 10, 14, 21, 25, 30])
-        elif column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME':
+    for column_name in FULL.columns:
+        if column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME':
             cutoffs.append([10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100, 200, 300])
         elif column_name == 'num_prescribers' or column_name == 'num_pharmacies':
-            cutoffs.append([n for n in range(1, 11)])
+            cutoffs.append([n for n in range(2, 11)])
         elif column_name == 'concurrent_benzo':
             cutoffs.append([1])
         elif column_name == 'consecutive_days':
             cutoffs.append([1, 3, 5, 7, 10, 14, 21, 25, 30, 60, 90])
+        elif column_name == 'quantity':
+            cutoffs.append([10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300])
         elif column_name == 'num_presc':
             cutoffs.append([1, 2, 3, 4, 5, 6, 10, 15])
-        elif column_name == 'MME_diff' or column_name == 'quantity_diff':
-            cutoffs.append([10, 25, 50, 75, 100, 150])
-        elif column_name == 'days_diff':
-            cutoffs.append([1, 3, 5, 7, 10, 14, 21, 25, 30])
+        elif column_name == 'avgDays':
+            cutoffs.append([3, 5, 7, 10, 14, 21, 25, 30, 60, 90])
+        elif column_name == 'MME_diff' or column_name == 'quantity_diff' or column_name == 'days_diff':
+            cutoffs.append([1])
         else:
-            cutoffs.append([10, 20, 30, 40, 50, 75, 100, 200, 300]) # interaction MMEs
-        
+            pass
+
 
     ## Divide into 20 folds
     N = 20
@@ -65,14 +59,17 @@ def create_stumps(year, feature_list=feature_list, datadir='/mnt/phd/jihu/opioid
     for i in range(N):
 
         FULL_fold = FULL_splited[i]        
-        x = FULL_fold[feature_list]
+
+        x = FULL_fold[stumps_feature_list]
         x_stumps = stumps.create_stumps(x.values, x.columns, cutoffs)
-        x_rest = FULL_fold[FULL_fold.columns.drop(feature_list)]
+
+        x_rest = FULL_fold[FULL_fold.columns.drop(stumps_feature_list)]
         
         new_data = pd.concat([x_stumps.reset_index(drop=True), x_rest.reset_index(drop=True)], axis = 1)
-        print(new_data.shape)
         new_data.to_csv(f'{datadir}FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', header=True, index=False)
-        
+    
+    print("Done!\n")
+    
     return     
 
 
@@ -81,7 +78,7 @@ def create_stumps(year, feature_list=feature_list, datadir='/mnt/phd/jihu/opioid
 
     
 
-def create_intervals(year, scenario='flexible', feature_list=feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
+def create_intervals(year, scenario='flexible', feature_list=LTOUR_feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
     
     '''
     Create intervals stumps for the dataset
