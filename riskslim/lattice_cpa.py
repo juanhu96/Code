@@ -23,8 +23,7 @@ DEFAULT_BOUNDS = {
 
 
 # LATTICE CPA FUNCTIONS
-def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, new_constraints = None,
-                    new_constraints_multiple = None, essential_constraints = None):
+def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, single_cutoff=None, two_cutoffs=None, three_cutoffs=None):
     """
 
     Parameters
@@ -39,73 +38,51 @@ def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, new_con
     """
 
     mip_objects = setup_lattice_cpa(data, constraints, settings)
+
     
     # =====================================================================
 
 
-    ### add operational constraints
-    if new_constraints != None:        
+    if single_cutoff is not None:        
         mip, indices = mip_objects['mip'], mip_objects['indices']
         get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
         get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
-
-        # to add a constraint like "either "CellSize" or "CellShape"
-        # you must formulate the constraint in terms of the alpha variables
-        # alpha[cell_size] + alpha[cell_shape] <= 1 to MIP
         
-        ### JH: new way to add constraints of >= 2?
-        for constraint in new_constraints:
+        for constraint in single_cutoff:
             mip.linear_constraints.add(
                 names = [("Either" + constraint[0] + "Or" + constraint[1])],
                 lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "L",
                 rhs = [1.0])
-        
-        mip_objects['mip'] = mip
-        
-    if essential_constraints != None:
+
+            
+    if two_cutoffs is not None:
         mip, indices = mip_objects['mip'], mip_objects['indices']
         get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
         get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
         
-        for constraint in essential_constraints:  
-            print(constraint)
-            print(get_alpha_ind(constraint))
-            mip.linear_constraints.add(
-                names = ["at least one"],
-                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
-                senses = "E",
-                rhs = [1.0])
-            
-            mip.linear_constraints.add(
-                names = ["at least one L"],
-                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [-1.0]*len(constraint))],
-                senses = "L",
-                rhs = [-1.0])
-            
-            mip.linear_constraints.add(
-                names = ["at least one G"],
-                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
-                senses = "G",
-                rhs = [1.0])
-        
-        mip_objects['mip'] = mip
-            
-    if new_constraints_multiple != None:
-        mip, indices = mip_objects['mip'], mip_objects['indices']
-        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
-        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
-        
-        for constraint in new_constraints_multiple:
+        for constraint in two_cutoffs:
             mip.linear_constraints.add(
                 names = ["At most two cutoffs"],
                 lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "L",
                 rhs = [2.0])
+
+
+    if three_cutoffs is not None:
+        mip, indices = mip_objects['mip'], mip_objects['indices']
+        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
+        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
         
-        mip_objects['mip'] = mip
-                    
-        # mip_objects['mip'] = mip
+        for constraint in three_cutoffs:
+            mip.linear_constraints.add(
+                names = ["At most three cutoffs"],
+                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
+                senses = "L",
+                rhs = [3.0])
+
+        
+    mip_objects['mip'] = mip
     
     
     # pass MIP back to lattice CPA so that it will solve

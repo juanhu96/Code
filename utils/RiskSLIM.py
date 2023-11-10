@@ -85,9 +85,17 @@ def riskslim_accuracy(X, Y, feature_name, model_info, threshold=0.5):
 ###############################################################################################################################
 
     
-def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offset, intercept='flexible',
-                        class_weight=None, new_constraints=None, new_constraints_multiple=None, essential_constraints=None,
-                        max_runtime = 120, w_pos = 1):
+def risk_slim_constrain(data,
+                        max_coefficient,
+                        max_L0_value,
+                        c0_value, 
+                        max_offset, 
+                        class_weight='unbalanced', 
+                        single_cutoff=None,
+                        two_cutoffs=None,
+                        three_cutoffs=None,
+                        max_runtime=120, 
+                        w_pos=1):
     
     """
     @parameters:
@@ -106,27 +114,12 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
     """
     
     # create coefficient set and set the value of the offset parameter
-    coef_set = CoefficientSet(variable_names = data['variable_names'], lb = -max_coefficient, ub = max_coefficient, sign = 0)
-    # JH: get_conservative_offset is not defined
-    # conservative_offset = get_conservative_offset(data, coef_set, max_L0_value)   
-    # max_offset = min(max_offset, conservative_offset)
-
-    if intercept == 'fixed':
-        coef_set['(Intercept)'].lb = -max_offset-0.5
-        coef_set['(Intercept)'].ub = -max_offset+0.5
-
-    elif intercept == 'fixed0':
-        print("******************* FIXED 0 *******************")
-        coef_set['(Intercept)'].lb = -0.5
-        coef_set['(Intercept)'].ub = 0.5
-    
-    else:
-        print("******************* FLEXIBLE *******************")
-        coef_set['(Intercept)'].ub = max_offset
-        coef_set['(Intercept)'].lb = -max_offset
-
-    
-    # coef_set.update_intercept_bounds(X = data['X'], y = data['Y'], max_offset = max_offset)
+    coef_set = CoefficientSet(variable_names = data['variable_names'], lb = 0, ub = max_coefficient, sign = 0)
+    # coef_set['MME_diff1'].lb = 0
+    # coef_set['quantity_diff1'].lb = 0
+    # coef_set['days_diff1'].lb = 0
+    coef_set['(Intercept)'].ub = max_offset
+    coef_set['(Intercept)'].lb = -max_offset
     
     constraints = {
         'L0_min': 0,
@@ -134,6 +127,7 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
         'coef_set':coef_set,
     }
     
+
     # Jingyuan: scale positive weight if balanced training
     if class_weight == 'balanced':
         w_pos = sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
@@ -143,9 +137,10 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
         w_pos = 4 * sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
     elif class_weight == 'positive_4':
         w_pos = 8 * sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
-        
-    print('The weight is for positive' + str(w_pos))
+    else:
+        print("Unbalanced training\n")
     
+
     # Set parameters
     settings = {
         # Problem Parameters
@@ -177,12 +172,10 @@ def risk_slim_constrain(data, max_coefficient, max_L0_value, c0_value, max_offse
     
 
     # train model using lattice_cpa
-    model_info, mip_info, lcpa_info = run_lattice_cpa(data, constraints, settings, 
-                                                      new_constraints=new_constraints,
-                                                      new_constraints_multiple=new_constraints_multiple,
-                                                      essential_constraints=essential_constraints)
+    model_info, mip_info, lcpa_info = run_lattice_cpa(data, constraints, settings, single_cutoff=single_cutoff, two_cutoffs=two_cutoffs, three_cutoffs=three_cutoffs)
         
     return model_info, mip_info, lcpa_info
+
 
 
 def risk_cv_constrain(X, 
