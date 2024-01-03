@@ -1,0 +1,42 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:66: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start training with single, points 5, features 10, c = 1e-15, file saved with name 5
+
+1e-15
+Start training 2018singleLTOUR
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 10:14 PM | 461 rows in lookup table
+12/14/23 @ 10:15 PM | ------------------------------------------------------------
+12/14/23 @ 10:15 PM | runnning initialization procedure
+12/14/23 @ 10:15 PM | ------------------------------------------------------------
+12/14/23 @ 10:16 PM | CPA produced 2 cuts
+12/14/23 @ 10:16 PM | running naive rounding on 59 solutions
+12/14/23 @ 10:16 PM | best objective value: 0.0675
+12/14/23 @ 10:16 PM | rounding produced 0 integer solutions
+12/14/23 @ 10:16 PM | running sequential rounding on 59 solutions
+12/14/23 @ 10:16 PM | best objective value: 0.0675
+12/14/23 @ 10:16 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 10:16 PM | initialization produced 0 feasible solutions
+12/14/23 @ 10:16 PM | ------------------------------------------------------------
+12/14/23 @ 10:16 PM | completed initialization procedure
+12/14/23 @ 10:16 PM | ------------------------------------------------------------
+12/14/23 @ 10:16 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 10:16 PM | adding 288 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score)))  |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+356.1 seconds
+None
+The best c is None
+

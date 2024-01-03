@@ -15,12 +15,12 @@ LTOUR_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescri
 'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
 'quantity', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',\
 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',\
-'num_presc', 'avgDays', 'MME_diff', 'quantity_diff', 'days_diff',\
+'num_prior_presc', 'avgDays', 'diff_MME', 'diff_quantity', 'diff_days',\
 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
 
 stumps_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
 'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
-'quantity', 'num_presc', 'avgDays', 'MME_diff', 'quantity_diff', 'days_diff']
+'quantity', 'num_prior_presc', 'avgDays', 'diff_MME', 'diff_quantity', 'diff_days']
 
 
 def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stumps_feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
@@ -29,6 +29,7 @@ def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stu
     dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 'num_prescribers': int,\
     'num_pharmacies': int, 'concurrent_benzo': int, 'consecutive_days': int}).fillna(0)
 
+    FULL.rename(columns={'num_presc':'num_prior_presc', 'quantity_diff': 'diff_quantity', 'MME_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
     FULL = FULL[feature_list]
 
     cutoffs = []
@@ -43,11 +44,11 @@ def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stu
             cutoffs.append([1, 3, 5, 7, 10, 14, 21, 25, 30, 60, 90])
         elif column_name == 'quantity':
             cutoffs.append([10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300])
-        elif column_name == 'num_presc':
-            cutoffs.append([1, 2, 3, 4, 5, 6, 10, 15])
+        elif column_name == 'num_prior_presc':
+            cutoffs.append([2]) # prior prescription or not
         elif column_name == 'avgDays':
-            cutoffs.append([3, 5, 7, 10, 14, 21, 25, 30, 60, 90])
-        elif column_name == 'MME_diff' or column_name == 'quantity_diff' or column_name == 'days_diff':
+            cutoffs.append([3, 5, 7, 10, 14, 21, 25, 30, 60])
+        elif column_name == 'diff_MME' or column_name == 'diff_quantity' or column_name == 'diff_days':
             cutoffs.append([1])
         else:
             pass

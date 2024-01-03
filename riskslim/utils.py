@@ -253,6 +253,7 @@ def print_model(rho, data,  show_omitted_variables = False):
     m.align["Tally"] = "r"
 
     print(m)
+    print(intercept_val, rho_names, rho_values)
     return m
 
 

@@ -12,14 +12,14 @@ year = 2019 # out-sample
 
 ## CURES
 case = 'CURES'
-CURES_fpr = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fpr.csv', delimiter = ",", dtype = float)
-CURES_tpr = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tpr.csv', delimiter = ",", dtype = float)
-CURES_threshold = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_thresholds.csv', delimiter = ",", dtype = float)
+CURES_fpr = np.genfromtxt(f'{resultdir}{case}_test_fpr.csv', delimiter = ",", dtype = float)
+CURES_tpr = np.genfromtxt(f'{resultdir}{case}_test_tpr.csv', delimiter = ",", dtype = float)
+CURES_threshold = np.genfromtxt(f'{resultdir}{case}_test_thresholds.csv', delimiter = ",", dtype = float)
 
-CURES_tp = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tp.csv', delimiter = ",", dtype = float)
-CURES_tn = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tn.csv', delimiter = ",", dtype = float)
-CURES_fp = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fp.csv', delimiter = ",", dtype = float)
-CURES_fn = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fn.csv', delimiter = ",", dtype = float)
+CURES_tp = np.genfromtxt(f'{resultdir}{case}_tp.csv', delimiter = ",", dtype = float)
+CURES_tn = np.genfromtxt(f'{resultdir}{case}_tn.csv', delimiter = ",", dtype = float)
+CURES_fp = np.genfromtxt(f'{resultdir}{case}_fp.csv', delimiter = ",", dtype = float)
+CURES_fn = np.genfromtxt(f'{resultdir}{case}_fn.csv', delimiter = ",", dtype = float)
 
 CURES_fpr = np.append(0, CURES_fpr)
 CURES_fpr = np.append(CURES_fpr, 1)
@@ -29,14 +29,14 @@ CURES_tpr = np.append(CURES_tpr, 1)
 
 # LTOUR
 case = 'LTOUR'
-LTOUR_fpr = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fpr.csv', delimiter = ",", dtype = float)
-LTOUR_tpr = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tpr.csv', delimiter = ",", dtype = float)
-LTOUR_threshold = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_thresholds.csv', delimiter = ",", dtype = float)
+LTOUR_fpr = np.genfromtxt(f'{resultdir}{case}_test_fpr.csv', delimiter = ",", dtype = float)
+LTOUR_tpr = np.genfromtxt(f'{resultdir}{case}_test_tpr.csv', delimiter = ",", dtype = float)
+LTOUR_threshold = np.genfromtxt(f'{resultdir}{case}_test_thresholds.csv', delimiter = ",", dtype = float)
 
-LTOUR_tp = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tp.csv', delimiter = ",", dtype = float)
-LTOUR_tn = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_tn.csv', delimiter = ",", dtype = float)
-LTOUR_fp = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fp.csv', delimiter = ",", dtype = float)
-LTOUR_fn = np.genfromtxt(f'{resultdir}result_{str(year)}_{case}_single_balanced_fn.csv', delimiter = ",", dtype = float)
+LTOUR_tp = np.genfromtxt(f'{resultdir}{case}_tp.csv', delimiter = ",", dtype = float)
+LTOUR_tn = np.genfromtxt(f'{resultdir}{case}_tn.csv', delimiter = ",", dtype = float)
+LTOUR_fp = np.genfromtxt(f'{resultdir}{case}_fp.csv', delimiter = ",", dtype = float)
+LTOUR_fn = np.genfromtxt(f'{resultdir}{case}_fn.csv', delimiter = ",", dtype = float)
 
 
 ################################################################################################
@@ -48,7 +48,7 @@ fig, ax = plt.subplots(figsize=(8, 8))
 ax.set_aspect('equal')
 
 plt.plot(CURES_fpr, CURES_tpr, linestyle='solid', color='red', label="CURES (AUC = 0.533)" )
-plt.plot(LTOUR_fpr, LTOUR_tpr, linestyle='solid', color='blue', label="LTOUR (AUC = 0.861)")
+plt.plot(LTOUR_fpr, LTOUR_tpr, linestyle='solid', color='blue', label="LTOUR (AUC = 0.832)")
 
 # specificity (true negative rate)
 plt.xlabel("1 - Specificity (false positive rate)", fontsize=22)
@@ -61,9 +61,9 @@ plt.yticks(fontsize=20)
 #          [CURES_tpr[5], CURES_tpr[8]], 'o', markersize=8)
 # plt.text(CURES_fpr[5] + 0.02, CURES_tpr[5] - 0.03, "A", fontsize=24)
 # plt.text(CURES_fpr[8] + 0.02, CURES_tpr[8] + 0.03, "B", fontsize=24)
-plt.plot([CURES_fpr[5]],
-         [CURES_tpr[5]], 'o', color='red', markersize=8)
-plt.text(CURES_fpr[5] + 0.02, CURES_tpr[5] - 0.02, "A", fontsize=24)
+plt.plot([CURES_fpr[6]],
+         [CURES_tpr[6]], 'o', color='red', markersize=8)
+plt.text(CURES_fpr[6] + 0.02, CURES_tpr[6] - 0.02, "A", fontsize=24)
 
 # LTOUR
 # plt.plot([LTOUR_fpr[5], LTOUR_fpr[8]],

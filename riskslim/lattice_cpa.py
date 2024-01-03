@@ -12,6 +12,8 @@ from .mip import add_mip_starts, convert_to_risk_slim_cplex_solution, create_ris
 from .setup_functions import get_loss_bounds, setup_loss_functions, setup_objective_functions, setup_penalty_parameters
 from .solution_pool import SolutionPool, FastSolutionPool
 
+import sys
+
 DEFAULT_BOUNDS = {
     'objval_min': 0.0,
     'objval_max': float('inf'),
@@ -23,7 +25,8 @@ DEFAULT_BOUNDS = {
 
 
 # LATTICE CPA FUNCTIONS
-def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, single_cutoff=None, two_cutoffs=None, three_cutoffs=None):
+def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, 
+single_cutoff=None, two_cutoffs=None, three_cutoffs=None, four_cutoffs=None, essential_cutoffs=None):
     """
 
     Parameters
@@ -37,7 +40,8 @@ def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, single_
 
     """
 
-    mip_objects = setup_lattice_cpa(data, constraints, settings)
+    # mip_objects = setup_lattice_cpa(data, constraints, settings)
+    mip_objects = setup_lattice_cpa(data, constraints, settings, essential_cutoffs)
 
     
     # =====================================================================
@@ -50,7 +54,7 @@ def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, single_
         
         for constraint in single_cutoff:
             mip.linear_constraints.add(
-                names = [("Either" + constraint[0] + "Or" + constraint[1])],
+                names = [("At most one cutoff")],
                 lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "L",
                 rhs = [1.0])
@@ -81,17 +85,43 @@ def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, single_
                 senses = "L",
                 rhs = [3.0])
 
+
+    if four_cutoffs is not None:
+        mip, indices = mip_objects['mip'], mip_objects['indices']
+        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
+        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
         
+        for constraint in four_cutoffs:
+            mip.linear_constraints.add(
+                names = ["At most four cutoffs"],
+                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
+                senses = "L",
+                rhs = [4.0])
+
+
+    if essential_cutoffs is not None:
+        mip, indices = mip_objects['mip'], mip_objects['indices']
+        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
+        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
+        
+        for constraint in essential_cutoffs:
+            mip.linear_constraints.add(
+                names = ["At least one cutoff (Greater)"],
+                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
+                senses = "G",
+                rhs = [1.0])
+
+
     mip_objects['mip'] = mip
     
     
     # pass MIP back to lattice CPA so that it will solve
-    model_info, mip_info, lcpa_info = finish_lattice_cpa(data, constraints, mip_objects, settings)
+    model_info, mip_info, lcpa_info = finish_lattice_cpa(data, constraints, mip_objects, settings, essential_cutoffs)
 
     return model_info, mip_info, lcpa_info
 
 
-def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS):
+def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None):
     """
 
     Parameters
@@ -144,8 +174,19 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS):
     L0_min = constraints['L0_min']
     L0_max = constraints['L0_max']
 
-    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub):
-        return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max)
+    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs):
+        
+        feasible = True
+        # NOTE: JH
+        for constraint in essential_cutoffs:
+            get_alpha_ind = lambda var_names: [v for v in var_names]
+            ind = get_alpha_ind(constraint)
+            ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
+            if not np.isclose(rho[ind_numeric].sum(), 1):
+                feasible = False
+                break
+        
+        return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max) and feasible
 
     # compute bounds on objective value
     bounds = dict(DEFAULT_BOUNDS)
@@ -179,7 +220,7 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS):
         }
     risk_slim_settings.update(bounds)
 
-    # run initialization procedure
+    # run initialization procedure (TODO: check this and modify)
     if lcpa_settings['initialization_flag']:
         initial_pool, initial_cuts, initial_bounds = initialize_lattice_cpa(Z = Z,
                                                                             c0_value = lcpa_settings['c0_value'],
@@ -194,15 +235,16 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS):
                                                                             compute_loss_from_scores_real = compute_loss_from_scores_real,
                                                                             get_objval = get_objval,
                                                                             get_L0_penalty = get_L0_penalty,
-                                                                            is_feasible = is_feasible)
+                                                                            is_feasible = is_feasible,
+                                                                            essential_cutoffs = essential_cutoffs,
+                                                                            data=data)
 
         if lcpa_settings['initial_bound_updates']:
             bounds.update(initial_bounds)
             risk_slim_settings.update(initial_bounds)
 
-
     # create risk_slim mip
-    risk_slim_mip, risk_slim_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings)
+    risk_slim_mip, risk_slim_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings, essential_cutoffs = essential_cutoffs, data=data)
     risk_slim_indices['C_0_nnz'] = C_0_nnz
     risk_slim_indices['L0_reg_ind'] = L0_reg_ind
 
@@ -218,7 +260,7 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS):
     return mip_objects
 
 
-def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_SETTINGS):
+def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None):
     """
 
     Parameters
@@ -263,20 +305,11 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
     # data
     N, P = Z.shape
 
-    '''
-    Jingyuan: also important here, c0_value is just simply lcpa_settings['c0_value']
-    But what is C_0_nnz?
-    '''
-
     # trade-off parameter
     c0_value, C_0, L0_reg_ind, C_0_nnz = setup_penalty_parameters(c0_value = lcpa_settings['c0_value'],
                                                                   coef_set = constraints['coef_set'])
 
-    '''
-    Jingyuan: this is where set up objective functions? probably need to modify
-    setup_objective_functions()
-    '''
-     
+
     # setup function handles for key functions
     # major components
     (get_objval,
@@ -292,8 +325,17 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
     L0_max = constraints['L0_max']
     trivial_L0_max = np.sum(constraints['coef_set'].penalized_indices())
 
-    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub):
-        return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max)
+    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs):
+        feasible = True
+        # NOTE: JH
+        for constraint in essential_cutoffs:
+            get_alpha_ind = lambda var_names: [v for v in var_names]
+            ind = get_alpha_ind(constraint)
+            ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
+            if not np.isclose(rho[ind_numeric].sum(), 1):
+                feasible = False
+                break              
+        return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max) and feasible
 
     risk_slim_mip = set_cplex_mip_parameters(risk_slim_mip, cplex_settings, display_cplex_progress = lcpa_settings['display_cplex_progress'])
     risk_slim_mip.parameters.timelimit.set(lcpa_settings['max_runtime'])
@@ -345,7 +387,7 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
     heuristic_flag = lcpa_settings['round_flag'] or lcpa_settings['polish_flag']
 
     if heuristic_flag:
-
+        print("heuristic_flag\n")
         loss_cb = risk_slim_mip.register_callback(LossCallback)
         loss_cb.initialize(indices = indices,
                            control = control,
@@ -372,7 +414,8 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
                                 polishing_handle = polishing_handle,
                                 rounding_handle = rounding_handle)
 
-    else:
+    else: # RUNNING THIS HERE
+        print("register_callback\n")
         loss_cb = risk_slim_mip.register_callback(LossCallback)
         loss_cb.initialize(indices = indices,
                            control = control,
@@ -384,6 +427,7 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
 
     # attach solution pool
     if len(initial_pool) > 0:
+        print("attach solution pool\n")
         if lcpa_settings['polish_flag']:
             lcpa_polish_queue.add(initial_pool.objvals[0], initial_pool.solutions[0])
             # initialize using the polish_queue when possible since the CPLEX MIPStart interface is tricky
@@ -395,7 +439,49 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
 
     # solve using lcpa
     control['start_time'] = time.time()
-    risk_slim_mip.solve()
+    risk_slim_mip.solve() # NOTE: JH: this is where control['incumbent'] is actually being updated, but this is infeasible...
+
+    # x = risk_slim_mip.solution.get_values()
+    # x_rho = np.array(risk_slim_mip.solution.get_values(indices['rho']))
+    # x_alpha = np.array(risk_slim_mip.solution.get_values(indices['alpha']))
+    
+    # print("-" * 60)
+    # print(x_alpha)
+    # print(np.sum(x_alpha))
+    # print("-" * 60)
+    
+    # mapping = {f"alpha_{i}": data['variable_names'][i] for i in range(len(data['variable_names']))}
+    # mapping_rho = {f"rho_{i}": data['variable_names'][i] for i in range(len(data['variable_names']))}
+    # names_alpha = risk_slim_mip.variables.get_names(indices['alpha'])
+    # names_rho = risk_slim_mip.variables.get_names(indices['rho']).pop(0)
+
+    # for name, name_rho, value, point in zip(names_alpha, names_rho, x_alpha, x_rho):
+    #     # if value >= 1:
+    #     actual_name = mapping.get(name, "Unknown")
+    #     actual_name_rho = mapping_rho.get(name_rho, "Unknown")
+    #     print(f"{actual_name} {actual_name_rho} (CPLEX: {name}, {name_rho}): {value} with point {point}")
+
+    # print("-" * 60)
+
+    # for i in range(risk_slim_mip.linear_constraints.get_num()):
+    #     # Get the constraint expression
+    #     expression = risk_slim_mip.linear_constraints.get_rows(i)
+    #     sense = risk_slim_mip.linear_constraints.get_senses(i)
+    #     rhs = risk_slim_mip.linear_constraints.get_rhs(i)
+    
+    #     # Calculate the value of the expression using the solution
+    #     constraint_value = sum(coef * x[var_index] for var_index, coef in zip(expression.ind, expression.val))
+
+    #     if (sense == "L" and constraint_value > rhs) or \
+    #        (sense == "G" and constraint_value < rhs) or \
+    #        (sense == "E" and constraint_value != rhs):
+    #         print(f"Constraint {i} violated. Sense: {sense}, LHS: {constraint_value}, RHS: {rhs}")
+
+
+    # print("-" * 60)
+    # print(risk_slim_mip.solution.get_status_string())
+    # print("-" * 60)
+
     control['total_run_time'] = time.time() - control['start_time']
     control.pop('start_time')
 
@@ -413,6 +499,7 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
     control['total_callback_time'] = control['total_cut_callback_time'] + control['total_heuristic_callback_time']
     control['total_solver_time'] = control['total_run_time'] - control['total_callback_time']
     control['total_data_time'] = control['total_cut_time'] + control['total_polish_time'] + control['total_round_time'] + control['total_round_then_polish_time']
+
 
     # Output for Model
     model_info = {
@@ -598,19 +685,21 @@ class LossCallback(LazyConstraintCallback):
         if not is_integer(rho):
             rho = cast_to_integer(rho)
             alpha = self.get_alpha(rho)
+        
+        # return # NOTE: If we return from it still doesn't work
 
         # add cutting plane at integer feasible solution
         cut_start_time = time.time()
         loss_value = self.add_loss_cut(rho)
         cut_time = time.time() - cut_start_time
         cuts_added = 1
-
+        
         # if solution updates incumbent, then add solution to queue for polishing
         current_upperbound = float(loss_value + self.get_L0_penalty_from_alpha(alpha))
         incumbent_update = current_upperbound < self.control['upperbound']
 
         if incumbent_update:
-            self.control['incumbent'] = rho
+            self.control['incumbent'] = rho # NOTE: JH : the rho here are not even feasible
             self.control['upperbound'] = current_upperbound
             self.control['n_incumbent_updates'] += 1
 
@@ -766,7 +855,7 @@ class PolishAndRoundCallback(HeuristicCallback):
 
             incumbent_update = not np.array_equal(cplex_incumbent, self.control['incumbent'])
 
-            if incumbent_update:
+            if incumbent_update: # NOTE: JH: never show up here
                 self.control['incumbent'] = cplex_incumbent
                 self.control['n_incumbent_updates'] += 1
                 if cplex_rounding_issue:

@@ -1,7 +1,0 @@
-/mnt/phd/jihu/opioid/Code/risk_train.py:70: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
-  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
-Start training 2018singleLTOUR
-setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
-Unbalanced training
-
-11/10/23 @ 02:56 PM | 921 rows in lookup table

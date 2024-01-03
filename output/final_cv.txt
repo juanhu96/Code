@@ -1,0 +1,181 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:66: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start training with cv, points 5, features 10, c = 1e-15, file saved with name 5
+
+Start training 2018cvLTOUR
+Start training with c = 1e-06...
+
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 11:10 PM | 461 rows in lookup table
+12/14/23 @ 11:10 PM | ------------------------------------------------------------
+12/14/23 @ 11:10 PM | runnning initialization procedure
+12/14/23 @ 11:10 PM | ------------------------------------------------------------
+12/14/23 @ 11:11 PM | CPA produced 2 cuts
+12/14/23 @ 11:11 PM | running naive rounding on 66 solutions
+12/14/23 @ 11:11 PM | best objective value: 0.0674
+12/14/23 @ 11:11 PM | rounding produced 0 integer solutions
+12/14/23 @ 11:11 PM | running sequential rounding on 66 solutions
+12/14/23 @ 11:11 PM | best objective value: 0.0674
+12/14/23 @ 11:12 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 11:12 PM | initialization produced 0 feasible solutions
+12/14/23 @ 11:12 PM | ------------------------------------------------------------
+12/14/23 @ 11:12 PM | completed initialization procedure
+12/14/23 @ 11:12 PM | ------------------------------------------------------------
+12/14/23 @ 11:12 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 11:12 PM | adding 318 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score)))  |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+Start training with c = 1e-08...
+
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 11:15 PM | 461 rows in lookup table
+12/14/23 @ 11:15 PM | ------------------------------------------------------------
+12/14/23 @ 11:15 PM | runnning initialization procedure
+12/14/23 @ 11:15 PM | ------------------------------------------------------------
+12/14/23 @ 11:16 PM | CPA produced 2 cuts
+12/14/23 @ 11:16 PM | running naive rounding on 51 solutions
+12/14/23 @ 11:16 PM | best objective value: 0.0663
+12/14/23 @ 11:16 PM | rounding produced 0 integer solutions
+12/14/23 @ 11:16 PM | running sequential rounding on 51 solutions
+12/14/23 @ 11:16 PM | best objective value: 0.0663
+12/14/23 @ 11:17 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 11:17 PM | initialization produced 0 feasible solutions
+12/14/23 @ 11:17 PM | ------------------------------------------------------------
+12/14/23 @ 11:17 PM | completed initialization procedure
+12/14/23 @ 11:17 PM | ------------------------------------------------------------
+12/14/23 @ 11:17 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 11:17 PM | adding 293 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+Start training with c = 1e-10...
+
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 11:20 PM | 461 rows in lookup table
+12/14/23 @ 11:20 PM | ------------------------------------------------------------
+12/14/23 @ 11:20 PM | runnning initialization procedure
+12/14/23 @ 11:20 PM | ------------------------------------------------------------
+12/14/23 @ 11:21 PM | CPA produced 2 cuts
+12/14/23 @ 11:21 PM | running naive rounding on 54 solutions
+12/14/23 @ 11:21 PM | best objective value: 0.0704
+12/14/23 @ 11:21 PM | rounding produced 0 integer solutions
+12/14/23 @ 11:21 PM | running sequential rounding on 54 solutions
+12/14/23 @ 11:21 PM | best objective value: 0.0704
+12/14/23 @ 11:22 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 11:22 PM | initialization produced 0 feasible solutions
+12/14/23 @ 11:22 PM | ------------------------------------------------------------
+12/14/23 @ 11:22 PM | completed initialization procedure
+12/14/23 @ 11:22 PM | ------------------------------------------------------------
+12/14/23 @ 11:22 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 11:22 PM | adding 275 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+Start training with c = 1e-12...
+
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 11:25 PM | 461 rows in lookup table
+12/14/23 @ 11:25 PM | ------------------------------------------------------------
+12/14/23 @ 11:25 PM | runnning initialization procedure
+12/14/23 @ 11:25 PM | ------------------------------------------------------------
+12/14/23 @ 11:26 PM | CPA produced 2 cuts
+12/14/23 @ 11:26 PM | running naive rounding on 56 solutions
+12/14/23 @ 11:26 PM | best objective value: 0.0676
+12/14/23 @ 11:26 PM | rounding produced 0 integer solutions
+12/14/23 @ 11:26 PM | running sequential rounding on 56 solutions
+12/14/23 @ 11:26 PM | best objective value: 0.0676
+12/14/23 @ 11:27 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 11:27 PM | initialization produced 0 feasible solutions
+12/14/23 @ 11:27 PM | ------------------------------------------------------------
+12/14/23 @ 11:27 PM | completed initialization procedure
+12/14/23 @ 11:27 PM | ------------------------------------------------------------
+12/14/23 @ 11:27 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 11:27 PM | adding 335 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score))   |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+Start training with c = 1e-14...
+
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+12/14/23 @ 11:30 PM | 461 rows in lookup table
+12/14/23 @ 11:30 PM | ------------------------------------------------------------
+12/14/23 @ 11:30 PM | runnning initialization procedure
+12/14/23 @ 11:30 PM | ------------------------------------------------------------
+12/14/23 @ 11:31 PM | CPA produced 2 cuts
+12/14/23 @ 11:31 PM | running naive rounding on 54 solutions
+12/14/23 @ 11:31 PM | best objective value: 0.0699
+12/14/23 @ 11:31 PM | rounding produced 0 integer solutions
+12/14/23 @ 11:31 PM | running sequential rounding on 54 solutions
+12/14/23 @ 11:31 PM | best objective value: 0.0699
+12/14/23 @ 11:32 PM | sequential rounding produced 0 integer solutions
+12/14/23 @ 11:32 PM | initialization produced 0 feasible solutions
+12/14/23 @ 11:32 PM | ------------------------------------------------------------
+12/14/23 @ 11:32 PM | completed initialization procedure
+12/14/23 @ 11:32 PM | ------------------------------------------------------------
+12/14/23 @ 11:32 PM | 461 rows in lookup table
+register_callback
+
+12/14/23 @ 11:32 PM | adding 265 initial cuts
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score)))  |                  |           |
+| ============================================ | ================ | ========= |
+| avgDays14                                    |         2 points |   + ..... |
+| avgDays25                                    |         2 points |   + ..... |
+| concurrent_MME30                             |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicaid                                     |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-6 ['avgDays14', 'avgDays25', 'concurrent_MME30', 'HMFO', 'Medicaid'] [2. 2. 1. 1. 1.]
+1473.4 seconds
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/risk_main.py", line 233, in <module>
+  File "/mnt/phd/jihu/opioid/Code/risk_main.py", line 46, in main
+    best_c, test_summary = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+TypeError: cannot unpack non-iterable float object

@@ -10,7 +10,7 @@ from .utils import print_log
 #todo: check cores
 #todo: pass compute_loss to convert_risk_slim_cplex_solution
 
-def create_risk_slim(coef_set, input):
+def create_risk_slim(coef_set, input, essential_cutoffs=None, data=None):
     """
     create RiskSLIM MIP object
 
@@ -186,12 +186,29 @@ def create_risk_slim(coef_set, input):
 
     vars.add(obj = obj, lb = lb, ub = ub, types = ctype, names = varnames)
 
+
+    ### NOTE: JH : TEMP
+    if essential_cutoffs is not None:
+        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
+        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
+        for constraint in essential_cutoffs:
+            cons.add(
+                names = ["Exactly one cutoff (Greater)"],
+                lin_expr = [SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
+                senses = "G",
+                rhs = [1.0])
+
     # 0-Norm LB Constraints:
     # lambda_j,lb * alpha_j ≤ lambda_j <= Inf
     # 0 ≤ lambda_j - lambda_j,lb * alpha_j < Inf
     for j in range(P):
         cons.add(names = ["L0_norm_lb_" + str(j)],
                  lin_expr = [SparsePair(ind=[rho_names[j], alpha_names[j]], val=[1.0, -rho_lb[j]])],
+                 senses = "G",
+                 rhs = [0.0])
+    for j in range(1, P):
+        cons.add(names = ["L0_norm_lb_JH_" + str(j)],
+                 lin_expr = [SparsePair(ind=[rho_names[j], alpha_names[j]], val=[1.0, -1.0])],
                  senses = "G",
                  rhs = [0.0])
 

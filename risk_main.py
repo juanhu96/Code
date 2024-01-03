@@ -15,9 +15,12 @@ import numpy as np
 import pandas as pd
 
 from risk_train import risk_train
-from risk_test import test_table, test_table_full, test_table_temp
+from risk_test import test_table, test_table_full
 from risk_stumps import create_stumps
+from baseline_main import baseline_main
+import matplotlib.pyplot as plt
 
+from sklearn.metrics import roc_curve, auc
 
 import sys 
 
@@ -26,127 +29,136 @@ scenario = sys.argv[2]
 max_points = int(sys.argv[3])
 max_features = int(sys.argv[4])
 weight = sys.argv[5]
-name = sys.argv[6]
+c0 = float(sys.argv[6])
+name = sys.argv[7]
 
-def main(case, scenario, max_points, max_features, weight, name):
+def main(case, scenario, max_points, max_features, weight, c0, name):
 
-    # =================================== Train LTOUR (nested) ===================================
-    # risk_train(year = 2018, features = 'LTOUR', scenario = 'single', c = 1e-4)
-    # risk_train(year = 2018, features = 'LTOUR', scenario = 'single', c = 1e-4, max_points=3, max_features=10)
-    # risk_train(year = 2018, features = 'LTOUR', scenario = 'nested', c = [1e-4], max_points=3, max_features=10)
+    print(f'Start {case}ing with {scenario}, points {max_points}, features {max_features}, c = {c0}, file saved with name {name}\n')
 
-
-    # =================================== Test CURES ============================================
-    # test_table(year = 2019, cutoffs=[0, 90, 40, 6, 6, 1, 90], scores=[0, 1, 1, 1, 1, 1, 1], case = 'CURES', calibration = True, roc = True) 
-    
-
-    # =================================== Test LTOUR ===================================
-    # test_table_full(year = 2019, calibration = True)
-    # test_table_temp(year = 2019, calibration = True)
-
-    ### OUTSAMPLE TEST BASE & FULL ROC
-    # test_table_full_final(year = 2019, case = 'LTOUR', outcome='long_term_180', roc=True)
-
-
-    # =================================== Train LTOUR (test) ===================================
+    # =================================== Train LTOUR  ======================================
     if case == 'train':
-        
-        if scenario == 'single': c = 1e-10
-        if scenario == 'nested': c = [1e-10]
 
-        risk_train(year=2018, features='LTOUR', scenario=scenario, c=1e-8, max_points=max_points, max_features=max_features, weight=weight, name=name)
+        if scenario == 'single':
+            c = c0
+            risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+        else: 
+            c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]
+            best_c = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+            print(f'Single training with the best c = {best_c}\n')
+            risk_train(year=2018, features='LTOUR', scenario='single', c=best_c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+
+    # ===================================  Test LTOUR  =======================================
 
     elif case == 'test':
-        
-        if max_features == 6:
-            intercept = -5
-            # conditions = ['avgDays', 'avgDays', 'quantity', 'avgDays', 'num_presc', 'Codeine']
-            # cutoffs = [60, 14, 50, 21, 2, 1]
-            # scores = [4, 2, 1, 1, -1, -1]
-            conditions = ['avgDays', 'avgDays', 'avgDays', 'ever_switch_drug', 'num_presc', 'Codeine']
-            cutoffs = [90, 10, 21, 1, 2, 1]
-            scores = [4, 2, 2, 1, -1, -1]
-            '''
-            NEW CONSTRAINT
 
-                SIX-FEATURE TABLE
-            +----------------------------------------------+-------------------+-----------+
-            | Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                   |           |
-            | ============================================ | ================= | ========= |
-            | avgDays90                                    |          4 points |   + ..... |
-            | avgDays10                                    |          2 points |   + ..... |
-            | avgDays21                                    |          2 points |   + ..... |
-            | ever_switch_drug                             |          1 points |   + ..... |
-            | num_presc2                                   |         -1 points |   + ..... |
-            | Codeine                                      |         -1 points |   + ..... |
-            | ============================================ | ================= | ========= |
-            | ADD POINTS FROM ROWS 1 to 6                  |             SCORE |   = ..... |
-            +----------------------------------------------+-------------------+-----------+
-            '''
+        test_result = []
+        calibration_table_list = []
+        tpr_list = []
+        fpr_list = []
 
-        elif max_features == 10:
-            # intercept = -4
-            # conditions = ['avgDays', 'concurrent_MME', 'quantity', 'avgDays', 
-            # 'avgDays', 'avgDays', 'avgDays', 'quantity', 'num_presc', 'num_presc']
-            # cutoffs = [14, 30, 50, 3, 7, 25, 30, 40, 2, 1]
-            # scores = [2, 1, 1, 1, 1, 1, 1, -1, -1, -3]
+        SAMPLE = import_data()
+
+        intercept = -6
+        conditions = ['avgDays', 'avgDays', 'concurrent_MME', 'HMFO', 'Medicaid']
+        cutoffs = [14, 25, 30, 1, 1]
+        scores = [2, 2, 1, 1, 1]
+
+        results, calibration_table, tpr, fpr, thresholds = test_table(SAMPLE, year=2019, table='LTOUR', intercept=intercept, conditions=conditions, cutoffs=cutoffs, scores=scores,
+                                                                    calibration=True, roc=True, output_table=True, filename=f'{name}')
+        test_result.append(results)
+        calibration_table_list.append(calibration_table)
+        tpr_list.append(tpr)
+        fpr_list.append(fpr)
+
+        df = pd.DataFrame(test_result)
+        print(df)
+        print(calibration_table)
+
+
+        # =============
+
+
+        intercept = 0
+        conditions = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 'num_pharmacies', 'consecutive_days', 'concurrent_benzo']
+        cutoffs = [90, 40, 6, 6, 90, 1]
+        scores = [1, 1, 1, 1, 1, 1]
+
+        results, calibration_table, tpr, fpr, thresholds = test_table(SAMPLE, year=2019, table='CURES', intercept=intercept, conditions=conditions, cutoffs=cutoffs, scores=scores,
+                                                                    calibration=True, roc=True, output_table=True, filename=f'{name}')
+        test_result.append(results)
+        calibration_table_list.append(calibration_table)
+        tpr_list.append(tpr)
+        fpr_list.append(fpr)
+
+        df = pd.DataFrame(test_result)
+        print(df)
+        print(calibration_table)
+
+        return 
+
+        # df.insert(0, 'c', c_list)
+        # df['c'] = df['c'].astype(str)
+        # print(df[['c', 'Accuracy', 'ROC AUC', 'Calibration error']])
+
+        color_list = ['red', 'blue', 'orange', 'green', 'brown']
+
+        # ========================================================================================
+        ## Calibration plot
+        if True: 
+            fig, ax = plt.subplots(figsize=(8, 8))   
+
+            for i in range(len(calibration_table_list)):
+                calibration_table = calibration_table_list[i]
+                plt.plot(calibration_table['Prob'], calibration_table['Observed Risk'], label=f"Case {i+1}, Error = {df['Calibration error'].iloc[i]}", marker='^', markersize=8, linestyle='solid', color=f'tab:{color_list[i]}')
+
+            min_val, max_val = 0, 0.4
+            plt.plot([min_val, max_val], [min_val, max_val], label='y=x', linestyle='--', color='gray')
+
+            plt.xlabel('Predicted Probability Risk', fontsize=20)
+            plt.xticks(fontsize=18)
+            plt.ylabel('Observed Risk', fontsize=20)
+            plt.yticks(fontsize=18)
+            plt.legend(fontsize=18)
+
+            plt.show()
+            fig.savefig(f'/mnt/phd/jihu/opioid/Result/Plot_LTOUR_raw.pdf', dpi=300)
+
+        # ========================================================================================
+        ## ROC plot
+        if True:        
+            fig, ax = plt.subplots(figsize=(8, 8))
+            ax.set_aspect('equal')
+
+            for i in range(len(fpr_list)):
+                plt.plot(fpr_list[i], tpr_list[i], label=f"Case {i + 1}, AUC = {df['ROC AUC'].iloc[i]}", linestyle='solid', color=f'tab:{color_list[i]}')
+            plt.plot([0, 1], [0, 1], '--', label='Baseline (random classifier)', color='gray')
             
-            intercept = -5
-            conditions = ['avgDays', 'avgDays', 'avgDays', 'concurrent_MME', 'quantity', 'quantity', 
-            'num_presc', 'num_presc', 'Codeine']
-            cutoffs = [90, 7, 21, 10, 40, 20, 1, 2, 1]
-            scores = [5, 2, 2, 1, 1, -1, -1, -1, -1]
+            # for i in range(1, len(thresholds3)):
+            #     plt.annotate(f"{thresholds3[i]:.2f}", (fpr_list[2][i], tpr_list[2][i]), textcoords="offset points", xytext=(10, 10), ha='center', fontsize=8, color='black')
 
-            '''
-            NEW CONSTRAINT
-            
-                TEN-FEATURE TABLE
-            +----------------------------------------------+-------------------+-----------+
-            | Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                   |           |
-            | ============================================ | ================= | ========= |
-            | avgDays90                                    |          5 points |   + ..... |
-            | avgDays7                                     |          2 points |   + ..... |
-            | avgDays21                                    |          2 points |   + ..... |
-            | concurrent_MME10                             |          1 points |   + ..... |
-            | quantity40                                   |          1 points |   + ..... |
-            | quantity20                                   |         -1 points |   + ..... |
-            | num_presc1                                   |         -1 points |   + ..... |
-            | num_presc2                                   |         -1 points |   + ..... |
-            | Codeine                                      |         -1 points |   + ..... |
-            | ============================================ | ================= | ========= |
-            | ADD POINTS FROM ROWS 1 to 9                  |             SCORE |   = ..... |
-            +----------------------------------------------+-------------------+-----------+
-            '''
-        
-        elif max_features == 20:
-            intercept = -5
-            # conditions = ['avgDays', 'avgDays', 'concurrent_MME', 'avgDays', 'concurrent_MME',
-            # 'quantity', 'quantity', 'Medicare', 'concurrent_MME', 'quantity', 'num_presc',
-            # 'num_prescribers', 'quantity', 'num_presc']
-            # cutoffs = [10, 60, 20, 25, 50, 10, 15, 1, 25, 150, 2, 2, 20, 1]
-            # scores = [4, 3, 2, 2, 1, 1, 1, 1, -1, -1, -1, -2, -2, -3]
+            for i in range(1, len(thresholds)):
+                plt.annotate(f"{thresholds[i]:.2f}", (fpr_list[0][i], tpr_list[0][i]), textcoords="offset points", xytext=(10, 10), ha='center', fontsize=8, color='black')
 
-            conditions = ['avgDays', 'avgDays', 'num_presc']
-            cutoffs = [10, 14, 1]
-            scores = [4, 2, -3]
 
-            '''
-            +----------------------------------------------+-------------------+-----------+
-            | Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score))   |                   |           |
-            | ============================================ | ================= | ========= |
-            | avgDays10                                    |          4 points |   + ..... |
-            | avgDays14                                    |          2 points |   + ..... |
-            | num_presc1                                   |         -3 points |   + ..... |
-            | ============================================ | ================= | ========= |
-            | ADD POINTS FROM ROWS 1 to 3                  |             SCORE |   = ..... |
-            +----------------------------------------------+-------------------+-----------+
-            '''
-        
-        else:
-            raise Exception("Max features undefined \n")
-        
-        test_table(year=2019, intercept=intercept, conditions=conditions, cutoffs=cutoffs, scores=scores, calibration=True, filename=f'_{max_points}_{max_features}_{weight}')
-    
+            # specificity (true negative rate)
+            plt.xlabel("1 - Specificity (false positive rate)", fontsize=20)
+            plt.xticks(fontsize=18)
+            plt.ylabel("Sensitivity (true positive rate)", fontsize=20)
+            plt.yticks(fontsize=18)
+            plt.legend(fontsize=18)
+
+            # set x-axis and y-axis limits
+            plt.xlim([0, 1])
+            plt.ylim([0, 1])
+
+            plt.show()
+            fig.savefig(f'/mnt/phd/jihu/opioid/Result/ROC_LTOUR_raw.pdf', dpi=300)
+
+
+    elif case == 'base_train':
+        baseline_main(year=2018, Model_list=['SVM'])
+
     else:
         raise Exception("Case undefined")
 
@@ -155,5 +167,21 @@ def main(case, scenario, max_points, max_features, weight, name):
 
 
 
+def import_data(year=2019, datadir='/mnt/phd/jihu/opioid/Data'):
+    
+    SAMPLE = pd.read_csv(f'{datadir}/FULL_{year}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
+    dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 
+    'num_prescribers': int, 'num_pharmacies': int,
+    'concurrent_benzo': int, 'consecutive_days': int,
+    'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
+
+    SAMPLE = SAMPLE.fillna(0)
+    SAMPLE.rename(columns={'num_presc': 'num_prior_presc'}, inplace=True)
+
+    return SAMPLE
+
+
+
+
 if __name__ == "__main__":
-    main(case, scenario, max_points, max_features, weight, name)
+    main(case, scenario, max_points, max_features, weight, c0, name)

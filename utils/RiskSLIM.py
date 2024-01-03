@@ -94,6 +94,7 @@ def risk_slim_constrain(data,
                         single_cutoff=None,
                         two_cutoffs=None,
                         three_cutoffs=None,
+                        essential_cutoffs=None,
                         max_runtime=120, 
                         w_pos=1):
     
@@ -109,15 +110,16 @@ def risk_slim_constrain(data,
     w_pos:            relative weight on examples with y = +1; w_neg = 1.00 (optional)
     
     class_weight: weight of positive outcomes
-    new_constraints: new operatoinal constraints, 2d-list
     
     """
     
     # create coefficient set and set the value of the offset parameter
     coef_set = CoefficientSet(variable_names = data['variable_names'], lb = 0, ub = max_coefficient, sign = 0)
-    # coef_set['MME_diff1'].lb = 0
-    # coef_set['quantity_diff1'].lb = 0
-    # coef_set['days_diff1'].lb = 0
+
+    # selected_features = ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', \
+    # 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation']
+    # for feature in selected_features: coef_set[feature].lb = -max_coefficient # allow drug/payment to be negative
+
     coef_set['(Intercept)'].ub = max_offset
     coef_set['(Intercept)'].lb = -max_offset
     
@@ -126,26 +128,13 @@ def risk_slim_constrain(data,
         'L0_max': max_L0_value,
         'coef_set':coef_set,
     }
-    
 
-    # Jingyuan: scale positive weight if balanced training
-    if class_weight == 'balanced':
-        w_pos = sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
-    elif class_weight == 'positive':
-        w_pos = 2 * sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
-    elif class_weight == 'positive_2':
-        w_pos = 4 * sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
-    elif class_weight == 'positive_4':
-        w_pos = 8 * sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
-    else:
-        print("Unbalanced training\n")
-    
+    if class_weight == 'balanced': w_pos = sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
 
     # Set parameters
     settings = {
         # Problem Parameters
         'c0_value': c0_value,
-        # 'c1_value': c1_value,                               # Jingyuan: term for additive stumps
         'w_pos': w_pos,
 
         # LCPA Settings
@@ -167,13 +156,14 @@ def risk_slim_constrain(data,
 
         # CPLEX Solver Parameters
         'cplex_randomseed': 0,                              # random seed
-        'cplex_mipemphasis': 0,                             # cplex MIP strategy
+        'cplex_mipemphasis': 1,                             # cplex MIP strategy
     }
     
 
     # train model using lattice_cpa
-    model_info, mip_info, lcpa_info = run_lattice_cpa(data, constraints, settings, single_cutoff=single_cutoff, two_cutoffs=two_cutoffs, three_cutoffs=three_cutoffs)
-        
+    model_info, mip_info, lcpa_info = run_lattice_cpa(data, constraints, settings, 
+    single_cutoff=single_cutoff, two_cutoffs=two_cutoffs, three_cutoffs=three_cutoffs, essential_cutoffs=essential_cutoffs)
+    
     return model_info, mip_info, lcpa_info
 
 
@@ -184,35 +174,26 @@ def risk_cv_constrain(X,
                       max_coef,
                       max_coef_number,
                       c,
+                      max_offset,
                       seed,
-                      max_runtime=1000,
-                      max_offset=100,
-                      class_weight = None,
-                      new_constraints = None):
+                      class_weight='unbalanced', 
+                      single_cutoff=None,
+                      two_cutoffs=None,
+                      three_cutoffs=None,
+                      essential_cutoffs=None,
+                      max_runtime=1000):
 
     ## set up data
     sample_weights = np.repeat(1, len(Y))
 
     ## set up cross validation
-    outer_cv = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
-    inner_cv = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
-    
-    train_auc = []
-    validation_auc = []
+    outer_cv = StratifiedKFold(n_splits=len(c), random_state=seed, shuffle=True)
+
+    test_accuracy = []
+    test_recall = []
+    test_precision = []
     test_auc = []
-    
-    holdout_with_attr_test = []
-    holdout_prediction = []
-    holdout_probability = []
-    holdout_y = []
-    holdout_accuracy = []
-    holdout_recall = []
-    holdout_precision = []
-    holdout_roc_auc = []
-    holdout_pr_auc = []
-    holdout_f1 = []
-    holdout_f2 = []
-    holdout_brier = []
+    test_pr_auc = []
     
     best_score = 0
     
@@ -222,9 +203,6 @@ def risk_cv_constrain(X,
         outer_train_x, outer_train_y = X.iloc[outer_train], Y[outer_train]
         outer_test_x, outer_test_y = X.iloc[outer_test], Y[outer_test]
         outer_train_sample_weight, outer_test_sample_weight = sample_weights[outer_train], sample_weights[outer_test]
-        
-        print('Number of positive in training set: ' + str(len(outer_train_y[outer_train_y==1])))
-        print('Number of positive in testing set: ' + str(len(outer_test_y[outer_test_y==1])))
         
         ## holdout test
         holdout_with_attrs = outer_test_x.copy().drop(['(Intercept)'], axis=1)            
@@ -244,14 +222,18 @@ def risk_cv_constrain(X,
                 
         
         ## fit the model
+        print(f'Start training with c = {c[i]}...\n')
         model_info, mip_info, lcpa_info = risk_slim_constrain(new_train_data, 
                                                               max_coefficient=max_coef, 
                                                               max_L0_value=max_coef_number, 
-                                                              c0_value=c, 
-                                                              max_runtime=max_runtime, 
+                                                              c0_value=c[i], 
                                                               max_offset=max_offset,
                                                               class_weight=class_weight,
-                                                              new_constraints=new_constraints)
+                                                              single_cutoff=single_cutoff,
+                                                              two_cutoffs=two_cutoffs,
+                                                              three_cutoffs=three_cutoffs,
+                                                              essential_cutoffs=essential_cutoffs,
+                                                              max_runtime=max_runtime)
         print_model(model_info['solution'], new_train_data)  
 
         
@@ -265,42 +247,28 @@ def risk_cv_constrain(X,
         outer_test_prob = riskslim_prediction(outer_test_x, np.array(cols), model_info)
         outer_test_pred = (outer_test_prob > 0.5)
         
-        print('Number of predicted positive: ' + str(len(outer_test_pred[outer_test_pred==1])))
         
         ########################
-        ## AUC
-        train_auc.append(roc_auc_score(outer_train_y, outer_train_prob))
+        ## test results
+        test_accuracy.append(accuracy_score(outer_test_y, outer_test_pred))
+        test_recall.append(recall_score(outer_test_y, outer_test_pred))
+        test_precision.append(precision_score(outer_test_y, outer_test_pred))
         test_auc.append(roc_auc_score(outer_test_y, outer_test_prob)) 
+        test_pr_auc.append(average_precision_score(outer_test_y, outer_test_prob))
         
-        ########################
-        ## store results
-        # holdout_with_attrs_test.append(holdout_with_attrs)
-        holdout_probability.append(outer_test_prob)
-        holdout_prediction.append(outer_test_pred)
-        holdout_y.append(outer_test_y)
-        holdout_accuracy.append(accuracy_score(outer_test_y, outer_test_pred))
-        holdout_recall.append(recall_score(outer_test_y, outer_test_pred))
-        holdout_precision.append(precision_score(outer_test_y, outer_test_pred))
-        holdout_roc_auc.append(roc_auc_score(outer_test_y, outer_test_prob))
-        holdout_pr_auc.append(average_precision_score(outer_test_y, outer_test_prob))
-        holdout_brier.append(brier_score_loss(outer_test_y, outer_test_prob))
-        holdout_f1.append(fbeta_score(outer_test_y, outer_test_pred, beta = 1))
-        holdout_f2.append(fbeta_score(outer_test_y, outer_test_pred, beta = 2))
         
         i += 1
-        
-    
-    return {'train_auc': train_auc,
-            'validation_auc': validation_auc,
-            'holdout_test_auc': test_auc, 
-            'holdout_test_accuracy': holdout_accuracy,
-            'holdout_test_recall': holdout_recall,
-            "holdout_test_precision": holdout_precision,
-            'holdout_test_roc_auc': holdout_roc_auc,
-            'holdout_test_pr_auc': holdout_pr_auc,
-            "holdout_test_brier": holdout_brier,
-            'holdout_test_f1': holdout_f1,
-            "holdout_test_f2": holdout_f2}
+
+    smallest_ind = test_auc.index(min(test_auc))
+    best_c = c[smallest_ind]
+
+    return best_c, {'holdout_test_accuracy': test_accuracy,
+                    'holdout_test_recall': test_recall,
+                    'holdout_test_precision': test_precision, 
+                    'holdout_test_roc_auc': test_auc,
+                    'holdout_test_pr_auc': test_pr_auc}
+
+
 
 ###############################################################################################################################
 ###############################################################################################################################
@@ -319,14 +287,7 @@ def risk_nested_cv_constrain(X,
                              class_weight = None,
                              new_constraints = None,
                              new_constraints_multiple = None,
-                             intercept='flexible',
-                             fairness_indicator = 0,
-                             y_alert_1=None, 
-                             y_alert_2=None,
-                             y_alert_3=None,
-                             y_alert_4=None,
-                             y_alert_5=None,
-                             y_alert_6=None):
+                             intercept='flexible'):
 
     """
     Implemented the nested cross-validation step for hyperparameter tuning
@@ -362,14 +323,6 @@ def risk_nested_cv_constrain(X,
     holdout_f2 = []
     holdout_brier = []
     
-    '''
-    ## per alert type
-    holdout1_accuracy, holdout2_accuracy, holdout3_accuracy, holdout4_accuracy, holdout5_accuracy, holdout6_accuracy = [], [], [], [], [], []
-    holdout1_recall, holdout2_recall, holdout3_recall, holdout4_recall, holdout5_recall, holdout6_recall = [], [], [], [], [], []
-    holdout1_precision, holdout2_precision, holdout3_precision, holdout4_precision, holdout5_precision, holdout6_precision = [], [], [], [], [], []
-    holdout1_roc_auc, holdout2_roc_auc, holdout3_roc_auc, holdout4_roc_auc, holdout5_roc_auc, holdout6_roc_auc = [], [], [], [], [], []
-    holdout1_pr_auc, holdout2_pr_auc, holdout3_pr_auc, holdout4_pr_auc, holdout5_pr_auc, holdout6_pr_auc = [], [], [], [], [], []
-    '''
     
     # Fairness
     confusion_matrix_rets = []
@@ -386,31 +339,9 @@ def risk_nested_cv_constrain(X,
         outer_train_x, outer_train_y = X.iloc[outer_train], Y[outer_train]
         outer_test_x, outer_test_y = X.iloc[outer_test], Y[outer_test]
         outer_train_sample_weight, outer_test_sample_weight = sample_weights[outer_train], sample_weights[outer_test]
-        
-        '''
-        # results per alert type
-        outer_test_y_alert_1 = y_alert_1[outer_test]
-        outer_test_y_alert_2 = y_alert_2[outer_test]
-        outer_test_y_alert_3 = y_alert_3[outer_test]
-        outer_test_y_alert_4 = y_alert_4[outer_test]
-        outer_test_y_alert_5 = y_alert_5[outer_test]
-        outer_test_y_alert_6 = y_alert_6[outer_test]
-        '''
-        
+
         ## holdout test
         holdout_with_attrs = outer_test_x.copy().drop(['(Intercept)'], axis=1)
-        '''
-        holdout_with_attrs = holdout_with_attrs.rename(columns = {'patient_gender1': 'patient_gender'})
-
-        ## remove unused feature in modeling
-        if fairness_indicator == 1:
-            outer_train_x = outer_train_x.drop(['patient_gender1'], axis=1)
-            outer_test_x = outer_test_x.drop(['patient_gender1'], axis=1)
-        else:
-            outer_train_x = outer_train_x.drop(['patient_gender1'], axis=1)
-            outer_test_x = outer_test_x.drop(['patient_gender1'], axis=1)
-        ''' 
-        
         cols = outer_train_x.columns.tolist()        
         
         ################################################
@@ -575,124 +506,12 @@ def risk_nested_cv_constrain(X,
         holdout_f1.append(fbeta_score(outer_test_y, outer_test_pred, beta = 1))
         holdout_f2.append(fbeta_score(outer_test_y, outer_test_pred, beta = 2))
         
-        '''
-        ## store results per alert type
-        holdout1_accuracy.append(accuracy_score(outer_test_y_alert_1, outer_test_pred))
-        holdout1_recall.append(recall_score(outer_test_y_alert_1, outer_test_pred))
-        holdout1_precision.append(precision_score(outer_test_y_alert_1, outer_test_pred))
-        holdout1_roc_auc.append(roc_auc_score(outer_test_y_alert_1, outer_test_prob))
-        holdout1_pr_auc.append(average_precision_score(outer_test_y_alert_1, outer_test_prob))
-        
-        holdout2_accuracy.append(accuracy_score(outer_test_y_alert_2, outer_test_pred))
-        holdout2_recall.append(recall_score(outer_test_y_alert_2, outer_test_pred))
-        holdout2_precision.append(precision_score(outer_test_y_alert_2, outer_test_pred))
-        holdout2_roc_auc.append(roc_auc_score(outer_test_y_alert_2, outer_test_prob))
-        holdout2_pr_auc.append(average_precision_score(outer_test_y_alert_2, outer_test_prob))
-        
-        holdout3_accuracy.append(accuracy_score(outer_test_y_alert_3, outer_test_pred))
-        holdout3_recall.append(recall_score(outer_test_y_alert_3, outer_test_pred))
-        holdout3_precision.append(precision_score(outer_test_y_alert_3, outer_test_pred))
-        holdout3_roc_auc.append(roc_auc_score(outer_test_y_alert_3, outer_test_prob))
-        holdout3_pr_auc.append(average_precision_score(outer_test_y_alert_3, outer_test_prob))
-        
-        holdout4_accuracy.append(accuracy_score(outer_test_y_alert_4, outer_test_pred))
-        holdout4_recall.append(recall_score(outer_test_y_alert_4, outer_test_pred))
-        holdout4_precision.append(precision_score(outer_test_y_alert_4, outer_test_pred))
-        holdout4_roc_auc.append(roc_auc_score(outer_test_y_alert_4, outer_test_prob))
-        holdout4_pr_auc.append(average_precision_score(outer_test_y_alert_4, outer_test_prob))
-        
-        holdout5_accuracy.append(accuracy_score(outer_test_y_alert_5, outer_test_pred))
-        holdout5_recall.append(recall_score(outer_test_y_alert_5, outer_test_pred))
-        holdout5_precision.append(precision_score(outer_test_y_alert_5, outer_test_pred))
-        holdout5_roc_auc.append(roc_auc_score(outer_test_y_alert_5, outer_test_prob))
-        holdout5_pr_auc.append(average_precision_score(outer_test_y_alert_5, outer_test_prob))
-        
-        holdout6_accuracy.append(accuracy_score(outer_test_y_alert_6, outer_test_pred))
-        holdout6_recall.append(recall_score(outer_test_y_alert_6, outer_test_pred))
-        holdout6_precision.append(precision_score(outer_test_y_alert_6, outer_test_pred))
-        holdout6_roc_auc.append(roc_auc_score(outer_test_y_alert_6, outer_test_prob))
-        holdout6_pr_auc.append(average_precision_score(outer_test_y_alert_6, outer_test_prob))
-        '''
-        
-        ########################
-        '''
-        ## Fairness results
-        # confusion matrix
-        confusion_matrix_fairness = compute_confusion_matrix_stats(df=holdout_with_attrs,
-                                                                   preds=outer_test_pred,
-                                                                   labels=outer_test_y, 
-                                                                   protected_variables=["patient_gender"])
-        cf_final = confusion_matrix_fairness.assign(fold_num = [i]*confusion_matrix_fairness['Attribute'].count())
-        confusion_matrix_rets.append(cf_final)
-        
-        # calibration matrix
-        calibration = compute_calibration_fairness(df=holdout_with_attrs, 
-                                                   probs=outer_test_prob, 
-                                                   labels=outer_test_y, 
-                                                   protected_variables=["patient_gender"])
-        calibration_final = calibration.assign(fold_num = [i]*calibration['Attribute'].count())
-        calibrations.append(calibration_final)
-        
-        # gender auc
-        try:
-            gender_auc_matrix = fairness_in_auc(df = holdout_with_attrs,
-                                                probs = outer_test_prob,
-                                                labels = outer_test_y)
-            gender_auc_matrix_final = gender_auc_matrix.assign(fold_num = [i]*gender_auc_matrix['Attribute'].count())
-            gender_auc.append(gender_auc_matrix_final)
-        except:
-            pass
-        
-        # ebm_pn
-        no_condition_pn_matrix = balance_positive_negative(df = holdout_with_attrs,
-                                                           probs = outer_test_prob, 
-                                                           labels = outer_test_y)
-        no_condition_pn_matrix_final = no_condition_pn_matrix.assign(fold_num = [i]*no_condition_pn_matrix['Attribute'].count())
-        no_condition_pn.append(no_condition_pn_matrix_final)
-        
-        # # ebm_condition_pn
-        # condition_pn_matrix = conditional_balance_positive_negative(df = holdout_with_attrs,
-        #                                                                      probs = outer_test_prob, 
-        #                                                                      labels = outer_test_y)
-        # condition_pn_matrix_final = condition_pn_matrix.assign(fold_num = [i]*condition_pn_matrix['Attribute'].count())
-        # condition_pn.append(condition_pn_matrix_final)   
-        '''
         ########################
         
         i += 1
     
     
     ######################### Outer iteration done ############################
-    '''
-    ## confusion matrix
-    confusion_df = pd.concat(confusion_matrix_rets, ignore_index=True)
-    confusion_df.sort_values(["Attribute", "Attribute Value"], inplace=True)
-    confusion_df = confusion_df.reset_index(drop=True)
-    
-    ## calibration matrix
-    calibration_df = pd.concat(calibrations, ignore_index=True)
-    calibration_df.sort_values(["Attribute", "Lower Limit Score", "Upper Limit Score"], inplace=True)
-    calibration_df = calibration_df.reset_index(drop=True)
-    
-    ## gender
-    gender_auc_df = []
-    try:
-        gender_auc_df = pd.concat(gender_auc, ignore_index=True)
-        gender_auc_df.sort_values(["fold_num", "Attribute"], inplace=True)
-        gender_auc_df = gender_auc_df.reset_index(drop=True)
-    except:
-        pass
-    
-    ## no_condition_pn
-    no_condition_pn_df = pd.concat(no_condition_pn, ignore_index=True)
-    no_condition_pn_df.sort_values(["fold_num", "Attribute"], inplace=True)
-    no_condition_pn_df = no_condition_pn_df.reset_index(drop=True)
-    
-    ## condition_pn
-    # condition_pn_df = pd.concat(condition_pn, ignore_index=True)
-    # condition_pn_df.sort_values(["fold_num", "Attribute"], inplace=True)
-    # condition_pn_df = condition_pn_df.reset_index(drop=True)
-    '''
     
     return {'train_auc': train_auc,
             'validation_auc': validation_auc,
@@ -705,50 +524,6 @@ def risk_nested_cv_constrain(X,
             "holdout_test_brier": holdout_brier,
             'holdout_test_f1': holdout_f1,
             "holdout_test_f2": holdout_f2}
-
-    # return {'train_auc': train_auc,
-    #         'validation_auc': validation_auc,
-    #         'holdout_test_auc': test_auc, 
-    #         'holdout_train_accuracy': holdout_train_accuracy,
-    #         'holdout_test_accuracy': holdout_accuracy,
-    #         'holdout_test_recall': holdout_recall,
-    #         'holdout_test_precision': holdout_precision,
-    #         'holdout_test_roc_auc': holdout_roc_auc,
-    #         'holdout_test_pr_auc': holdout_pr_auc,
-    #         'holdout_test_brier': holdout_brier,
-    #         'holdout_test_f1': holdout_f1,
-    #         'holdout_test_f2': holdout_f2,
-    #         'holdout_test_accuracy_alert1': holdout1_accuracy,
-    #         'holdout_test_recall_alert1': holdout1_recall,
-    #         'holdout_test_precision_alert1': holdout1_precision,
-    #         'holdout_test_roc_auc_alert1': holdout1_roc_auc,
-    #         'holdout_test_pr_auc_alert1': holdout1_pr_auc,
-    #         'holdout_test_accuracy_alert2': holdout2_accuracy,
-    #         'holdout_test_recall_alert2': holdout2_recall,
-    #         'holdout_test_precision_alert2': holdout2_precision,
-    #         'holdout_test_roc_auc_alert2': holdout2_roc_auc,
-    #         'holdout_test_pr_auc_alert2': holdout2_pr_auc,
-    #         'holdout_test_accuracy_alert3': holdout3_accuracy,
-    #         'holdout_test_recall_alert3': holdout3_recall,
-    #         'holdout_test_precision_alert3': holdout3_precision,
-    #         'holdout_test_roc_auc_alert3': holdout3_roc_auc,
-    #         'holdout_test_pr_auc_alert3': holdout3_pr_auc,
-    #         'holdout_test_accuracy_alert4': holdout4_accuracy,
-    #         'holdout_test_recall_alert4': holdout4_recall,
-    #         'holdout_test_precision_alert4': holdout4_precision,
-    #         'holdout_test_roc_auc_alert4': holdout4_roc_auc,
-    #         'holdout_test_pr_auc_alert4': holdout4_pr_auc,
-    #         'holdout_test_accuracy_alert5': holdout5_accuracy,
-    #         'holdout_test_recall_alert5': holdout5_recall,
-    #         'holdout_test_precision_alert5': holdout5_precision,
-    #         'holdout_test_roc_auc_alert5': holdout5_roc_auc,
-    #         'holdout_test_pr_auc_alert5': holdout5_pr_auc,    
-    #         'holdout_test_accuracy_alert6': holdout6_accuracy,
-    #         'holdout_test_recall_alert6': holdout6_recall,
-    #         'holdout_test_precision_alert6': holdout6_precision,
-    #         'holdout_test_roc_auc_alert6': holdout6_roc_auc,
-    #         'holdout_test_pr_auc_alert6': holdout6_pr_auc
-    #         }
 
 
 ###############################################################################################################################
