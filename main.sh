@@ -28,8 +28,11 @@
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train cv 5 10 original 1 cv > output/cv_two_cutoffs.txt &
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test single 5 20 original 1 cv > output/test.txt &
 
-nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-8 1 > output/pos_one_cutoff_1e-8.txt &
-nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-10 1 > output/pos_one_cutoff_1e-10.txt &
-nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-15 1 > output/pos_one_cutoff_1e-15.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-8 1 > output/pos_one_cutoff_1e-8.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-10 1 > output/pos_one_cutoff_1e-10.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single 5 10 original 1e-15 1 > output/pos_one_cutoff_1e-15.txt &
 
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test single 5 10 original 1 5 > output/test.txt
+
+
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py base_train single 5 10 original 1 5 > output/base_train_test.txt

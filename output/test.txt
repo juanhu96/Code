@@ -1,6 +1,6 @@
-/mnt/phd/jihu/opioid/Code/risk_main.py:172: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/risk_main.py:171: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
   SAMPLE = pd.read_csv(f'{datadir}/FULL_{year}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
-Start testing with single, points 5, features 10, c = 1.0, file saved with name test
+Start testing with single, points 5, features 10, c = 1.0, file saved with name 5
 
 ----------------------------------------------------------------------------------------------------
 True positives prescriptions and alert by type: 
@@ -29,29 +29,3 @@ Test done!
 7  0.731059        502        0  ...       0.314741           334           144
 
 [8 rows x 10 columns]
-----------------------------------------------------------------------------------------------------
-True positives prescriptions and alert by type: 
-
-(42778, 160) 23456 3005 41 0 1932 23370
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
-Total prescriptions from true positive patients: 
-
-(51349, 160)
-----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 0.963203167667941
-********************* HERE *********************
-Test done!
-
-  Accuracy  Recall Precision ROC AUC  PR AUC Calibration error
-0   0.9535  0.6083    0.2345  0.8317  0.1904            0.0047
-1    0.723  0.3305    0.0239  0.5329  0.0216            0.5489
-       Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.500000    4827355  4740685  ...       0.017954       2492891         74852
-1  0.731059    1527882        0  ...       0.022565        621921         26043
-2  0.880797     248133        0  ...       0.030560         94815          4728
-3  0.952574      12594        0  ...       0.056694          3923           400
-4  0.982014        162        0  ...       0.030864            68             3
-5  0.993307          3        0  ...       0.000000             1             0
-
-[6 rows x 10 columns]

@@ -62,6 +62,8 @@ def test_table(SAMPLE, year, table, intercept, conditions, cutoffs, scores, outp
                "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
                "PR AUC": str(round(average_precision_score(y, y_prob), 4)),
                "Calibration error": str(round(calibration_error, 4))}
+        
+        calibration_table.to_csv(f'{resultdir}LTOUR_calibration_table.csv', index=False)
     
     print('Test done!\n')
 

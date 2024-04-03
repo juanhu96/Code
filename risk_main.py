@@ -78,7 +78,7 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
 
         # =============
 
-
+        
         intercept = 0
         conditions = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 'num_pharmacies', 'consecutive_days', 'concurrent_benzo']
         cutoffs = [90, 40, 6, 6, 90, 1]
@@ -95,7 +95,6 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
         print(df)
         print(calibration_table)
 
-        return 
 
         # df.insert(0, 'c', c_list)
         # df['c'] = df['c'].astype(str)
@@ -157,8 +156,8 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
 
 
     elif case == 'base_train':
-        baseline_main(year=2018, Model_list=['SVM'])
-
+        baseline_main(year=2018, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic (L1)', 'SVM', 'XGB'], suffix='_calibration')
+        
     else:
         raise Exception("Case undefined")
 

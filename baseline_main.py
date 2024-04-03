@@ -12,7 +12,14 @@ from sklearn import tree, metrics
 from sklearn.model_selection import train_test_split, GridSearchCV
 import utils.baseline_functions as base
 
-def baseline_main(year, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic (L1)', 'SVM', 'Random Forest', 'XGB'], class_weight=None, workdir='/mnt/phd/jihu/opioid/'):
+def baseline_main(year,
+                  Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic (L1)', 'SVM', 'Random Forest', 'XGB'],
+                  class_weight=None,
+                  N = 20,
+                  suffix='',
+                  workdir='/mnt/phd/jihu/opioid/'):
+
+    print(f"Baseline test with list of models: {Model_list}\n")
 
     SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
                          dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
@@ -21,7 +28,6 @@ def baseline_main(year, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic 
                                 'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
     SAMPLE = SAMPLE.fillna(0)
 
-    N = 20
     SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST0.csv', delimiter = ",")
     for i in range(1, N):
         TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
@@ -47,26 +53,22 @@ def baseline_main(year, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic 
     for model in Model_list:
         
         if model == 'Decision Tree':
-
             depth = [3,4,5,6]
             min_samples = [5,10,20]
             impurity = [0.001,0.01,0.1]
             summary = base.DecisionTree(X=x, Y=y, depth=depth, min_samples=min_samples, impurity=impurity, class_weight=class_weight, seed=42)
 
         if model == 'Logistic (L2)':
-
             # c = np.linspace(1e-5,1,5).tolist()
             c = [1e-5, 1e-3, 1e-1, 10]
             summary = base.Logistic(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
 
         if model == 'Logistic (L1)':
-
             # c = np.linspace(1e-5,1,5).tolist()
             c = [1e-5, 1e-3, 1e-1, 10]
             summary = base.Lasso(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
 
         if model == 'SVM':
-
             c = np.linspace(1e-6,1e-2,5).tolist()
             summary = base.LinearSVM(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
 
@@ -90,13 +92,13 @@ def baseline_main(year, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic 
         "ROC AUC": str(round(np.mean(summary['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_roc_auc']), 4)) + ")",
         "PR AUC": str(round(np.mean(summary['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_pr_auc']), 4)) + ")",
         "Brier": str(round(np.mean(summary['holdout_test_brier']), 4)) + " (" + str(round(np.std(summary['holdout_test_brier']), 4)) + ")",
-        "F2": str(round(np.mean(summary['holdout_test_f2']), 4)) + " (" + str(round(np.std(summary['holdout_test_f2']), 4)) + ")"}
-        
+        "F2": str(round(np.mean(summary['holdout_test_f2']), 4)) + " (" + str(round(np.std(summary['holdout_test_f2']), 4)) + ")",
+        "Calibration Error": str(round(np.mean(summary['holdout_calibration_error']), 4)) + " (" + str(round(np.std(summary['holdout_calibration_error']), 4)) + ")"}
         balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=[model])
         results = pd.concat([results, balanced], axis=1)
 
     results = results.T
-    results.to_csv(f"{workdir}Result/baseline_results_SVM.csv")
+    results.to_csv(f"{workdir}Result/baseline_results{suffix}.csv")
 
     end = time.time()
     print(str(round(end - start,1)) + ' seconds')

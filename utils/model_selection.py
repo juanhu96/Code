@@ -6,9 +6,10 @@ Created on Mar 14 2022
 """
 
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
-    average_precision_score, brier_score_loss, fbeta_score, accuracy_score
+    average_precision_score, brier_score_loss, fbeta_score, accuracy_score, confusion_matrix
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.feature_selection import SelectFromModel
 from imblearn.pipeline import Pipeline
@@ -17,14 +18,15 @@ from imblearn.under_sampling import TomekLinks
 from sklearn import tree
 import matplotlib.pyplot as plt
 
-def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
+
+
+def nested_cross_validate(X, Y, estimator, c_grid, seed, model, n_splits=5, index=None, plot_DT=True, resultdir='/mnt/phd/jihu/opioid/Result/'):
     
     ## outer cv
     train_outer = []
     test_outer = []
-    outer_cv = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
+    outer_cv = StratifiedKFold(n_splits=n_splits, random_state=seed, shuffle=True)
     
-    ## 5 sets of train & test index
     for train, test in outer_cv.split(X, Y):
         train_outer.append(train)
         test_outer.append(test)
@@ -35,7 +37,6 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
     validation_auc = []
     auc_diffs = []
     
-    holdout_with_attr_test = []
     holdout_prediction = []
     holdout_probability = []
     holdout_y = []
@@ -47,41 +48,36 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
     holdout_f1 = []
     holdout_f2 = []
     holdout_brier = []
+    holdout_calibration = []
     
     ## inner cv
-    inner_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
+    inner_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+
     for i in range(len(train_outer)):
         
         ## subset train & test sets in inner loop
         train_x, test_x = X.iloc[train_outer[i]], X.iloc[test_outer[i]]
         train_y, test_y = Y[train_outer[i]], Y[test_outer[i]]
-        
-        
-        ## holdout test with "race" for fairness
-        holdout_with_attrs = test_x.copy()
       
-        ## GridSearch: inner CV
         '''
+        ### Jingyuan: to specify grid on estimator, need to add 'estimator__' in c_grid in baseline_functions.py
         pipeline = Pipeline(steps=[('sampler', SMOTETomek(tomek=TomekLinks(sampling_strategy='majority'))),
                                     ('estimator', estimator)])
+
+        clf = GridSearchCV(estimator=pipeline, 
+                           param_grid=c_grid, 
+                           scoring='roc_auc',
+                           cv=inner_cv, 
+                           return_train_score=True).fit(train_x, train_y) 
         '''
-        pipeline = Pipeline(steps=[('estimator', estimator)])
         
-        # average_precision: similar to the area under the PR
-        
+        ## GridSearch: inner CV
         clf = GridSearchCV(estimator=estimator, 
                             param_grid=c_grid, 
                             scoring='roc_auc',
                             cv=inner_cv, 
                             return_train_score=True).fit(train_x, train_y) 
-        
-        ### Jingyuan: to specify grid on estimator, need to add 'estimator__' in c_grid in baseline_functions.py
-        # clf = GridSearchCV(estimator=pipeline, 
-        #                    param_grid=c_grid, 
-        #                    scoring='roc_auc',
-        #                    cv=inner_cv, 
-        #                    return_train_score=True).fit(train_x, train_y) 
-
+    
         ## best parameter & scores
         mean_train_score = clf.cv_results_['mean_train_score']
         mean_test_score = clf.cv_results_['mean_test_score']        
@@ -102,14 +98,8 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
             holdout_pred = clf.predict(test_x)
             holdout_acc = clf.score(test_x, test_y)
         
-        
-        print(prob)
-        print(holdout_pred)
-        print("==================\n")
-        
         ## store results
         best_params.append(best_param)
-        # holdout_with_attr_test.append(holdout_with_attrs)
         holdout_probability.append(prob)
         holdout_prediction.append(holdout_pred)
         holdout_y.append(test_y)
@@ -121,17 +111,22 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
         holdout_brier.append(brier_score_loss(test_y, prob))
         holdout_f1.append(fbeta_score(test_y, holdout_pred, beta = 1))
         holdout_f2.append(fbeta_score(test_y, holdout_pred, beta = 2))
-        
-        
+    
+        # NEW: calibration error
+        holdout_calibration.append(compute_calibration(test_y, prob, holdout_pred))
+
+
         best_estimator = clf.best_estimator_
         if model == 'XGB':
             importance_scores = best_estimator.feature_importances_
             nonzero_indices = np.nonzero(importance_scores)[0]
-            print('XGB iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            print(f'XGB iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
+
         elif model == 'RF':
             importance_scores = best_estimator.feature_importances_
             nonzero_indices = np.nonzero(importance_scores)[0]
-            print('RF iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            print(f'RF iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
+
         elif model == 'LinearSVM':
             # create a SelectFromModel object based on the trained model
             sfm = SelectFromModel(best_estimator)
@@ -139,28 +134,36 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
             sfm.fit(train_x, train_y)
             # get the number of selected features
             num_selected = np.sum(sfm.get_support())
-            print('LinearSVM iteration ' + str(i) + '...' + str(num_selected) + '\n')
+            # print('LinearSVM iteration ' + str(i) + '...' + str(num_selected) + '\n')
+            print(f'LinearSVM iteration {str(i)}\n Indices: {num_selected}\n Number of features: {num_selected}\n')
+
         elif model == 'Lasso':
             coefficients = best_estimator.coef_[0]
             nonzero_indices = np.nonzero(coefficients)[0]
-            print('Lasso iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
-            print(coefficients)
+            # print('Lasso iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            # print(coefficients)
+            print(f'Lasso (L1) iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Coefficients: {coefficients}\n Number of features: {len(nonzero_indices)}\n')
+
         elif model == 'Logistic':
             coefficients = best_estimator.coef_[0]
             nonzero_indices = np.nonzero(coefficients)[0]
-            print('Logistic iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
-            print(coefficients)
+            # print('Logistic iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            # print(coefficients)
+            print(f'Logistic (L2) iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Coefficients: {coefficients}\n Number of features: {len(nonzero_indices)}\n')
+
         elif model == 'DT':
             
             importance_scores = best_estimator.feature_importances_
             nonzero_indices = np.nonzero(importance_scores)[0]
-            print('DT iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            # print('DT iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
+            print(f'DT iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
             print(best_estimator.tree_)
-            
+
             # plot
-            plt.figure(figsize=(30, 30))
-            tree.plot_tree(best_estimator)
-            plt.savefig('DecisionTree_CV.png', dpi=300)
+            if plot_DT:
+                plt.figure(figsize=(30, 30))
+                tree.plot_tree(best_estimator)
+                plt.savefig(f'{resultdir}DecisionTree_CV.png', dpi=300)
 
 
     return {'best_param': best_params,
@@ -174,7 +177,9 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, index = None):
             'holdout_test_pr_auc': holdout_pr_auc,
             "holdout_test_brier": holdout_brier,
             'holdout_test_f1': holdout_f1,
-            "holdout_test_f2": holdout_f2}
+            "holdout_test_f2": holdout_f2,
+            "holdout_calibration_error": holdout_calibration}
+
 
 
 def cross_validate(X, Y, estimator, c_grid, seed):
@@ -191,4 +196,22 @@ def cross_validate(X, Y, estimator, c_grid, seed):
     return pred
     
     
+
+def compute_calibration(y, y_prob, y_pred):
     
+    num_total_presc = len(y)
+    calibration_error = 0
+    
+    for prob in np.unique(y_prob):
+        
+        y_temp = y[y_prob == prob]
+        y_pred_temp = y_pred[y_prob == prob]
+        
+        # prescription-level results 
+        TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp, labels=[0,1]).ravel() 
+        observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
+        num_presc = TN + FP + FN + TP
+
+        calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
+
+    return calibration_error
