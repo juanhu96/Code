@@ -1,0 +1,231 @@
+Start single training, file saved with setting tag _2018_train_single_5p_20f_original_Explore_feature2_essential1.0_first
+
+Finished importing STUMPS, with shape (4978320, 201)
+
+[['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300'], ['num_prescribers_past1802', 'num_prescribers_past1803'], ['num_pharmacies_past1802', 'num_pharmacies_past1803'], ['concurrent_benzo1'], ['Codeine'], ['Hydrocodone'], ['Oxycodone'], ['Morphine'], ['HMFO'], ['Medicaid'], ['Medicare'], ['CashCredit'], ['num_prior_prescriptions1'], ['diff_MME1'], ['diff_quantity1'], ['diff_days1'], ['switch_drug'], ['switch_payment'], ['ever_switch_drug'], ['ever_switch_payment'], ['patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_HPIQuartile_2.0', 'patient_HPIQuartile_3.0', 'patient_HPIQuartile_4.0'], ['prescriber_HPIQuartile_0.0', 'prescriber_HPIQuartile_1.0', 'prescriber_HPIQuartile_2.0', 'prescriber_HPIQuartile_3.0', 'prescriber_HPIQuartile_4.0'], ['pharmacy_HPIQuartile_0.0', 'pharmacy_HPIQuartile_1.0', 'pharmacy_HPIQuartile_2.0', 'pharmacy_HPIQuartile_3.0', 'pharmacy_HPIQuartile_4.0'], ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit']]
+------------------------------------------------------------------------------------------------------------------------
+[['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_quantity1', 'diff_days1', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_HPIQuartile_2.0', 'patient_HPIQuartile_3.0', 'patient_HPIQuartile_4.0', 'prescriber_HPIQuartile_0.0', 'prescriber_HPIQuartile_1.0', 'prescriber_HPIQuartile_2.0', 'prescriber_HPIQuartile_3.0', 'prescriber_HPIQuartile_4.0', 'pharmacy_HPIQuartile_0.0', 'pharmacy_HPIQuartile_1.0', 'pharmacy_HPIQuartile_2.0', 'pharmacy_HPIQuartile_3.0', 'pharmacy_HPIQuartile_4.0']]
+------------------------------------------------------------------------------------------------------------------------
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+07/11/24 @ 11:12 PM | 521 rows in lookup table
+07/11/24 @ 11:12 PM | ------------------------------------------------------------
+07/11/24 @ 11:12 PM | runnning initialization procedure
+07/11/24 @ 11:12 PM | ------------------------------------------------------------
+07/11/24 @ 11:15 PM | CPA produced 2 cuts
+07/11/24 @ 11:15 PM | running naive rounding on 143 solutions
+07/11/24 @ 11:15 PM | best objective value: 0.3123
+07/11/24 @ 11:15 PM | rounding produced 0 integer solutions
+07/11/24 @ 11:15 PM | running sequential rounding on 143 solutions
+07/11/24 @ 11:15 PM | best objective value: 0.3123
+07/11/24 @ 11:15 PM | sequential rounding produced 0 integer solutions
+07/11/24 @ 11:15 PM | initialization produced 0 feasible solutions
+07/11/24 @ 11:15 PM | ------------------------------------------------------------
+07/11/24 @ 11:15 PM | completed initialization procedure
+07/11/24 @ 11:15 PM | ------------------------------------------------------------
+07/11/24 @ 11:15 PM | 521 rows in lookup table
+register_callback
+
+Version identifier: 22.1.0.0 | 2022-03-25 | 54982fbec
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 1
+CPXPARAM_Parallel                                1
+CPXPARAM_RandomSeed                              0
+CPXPARAM_TimeLimit                               7200
+CPXPARAM_MIP_Tolerances_LowerCutoff              0.30842479739547779
+CPXPARAM_MIP_Tolerances_UpperCutoff              40.629963526395656
+Legacy callback                                  LD
+Warning: Control callbacks may disable some MIP features.
+Lazy constraint(s) or lazy constraint/branch callback is present.
+    Disabling dual reductions (CPX_PARAM_REDUCE) in presolve.
+    Disabling presolve reductions that prevent crushing forms (CPX_PARAM_PREREFORM).
+         Disabling repeat represolve because of lazy constraint/incumbent callback.
+Tried aggregator 1 time.
+MIP Presolve eliminated 20 rows and 1 columns.
+MIP Presolve modified 49 coefficients.
+Reduced MIP has 107 rows, 101 columns, and 286 nonzeros.
+Reduced MIP has 49 binaries, 51 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.32 ticks)
+Probing time = 0.00 sec. (0.06 ticks)
+Clique table members: 8.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: traditional branch-and-cut.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 0.00 sec. (0.09 ticks)
+07/11/24 @ 11:15 PM | adding 339 initial cuts
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap         Variable B NodeID Parent  Depth
+
+      0     0        0.3084    45                      0.3084        2         
+*     0+    0                            0.4601        0.3084            32.97%
+*     0+    0                            0.3773        0.3084            18.26%
+      0     2        0.3084    45        0.3773        0.3084        2   18.26%                        0             0
+Elapsed time = 2.05 sec. (230.28 ticks, tree = 0.01 MB, solutions = 2)
+*    80+   65                            0.3681        0.3093            15.97%
+*    80+   60                            0.3560        0.3093            13.11%
+*    90+   70                            0.3543        0.3093            12.70%
+    210   173        0.3478     8        0.3543        0.3095     1768   12.67%          rho_19 D    210    209     22
+    606   482        0.3501     7        0.3543        0.3104     4428   12.40%          rho_33 D    606    605     19
+*   930+  645                            0.3437        0.3107             9.61%
+*   940+  648                            0.3425        0.3107             9.28%
+    990   685        0.3385     8        0.3425        0.3107     6752    9.28%          rho_29 D    990    989     10
+   1400   983        0.3191    12        0.3425        0.3112     9435    9.13%          rho_49 D   1400   1399      8
+   1808  1270        0.3143    20        0.3425        0.3116    12213    9.02%          rho_39 U   1808    813      8
+   2204  1541        0.3148    21        0.3425        0.3118    14739    8.97%          rho_46 U   2204    920     12
+   2600  1818        0.3424     5        0.3425        0.3119    17212    8.93%          rho_34 U   2600   2599     19
+   2990  2080        0.3225    16        0.3425        0.3121    19746    8.88%           rho_1 D   2990   2989     17
+   3377  2337        0.3273     8        0.3425        0.3122    22241    8.85%           rho_4 D   3377   3376     29
+   4733  3199        0.3157    20        0.3425        0.3126    31008    8.71%           rho_1 D   4733   4732      7
+Elapsed time = 66.03 sec. (3341.79 ticks, tree = 1.36 MB, solutions = 7)
+*  5475  3426      integral     0        0.3384        0.3128    35710    7.57%
+   6095  3802        0.3166    16        0.3384        0.3130    39987    7.51%          rho_37 D   6095   6094     17
+   7279  4463        cutoff              0.3384        0.3134    48392    7.41%        alpha_33 D   7279   7278     22
+   8365  5066        0.3144    23        0.3384        0.3137    55914    7.32%          rho_37 D   8365   8364     12
+   9402  5618        cutoff              0.3384        0.3139    63177    7.24%          rho_48 U   9402   4000     17
+  10445  6140        0.3219    15        0.3384        0.3142    70347    7.17%          rho_47 D  10445  10443     22
+  11513  6674        0.3153    19        0.3384        0.3144    78348    7.10%          rho_18 D  11513   6160     18
+  12566  7197        cutoff              0.3384        0.3147    85531    7.02%        alpha_37 N  12566  12565     35
+  13560  7654        cutoff              0.3384        0.3149    92427    6.95%           rho_3 U  13560  13558     21
+  14540  8135        cutoff              0.3384        0.3151    98817    6.90%          rho_33 N  14540  14538     23
+  15484  8560        0.3296    18        0.3384        0.3153   105387    6.83%           rho_2 U  15484  15482     18
+Elapsed time = 145.07 sec. (12884.82 ticks, tree = 3.58 MB, solutions = 8)
+  16443  9002        0.3375     3        0.3384        0.3154   111668    6.79%          rho_19 D  16443  16442     24
+  17344  9417        0.3255    11        0.3384        0.3156   118207    6.74%           rho_2 N  17344  17343     23
+  18280  9845        0.3169    16        0.3384        0.3158   124507    6.69%           rho_6 U  18280  11360     13
+  19215 10234        0.3256    14        0.3384        0.3159   130598    6.65%          rho_33 D  19215  19214     27
+  20105 10608        0.3379     7        0.3384        0.3161   136789    6.61%          rho_26 N  20105  20104     27
+  20952 10942        0.3314    11        0.3384        0.3162   142681    6.57%          rho_24 U  20952  20951     24
+  21777 11282        cutoff              0.3384        0.3164   148494    6.52%          rho_29 U  21777  21775     31
+  22571 11580        0.3285     6        0.3384        0.3165   154461    6.49%          rho_10 D  22571  22570     31
+* 23400+11769                            0.3381        0.3166             6.37%
+  23400 11771        0.3361     1        0.3381        0.3166   160195    6.37%        alpha_32 D  23400  23399     35
+* 23402 11567      integral     0        0.3376        0.3166   160196    6.23%
+  24109 11790        0.3371     8        0.3376        0.3168   165560    6.19%         alpha_3 N  24109  24108     22
+Elapsed time = 204.24 sec. (22430.97 ticks, tree = 4.82 MB, solutions = 10)
+  24824 12023        0.3211    12        0.3376        0.3169   170979    6.15%          rho_41 U  24824   7770     19
+  25574 12239        0.3192    15        0.3376        0.3170   176539    6.11%          rho_41 U  25574  25573     19
+  26322 12468        0.3222    14        0.3376        0.3171   181979    6.08%          rho_25 D  26322  26321     16
+  27109 12716        cutoff              0.3376        0.3172   187571    6.04%           rho_7 U  27109  27108     20
+  27818 12926        cutoff              0.3376        0.3174   192781    6.01%          rho_20 U  27818  27817     23
+  28516 13139        0.3321    16        0.3376        0.3175   198056    5.97%           rho_7 N  28516  28515     26
+  29238 13352        cutoff              0.3376        0.3176   202822    5.93%          rho_38 U  29238  29237     15
+* 29801 13299      integral     0        0.3372        0.3177   206677    5.79%
+* 29802 13065      integral     0        0.3368        0.3177   206679    5.68%
+  29922 13085        0.3257    11        0.3368        0.3177   207663    5.67%          rho_33 D  29922  29920     30
+  30581 13241        cutoff              0.3368        0.3178   212640    5.64%          rho_38 D  30581  30579     20
+  31228 13408        cutoff              0.3368        0.3180   217794    5.60%           rho_0 U  31228  31227     22
+Elapsed time = 250.40 sec. (31974.50 ticks, tree = 5.51 MB, solutions = 12)
+  31889 13533        cutoff              0.3368        0.3181   222860    5.56%          rho_34 D  31889  31888     37
+  32560 13700        0.3357     9        0.3368        0.3182   227583    5.53%          rho_18 N  32560  32559     18
+  33221 13865        0.3227    13        0.3368        0.3183   232251    5.49%           rho_2 D  33221  33220     21
+  33880 14033        0.3293    17        0.3368        0.3184   237262    5.46%           rho_5 D  33880  33879     19
+  34514 14158        0.3314     8        0.3368        0.3186   241843    5.42%           rho_7 N  34514  34513     26
+  35176 14303        0.3353    10        0.3368        0.3187   246704    5.39%           rho_6 N  35176  35175     20
+  35833 14446        0.3292     9        0.3368        0.3188   251412    5.36%          rho_18 D  35833  35832     18
+  36455 14546        cutoff              0.3368        0.3189   256063    5.32%           rho_5 U  36455  36454     25
+  37102 14691        0.3233    12        0.3368        0.3190   260719    5.28%          rho_33 D  37102  37101     25
+  37728 14826        0.3287    10        0.3368        0.3191   265276    5.25%           rho_5 U  37728  28261     10
+Elapsed time = 273.66 sec. (41518.44 ticks, tree = 6.14 MB, solutions = 12)
+  38370 14968        0.3358    12        0.3368        0.3192   270069    5.22%          rho_24 N  38370  38369     27
+  39008 15077        0.3257    10        0.3368        0.3194   274687    5.19%          rho_41 U  39008   2449     18
+* 39383 14968      integral     0        0.3366        0.3194   277312    5.09%
+* 39384 14583      integral     0        0.3360        0.3194   277313    4.94%
+  39634 14638        0.3195    20        0.3360        0.3195   278994    4.93%          rho_37 D  39634  25924     31
+  40272 14765        cutoff              0.3360        0.3195   283678    4.91%           rho_4 D  40272  40270     29
+  40851 14808        0.3273    15        0.3360        0.3197   288188    4.87%           rho_1 N  40851  19469     18
+  41454 14900        0.3301     9        0.3360        0.3198   292521    4.83%          rho_36 N  41454  41453     21
+  42052 14990        0.3330     9        0.3360        0.3199   297214    4.80%           rho_7 U  42052   9713     16
+  42631 15051        0.3309    10        0.3360        0.3200   301743    4.77%          rho_30 N  42631  22298     25
+  43237 15167        0.3266    11        0.3360        0.3201   305964    4.74%          rho_11 N  43237  43236     30
+  43828 15233        0.3324     8        0.3360        0.3202   310401    4.70%          rho_18 N  43828  43826     27
+Elapsed time = 293.08 sec. (51064.30 ticks, tree = 6.40 MB, solutions = 14)
+  44420 15253        0.3266    11        0.3360        0.3204   314839    4.66%          rho_10 D  44420  44419     33
+  45010 15308        0.3330    13        0.3360        0.3205   319131    4.63%           rho_2 D  45010  45009     25
+  45579 15337        0.3359     9        0.3360        0.3206   323605    4.59%          rho_24 N  45579  45577     19
+  46177 15410        cutoff              0.3360        0.3207   328104    4.56%           rho_2 U  46177  22036     19
+  46768 15445        0.3268     9        0.3360        0.3208   332465    4.53%           rho_3 U  46768  46766     31
+  47358 15492        0.3220    11        0.3360        0.3209   336528    4.50%           rho_4 D  47358  47357     34
+  47940 15558        0.3339     5        0.3360        0.3210   340699    4.47%           rho_0 N  47940  47939     27
+  48536 15630        0.3294     9        0.3360        0.3211   344905    4.44%          rho_37 N  48536  48535     25
+  49108 15632        cutoff              0.3360        0.3213   349181    4.40%           rho_4 N  49108  49107     25
+  49694 15675        cutoff              0.3360        0.3214   353514    4.37%           rho_1 N  49694  49693     23
+Elapsed time = 306.81 sec. (60611.24 ticks, tree = 6.66 MB, solutions = 14)
+  50238 15693        0.3288    13        0.3360        0.3215   357783    4.33%          rho_46 U  50238   8501     18
+  50827 15764        0.3261     7        0.3360        0.3216   361887    4.29%          rho_11 D  50827  50826     31
+  51434 15848        0.3274     9        0.3360        0.3217   366031    4.26%           rho_6 D  51434  51433     22
+  51998 15858        cutoff              0.3360        0.3218   370181    4.23%          rho_11 N  51998  51997     32
+  52584 15936        0.3309    10        0.3360        0.3219   374225    4.21%           rho_6 D  52584  52583     19
+  53155 15995        0.3248    15        0.3360        0.3220   378197    4.17%          rho_10 D  53155  53154     25
+  53706 16017        0.3350     3        0.3360        0.3221   382278    4.14%          rho_33 N  53706  53705     22
+  54245 16043        cutoff              0.3360        0.3222   386499    4.10%          rho_33 N  54245   1385     11
+  54811 16110        0.3324    11        0.3360        0.3223   390497    4.07%          rho_46 D  54811  13514     23
+  55381 16141        0.3351    14        0.3360        0.3225   394545    4.04%           rho_2 N  55381   8831     18
+Elapsed time = 323.06 sec. (70162.38 ticks, tree = 6.92 MB, solutions = 14)
+  55956 16171        0.3356    13        0.3360        0.3226   398567    4.01%           rho_2 N  55956  55954     20
+  56483 16131        cutoff              0.3360        0.3227   402463    3.97%          rho_10 U  56483  38169     24
+  57024 16096        0.3286    10        0.3360        0.3228   406573    3.94%          rho_11 D  57024  57023     19
+  57598 16102        0.3320    11        0.3360        0.3229   410536    3.90%           rho_5 N  57598  57517     14
+  58183 16119        0.3351     3        0.3360        0.3230   414271    3.87%          rho_33 N  58183  58182     32
+  58743 16097        cutoff              0.3360        0.3232   418228    3.83%          rho_29 U  58743   1993     10
+  59301 16086        cutoff              0.3360        0.3233   422104    3.80%           rho_2 N  59301  59300     25
+  59884 16112        cutoff              0.3360        0.3234   425740    3.77%           rho_3 D  59884  59882     34
+  60449 16150        0.3270    12        0.3360        0.3234   429541    3.74%          rho_18 N  60449  24813     20
+  60993 16141        cutoff              0.3360        0.3235   433414    3.72%          rho_29 U  60993   4828     16
+Elapsed time = 333.74 sec. (79713.02 ticks, tree = 6.98 MB, solutions = 14)
+  61563 16177        0.3271    12        0.3360        0.3237   437152    3.68%          rho_18 U  61563  61562     14
+  62108 16170        0.3289    14        0.3360        0.3238   440953    3.64%           rho_4 D  62108  62107     26
+  62660 16134        0.3293    21        0.3360        0.3239   444824    3.61%           rho_7 D  62660  22976     20
+  63228 16134        cutoff              0.3360        0.3240   448435    3.58%           rho_4 N  63228  63226     29
+* 63290 15636      integral     0        0.3356        0.3240   448903    3.45%
+  63740 15604        0.3347     9        0.3356        0.3241   452078    3.43%          rho_36 N  63740  63738     19
+* 64026 15268      integral     0        0.3354        0.3242   454002    3.34%
+* 64028 15133      integral     0        0.3352        0.3242   454007    3.30%
+* 64030+14805                            0.3349        0.3242             3.21%
+  64230 14776        0.3247    15        0.3349        0.3242   455387    3.20%           rho_6 D  64230  64229     21
+  64742 14698        cutoff              0.3349        0.3243   458910    3.17%          rho_24 U  64742  64741     23
+  65243 14624        cutoff              0.3349        0.3245   462370    3.12%          rho_18 U  65243  65242     21
+  65778 14569        cutoff              0.3349        0.3246   465809    3.09%           rho_4 U  65778  65776     27
+* 67050+14026                            0.3346        0.3248             2.90%
+* 67053 13890      integral     0        0.3344        0.3248   473969    2.86%
+* 67054 13741      integral     0        0.3343        0.3248   473969    2.83%
+  67814 13608        0.3293     9        0.3343        0.3250   479049    2.78%          rho_41 N  67814  37536     16
+Elapsed time = 349.66 sec. (92128.77 ticks, tree = 6.05 MB, solutions = 21)
+* 68800+13005                            0.3340        0.3252             2.62%
+  69899 12719        0.3264    14        0.3340        0.3255   492160    2.53%          rho_25 D  69899  69898     21
+  71943 12174        cutoff              0.3340        0.3260   505471    2.38%           rho_2 N  71943  71942     17
+  74108 11565        0.3325     9        0.3340        0.3266   518737    2.20%          rho_18 N  74108  33342     30
+  76300 10973        0.3329     9        0.3340        0.3272   531626    2.04%          rho_29 N  76300  76299     20
+  78499 10169        0.3338     9        0.3340        0.3278   544271    1.86%           rho_1 N  78499  32999     14
+  80729  9388        0.3327    13        0.3340        0.3284   556097    1.67%           rho_5 N  80729  80727     23
+  82912  8373        cutoff              0.3340        0.3291   567565    1.47%           rho_9 U  82912  47755     28
+  85109  7301        0.3326    12        0.3340        0.3298   578197    1.25%          rho_36 N  85109  48378     19
+  87323  6152        0.3308     7        0.3340        0.3305   588244    1.04%          rho_33 U  87323  80465     24
+  89504  4814        cutoff              0.3340        0.3313   597597    0.81%          rho_29 N  89504  30031     29
+Elapsed time = 374.06 sec. (130291.45 ticks, tree = 2.61 MB, solutions = 22)
+  91704  3359        cutoff              0.3340        0.3321   605843    0.55%          rho_39 N  91704  49674     17
+  93913  1558        cutoff              0.3340        0.3331   612982    0.26%          rho_18 N  93913  43826     27
+* 95019   498      integral     0        0.3339        0.3336   615898    0.09%
+
+User cuts applied:  1615
+
+Root node processing (before b&c):
+  Real time             =    2.05 sec. (230.52 ticks)
+Sequential b&c:
+  Real time             =  383.64 sec. (140290.10 ticks)
+                          ------------
+Total (root+branch&cut) =  385.69 sec. (140520.62 ticks)
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| concurrent_MME10                              |         2 points |   + ..... |
+| ever_switch_drug                              |         2 points |   + ..... |
+| concurrent_benzo1                             |         1 points |   + ..... |
+| HMFO                                          |         1 points |   + ..... |
+| Medicare                                      |         1 points |   + ..... |
+| patient_HPIQuartile_1.0                       |         1 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-5 ['concurrent_MME10', 'ever_switch_drug', 'concurrent_benzo1', 'HMFO', 'Medicare', 'patient_HPIQuartile_1.0'] [2. 2. 1. 1. 1. 1.]
+Finished riskSLIM in 569.1 seconds
+

@@ -1,0 +1,4 @@
+Start creating stumps for year 2018 with features ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 'num_pharmacies', 'consecutive_days', 'concurrent_benzo', 'quantity', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'num_prior_presc', 'avgDays', 'diff_MME', 'diff_quantity', 'diff_days', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_1', 'patient_HPIQuartile_2', 'patient_HPIQuartile_3', 'patient_HPIQuartile_4', 'prescriber_HPIQuartile_1', 'prescriber_HPIQuartile_2', 'prescriber_HPIQuartile_3', 'prescriber_HPIQuartile_4', 'pharmacy_HPIQuartile_1', 'pharmacy_HPIQuartile_2', 'pharmacy_HPIQuartile_3', 'pharmacy_HPIQuartile_4']
+
+Stumps done!
+

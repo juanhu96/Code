@@ -12,9 +12,6 @@ from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
     average_precision_score, brier_score_loss, fbeta_score, accuracy_score, confusion_matrix
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.feature_selection import SelectFromModel
-from imblearn.pipeline import Pipeline
-from imblearn.combine import SMOTETomek
-from imblearn.under_sampling import TomekLinks
 from sklearn import tree
 import matplotlib.pyplot as plt
 
@@ -182,7 +179,7 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, n_splits=5, inde
 
 
 
-def cross_validate(X, Y, estimator, c_grid, seed):
+def cross_validate(model, X, Y, estimator, c_grid, seed):
     
     cv = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
     clf = GridSearchCV(estimator=estimator, 
@@ -190,15 +187,53 @@ def cross_validate(X, Y, estimator, c_grid, seed):
                        scoring='roc_auc',
                        cv=cv, 
                        return_train_score=True).fit(X, Y) 
-    
     pred = clf.predict(X)
+    prob = clf.predict_proba(X)[:, 1]
     
-    return pred
+    # if model == 'svm':
+    #         best_model = CalibratedClassifierCV(clf, cv=5)
+    #         best_model.fit(X, Y)
+    #         prob = best_model.predict_proba(X)[:, 1]
+    #         pred = best_model.predict(X)         
+    # else:
+    #     pred = clf.predict(X)
+    #     prob = clf.predict_proba(X)[:, 1]
+
+    best_estimator = clf.best_estimator_
+    feature_names = X.columns.tolist()
+
+    if model == 'DT' or model == 'RF' or model == 'XGB':
+        feature_importances = best_estimator.feature_importances_
+        selected_features = [feature_names[i] for i in np.where(feature_importances > 0)[0]]
+    # elif model == 'Lasso' or model == 'Logistic':
+    #     coefficients = best_estimator.coef_[0]
+    #     selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
+    # elif model == 'LinearSVM':
+    #     coefficients = best_estimator.coef_[0]
+    #     selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
+    else:
+        coefficients = best_estimator.coef_[0]
+        selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
+
+    results = {'test_accuracy': accuracy_score(Y, pred),
+            'test_recall': recall_score(Y, pred),
+            "test_precision": precision_score(Y, pred),
+            'test_roc_auc': roc_auc_score(Y, prob),
+            'test_pr_auc': average_precision_score(Y, prob),
+            "calibration_error": compute_calibration(Y, prob, pred)}
+    
+    results['calibration_error'] = float(f"{results['calibration_error']:.6f}")
+
+    print(selected_features, len(selected_features))
+    print(results)
+
+    return results
     
     
 
 def compute_calibration(y, y_prob, y_pred):
-    
+
+    table = []
     num_total_presc = len(y)
     calibration_error = 0
     
@@ -211,7 +246,11 @@ def compute_calibration(y, y_prob, y_pred):
         TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp, labels=[0,1]).ravel() 
         observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
         num_presc = TN + FP + FN + TP
-
         calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
+
+        table.append({'Prob': prob, 'Num_presc': num_presc,
+        'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP, 'Observed Risk': observed_risk})
+
+    print(table)
 
     return calibration_error

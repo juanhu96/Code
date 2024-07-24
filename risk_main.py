@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 from risk_train import risk_train
-from risk_test import test_table, test_table_full
+from risk_test import risk_test
 from risk_stumps import create_stumps
 from baseline_main import baseline_main
 import matplotlib.pyplot as plt
@@ -24,87 +24,149 @@ from sklearn.metrics import roc_curve, auc
 
 import sys 
 
-case = sys.argv[1]
-scenario = sys.argv[2]
-max_points = int(sys.argv[3])
-max_features = int(sys.argv[4])
-weight = sys.argv[5]
-c0 = float(sys.argv[6])
-name = sys.argv[7]
+year = sys.argv[1] # 2018
+mode = sys.argv[2] # train/test
 
-def main(case, scenario, max_points, max_features, weight, c0, name):
+if mode == 'train':
+    scenario = sys.argv[3] # single
+    max_points = int(sys.argv[4]) # 5 
+    max_features = int(sys.argv[5]) # 10
+    weight = sys.argv[6] # unbalanced
+    c0 = float(sys.argv[7]) # 1e-15
+    name = sys.argv[8] # LTOUR
 
-    print(f'Start {case}ing with {scenario}, points {max_points}, features {max_features}, c = {c0}, file saved with name {name}\n')
+    first = any(['first' in arg for arg in sys.argv])
+    upto180 = any(['upto180' in arg for arg in sys.argv])
+
+    feature = any(['feature' in arg for arg in sys.argv])
+    if feature:
+        feature_arg = [arg for arg in sys.argv if 'feature' in arg][0]
+        feature_set = feature_arg.replace('feature', '')
+    else: feature_set = None
+
+    essential = any(['essential' in arg for arg in sys.argv])
+    if essential:
+        essential_arg = [arg for arg in sys.argv if 'essential' in arg][0]
+        essential_num = float(essential_arg.replace('essential', ''))
+    else: essential_num = None
+
+    setting_tag = f'_{year}_{mode}_{scenario}_{max_points}p_{max_features}f_{weight}_{name}'
+    setting_tag += f"_feature{feature_set}" if feature else ""
+    setting_tag += f"_essential{essential_num}" if essential else ""
+    setting_tag += f"_first" if first else ""
+    setting_tag += f"_upto180" if upto180 else ""
+
+    # setting_tag += "_second_round"
+elif mode == 'test':
+    suffix = sys.argv[3] # suffix
+    first = any(['first' in arg for arg in sys.argv])
+    upto180 = any(['upto180' in arg for arg in sys.argv])
+    table = any(['table' in arg for arg in sys.argv])
+
+    if table:
+        table_arg = [arg for arg in sys.argv if 'table' in arg][0]
+        table_case = table_arg.replace('table', '')
+    else: table_case = None
+
+    setting_tag = f'_{year}_{mode}_{suffix}'
+    setting_tag += f"_first" if first else ""
+    setting_tag += f"_upto180" if upto180 else ""
+
+elif mode == 'base_train':
+    model = sys.argv[3] # model
+    first = any(['first' in arg for arg in sys.argv])
+    upto180 = any(['upto180' in arg for arg in sys.argv])
+
+    setting_tag = f'_{year}_{mode}_{model}'
+    setting_tag += f"_first" if first else ""
+    setting_tag += f"_upto180" if upto180 else ""
+
+
+def main(year, mode, first, upto180, setting_tag, scenario=None, max_points=None, max_features=None, weight=None, c0=None, feature_set=None, essential_num=None, table_case=None, model=None):
 
     # =================================== Train LTOUR  ======================================
-    if case == 'train':
+    if mode == 'train':
 
         if scenario == 'single':
-            c = c0
-            risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+            print(f'Start single training, file saved with setting tag {setting_tag}\n')
+            risk_train(year=year, case=name, first=first, upto180=upto180, scenario=scenario, c=c0, feature_set=feature_set, essential_num=essential_num, max_points=max_points, max_features=max_features, weight=weight, setting_tag=setting_tag)
+        
         else: 
-            c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]
-            best_c = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
-            print(f'Single training with the best c = {best_c}\n')
-            risk_train(year=2018, features='LTOUR', scenario='single', c=best_c, max_points=max_points, max_features=max_features, weight=weight, name=name)
-
+            # print(f'Start CV training, points {max_points}, features {max_features}, file saved with name {name}\n')
+            # c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]
+            # best_c = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+            # print(f'Single training with the best c = {best_c}\n')
+            # risk_train(year=2018, features='LTOUR', scenario='single', c=best_c, max_points=max_points, max_features=max_features, weight=weight, name=name)
+            return
     # ===================================  Test LTOUR  =======================================
 
-    elif case == 'test':
+    elif mode == 'test':
+        
+        print(f'Start testing, file saved with setting tag {setting_tag}\n')
 
-        test_result = []
-        calibration_table_list = []
-        tpr_list = []
-        fpr_list = []
+        # CURES_table = {'intercept': 0,
+        #                'conditions':['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 
+        #                              'num_pharmacies', 'consecutive_days', 'concurrent_benzo'],
+        #                              'cutoffs': [90, 40, 6, 6, 90, 1], # '4' refers to quartiles
+        #                              'scores': [1, 1, 1, 1, 1, 1]}
 
-        SAMPLE = import_data()
+        # LTOUR_table = {'intercept': -6,
+        #                'conditions':['avgDays_past180', 'avgDays_past180', 'concurrent_MME', 'Medicaid', 'HMFO'],
+        #                              'cutoffs': [14, 25, 30, 1, 1], # '4' refers to quartiles
+        #                              'scores': [2, 2, 1, 1, 1]}
 
-        intercept = -6
-        conditions = ['avgDays', 'avgDays', 'concurrent_MME', 'HMFO', 'Medicaid']
-        cutoffs = [14, 25, 30, 1, 1]
-        scores = [2, 2, 1, 1, 1]
+        all_table = {'intercept': -7, 
+                     'conditions': ['age', 'num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 
+                                    'concurrent_MME', 'HMFO', 'pharmacy_yr_avg_days_quartile'], 
+                                    'cutoffs': [30, 1, '4', 30, 1, '4'],
+                                    'scores': [3, 2, 2, 1, 1, 1]}
 
-        results, calibration_table, tpr, fpr, thresholds = test_table(SAMPLE, year=2019, table='LTOUR', intercept=intercept, conditions=conditions, cutoffs=cutoffs, scores=scores,
-                                                                    calibration=True, roc=True, output_table=True, filename=f'{name}')
-        test_result.append(results)
-        calibration_table_list.append(calibration_table)
-        tpr_list.append(tpr)
-        fpr_list.append(fpr)
+        first_table = {'intercept': -6,
+                       'conditions':['prescriber_yr_avg_days_quartile', 'age', 'concurrent_MME', 
+                                     'HMFO', 'ever_switch_drug', 'pharmacy_yr_avg_days_quartile'],
+                                     'cutoffs': ['4', 40, 40, 1, 1, '4'],
+                                     'scores': [3, 2, 1, 1, 1, 1]}
+        
+        upto180_table = {'intercept': -7,
+                         'conditions':['prescriber_yr_avg_days_quartile', 'age', 'concurrent_MME', 
+                                       'HMFO', 'Medicare', 'pharmacy_yr_avg_days_quartile'],
+                                       'cutoffs': ['4', 30, 30, 1, 1, '4'],
+                                       'scores': [3, 2, 1, 1, 1, 1]}
 
-        df = pd.DataFrame(test_result)
-        print(df)
-        print(calibration_table)
-
-
-        # =============
+        # conic_table_one = {'intercept': -5,
+        #                'conditions':['concurrent_MME', 'num_prior_prescriptions', 'concurrent_benzo', 
+        #                              'Oxycodone', 'Medicare', 'ever_switch_drug'],
+        #                              'cutoffs': [0.1, 1, 1, 1, 1, 1],
+        #                              'scores': [1, 3, 1, 1, 2, 3]}
+        
+        # conic_table_two = {'intercept': -5,
+        #                'conditions':['concurrent_MME', 'num_prior_prescriptions', 'concurrent_benzo', 'Oxycodone', 'Medicare'],
+        #                              'cutoffs': [0.05, 1, 1, 1, 1],
+        #                              'scores': [3, 3, 1, 1, 2]}
 
         
-        intercept = 0
-        conditions = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers', 'num_pharmacies', 'consecutive_days', 'concurrent_benzo']
-        cutoffs = [90, 40, 6, 6, 90, 1]
-        scores = [1, 1, 1, 1, 1, 1]
+        # or_table = {'intercept': -2,
+        #          'conditions':[['num_prior_prescriptions', 'patient_zip_avg_days'], ['prescriber_yr_avg_days_quartile'],
+        #                        ['concurrent_MME', 'HMFO', 'age', 'ever_switch_drug', 'pharmacy_yr_avg_days_quartile']],
+        #                        'cutoffs': [[1, 14], ['4'], [75, 1, 40, 1, '4']],
+        #                        'scores': [2, 3, 1]}
+        
+        
+        if table_case == 'all': table = all_table
+        if table_case == 'upto180': table = upto180_table
+        if table_case == 'first': table = first_table
 
-        results, calibration_table, tpr, fpr, thresholds = test_table(SAMPLE, year=2019, table='CURES', intercept=intercept, conditions=conditions, cutoffs=cutoffs, scores=scores,
-                                                                    calibration=True, roc=True, output_table=True, filename=f'{name}')
-        test_result.append(results)
-        calibration_table_list.append(calibration_table)
-        tpr_list.append(tpr)
-        fpr_list.append(fpr)
+        # if table_case == 'conic_one': table = conic_table_one
+        # if table_case == 'conic_two': table = conic_table_two
 
-        df = pd.DataFrame(test_result)
-        print(df)
-        print(calibration_table)
+        print(table)
 
-
-        # df.insert(0, 'c', c_list)
-        # df['c'] = df['c'].astype(str)
-        # print(df[['c', 'Accuracy', 'ROC AUC', 'Calibration error']])
-
-        color_list = ['red', 'blue', 'orange', 'green', 'brown']
+        df, calibration_table = risk_test(year=year, table=table, first=first, upto180=upto180, setting_tag=setting_tag)
 
         # ========================================================================================
         ## Calibration plot
-        if True: 
+        # color_list = ['red', 'blue', 'orange', 'green', 'brown']
+        if False: 
             fig, ax = plt.subplots(figsize=(8, 8))   
 
             for i in range(len(calibration_table_list)):
@@ -125,7 +187,7 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
 
         # ========================================================================================
         ## ROC plot
-        if True:        
+        if False:        
             fig, ax = plt.subplots(figsize=(8, 8))
             ax.set_aspect('equal')
 
@@ -155,9 +217,9 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
             fig.savefig(f'/mnt/phd/jihu/opioid/Result/ROC_LTOUR_raw.pdf', dpi=300)
 
 
-    elif case == 'base_train':
-        baseline_main(year=2018, Model_list=['Decision Tree', 'Logistic (L2)', 'Logistic (L1)', 'SVM', 'XGB'], suffix='_calibration')
-        
+    elif mode == 'base_train':
+        baseline_main(year=2018, model=model, first=first, upto180=upto180, setting_tag=setting_tag)
+
     else:
         raise Exception("Case undefined")
 
@@ -166,21 +228,9 @@ def main(case, scenario, max_points, max_features, weight, c0, name):
 
 
 
-def import_data(year=2019, datadir='/mnt/phd/jihu/opioid/Data'):
-    
-    SAMPLE = pd.read_csv(f'{datadir}/FULL_{year}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
-    dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 
-    'num_prescribers': int, 'num_pharmacies': int,
-    'concurrent_benzo': int, 'consecutive_days': int,
-    'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-
-    SAMPLE = SAMPLE.fillna(0)
-    SAMPLE.rename(columns={'num_presc': 'num_prior_presc'}, inplace=True)
-
-    return SAMPLE
-
-
-
-
 if __name__ == "__main__":
-    main(case, scenario, max_points, max_features, weight, c0, name)
+
+    if mode == 'train': main(year, mode, first, upto180, setting_tag, scenario, max_points, max_features, weight, c0, feature_set, essential_num)
+    elif mode == 'test': main(year, mode, first, upto180, setting_tag, table_case=table_case)
+    elif mode == 'base_train': main(year, mode, first, upto180, setting_tag, model=model)
+    else: raise KeyError("Mode undefined.")

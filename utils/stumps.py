@@ -11,11 +11,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score, precision_score, \
     roc_auc_score, average_precision_score, brier_score_loss, fbeta_score
-from imblearn.pipeline import Pipeline
-from imblearn.combine import SMOTETomek
-from imblearn.under_sampling import TomekLinks
-from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import RandomUnderSampler
+# from imblearn.pipeline import Pipeline
+# from imblearn.combine import SMOTETomek
+# from imblearn.under_sampling import TomekLinks
+# from imblearn.over_sampling import SMOTE
+# from imblearn.under_sampling import RandomUnderSampler
 
 def create_stumps(data, columns, cutpoints):
     

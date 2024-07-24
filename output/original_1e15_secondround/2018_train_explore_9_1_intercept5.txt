@@ -1,0 +1,37 @@
+Start single training, file saved with setting tag _2018_train_single_20p_20f_original_Explore_feature9_essential1.0
+
+Finished importing STUMPS, with shape (10025197, 201)
+
+[['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prior_prescriptions1', 'age30', 'age40', 'patient_zip_avg_days3', 'patient_zip_avg_days5', 'patient_zip_avg_days7', 'patient_zip_avg_days10', 'patient_zip_avg_days14', 'patient_zip_avg_days21', 'patient_zip_avg_days25', 'patient_zip_avg_days30', 'patient_zip_avg_days60', 'HMFO', 'switch_drug', 'ever_switch_drug', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'prescriber_yr_avg_days_quartile_2.0', 'prescriber_yr_avg_days_quartile_3.0', 'prescriber_yr_avg_days_quartile_4.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_2.0', 'pharmacy_yr_avg_days_quartile_3.0', 'pharmacy_yr_avg_days_quartile_4.0']]
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+------------------------------------------------------------
+1.0
+07/05/24 @ 09:21 AM | 1561 rows in lookup table
+07/05/24 @ 09:22 AM | ------------------------------------------------------------
+07/05/24 @ 09:22 AM | runnning initialization procedure
+07/05/24 @ 09:22 AM | ------------------------------------------------------------
+07/05/24 @ 09:25 AM | CPA produced 2 cuts
+07/05/24 @ 09:25 AM | running naive rounding on 204 solutions
+07/05/24 @ 09:25 AM | best objective value: 0.3391
+07/05/24 @ 09:25 AM | rounding produced 0 integer solutions
+07/05/24 @ 09:25 AM | running sequential rounding on 204 solutions
+07/05/24 @ 09:25 AM | best objective value: 0.3391
+07/05/24 @ 09:26 AM | sequential rounding produced 0 integer solutions
+07/05/24 @ 09:26 AM | initialization produced 0 feasible solutions
+07/05/24 @ 09:26 AM | ------------------------------------------------------------
+07/05/24 @ 09:26 AM | completed initialization procedure
+07/05/24 @ 09:26 AM | ------------------------------------------------------------
+07/05/24 @ 09:26 AM | 1561 rows in lookup table
+register_callback
+
+07/05/24 @ 09:26 AM | adding 406 initial cuts
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| patient_zip_avg_days10                        |         4 points |   + ..... |
+| HMFO                                          |         2 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 2                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-5 ['patient_zip_avg_days10', 'HMFO'] [4. 2.]
+310.6 seconds

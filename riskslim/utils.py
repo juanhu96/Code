@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 import time
 import warnings
+import math
 import numpy as np
 import pandas as pd
 import prettytable as pt
@@ -195,7 +196,7 @@ def check_data(data):
 
 
 # MODEL PRINTING
-def print_model(rho, data,  show_omitted_variables = False):
+def print_model(rho, data, show_omitted_variables = False):
 
     variable_names = data['variable_names']
 
@@ -204,6 +205,12 @@ def print_model(rho, data,  show_omitted_variables = False):
 
     if INTERCEPT_NAME in rho_names:
         intercept_ind = variable_names.index(INTERCEPT_NAME)
+        
+        # JH: avoid intercept NaN
+        # value = rho[intercept_ind]
+        # if math.isnan(value): value = 0
+
+        # intercept_val = int(value)
         intercept_val = int(rho[intercept_ind])
         rho_values = np.delete(rho_values, intercept_ind)
         rho_names.remove(INTERCEPT_NAME)
@@ -211,9 +218,9 @@ def print_model(rho, data,  show_omitted_variables = False):
         intercept_val = 0
 
     if 'outcome_name' in data:
-        predict_string = "Pr(Y = +1) = 1.0/(1.0 + exp(-(%d + score))" % intercept_val
+        predict_string = "Pr(Y = +1) = 1.0/(1.0 + exp(-(%d + score)))" % intercept_val
     else:
-        predict_string = "Pr(%s = +1) = 1.0/(1.0 + exp(-(%d + score))" % (data['outcome_name'].upper(), intercept_val)
+        predict_string = "Pr(%s = +1) = 1.0/(1.0 + exp(-(%d + score)))" % (data['outcome_name'].upper(), intercept_val)
 
     if not show_omitted_variables:
         selected_ind = np.flatnonzero(rho_values)
@@ -254,7 +261,47 @@ def print_model(rho, data,  show_omitted_variables = False):
 
     print(m)
     print(intercept_val, rho_names, rho_values)
-    return m
+
+    #####################################################################################
+    ################################### NOTE: JH added ##################################
+    #####################################################################################
+    converted_conditions = []
+    cutoffs = []
+
+    for name in rho_names:
+        if 'quartile' in name or 'Quartile' in name:
+            parts = name.split('_')
+            quartile_part = parts[-1]
+            quartile_value = quartile_part.split('.')[0]
+            converted_condition = '_'.join(parts[:-1])
+            converted_conditions.append(converted_condition)
+            cutoffs.append(quartile_value)
+        else:
+            num = ''.join(filter(str.isdigit, name))
+            if num:
+                # NOTE: past180 needs double check
+                cutoffs.append(int(num))
+                converted_condition = name.rstrip(num)
+            else:
+                # categorical variable
+                cutoffs.append(1)
+                converted_condition = name
+
+    # Convert rho_values to integer scores
+    scores = [int(val) for val in rho_values]
+
+    # Create the dictionary
+    result = {
+        'intercept': intercept_val,
+        'conditions': converted_conditions,
+        'cutoffs': cutoffs,
+        'scores': scores
+    }
+    print(result)
+    
+    #####################################################################################
+
+    return intercept_val, rho_names, rho_values, result
 
 
 # LOGGING

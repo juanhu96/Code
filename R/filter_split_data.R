@@ -1,71 +1,115 @@
-### Filter chronic users, export Opioid and Benzo prescriptions
+### STEP 1
+### Filter chronic/outlier/illicit prescriptions, export Opioid and Benzo prescriptions
 ### Split the data based on number of prescriptions
+
+### INPUT: RX_2018.csv
+### OUTPUT: FULL_OPIOID_2018_ATLEASTONE.csv, FULL_BENZO_2018.csv
+### TEST <- FULL_OPIOID[1:20,]
+
 library(dplyr)
 library(lubridate)
+library(data.table)
 library(arules)
 library(parallel)
 
-setwd("/mnt/phd/jihu/opioid/Code")
+setwd("/export/storage_cures/CURES/")
+export_dir = "Processed/"
 year = 2019
-# 36182453 prescriptions in 2017
-FULL <- read.csv(paste("../Data/RX_", year, ".csv", sep="")) 
+previous_year = year - 1
 
-CHRONIC_USERS <- read.csv("../Data/RX_2016.csv") #8692443
-CHRONIC_USERS <- CHRONIC_USERS %>%
-  mutate(prescription_month = month(as.POSIXlt(CHRONIC_USERS$date_filled, format="%m/%d/%Y"))) %>%
+# Number of prescriptions 2017: 36182453, 2018: 33108449, 2019: 37175510
+FULL_CURRENT <- read.csv(paste("RX_", year, ".csv", sep="")) 
+FULL_PREVIOUS <- read.csv(paste("RX_", previous_year, ".csv", sep=""))
+
+###################################
+###### DROP CHRONIC, OUTLIERS
+###################################
+
+# Drop chronic users: 
+# - those who filled an opioid prescription in the last 60 days of the prior year
+CHRONIC_USERS <- FULL_PREVIOUS %>% 
+  filter(class == 'Opioid') %>%
+  mutate(prescription_month = month(as.POSIXlt(date_filled, format="%m/%d/%Y"))) %>%
   group_by(patient_id) %>%
-  summarize(chronic = ifelse(prescription_month[1]<4, 1, 0))
+  summarize(chronic = ifelse(prescription_month[1]>10, 1, 0))
 
-########################################################################
-###### Opioid prescriptions for non-chronic users, split data ######
-########################################################################
+setDT(FULL_CURRENT)
+setDT(CHRONIC_USERS)
 
-FULL_OPIOID <- FULL[which(FULL$class == 'Opioid'),]
-FULL_OPIOID <- left_join(FULL_OPIOID, CHRONIC_USERS, by = "patient_id")
-FULL_OPIOID <- FULL_OPIOID %>% mutate(chronic = coalesce(chronic, 0)) %>% filter(chronic == 0) #16397213
+FULL_OPIOID <- FULL_CURRENT[class == 'Opioid']
 
-# Sort the rows by patient id and date
-FULL_OPIOID <- FULL_OPIOID[order(FULL_OPIOID$patient_id, FULL_OPIOID$date_filled),]
-FULL_OPIOID$prescription_month <- month(as.POSIXlt(FULL_OPIOID$date_filled, format="%m/%d/%Y"))
-FULL_OPIOID$prescription_year <- year(as.POSIXlt(FULL_OPIOID$date_filled, format="%m/%d/%Y"))
+# Drop outliers:
+# - prescriptions that exceed 1,000 daily MME
+# - patients with more than 100 prior prescriptions)
+OUTLIERS_PATIENT <- FULL_OPIOID[, .(num_presc = .N, max_dose = max(daily_dose)), by = patient_id][, outliers := as.integer(max_dose >= 1000 | num_presc >= 100)]
+FULL_OPIOID <- merge(FULL_OPIOID, OUTLIERS_PATIENT, by = "patient_id", all.x = TRUE)
+FULL_OPIOID[, outliers := ifelse(is.na(outliers), 0, outliers)]
+FULL_OPIOID <- FULL_OPIOID[outliers == 0]
 
-# Number of prescriptions for each patient
-PATIENT_NUM_PRESC <- FULL_OPIOID %>% group_by(patient_id) %>% summarize(num_prescriptions = n())
-FULL_NUM_PRESC <- left_join(FULL_OPIOID, PATIENT_NUM_PRESC, by = "patient_id")
+# Illicit users: 
+# - filled prescriptions from three or more providers on their first date
+setorder(FULL_OPIOID, patient_id, date_filled)
 
-FULL_NUM_PRESC_ONE <- FULL_NUM_PRESC %>% filter(num_prescriptions == 1)
-FULL_NUM_PRESC_ATLEASTTWO <- FULL_NUM_PRESC %>% filter(num_prescriptions > 1)
+FULL_OPIOID[, date_filled := format(as.Date(date_filled, format="%m/%d/%Y"), "%m/%d/%Y")]
+FULL_OPIOID[, prescription_month := month(as.Date(date_filled, format="%m/%d/%Y"))]
+FULL_OPIOID[, prescription_year := year(as.Date(date_filled, format="%m/%d/%Y"))]
+FULL_OPIOID[, presc_until := as.Date(date_filled, format="%m/%d/%Y") + days_supply]
+FULL_OPIOID[, presc_until := format(presc_until, "%m/%d/%Y")]
 
-# Split the prescriptions into multiple fold
-FULL_NUM_PRESC_ATLEASTTWO$patient_id_numeric <- as.numeric(FULL_NUM_PRESC_ATLEASTTWO$patient_id)
-summary(FULL_NUM_PRESC_ATLEASTTWO$patient_id_numeric)
+FULL_OPIOID <- FULL_OPIOID[order(patient_id, date_filled)]
+FIRST_PRESC_DATE <- FULL_OPIOID[, .(first_presc_date = min(date_filled)), by = patient_id]
+FIRST_PRESC <- merge(FULL_OPIOID, FIRST_PRESC_DATE, by = "patient_id")
+PRESCRIBERS_FIRST_PRESC_DATE <- FIRST_PRESC[date_filled == first_presc_date, .(unique_prescribers = uniqueN(prescriber_id)), by = patient_id]
+ILLICIT_PATIENT <- PRESCRIBERS_FIRST_PRESC_DATE[unique_prescribers >= 3, patient_id] # 161 patients only
+FULL_OPIOID <- FULL_OPIOID[!patient_id %in% ILLICIT_PATIENT]
 
-FULL_NUM_PRESC_ATLEASTTWO_1 <- FULL_NUM_PRESC_ATLEASTTWO %>% filter(patient_id_numeric < 41846152)
-FULL_NUM_PRESC_ATLEASTTWO_2 <- FULL_NUM_PRESC_ATLEASTTWO %>% filter(patient_id_numeric >= 41846152 & patient_id_numeric < 54195156)
-FULL_NUM_PRESC_ATLEASTTWO_3 <- FULL_NUM_PRESC_ATLEASTTWO %>% filter(patient_id_numeric >= 54195156 & patient_id_numeric < 68042918)
-FULL_NUM_PRESC_ATLEASTTWO_4 <- FULL_NUM_PRESC_ATLEASTTWO %>% filter(patient_id_numeric >= 68042918)
+rm(CHRONIC_USERS)
+rm(OUTLIERS_PATIENT)
+rm(FIRST_PRESC_DATE)
+rm(FIRST_PRESC)
+rm(PRESCRIBERS_FIRST_PRESC_DATE)
+rm(ILLICIT_PATIENT)
 
+###################################
+### SPLIT DATA
+###################################
 
-write.csv(FULL_NUM_PRESC_ONE, paste("../Data/FULL_OPIOID_", year, "_ONE.csv", sep=""), row.names = FALSE)
+PATIENT_NUM_PRESC <- FULL_OPIOID[, .(num_prescriptions = .N), by = patient_id]
+FULL_NUM_PRESC <- merge(FULL_OPIOID, PATIENT_NUM_PRESC, by = "patient_id", all.x = TRUE)
+FULL_NUM_PRESC_ONE <- FULL_NUM_PRESC[num_prescriptions == 1]
+FULL_NUM_PRESC_ATLEASTTWO <- FULL_NUM_PRESC[num_prescriptions > 1]
 
-write.csv(FULL_NUM_PRESC_ATLEASTTWO_1, paste("../Data/FULL_OPIOID_", year, "_ATLEASTTWO_1.csv", sep=""), row.names = FALSE)
-write.csv(FULL_NUM_PRESC_ATLEASTTWO_2, paste("../Data/FULL_OPIOID_", year, "_ATLEASTTWO_2.csv", sep=""), row.names = FALSE)
-write.csv(FULL_NUM_PRESC_ATLEASTTWO_3, paste("../Data/FULL_OPIOID_", year, "_ATLEASTTWO_3.csv", sep=""), row.names = FALSE)
-write.csv(FULL_NUM_PRESC_ATLEASTTWO_4, paste("../Data/FULL_OPIOID_", year, "_ATLEASTTWO_4.csv", sep=""), row.names = FALSE)
+# Filter based on patient_id_numeric ranges
+FULL_NUM_PRESC_ATLEASTTWO_1 <- FULL_NUM_PRESC_ATLEASTTWO[patient_id < 41846152]
+FULL_NUM_PRESC_ATLEASTTWO_2 <- FULL_NUM_PRESC_ATLEASTTWO[patient_id >= 41846152 & patient_id < 54195156]
+FULL_NUM_PRESC_ATLEASTTWO_3 <- FULL_NUM_PRESC_ATLEASTTWO[patient_id >= 54195156 & patient_id < 68042918]
+FULL_NUM_PRESC_ATLEASTTWO_4 <- FULL_NUM_PRESC_ATLEASTTWO[patient_id >= 68042918]
 
-########################################################################
-###### Benzo prescriptions ######
-########################################################################
+write.csv(FULL_NUM_PRESC_ONE, paste(export_dir, "FULL_OPIOID_", year, "_ONE.csv", sep=""), row.names = FALSE)
+write.csv(FULL_NUM_PRESC_ATLEASTTWO_1, paste(export_dir, "FULL_OPIOID_", year, "_ATLEASTTWO_1.csv", sep=""), row.names = FALSE)
+write.csv(FULL_NUM_PRESC_ATLEASTTWO_2, paste(export_dir, "FULL_OPIOID_", year, "_ATLEASTTWO_2.csv", sep=""), row.names = FALSE)
+write.csv(FULL_NUM_PRESC_ATLEASTTWO_3, paste(export_dir, "FULL_OPIOID_", year, "_ATLEASTTWO_3.csv", sep=""), row.names = FALSE)
+write.csv(FULL_NUM_PRESC_ATLEASTTWO_4, paste(export_dir, "FULL_OPIOID_", year, "_ATLEASTTWO_4.csv", sep=""), row.names = FALSE)
 
-FULL_BENZO <- FULL[FULL$class == 'Benzodiazepine',]
+rm(FULL_NUM_PRESC_ONE)
+rm(FULL_NUM_PRESC_ATLEASTTWO_1)
+rm(FULL_NUM_PRESC_ATLEASTTWO_2)
+rm(FULL_NUM_PRESC_ATLEASTTWO_3)
+rm(FULL_NUM_PRESC_ATLEASTTWO_4)
 
-FULL_BENZO <- FULL_BENZO[order(FULL_BENZO$patient_id, FULL_BENZO$date_filled),]
-FULL_BENZO$prescription_month <- month(as.POSIXlt(FULL_BENZO$date_filled, format="%m/%d/%Y"))
-FULL_BENZO$prescription_year <- year(as.POSIXlt(FULL_BENZO$date_filled, format="%m/%d/%Y"))
+###################################
+###### BENZO
+###################################
 
-FULL_BENZO$presc_until <- as.Date(FULL_BENZO$date_filled, format = "%m/%d/%Y") + FULL_BENZO$days_supply
-FULL_BENZO$presc_until <- format(FULL_BENZO$presc_until, "%m/%d/%Y")
+FULL_BENZO <- FULL_CURRENT[class == 'Benzodiazepine']
 
-write.csv(FULL_BENZO, paste("../Data/FULL_BENZO_", year, ".csv", sep=""), row.names = FALSE)
+setorder(FULL_BENZO, patient_id, date_filled)
 
+FULL_BENZO[, date_filled := format(as.Date(date_filled, format="%m/%d/%Y"), "%m/%d/%Y")]
+FULL_BENZO[, prescription_month := month(as.Date(date_filled, format="%m/%d/%Y"))]
+FULL_BENZO[, prescription_year := year(as.Date(date_filled, format="%m/%d/%Y"))]
+FULL_BENZO[, presc_until := as.Date(date_filled, format="%m/%d/%Y") + days_supply]
+FULL_BENZO[, presc_until := format(presc_until, "%m/%d/%Y")]
+
+write.csv(FULL_BENZO, paste(export_dir, "FULL_BENZO_", year, ".csv", sep=""), row.names = FALSE)
 

@@ -10,7 +10,7 @@ from .utils import print_log
 #todo: check cores
 #todo: pass compute_loss to convert_risk_slim_cplex_solution
 
-def create_risk_slim(coef_set, input, essential_cutoffs=None, data=None):
+def create_risk_slim(coef_set, input, essential_cutoffs=None, essential_num=None, data=None):
     """
     create RiskSLIM MIP object
 
@@ -196,7 +196,7 @@ def create_risk_slim(coef_set, input, essential_cutoffs=None, data=None):
                 names = ["Exactly one cutoff (Greater)"],
                 lin_expr = [SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "G",
-                rhs = [1.0])
+                rhs = [essential_num]) # rhs = [1.0])
 
     # 0-Norm LB Constraints:
     # lambda_j,lb * alpha_j ≤ lambda_j <= Inf
@@ -261,7 +261,7 @@ def create_risk_slim(coef_set, input, essential_cutoffs=None, data=None):
 
     if has_intercept:
         intercept_idx = coef_set.variable_names.index('(Intercept)')
-        intercept_alpha_name = 'alpha_' + str(intercept_idx)
+        intercept_alpha_name = 'alpha_' + str(intercept_idx) 
         vars.delete([intercept_alpha_name])
 
         alpha_names.remove(intercept_alpha_name)

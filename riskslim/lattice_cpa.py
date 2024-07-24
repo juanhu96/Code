@@ -25,8 +25,14 @@ DEFAULT_BOUNDS = {
 
 
 # LATTICE CPA FUNCTIONS
-def run_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, 
-single_cutoff=None, two_cutoffs=None, three_cutoffs=None, four_cutoffs=None, essential_cutoffs=None):
+def run_lattice_cpa(data, 
+                    constraints, 
+                    settings=DEFAULT_LCPA_SETTINGS, 
+                    single_cutoff=None, 
+                    two_cutoffs=None, 
+                    three_cutoffs=None, 
+                    essential_cutoffs=None, 
+                    essential_num=None):
     """
 
     Parameters
@@ -41,12 +47,38 @@ single_cutoff=None, two_cutoffs=None, three_cutoffs=None, four_cutoffs=None, ess
     """
 
     # mip_objects = setup_lattice_cpa(data, constraints, settings)
-    mip_objects = setup_lattice_cpa(data, constraints, settings, essential_cutoffs)
+    mip_objects = setup_lattice_cpa(data, constraints, settings, essential_cutoffs, essential_num)
 
-    
     # =====================================================================
 
+    def add_cutoff_constraints(mip, indices, data, cutoff_constraints, cutoff_limit, sense, name):
+        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
+        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
 
+        for constraint in cutoff_constraints:
+            mip.linear_constraints.add(
+                names=[name],
+                lin_expr=[cplex.SparsePair(ind=get_alpha_ind(constraint), val=[1.0]*len(constraint))],
+                senses=sense,
+                rhs=[cutoff_limit]
+            )
+
+    mip, indices = mip_objects['mip'], mip_objects['indices']
+
+    if single_cutoff is not None:
+        add_cutoff_constraints(mip, indices, data, single_cutoff, 1.0, "L", "At most one cutoff")
+
+    if two_cutoffs is not None:
+        add_cutoff_constraints(mip, indices, data, two_cutoffs, 2.0, "L", "At most two cutoffs")
+
+    if three_cutoffs is not None:
+        add_cutoff_constraints(mip, indices, data, three_cutoffs, 3.0, "L", "At most three cutoffs")
+
+    if essential_cutoffs is not None:
+        add_cutoff_constraints(mip, indices, data, essential_cutoffs, essential_num, "G", "At least one cutoff")
+
+
+    '''
     if single_cutoff is not None:        
         mip, indices = mip_objects['mip'], mip_objects['indices']
         get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
@@ -84,20 +116,7 @@ single_cutoff=None, two_cutoffs=None, three_cutoffs=None, four_cutoffs=None, ess
                 lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "L",
                 rhs = [3.0])
-
-
-    if four_cutoffs is not None:
-        mip, indices = mip_objects['mip'], mip_objects['indices']
-        get_alpha_name = lambda var_name: 'alpha_' + str(data['variable_names'].index(var_name))
-        get_alpha_ind = lambda var_names: [get_alpha_name(v) for v in var_names]
-        
-        for constraint in four_cutoffs:
-            mip.linear_constraints.add(
-                names = ["At most four cutoffs"],
-                lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
-                senses = "L",
-                rhs = [4.0])
-
+    
 
     if essential_cutoffs is not None:
         mip, indices = mip_objects['mip'], mip_objects['indices']
@@ -109,19 +128,16 @@ single_cutoff=None, two_cutoffs=None, three_cutoffs=None, four_cutoffs=None, ess
                 names = ["At least one cutoff (Greater)"],
                 lin_expr = [cplex.SparsePair(ind = get_alpha_ind(constraint), val = [1.0]*len(constraint))],
                 senses = "G",
-                rhs = [1.0])
-
+                rhs = [essential_num])
+    '''
 
     mip_objects['mip'] = mip
-    
-    
-    # pass MIP back to lattice CPA so that it will solve
-    model_info, mip_info, lcpa_info = finish_lattice_cpa(data, constraints, mip_objects, settings, essential_cutoffs)
+    model_info, mip_info, lcpa_info = finish_lattice_cpa(data, constraints, mip_objects, settings, essential_cutoffs, essential_num)
 
     return model_info, mip_info, lcpa_info
 
 
-def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None):
+def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None, essential_num=None):
     """
 
     Parameters
@@ -174,17 +190,19 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essen
     L0_min = constraints['L0_min']
     L0_max = constraints['L0_max']
 
-    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs):
+    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs, essential_num=essential_num):
         
         feasible = True
         # NOTE: JH
-        for constraint in essential_cutoffs:
-            get_alpha_ind = lambda var_names: [v for v in var_names]
-            ind = get_alpha_ind(constraint)
-            ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
-            if not np.isclose(rho[ind_numeric].sum(), 1):
-                feasible = False
-                break
+        if essential_cutoffs is not None:
+            for constraint in essential_cutoffs:
+                get_alpha_ind = lambda var_names: [v for v in var_names]
+                ind = get_alpha_ind(constraint)
+                ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
+                # if not np.isclose(rho[ind_numeric].sum(), 1):
+                if not np.isclose(rho[ind_numeric].sum(), essential_num):
+                    feasible = False
+                    break
         
         return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max) and feasible
 
@@ -237,6 +255,7 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essen
                                                                             get_L0_penalty = get_L0_penalty,
                                                                             is_feasible = is_feasible,
                                                                             essential_cutoffs = essential_cutoffs,
+                                                                            essential_num = essential_num,
                                                                             data=data)
 
         if lcpa_settings['initial_bound_updates']:
@@ -244,7 +263,7 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essen
             risk_slim_settings.update(initial_bounds)
 
     # create risk_slim mip
-    risk_slim_mip, risk_slim_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings, essential_cutoffs = essential_cutoffs, data=data)
+    risk_slim_mip, risk_slim_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings, essential_cutoffs = essential_cutoffs, essential_num = essential_num, data=data)
     risk_slim_indices['C_0_nnz'] = C_0_nnz
     risk_slim_indices['L0_reg_ind'] = L0_reg_ind
 
@@ -260,7 +279,7 @@ def setup_lattice_cpa(data, constraints, settings = DEFAULT_LCPA_SETTINGS, essen
     return mip_objects
 
 
-def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None):
+def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_SETTINGS, essential_cutoffs=None, essential_num=None):
     """
 
     Parameters
@@ -325,16 +344,18 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
     L0_max = constraints['L0_max']
     trivial_L0_max = np.sum(constraints['coef_set'].penalized_indices())
 
-    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs):
+    def is_feasible(rho, L0_min = L0_min, L0_max = L0_max, rho_lb = rho_lb, rho_ub = rho_ub, data=data, essential_cutoffs=essential_cutoffs, essential_num=essential_num):
         feasible = True
         # NOTE: JH
-        for constraint in essential_cutoffs:
-            get_alpha_ind = lambda var_names: [v for v in var_names]
-            ind = get_alpha_ind(constraint)
-            ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
-            if not np.isclose(rho[ind_numeric].sum(), 1):
-                feasible = False
-                break              
+        if essential_cutoffs is not None:
+            for constraint in essential_cutoffs:
+                get_alpha_ind = lambda var_names: [v for v in var_names]
+                ind = get_alpha_ind(constraint)
+                ind_numeric = [data['variable_names'].index(alpha) for alpha in ind if alpha in data['variable_names']]
+                # if not np.isclose(rho[ind_numeric].sum(), 1):
+                if not np.isclose(rho[ind_numeric].sum(), essential_num):
+                    feasible = False
+                    break              
         return np.all(rho_ub >= rho) and np.all(rho_lb <= rho) and (L0_min <= np.count_nonzero(rho[L0_reg_ind]) <= L0_max) and feasible
 
     risk_slim_mip = set_cplex_mip_parameters(risk_slim_mip, cplex_settings, display_cplex_progress = lcpa_settings['display_cplex_progress'])
@@ -439,7 +460,7 @@ def finish_lattice_cpa(data, constraints, mip_objects, settings = DEFAULT_LCPA_S
 
     # solve using lcpa
     control['start_time'] = time.time()
-    risk_slim_mip.solve() # NOTE: JH: this is where control['incumbent'] is actually being updated, but this is infeasible...
+    risk_slim_mip.solve()
 
     # x = risk_slim_mip.solution.get_values()
     # x_rho = np.array(risk_slim_mip.solution.get_values(indices['rho']))
@@ -685,8 +706,6 @@ class LossCallback(LazyConstraintCallback):
         if not is_integer(rho):
             rho = cast_to_integer(rho)
             alpha = self.get_alpha(rho)
-        
-        # return # NOTE: If we return from it still doesn't work
 
         # add cutting plane at integer feasible solution
         cut_start_time = time.time()

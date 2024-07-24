@@ -5,38 +5,149 @@ Created on Aug 22 2023
 Stumps-related helper functions
 """
 
+import sys 
 import csv
 import numpy as np
 import pandas as pd
 import utils.stumps as stumps
+import os
+from multiprocessing import Pool
 
+pd.set_option('display.max_columns', None) # show all columns
 
-LTOUR_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
-'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
-'quantity', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',\
-'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',\
-'num_prior_presc', 'avgDays', 'diff_MME', 'diff_quantity', 'diff_days',\
-'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
+year = sys.argv[1]
+case = sys.argv[2]
+first = any(['first' in arg for arg in sys.argv])
+upto180 = any(['upto180' in arg for arg in sys.argv])
 
-stumps_feature_list = ['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',\
-'num_pharmacies', 'consecutive_days', 'concurrent_benzo',\
-'quantity', 'num_prior_presc', 'avgDays', 'diff_MME', 'diff_quantity', 'diff_days']
+def main(year, case, first, upto180, cutoff='greater'):
 
-
-def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stumps_feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
+    if cutoff == 'greater':
         
-    FULL = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_INPUT_UPTOFIRST.csv', delimiter = ",",\
-    dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float, 'num_prescribers': int,\
-    'num_pharmacies': int, 'concurrent_benzo': int, 'consecutive_days': int}).fillna(0)
+    # ['patient_id', 'patient_gender', 'patient_zip', 'quantity', 'days_supply', 'date_filled', 
+    #  'daily_dose', 'total_dose', 'max_dose', 'age', 'concurrent_MME', 'concurrent_methadone_MME',
+    #  'num_prescribers_past180', 'num_pharmacies_past180', 'consecutive_days', 'concurrent_benzo', 
+    #  'concurrent_benzo_same', 'concurrent_benzo_diff', 'days_to_long_term', 'long_term_180', 
+    #  'num_prior_prescriptions', 'num_prior_prescriptions_past180', 'num_prior_prescriptions_past90', 
+    #  'num_prior_prescriptions_past30', 'switch_drug', 'switch_payment', 'ever_switch_drug', 
+    #  'ever_switch_payment', 'dose_diff', 'concurrent_MME_diff', 'quantity_diff', 'days_diff', 
+    #  'avgMME_past180', 'avgDays_past180', 'avgMME_past90', 'avgDays_past90', 'avgMME_past30', 
+    #  'avgDays_past30', 'HMFO', 'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 
+    #  'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME', 'gap', 
+    #  'num_prior_prescriptions_benzo_past180', 'num_prior_prescriptions_benzo_past90', 
+    #  'num_prior_prescriptions_benzo_past30', 'patient_HPIQuartile', 'prescriber_HPIQuartile', 
+    #  'pharmacy_HPIQuartile', 'zip_pop', 'zip_pop_density', 'median_household_income', 
+    #  'family_poverty_pct', 'unemployment_pct', 'patient_zip_yr_num_prescriptions', 
+    #  'patient_zip_yr_num_patients', 'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 
+    #  'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 'patient_zip_yr_num_prescriptions_quartile', 
+    #  'patient_zip_yr_num_patients_quartile', 'patient_zip_yr_num_pharmacies_quartile', 
+    #  'patient_zip_yr_avg_MME_quartile', 'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
+    #  'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 'prescriber_yr_num_pharmacies', 
+    #  'prescriber_yr_avg_MME', 'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity', 
+    #  'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
+    #  'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile', 
+    #  'prescriber_yr_avg_quantity_quartile', 'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 
+    #  'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity', 
+    #  'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
+    #  'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 'pharmacy_yr_avg_days_quartile', 
+    #  'pharmacy_yr_avg_quantity_quartile', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'Hydromorphone', 
+    #  'Methadone', 'Fentanyl', 'Oxymorphone', 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 
+    #  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'zip_pop_density_quartile', 
+    #  'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile', 
+    #  'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop', 
+    #  'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
 
-    FULL.rename(columns={'num_presc':'num_prior_presc', 'quantity_diff': 'diff_quantity', 'MME_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
+        LTOUR_feature_list = ['concurrent_MME', 'num_prescribers_past180',
+                              'num_pharmacies_past180', 'concurrent_benzo',
+                              'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',
+                              'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',
+                              'num_prior_prescriptions', 'avgDays_past180', 'diff_MME', 'diff_quantity', 'diff_days',
+                              'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
+
+        LTOUR_stumps_feature_list = ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo',
+                                     'num_prior_prescriptions', 'avgDays_past180', 'diff_MME', 'diff_quantity', 'diff_days']
+
+        if case == 'LTOUR':
+
+            quartile_list = []
+            create_stumps(year, case, first, upto180, feature_list, LTOUR_stumps_feature_list, quartile_list)
+        
+        elif case == 'Explore':
+            
+            LTOUR_feature_list.remove('avgDays_past180')
+            LTOUR_stumps_feature_list.remove('avgDays_past180')
+
+            quartile_list = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
+                             'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
+                             'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
+                             'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
+                             'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile',
+                             'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
+                             'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 
+                             'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile',
+                             'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
+                             'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 
+                             'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile',
+                             'zip_pop_density_quartile', 'median_household_income_quartile', 
+                             'family_poverty_pct_quartile', 'unemployment_pct_quartile'] # need to encode
+
+            cts_list = ['age', 'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 'patient_zip_yr_avg_MME'] # need to create stumps
+
+            feature_list = LTOUR_feature_list + quartile_list + cts_list + ['patient_gender']
+            stumps_feature_list = LTOUR_stumps_feature_list + cts_list
+            
+            create_stumps(year, case, first, upto180, feature_list, stumps_feature_list, quartile_list)
+
+        else: 
+            
+            raise ValueError("Feature case undefined.\n")
+
+    elif cutoff == 'interval': raise Exception("Interval type incomplete.\n")
+    else: raise KeyError("Cutoff type undefined.\n")
+
+
+
+def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list, quartile_list,
+                  datadir="/export/storage_cures/CURES/Processed/",
+                  output_columns=True):
+    
+    print(f"Start creating stumps for year {year} with features {feature_list}\n")
+
+    if first:
+        file_suffix = "_FIRST_INPUT"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_INPUT"
+    else:
+        file_suffix = "_INPUT"
+
+    file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
+
+    FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
+                                                        'concurrent_methadone_MME': float,
+                                                        'num_prescribers_past180': int,
+                                                        'num_pharmacies_past180': int,
+                                                        'concurrent_benzo': int,
+                                                        'consecutive_days': int}) # .fillna(0)
+
+    if output_columns: print(FULL.columns.values.tolist())
+
+    FULL.rename(columns={'quantity_diff': 'diff_quantity', 'dose_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
     FULL = FULL[feature_list]
+    
+    # print(FULL['patient_zip_yr_num_prescriptions_quartile'].value_counts(), # zip in the bottom quartile have less prescriptions
+    #       FULL['prescriber_yr_avg_days_quartile'].value_counts(), 
+    #       FULL['unemployment_pct_quartile'].value_counts())
+
+    if quartile_list: 
+        FULL = FULL.dropna(subset=quartile_list) # drop NA rows
+        FULL = pd.get_dummies(FULL, columns=quartile_list)
 
     cutoffs = []
     for column_name in FULL.columns:
-        if column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME':
+        if column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME' or \
+            column_name == 'patient_zip_yr_avg_MME' or column_name == 'patient_zip_yr_avg_quantity':
             cutoffs.append([10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100, 200, 300])
-        elif column_name == 'num_prescribers' or column_name == 'num_pharmacies':
+        elif column_name == 'num_prescribers_past180' or column_name == 'num_pharmacies_past180':
             cutoffs.append([n for n in range(2, 11)])
         elif column_name == 'concurrent_benzo':
             cutoffs.append([1])
@@ -44,144 +155,99 @@ def create_stumps(year, feature_list=LTOUR_feature_list, stumps_feature_list=stu
             cutoffs.append([1, 3, 5, 7, 10, 14, 21, 25, 30, 60, 90])
         elif column_name == 'quantity':
             cutoffs.append([10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300])
-        elif column_name == 'num_prior_presc':
-            cutoffs.append([2]) # prior prescription or not
-        elif column_name == 'avgDays':
+        elif column_name == 'num_prior_prescriptions':
+            cutoffs.append([1]) # prior prescription or not
+        elif column_name == 'avgDays_past180' or column_name == 'patient_zip_yr_avg_days':
             cutoffs.append([3, 5, 7, 10, 14, 21, 25, 30, 60])
         elif column_name == 'diff_MME' or column_name == 'diff_quantity' or column_name == 'diff_days':
-            cutoffs.append([1])
+            cutoffs.append([1]) # greater or not
+        elif column_name == 'age':
+            cutoffs.append([20, 30, 40, 50, 60, 70, 80])
         else:
             pass
 
-
-    ## Divide into 20 folds
-    N = 20
+    N = 20 # number of splits/cores
     FULL_splited = np.array_split(FULL, N)
-    for i in range(N):
+    args = [(FULL_splited[i], i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180) for i in range(N)]
 
-        FULL_fold = FULL_splited[i]        
+    with Pool(N) as pool:
+        pool.map(process_fold, args) # requires process_fold be global and single argument
 
-        x = FULL_fold[stumps_feature_list]
-        x_stumps = stumps.create_stumps(x.values, x.columns, cutoffs)
-
-        x_rest = FULL_fold[FULL_fold.columns.drop(stumps_feature_list)]
-        
-        new_data = pd.concat([x_stumps.reset_index(drop=True), x_rest.reset_index(drop=True)], axis = 1)
-        new_data.to_csv(f'{datadir}FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', header=True, index=False)
-    
-    print("Done!\n")
+    print("Stumps done!\n")
     
     return     
 
 
+def process_fold(args):
+    
+    FULL_fold, i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180 = args # unpack
 
-# ========================================================================================
-
-    
-
-def create_intervals(year, scenario='flexible', feature_list=LTOUR_feature_list, datadir='/mnt/phd/jihu/opioid/Data/'):
-    
-    '''
-    Create intervals stumps for the dataset
-    For this we also need to edit stumps.create_stumps as well
-    
-    Parameters
-    ----------
-    year
-    scenario: basic feature (flexible) / full
-    '''
-
-    FULL = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_INPUT.csv', delimiter = ",", 
-                        dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
-                              'num_prescribers': int, 'num_pharmacies': int,
-                              'concurrent_benzo': int, 'consecutive_days': int}).fillna(0)
-    FULL = FULL[FULL.columns.drop(list(FULL.filter(regex='alert')))]
-    FULL = FULL.drop(columns = ['drug_payment'])
-    
-    
-    if scenario == 'flexible':
-        x_all = FULL[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',
-                      'num_pharmacies', 'concurrent_benzo', 'consecutive_days']]
+    x = FULL_fold[stumps_feature_list]
+    x_stumps = create_stumps_helper(x.values, x.columns, cutoffs)
         
-        cutoffs_i = []
-        for column_name in ['concurrent_MME', 'concurrent_methadone_MME', 'consecutive_days']:
-            if column_name == 'num_prescribers' or column_name == 'num_pharmacies':
-                cutoffs_i.append([n for n in range(0, 10)])
-            elif column_name == 'concurrent_benzo':
-                cutoffs_i.append([0, 1, 2, 3, 4, 5, 10])
-            elif column_name == 'consecutive_days' or column_name == 'concurrent_methadone_MME':
-                cutoffs_i.append([n for n in range(0, 90) if n % 10 == 0])
-            else:
-                cutoffs_i.append([n for n in range(0, 200) if n % 10 == 0])
+    x_rest = FULL_fold[FULL_fold.columns.drop(stumps_feature_list)]
         
-        cutoffs_s = []
-        for column_name in ['num_prescribers', 'num_pharmacies', 'concurrent_benzo']:
-            if column_name == 'num_prescribers' or column_name == 'num_pharmacies':
-                cutoffs_s.append([n for n in range(0, 10)])
-            elif column_name == 'concurrent_benzo':
-                cutoffs_s.append([0, 1, 2, 3, 4, 5, 10])
-            elif column_name == 'consecutive_days' or column_name == 'concurrent_methadone_MME':
-                cutoffs_s.append([n for n in range(0, 90) if n % 10 == 0])
-            else:
-                cutoffs_s.append([n for n in range(0, 200) if n % 10 == 0])
-                
-        ## Divide into 20 folds
-        N = 20
-        FULL_splited = np.array_split(FULL, N)
-        for i in range(N):
-            FULL_fold = FULL_splited[i]
-            x = FULL_fold[['concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers',
-                          'num_pharmacies', 'concurrent_benzo', 'consecutive_days']]
-            
-            x_i = FULL_fold[['concurrent_MME', 'concurrent_methadone_MME', 'consecutive_days']]
-            x_s = FULL_fold[['num_prescribers', 'num_pharmacies', 'concurrent_benzo']]
-            
-            x_intervals = stumps.create_intervals(x_i.values, x_i.columns, cutoffs_i)
-            x_stumps = stumps.create_stumps(x_s.values, x_s.columns, cutoffs_s)
-            
-            new_data = pd.concat([x_intervals.reset_index(drop=True), x_stumps.reset_index(drop=True)], axis = 1)
-            new_data.to_csv('Data/FULL_' + str(year) + scenario + '_INTERVALS' + str(i) + '.csv', header=True, index=False)  
-    
+    new_data = pd.concat([x_stumps.reset_index(drop=True), x_rest.reset_index(drop=True)], axis=1)
 
-    elif scenario == 'full':
-        x_all = FULL[feature_list]
-        
-        cutoffs = []
-        for column_name in x_all.columns:
-            if column_name == 'num_prescribers' or column_name == 'num_pharmacies':
-                cutoffs.append([n for n in range(0, 10)])
-            elif column_name == 'concurrent_benzo' or column_name == 'concurrent_benzo_same' or \
-                column_name == 'concurrent_benzo_diff' or column_name == 'num_presc':
-                cutoffs.append([0, 1, 2, 3, 4, 5, 10])
-            elif column_name == 'consecutive_days' or column_name == 'concurrent_methadone_MME' or \
-                column_name == 'days_diff':
-                cutoffs.append([n for n in range(0, 90) if n % 10 == 0])
-            elif column_name == 'dose_diff' or column_name == 'concurrent_MME_diff':
-                cutoffs.append([n for n in range(0, 100) if n % 10 == 0])
-            elif column_name == 'age':
-                cutoffs.append([n for n in range(20, 80) if n % 10 == 0])
-            else:
-                cutoffs.append([n for n in range(0, 200) if n % 10 == 0])
-                
-        ## Divide into 20 folds
-        N = 20
-        FULL_splited = np.array_split(FULL, N)
-        for i in range(N):
-
-            FULL_fold = FULL_splited[i]
-            x = FULL_fold[feature_list]
-            x_stumps = stumps.create_stumps(x.values, x.columns, cutoffs)
-            x_rest = FULL_fold[FULL_fold.columns.drop(feature_list)]
-
-            new_data = pd.concat([x_stumps.reset_index(drop=True), x_rest.reset_index(drop=True)], axis = 1)
-            print(new_data.shape)
-            new_data.to_csv('Data/FULL_' + str(year) + scenario + '_INTERVALS' + str(i) + '.csv', header=True, index=False)         
-    
+    if first:
+        file_suffix = "_FIRST_STUMPS_"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_STUMPS_"
     else:
-        print('Scenario cannot be identified')
+        file_suffix = "_STUMPS_"
+
+    file_path = f'{datadir}/Stumps/FULL_{year}_{case}{file_suffix}{i}.csv'
+    new_data.to_csv(file_path, header=True, index=False)
+
+    print(f'Processed fold {i} and saved.')
 
 
-
+def create_stumps_helper(data, columns, cutpoints):
     
+    """
+    @parameters:
+    
+    - data: featres; np.array
+    - columns: feature names
+    - cutpoints: cut off points used to create stumps
+    
+    """
+    
+    ## data dimension
+    final_data = []
+    final_names = []
+    n, p = data.shape[0], data.shape[1]
+    
+    ## loop through features
+    for i in range(len(columns)):
+        ## subset feature
+        feature = columns[i]
+        feature_values = data[:,i]
+        cutoff = cutpoints[i]
+        cutoff_length = len(cutoff)
+        names = []
+        
+        ## create stumps
+        ### if the variable is binary, then set the cutoff point value to be 1.
+        
+        stumps = np.zeros([n, cutoff_length])
+        for k in range(cutoff_length):
+            for j in range(n):
+                if feature_values[j] >= cutoff[k]: stumps[j,k] = 1
+            names.append(feature + str(cutoff[k]))
+        
+        ## store stumps
+        final_data.append(stumps)
+        final_names.append(names)
+        
+        ## post process
+        new_data = pd.DataFrame(final_data[0], columns=final_names[0])
+        for s in range(len(final_data)-1):
+            a = pd.DataFrame(final_data[s+1], columns=final_names[s+1])
+            new_data = pd.concat([new_data, a], axis=1)
+    
+    return new_data
 
 
+if __name__ == "__main__":
+    main(year, case, first, upto180)

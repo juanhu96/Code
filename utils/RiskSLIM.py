@@ -72,14 +72,6 @@ def riskslim_prediction(X, feature_name, model_info):
 
 
 
-def riskslim_accuracy(X, Y, feature_name, model_info, threshold=0.5):
-    
-    prob = riskslim_prediction(X, feature_name, model_info)
-    pred = np.mean((prob > threshold) == Y)
-    
-    return pred
-
-
 ###############################################################################################################################
 ###########################################     constrained RiskSLIM     ######################################################
 ###############################################################################################################################
@@ -89,13 +81,16 @@ def risk_slim_constrain(data,
                         max_coefficient,
                         max_L0_value,
                         c0_value, 
-                        max_offset, 
-                        class_weight='unbalanced', 
+                        max_offset=20, 
+                        class_weight='original', 
                         single_cutoff=None,
                         two_cutoffs=None,
                         three_cutoffs=None,
                         essential_cutoffs=None,
-                        max_runtime=120, 
+                        essential_num=None,
+                        min_L0_value=0,
+                        min_offset=5,
+                        max_runtime=7200, 
                         w_pos=1):
     
     """
@@ -115,18 +110,13 @@ def risk_slim_constrain(data,
     
     # create coefficient set and set the value of the offset parameter
     coef_set = CoefficientSet(variable_names = data['variable_names'], lb = 0, ub = max_coefficient, sign = 0)
-
-    # selected_features = ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', \
-    # 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation']
-    # for feature in selected_features: coef_set[feature].lb = -max_coefficient # allow drug/payment to be negative
-
-    coef_set['(Intercept)'].ub = max_offset
     coef_set['(Intercept)'].lb = -max_offset
+    coef_set['(Intercept)'].ub = -min_offset
     
     constraints = {
-        'L0_min': 0,
+        'L0_min': min_L0_value,
         'L0_max': max_L0_value,
-        'coef_set':coef_set,
+        'coef_set': coef_set,
     }
 
     if class_weight == 'balanced': w_pos = sum(data['Y']==-1)[0] / sum(data['Y']==1)[0]
@@ -140,12 +130,12 @@ def risk_slim_constrain(data,
         # LCPA Settings
         'max_runtime': max_runtime,                         # max runtime for LCPA
         'max_tolerance': np.finfo('float').eps,             # tolerance to stop LCPA (set to 0 to return provably optimal solution)
-        'display_cplex_progress': False,                    # print CPLEX progress on screen
+        'display_cplex_progress': False,                    # print CPLEX progress on screen (DEFAULT False)
         'loss_computation': 'lookup',                       # how to compute the loss function ('normal','fast','lookup')
         
         # LCPA Improvements
-        'round_flag': False,                                # round continuous solutions with SeqRd
-        'polish_flag': False,                               # polish integer feasible solutions with DCD
+        'round_flag': False,                                # round continuous solutions with SeqRd (DEFAULT False)
+        'polish_flag': False,                               # polish integer feasible solutions with DCD (DEFAULT False)
         'chained_updates_flag': False,                      # use chained updates
         'add_cuts_at_heuristic_solutions': True,            # add cuts at integer feasible solutions found using polishing/rounding
         
@@ -161,8 +151,14 @@ def risk_slim_constrain(data,
     
 
     # train model using lattice_cpa
-    model_info, mip_info, lcpa_info = run_lattice_cpa(data, constraints, settings, 
-    single_cutoff=single_cutoff, two_cutoffs=two_cutoffs, three_cutoffs=three_cutoffs, essential_cutoffs=essential_cutoffs)
+    model_info, mip_info, lcpa_info = run_lattice_cpa(data, 
+                                                      constraints, 
+                                                      settings, 
+                                                      single_cutoff=single_cutoff, 
+                                                      two_cutoffs=two_cutoffs, 
+                                                      three_cutoffs=three_cutoffs, 
+                                                      essential_cutoffs=essential_cutoffs, 
+                                                      essential_num=essential_num)
     
     return model_info, mip_info, lcpa_info
 
@@ -525,259 +521,3 @@ def risk_nested_cv_constrain(X,
             'holdout_test_f1': holdout_f1,
             "holdout_test_f2": holdout_f2}
 
-
-###############################################################################################################################
-###############################################################################################################################
-###############################################################################################################################
-'''
-riskSLIM with bagging
-
-'''
-
-
-
-def risk_nested_cv_constrain_bagging(X, 
-                                     Y,
-                                     y_label, 
-                                     max_coef,
-                                     max_coef_number,
-                                     c,
-                                     seed,
-                                     max_runtime=1000,
-                                     max_offset=100,
-                                     score = 'roc_auc',
-                                     class_weight = None,
-                                     new_constraints = None):
-    
-    '''
-    Nested cross validation leads to five submodels
-    Bag the five submodels for prediction (requires a list that stores five models)
-    '''
-    
-    ## set up data
-    sample_weights = np.repeat(1, len(Y))
-
-    ## set up cross validation
-    outer_cv = StratifiedKFold(n_splits=3, random_state=seed, shuffle=True)
-    inner_cv = StratifiedKFold(n_splits=3, random_state=seed, shuffle=True)
-    
-    train_auc = []
-    validation_auc = []
-    test_auc = []
-    
-    holdout_with_attr_test = []
-    holdout_prediction = []
-    holdout_probability = []
-    holdout_y = []
-    holdout_train_accuracy = []
-    holdout_accuracy = []
-    holdout_recall = []
-    holdout_precision = []
-    holdout_roc_auc = []
-    holdout_pr_auc = []
-
-    
-    best_score = 0
-    model_list = [] # store the submodels
-    
-    i = 0
-    for outer_train, outer_test in outer_cv.split(X, Y):
-        
-        outer_train_x, outer_train_y = X.iloc[outer_train], Y[outer_train]
-        outer_test_x, outer_test_y = X.iloc[outer_test], Y[outer_test]
-        outer_train_sample_weight, outer_test_sample_weight = sample_weights[outer_train], sample_weights[outer_test]
-        
-        ## holdout test
-        holdout_with_attrs = outer_test_x.copy().drop(['(Intercept)'], axis=1)
-        
-        cols = outer_train_x.columns.tolist()        
-        
-        ################################################
-        
-        for k in range(len(c)):
-            ## for each possible hyperparameter value, do inner cross validation
-            performance_metric = []
-            
-            # print('Start CV with hyperparameter ' + str(max_coef_number[k]))
-            print('Start CV with hyperparameter ' + str(c[k]))
-            
-            for inner_train, validation in inner_cv.split(outer_train_x, outer_train_y):
-                
-                ## subset train data & store test data
-                inner_train_x, inner_train_y = outer_train_x.iloc[inner_train].values, outer_train_y[inner_train]
-                validation_x, validation_y = outer_train_x.iloc[validation].values, outer_train_y[validation]
-                inner_train_sample_weight = outer_train_sample_weight[inner_train]
-                validation_sample_weight = outer_train_sample_weight[validation]
-                inner_train_y = inner_train_y.reshape(-1,1)
-           
-                ## create new data dictionary
-                new_train_data = {
-                    'X': inner_train_x,
-                    'Y': inner_train_y,
-                    'variable_names': cols,
-                    'outcome_name': y_label,
-                    'sample_weights': inner_train_sample_weight
-                }
-                
-                model_info, mip_info, lcpa_info = risk_slim_constrain(new_train_data, 
-                                                                      max_coefficient=max_coef, 
-                                                                      max_L0_value=max_coef_number, 
-                                                                      c0_value=c[k], 
-                                                                      max_runtime=max_runtime, 
-                                                                      max_offset=max_offset,
-                                                                      class_weight=class_weight,
-                                                                      new_constraints=new_constraints)
-                
-                ## check validation auc
-                validation_x = validation_x[:,1:] ## remove the first column, which is "intercept"
-                validation_y[validation_y == -1] = 0 ## change -1 to 0
-                validation_prob = riskslim_prediction(validation_x, np.array(cols), model_info)
-                validation_pred = (validation_prob > 0.5)
-                validation_auc.append(roc_auc_score(validation_y, validation_prob))
-                
-                ## Jingyuan: store the model_info with best performance (e.g. AUC)
-                if score == 'accuracy':
-                    performance_metric.append(accuracy_score(validation_y, validation_pred))
-                elif score == 'recall':
-                    performance_metric.append(recall_score(validation_y, validation_pred))
-                elif score == 'precision':
-                    performance_metric.append(precision_score(validation_y, validation_pred))
-                elif score == 'roc_auc':
-                    performance_metric.append(roc_auc_score(validation_y, validation_prob))
-                elif score == 'pr_auc':
-                    performance_metric.append(average_precision_score(validation_y, validation_prob))
-                else:
-                    print("Score undefined")
-            
-            ## average score of a hyperparameter value over inner cv
-            current_score = sum(performance_metric) / len(performance_metric)
-            
-            ## find the best hyperparameter
-            if current_score >= best_score:
-                best_regularized_c = c[k]
-                best_score = current_score
-            
-        ################################################
-        ## outer loop: use best model_info (best_regularized_c)
-        outer_train_x = outer_train_x.values
-        outer_test_x = outer_test_x.values
-        outer_train_y = outer_train_y.reshape(-1,1)
-        new_train_data = {
-            'X': outer_train_x,
-            'Y': outer_train_y,
-            'variable_names': cols,
-            'outcome_name': y_label,
-            'sample_weights': outer_train_sample_weight
-        }
-        
-        
-        print('The best c selected through inner CV is ' + str(best_regularized_c))
-        model_info, mip_info, lcpa_info = risk_slim_constrain(new_train_data, 
-                                                              max_coefficient=max_coef, 
-                                                              max_L0_value=max_coef_number, 
-                                                              c0_value=best_regularized_c, 
-                                                              max_runtime=max_runtime, 
-                                                              max_offset=max_offset,
-                                                              class_weight=class_weight,
-                                                              new_constraints=new_constraints)
-        ## print and store the model
-        print_model(model_info['solution'], new_train_data)  
-        model_list.append(model_info)
-
-        
-        ## change data format
-        outer_train_x, outer_test_x = outer_train_x[:,1:], outer_test_x[:,1:] ## remove the first column, which is "intercept"
-        outer_train_y[outer_train_y == -1] = 0 ## change -1 to 0
-        outer_test_y[outer_test_y == -1] = 0 ## change -1 to 0
-
-        ## probability & accuracy
-        outer_train_prob = riskslim_prediction(outer_train_x, np.array(cols), model_info).reshape(-1,1)
-        outer_train_pred = (outer_train_prob > 0.5)
-        outer_test_prob = riskslim_prediction(outer_test_x, np.array(cols), model_info)
-        outer_test_pred = (outer_test_prob > 0.5)
-        
-        ########################
-        ## AUC
-        train_auc.append(roc_auc_score(outer_train_y, outer_train_prob))
-        test_auc.append(roc_auc_score(outer_test_y, outer_test_prob)) 
-        
-        ########################
-        ## store results
-        # holdout_with_attrs_test.append(holdout_with_attrs)
-        holdout_probability.append(outer_test_prob)
-        holdout_prediction.append(outer_test_pred)
-        holdout_y.append(outer_test_y)
-        holdout_train_accuracy.append(accuracy_score(outer_train_y, outer_train_pred))
-        holdout_accuracy.append(accuracy_score(outer_test_y, outer_test_pred))
-        holdout_recall.append(recall_score(outer_test_y, outer_test_pred))
-        holdout_precision.append(precision_score(outer_test_y, outer_test_pred))
-        holdout_roc_auc.append(roc_auc_score(outer_test_y, outer_test_prob))
-        holdout_pr_auc.append(average_precision_score(outer_test_y, outer_test_prob))
-
-        i += 1
-        
-    ######################### Outer iteration done ############################
-    ### Compute the bagging results using the entire X & Y
-    
-    cols = X.columns.tolist() 
-    train_x = X.values
-    train_y = Y.reshape(-1,1)
-    
-    train_data = {
-        'X': train_x,
-        'Y': train_y,
-        'variable_names': cols,
-        'outcome_name': y_label,
-        'sample_weights': sample_weights
-    }
-    
-    train_x = train_x[:,1:] # remove intercept
-    train_y[train_y == -1] = 0
-    
-    test_prob_0 = riskslim_prediction(train_x, np.array(cols), model_list[0]).reshape(-1,1)
-    test_prob_1 = riskslim_prediction(train_x, np.array(cols), model_list[1]).reshape(-1,1)
-    test_prob_2 = riskslim_prediction(train_x, np.array(cols), model_list[2]).reshape(-1,1)
-    # test_prob_3 = riskslim_prediction(train_x, np.array(cols), model_list[3]).reshape(-1,1)
-    # test_prob_4 = riskslim_prediction(train_x, np.array(cols), model_list[4]).reshape(-1,1)
-    
-    test_pred_0 = (test_prob_0 > 0.5)
-    test_pred_1 = (test_prob_1 > 0.5)
-    test_pred_2 = (test_prob_2 > 0.5)
-    # test_pred_3 = (test_prob_3 > 0.5)
-    # test_pred_4 = (test_prob_4 > 0.5)
-    
-    test_prob_bag = np.array([np.median([test_prob_0[i], test_prob_1[i], test_prob_2[i]]) for i in range(len(test_prob_0))])
-    # cannot add directly, because False + True = False
-    test_pred_bag = (test_pred_0.astype(int) + test_pred_1.astype(int) + test_pred_2.astype(int) > 1) # if any model predicts 1
-    # np.savetxt('../test_prob_bag.csv', test_prob_bag, delimiter=",")
-    # np.savetxt('../test_pred_bag.csv', test_pred_bag, delimiter=",")
-    
-    # test_prob_bag = np.array([np.median([test_prob_0[i],test_prob_1[i],test_prob_2[i],test_prob_3[i],test_prob_4[i]]) for i in range(len(test_prob_0))])
-    # test_pred_bag = (test_pred_0 + test_pred_1 + test_pred_2 + test_pred_3 + test_pred_4 > 2) # if more than two model predicts 1
-     
-    bag_accuracy = accuracy_score(train_y, test_pred_bag)
-    bag_recall = recall_score(train_y, test_pred_bag)
-    bag_precision = precision_score(train_y, test_pred_bag)
-    bag_roc_auc = roc_auc_score(train_y, test_prob_bag)
-    bag_pr_auc = average_precision_score(train_y, test_prob_bag)
-    
-    return {'train_auc': train_auc,
-            'validation_auc': validation_auc,
-            'holdout_test_auc': test_auc, 
-            'holdout_train_accuracy': holdout_train_accuracy,
-            'holdout_test_accuracy': holdout_accuracy,
-            'holdout_test_recall': holdout_recall,
-            'holdout_test_precision': holdout_precision,
-            'holdout_test_roc_auc': holdout_roc_auc,
-            'holdout_test_pr_auc': holdout_pr_auc,
-            'bag_accuracy': bag_accuracy,
-            'bag_recall': bag_recall,
-            'bag_precision': bag_precision,
-            'bag_roc_auc': bag_roc_auc,
-            'bag_pr_auc': bag_pr_auc
-            }
-    
-    
-    
-    
-        

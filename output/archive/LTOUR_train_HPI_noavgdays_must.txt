@@ -1,0 +1,60 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:69: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start single training, points 5, features 10, c = 1e-15, file saved with name HPI_noavgdays_must
+
+The essential cutoff is [['num_prescribers2', 'num_prescribers3', 'num_pharmacies2', 'num_pharmacies3', 'num_prior_presc2', 'Hydrocodone', 'HMFO', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_1', 'patient_HPIQuartile_2', 'patient_HPIQuartile_3', 'patient_HPIQuartile_4', 'prescriber_HPIQuartile_1', 'prescriber_HPIQuartile_2', 'prescriber_HPIQuartile_3', 'prescriber_HPIQuartile_4', 'pharmacy_HPIQuartile_1', 'pharmacy_HPIQuartile_2', 'pharmacy_HPIQuartile_3', 'pharmacy_HPIQuartile_4'], ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'concurrent_benzo1', 'Hydrocodone', 'HMFO', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_1', 'patient_HPIQuartile_2', 'patient_HPIQuartile_3', 'patient_HPIQuartile_4', 'prescriber_HPIQuartile_1', 'prescriber_HPIQuartile_2', 'prescriber_HPIQuartile_3', 'prescriber_HPIQuartile_4', 'pharmacy_HPIQuartile_1', 'pharmacy_HPIQuartile_2', 'pharmacy_HPIQuartile_3', 'pharmacy_HPIQuartile_4'], ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'concurrent_benzo1', 'Hydrocodone', 'HMFO', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_1', 'patient_HPIQuartile_2', 'patient_HPIQuartile_3', 'patient_HPIQuartile_4', 'prescriber_HPIQuartile_1', 'prescriber_HPIQuartile_2', 'prescriber_HPIQuartile_3', 'prescriber_HPIQuartile_4', 'pharmacy_HPIQuartile_1', 'pharmacy_HPIQuartile_2', 'pharmacy_HPIQuartile_3', 'pharmacy_HPIQuartile_4'], ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit']]
+
+Start training 2018singleLTOUR
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+06/03/24 @ 04:19 PM | 501 rows in lookup table
+HERE
+
+06/03/24 @ 04:19 PM | ------------------------------------------------------------
+06/03/24 @ 04:19 PM | runnning initialization procedure
+06/03/24 @ 04:19 PM | ------------------------------------------------------------
+06/03/24 @ 04:21 PM | CPA produced 2 cuts
+06/03/24 @ 04:21 PM | running naive rounding on 70 solutions
+06/03/24 @ 04:21 PM | best objective value: 0.0897
+HERE
+
+HERE
+
+HERE
+
+HERE
+
+HERE
+
+06/03/24 @ 04:21 PM | rounding produced 0 integer solutions
+06/03/24 @ 04:21 PM | running sequential rounding on 70 solutions
+06/03/24 @ 04:21 PM | best objective value: 0.0897
+HERE
+
+HERE
+
+06/03/24 @ 04:21 PM | sequential rounding produced 0 integer solutions
+06/03/24 @ 04:21 PM | initialization produced 0 feasible solutions
+06/03/24 @ 04:21 PM | ------------------------------------------------------------
+06/03/24 @ 04:21 PM | completed initialization procedure
+06/03/24 @ 04:21 PM | ------------------------------------------------------------
+HERE
+
+06/03/24 @ 04:21 PM | 501 rows in lookup table
+register_callback
+
+06/03/24 @ 04:21 PM | adding 258 initial cuts
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1334: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
++----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-5 + score)))  |                  |           |
+| ============================================ | ================ | ========= |
+| concurrent_benzo1                            |         1 points |   + ..... |
+| HMFO                                         |         1 points |   + ..... |
+| Medicare                                     |         1 points |   + ..... |
+| patient_HPIQuartile_1                        |         1 points |   + ..... |
+| patient_HPIQuartile_2                        |         1 points |   + ..... |
+| ============================================ | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 5                  |            SCORE |   = ..... |
++----------------------------------------------+------------------+-----------+
+-5 ['concurrent_benzo1', 'HMFO', 'Medicare', 'patient_HPIQuartile_1', 'patient_HPIQuartile_2'] [1. 1. 1. 1. 1.]
+241.5 seconds

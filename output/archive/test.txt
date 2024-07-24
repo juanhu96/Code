@@ -1,0 +1,31 @@
+/mnt/phd/jihu/opioid/Code/risk_main.py:171: DtypeWarning: Columns (5) have mixed types. Specify dtype option on import or set low_memory=False.
+  SAMPLE = pd.read_csv(f'{datadir}/FULL_{year}_LONGTERM_UPTOFIRST.csv', delimiter = ",",
+Start testing with single, points 5, features 10, c = 1.0, file saved with name 5
+
+----------------------------------------------------------------------------------------------------
+True positives prescriptions and alert by type: 
+
+(78737, 160) 13731 2465 0 0 1929 13970
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+
+(86266, 160)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.9924640866630033
+********************* HERE *********************
+Test done!
+
+  Accuracy  Recall Precision ROC AUC  PR AUC Calibration error
+0   0.9535  0.6083    0.2345  0.8317  0.1904            0.0047
+       Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.002473    1361694  1351713  ...       0.007330        980538         11355
+1  0.006693    4087790  4067205  ...       0.005036       1822509         17560
+2  0.017986     617119   607866  ...       0.014994        297378          8831
+3  0.047426     213740   202848  ...       0.050959        100773          9066
+4  0.119203     159543        0  ...       0.175194        100269         25997
+5  0.268941     155560        0  ...       0.283511         84008         34638
+6  0.500000      20181        0  ...       0.323324         11815          5347
+7  0.731059        502        0  ...       0.314741           334           144
+
+[8 rows x 10 columns]

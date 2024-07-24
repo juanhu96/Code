@@ -25,6 +25,7 @@ def initialize_lattice_cpa(Z,
                            get_L0_penalty,
                            is_feasible,
                            essential_cutoffs=None,
+                           essential_num=None,
                            data=None):
     """
 
@@ -58,7 +59,7 @@ def initialize_lattice_cpa(Z,
     risk_slim_settings = dict(risk_slim_settings)
     risk_slim_settings.update(bounds)
     risk_slim_settings['relax_integer_variables'] = True
-    risk_slim_lp, risk_slim_lp_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings, essential_cutoffs = essential_cutoffs, data=data)
+    risk_slim_lp, risk_slim_lp_indices = create_risk_slim(coef_set = constraints['coef_set'], input = risk_slim_settings, essential_cutoffs = essential_cutoffs, essential_num=essential_num, data=data)
     risk_slim_lp = set_cplex_mip_parameters(risk_slim_lp, cplex_settings, display_cplex_progress = settings['display_cplex_progress'])
 
     # solve risk_slim_lp LP using standard CPA
@@ -230,7 +231,7 @@ def run_standard_cpa(cpx,
 
         iteration_start_time = time.time()
         cpx.parameters.timelimit.set(min(remaining_total_time, max_cplex_time))
-        cpx.solve() # NOTE: JH: this is in the right formulaa
+        cpx.solve() # NOTE: JH: this is in the right formula
         solution_status = cpx.solution.status[cpx.solution.get_status()]
 
         # get solution

@@ -10,7 +10,7 @@ DEFAULT_LCPA_SETTINGS = {
     #
     #  MIP Formulation
     'drop_variables': True,        #drop variables
-    'tight_formulation': True,     #use a slightly tighter MIP formulation
+    'tight_formulation': False,     #use a slightly tighter MIP formulation (default True)
     'include_auxillary_variable_for_objval': True,
     'include_auxillary_variable_for_L0_norm': True,
     #
@@ -65,8 +65,8 @@ DEFAULT_CPLEX_SETTINGS = {
 DEFAULT_CPA_SETTINGS = {
     #
     'type': 'cvx',
-    'display_progress': False,  # print progress of initialization procedure
-    'display_cplex_progress': False,  # print of CPLEX during intialization procedure
+    'display_progress': False,  # print progress of initialization procedure (default False)
+    'display_cplex_progress': False,  # print of CPLEX during intialization procedure (default False)
     'save_progress': False,  # print progress of initialization procedure
     'update_bounds': True,
     #

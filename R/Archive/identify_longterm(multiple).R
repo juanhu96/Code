@@ -1,48 +1,31 @@
-### Use long-term use as the alternative outcome variable
-
+### STEP 3
+### Identify longterm & longterm180 (patient w/ 2+ prescriptions)
 library(dplyr)
 library(arules)
 library(parallel)
 library(ggplot2)
-setwd("/mnt/phd/jihu/opioid/Code")
 
-################################################################################
-########## New outcome variable: long-term use in the next 180 days ############
-################################################################################
+setwd("/export/storage_cures/CURES/Processed/")
+year = 2018
+case = "1"
 
-## All prescriptions in 2018 (without illicit patients)
-# FULL_ALL <- read.csv("../Data/FULL_2018_ALERT_NOILLICIT.csv")
 
-# FULL_ALL <- FULL_ALL %>% select(-c(prescription_month, prescription_quarter, 
-#                                    alert1_next31, alert2_next31, alert3_next31, alert4_next31, alert5_next31, alert6_next31,
-#                                    alert1_next62, alert2_next62, alert3_next62, alert4_next62, alert5_next62, alert6_next62,
-#                                    alert1_next93, alert2_next93, alert3_next93, alert4_next93, alert5_next93, alert6_next93,
-#                                    alert1_exact31, alert2_exact31, alert3_exact31, alert4_exact31, alert5_exact31, alert6_exact31,
-#                                    alert1_exact62, alert2_exact62, alert3_exact62, alert4_exact62, alert5_exact62, alert6_exact62,
-#                                    alert1_exact93, alert2_exact93, alert3_exact93, alert4_exact93, alert5_exact93, alert6_exact93))
+FULL <- read.csv("../Data/FULL_ALERT_2019_SINGLE.csv")
+# FULL <- read.csv("../Data/FULL_ALERT_2019_ATLEASTTWO_4.csv")
 
-# FULL_2018 <- FULL_ALL %>% filter(patient_id < 41846152)
-# FULL_2018 <- FULL_ALL %>% filter(patient_id >= 41846152 & patient_id < 54195156)
-# FULL_2018 <- FULL_ALL %>% filter(patient_id >= 54195156 & patient_id < 68042918)
-# FULL_2018 <- FULL_ALL %>% filter(patient_id >= 68042918)
-
-FULL_2018 <- read.csv("../Data/FULL_ALERT_2019_SINGLE.csv")
-# FULL_2018 <- read.csv("../Data/FULL_ALERT_2019_ATLEASTTWO_4.csv")
-
-################################################################################
 ################################################################################
 ################################################################################
 ### Long-term use: at least 90 day in 180 days period
 ### Outcome variable: at the end of current prescription,
-### Will the patient become a long-term user
+### Will the patient become a long-term user?
 
-FULL_2018$period_start = format(as.Date(FULL_2018$presc_until, format = "%m/%d/%Y") - 180, "%m/%d/%Y")
-FULL_2018 <- FULL_2018[order(FULL_2018$patient_id, as.Date(FULL_2018$date_filled, format = "%m/%d/%Y"), as.Date(FULL_2018$presc_until, format = "%m/%d/%Y")),]
+FULL$period_start = format(as.Date(FULL$presc_until, format = "%m/%d/%Y") - 180, "%m/%d/%Y")
+FULL <- FULL[order(FULL$patient_id, as.Date(FULL$date_filled, format = "%m/%d/%Y"), as.Date(FULL$presc_until, format = "%m/%d/%Y")),]
 
 # overlap with the previous (index based) prescription
 compute_overlap <- function(pat_id, presc_id){
-  PATIENT <- FULL_2018[which(FULL_2018$patient_id == pat_id),]
-  PATIENT_PRESC_OPIOIDS <- FULL_2018[which(FULL_2018$prescription_id == presc_id),]
+  PATIENT <- FULL[which(FULL$patient_id == pat_id),]
+  PATIENT_PRESC_OPIOIDS <- FULL[which(FULL$prescription_id == presc_id),]
   presc_date <- PATIENT_PRESC_OPIOIDS$date_filled
   presc_index <- which(PATIENT$prescription_id == presc_id)
   
@@ -58,12 +41,12 @@ compute_overlap <- function(pat_id, presc_id){
   }
 }
 
-FULL_2018$overlap <- mcmapply(compute_overlap, FULL_2018$patient_id, FULL_2018$prescription_id, mc.cores=50)
+FULL$overlap <- mcmapply(compute_overlap, FULL$patient_id, FULL$prescription_id, mc.cores=50)
 
 ########################################################################
 compute_opioid_days <- function(pat_id, presc_id){
-  PATIENT <- FULL_2018[which(FULL_2018$patient_id == pat_id),]
-  PATIENT_PRESC_OPIOIDS <- FULL_2018[which(FULL_2018$prescription_id == presc_id),]
+  PATIENT <- FULL[which(FULL$patient_id == pat_id),]
+  PATIENT_PRESC_OPIOIDS <- FULL[which(FULL$prescription_id == presc_id),]
   presc_date <- PATIENT_PRESC_OPIOIDS$date_filled
   presc_until <- PATIENT_PRESC_OPIOIDS$presc_until
   period_start <- PATIENT_PRESC_OPIOIDS$period_start
@@ -109,10 +92,10 @@ compute_opioid_days <- function(pat_id, presc_id){
   return (opioid_days)
 }
 
-FULL_2018$opioid_days <- mcmapply(compute_opioid_days, FULL_2018$patient_id, FULL_2018$prescription_id, mc.cores=50)
-FULL_2018 <- FULL_2018 %>% mutate(long_term = ifelse(opioid_days >= 90, 1, 0))
+FULL$opioid_days <- mcmapply(compute_opioid_days, FULL$patient_id, FULL$prescription_id, mc.cores=50)
+FULL <- FULL %>% mutate(long_term = ifelse(opioid_days >= 90, 1, 0))
 
-# TEST <- FULL_2018 %>% select(c(prescription_id, patient_id, date_filled, days_supply, presc_until, overlap, opioid_days, long_term))
+# TEST <- FULL %>% select(c(prescription_id, patient_id, date_filled, days_supply, presc_until, overlap, opioid_days, long_term))
 # TEST$opioid_days <- mcmapply(compute_opioid_days, TEST$patient_id, TEST$prescription_id, mc.cores=20)
 # TEST <- TEST %>% mutate(long_term = ifelse(opioid_days >= 90, 1, 0))
 
@@ -120,76 +103,76 @@ FULL_2018 <- FULL_2018 %>% mutate(long_term = ifelse(opioid_days >= 90, 1, 0))
 ################################################################################
 ################################################################################
 ### Keep prescriptions up to long-term use, once it is long-term use, assume absorbing state
-PATIENT <- FULL_2018 %>% group_by(patient_id) %>% summarize(first_presc_date = date_filled[1],
+PATIENT <- FULL %>% group_by(patient_id) %>% summarize(first_presc_date = date_filled[1],
                                                           longterm_filled_date = ifelse(sum(long_term) > 0, date_filled[long_term > 0][1], NA),
                                                           longterm_presc_date = ifelse(sum(long_term) > 0, presc_until[long_term > 0][1], NA),
                                                           first_longterm_presc = ifelse(sum(long_term) > 0, min(row_number()[long_term > 0]), NA),
                                                           first_longterm_presc_id = ifelse(sum(long_term) > 0, prescription_id[long_term > 0][1], NA))
 
-FULL_2018 <- left_join(FULL_2018, PATIENT, by = "patient_id")
+FULL <- left_join(FULL, PATIENT, by = "patient_id")
 
 ## Use presc_until of the long-term prescription to compute
 # NA: patient never become long term
 # >0: patient is going to become long term
 # =0: patient is long term right after this prescription
 # <0: patient is already long term
-FULL_2018 <- FULL_2018 %>% mutate(days_to_long_term = as.numeric(as.Date(longterm_presc_date, format = "%m/%d/%Y") - as.Date(date_filled, format = "%m/%d/%Y"))) %>%
+FULL <- FULL %>% mutate(days_to_long_term = as.numeric(as.Date(longterm_presc_date, format = "%m/%d/%Y") - as.Date(date_filled, format = "%m/%d/%Y"))) %>%
   filter(days_to_long_term > 0 | is.na(days_to_long_term)) %>% # either never long-term or haven't
   mutate(long_term_180 = ifelse(days_to_long_term <= 180, 1, 0)) %>% # within 180 days
   mutate(long_term_180 = ifelse(is.na(long_term_180), 0, long_term_180)) # never is also 0
 
-FULL_2018 <- FULL_2018 %>% select(-c(period_start, first_presc_date,
+FULL <- FULL %>% select(-c(period_start, first_presc_date,
                                      longterm_filled_date, longterm_presc_date, 
                                      first_longterm_presc, first_longterm_presc_id))
 
 
-# write.csv(FULL_2018, "../Data/FULL_2018_LONGTERM_NOILLICIT.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_LONGTERM_NOILLICIT.csv", row.names = FALSE)
 
 ################################################################################
 ########################### TIME-BASED FEATURES ################################
 ################################################################################
 
-# FULL_2018 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT.csv")
+# FULL <- read.csv("../Data/FULL_LONGTERM_NOILLICIT.csv")
 
 ## Number of prescription (xth prescription)
 compute_num_presc <- function(pat_id, presc_id){
   # Bounday case: a patient have multiple prescriptions on the same day
   # Do we want number of prescription (day before) the current prescription
   # Or all prescription (even on same day) before the current prescription
-  PATIENT <- FULL_2018[which(FULL_2018$patient_id == pat_id),]
+  PATIENT <- FULL[which(FULL$patient_id == pat_id),]
   presc_index <- which(PATIENT$prescription_id == presc_id)
   return (presc_index)
 }
-FULL_2018$num_presc <- mcmapply(compute_num_presc, FULL_2018$patient_id, FULL_2018$prescription_id, mc.cores=40)
+FULL$num_presc <- mcmapply(compute_num_presc, FULL$patient_id, FULL$prescription_id, mc.cores=40)
 
 ## Increase in dosage (for single prescription, or concurrrent MME)
-FULL_2018 <- FULL_2018 %>% mutate(previous_dose = ifelse(patient_id == lag(patient_id), lag(daily_dose), 0),
+FULL <- FULL %>% mutate(previous_dose = ifelse(patient_id == lag(patient_id), lag(daily_dose), 0),
                                   previous_concurrent_MME = ifelse(patient_id == lag(patient_id), lag(concurrent_MME), 0),
                                   previous_days = ifelse(patient_id == lag(patient_id), lag(days_supply), 0),
                                   dose_diff = ifelse(patient_id == lag(patient_id), daily_dose - previous_dose, 0),
                                   concurrent_MME_diff = ifelse(patient_id == lag(patient_id), concurrent_MME - previous_concurrent_MME, 0),
                                   days_diff = ifelse(patient_id == lag(patient_id), days_supply - previous_days, 0))
 
-FULL_2018[1,]$previous_dose = 0
-FULL_2018[1,]$previous_concurrent_MME = 0
-FULL_2018[1,]$previous_days = 0
-FULL_2018[1,]$dose_diff = 0
-FULL_2018[1,]$concurrent_MME_diff = 0
-FULL_2018[1,]$days_diff = 0
+FULL[1,]$previous_dose = 0
+FULL[1,]$previous_concurrent_MME = 0
+FULL[1,]$previous_days = 0
+FULL[1,]$dose_diff = 0
+FULL[1,]$concurrent_MME_diff = 0
+FULL[1,]$days_diff = 0
 
 ## Switch in drug type/payment
-FULL_2018 <- FULL_2018 %>% mutate(switch_drug = ifelse(patient_id == lag(patient_id) & drug == lag(drug), 1, 0),
+FULL <- FULL %>% mutate(switch_drug = ifelse(patient_id == lag(patient_id) & drug == lag(drug), 1, 0),
                                   switch_payment = ifelse(patient_id == lag(patient_id) & payment == lag(payment), 1, 0))
-FULL_2018[1,]$switch_drug = 0
-FULL_2018[1,]$switch_payment = 0
+FULL[1,]$switch_drug = 0
+FULL[1,]$switch_payment = 0
 
-# write.csv(FULL_2018, "../Data/FULL_2018_LONGTERM_NOILLICIT.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_LONGTERM_NOILLICIT.csv", row.names = FALSE)
 
 ################################################################################
 ################################ INTERACTION ###################################
 ################################################################################
 
-FULL_2018 <- FULL_2018 %>% mutate(Codeine_MME = ifelse(drug == "Codeine", daily_dose, 0),
+FULL <- FULL %>% mutate(Codeine_MME = ifelse(drug == "Codeine", daily_dose, 0),
                                   Hydrocodone_MME = ifelse(drug == "Hydrocodone", daily_dose, 0),
                                   Oxycodone_MME = ifelse(drug == "Oxycodone", daily_dose, 0),
                                   Morphine_MME = ifelse(drug == "Morphine", daily_dose, 0),
@@ -198,7 +181,7 @@ FULL_2018 <- FULL_2018 %>% mutate(Codeine_MME = ifelse(drug == "Codeine", daily_
                                   Fentanyl_MME = ifelse(drug == "Fentanyl", daily_dose, 0),
                                   Oxymorphone_MME = ifelse(drug == "Oxymorphone", daily_dose, 0))
 
-FULL_2018 <- FULL_2018 %>% mutate(drug_payment = paste(drug, payment, sep = "_")) %>%
+FULL <- FULL %>% mutate(drug_payment = paste(drug, payment, sep = "_")) %>%
   mutate(Codeine_Medicaid = ifelse(drug_payment == "Codeine_Medicaid", 1, 0),
          Codeine_CommercialIns = ifelse(drug_payment == "Codeine_CommercialIns", 1, 0),
          Codeine_Medicare = ifelse(drug_payment == "Codeine_Medicare", 1, 0),
@@ -264,52 +247,52 @@ FULL_2018 <- FULL_2018 %>% mutate(drug_payment = paste(drug, payment, sep = "_")
          Oxymorphone_Other = ifelse(drug_payment == "Oxymorphone_Other", 1, 0),
          Oxymorphone_IndianNation = ifelse(drug_payment == "Oxymorphone_IndianNation", 1, 0))
 
-# write.csv(FULL_2018, "../Data/FULL_2018_LONGTERM_NOILLICIT_4.csv", row.names = FALSE)
-write.csv(FULL_2018, "../Data/FULL_2019_LONGTERM_5.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_LONGTERM_NOILLICIT_4.csv", row.names = FALSE)
+write.csv(FULL, "../Data/FULL_2019_LONGTERM_5.csv", row.names = FALSE)
 
-# TEST <- FULL_2018 %>% filter(patient_id == 708) %>% select(c(patient_id, date_filled, presc_until, days_supply, overlap, opioid_days, long_term, long_term_180))
+# TEST <- FULL %>% filter(patient_id == 708) %>% select(c(patient_id, date_filled, presc_until, days_supply, overlap, opioid_days, long_term, long_term_180))
 
 ################################################################################
 ################################### INPUT ######################################
 ################################################################################
 
 ## For input
-# FULL_2018_1 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT_1.csv")
-# FULL_2018_2 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT_2.csv")
-# FULL_2018_3 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT_3.csv")
-# FULL_2018_4 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT_4.csv")
+# FULL_1 <- read.csv("../Data/FULL_LONGTERM_NOILLICIT_1.csv")
+# FULL_2 <- read.csv("../Data/FULL_LONGTERM_NOILLICIT_2.csv")
+# FULL_3 <- read.csv("../Data/FULL_LONGTERM_NOILLICIT_3.csv")
+# FULL_4 <- read.csv("../Data/FULL_LONGTERM_NOILLICIT_4.csv")
 # 
-# FULL_2018 <- rbind(FULL_2018_1, FULL_2018_2)
-# FULL_2018 <- rbind(FULL_2018, FULL_2018_3)
-# FULL_2018 <- rbind(FULL_2018, FULL_2018_4)
-# rm(FULL_2018_1)
-# rm(FULL_2018_2)
-# rm(FULL_2018_3)
-# rm(FULL_2018_4)
+# FULL <- rbind(FULL_1, FULL_2)
+# FULL <- rbind(FULL, FULL_3)
+# FULL <- rbind(FULL, FULL_4)
+# rm(FULL_1)
+# rm(FULL_2)
+# rm(FULL_3)
+# rm(FULL_4)
 
 
-FULL_2018_1 <- read.csv("../Data/FULL_2019_LONGTERM_1.csv")
-FULL_2018_2 <- read.csv("../Data/FULL_2019_LONGTERM_2.csv")
-FULL_2018_3 <- read.csv("../Data/FULL_2019_LONGTERM_3.csv")
-FULL_2018_4 <- read.csv("../Data/FULL_2019_LONGTERM_4.csv")
-FULL_2018_5 <- read.csv("../Data/FULL_2019_LONGTERM_5.csv")
+FULL_1 <- read.csv("../Data/FULL_2019_LONGTERM_1.csv")
+FULL_2 <- read.csv("../Data/FULL_2019_LONGTERM_2.csv")
+FULL_3 <- read.csv("../Data/FULL_2019_LONGTERM_3.csv")
+FULL_4 <- read.csv("../Data/FULL_2019_LONGTERM_4.csv")
+FULL_5 <- read.csv("../Data/FULL_2019_LONGTERM_5.csv")
 
-FULL_2018 <- rbind(FULL_2018_1, FULL_2018_2)
-FULL_2018 <- rbind(FULL_2018, FULL_2018_3)
-FULL_2018 <- rbind(FULL_2018, FULL_2018_4)
-FULL_2018 <- rbind(FULL_2018, FULL_2018_5)
-rm(FULL_2018_1)
-rm(FULL_2018_2)
-rm(FULL_2018_3)
-rm(FULL_2018_4)
-rm(FULL_2018_5)
-FULL_2018 <- FULL_2018[order(FULL_2018$patient_id, FULL_2018$date_filled),]
-write.csv(FULL_2018, "../Data/FULL_2019_LONGTERM.csv", row.names = FALSE)
+FULL <- rbind(FULL_1, FULL_2)
+FULL <- rbind(FULL, FULL_3)
+FULL <- rbind(FULL, FULL_4)
+FULL <- rbind(FULL, FULL_5)
+rm(FULL_1)
+rm(FULL_2)
+rm(FULL_3)
+rm(FULL_4)
+rm(FULL_5)
+FULL <- FULL[order(FULL$patient_id, FULL$date_filled),]
+write.csv(FULL, "../Data/FULL_2019_LONGTERM.csv", row.names = FALSE)
 
-LONGTERMPRESC <- FULL_2018 %>% filter(long_term_180 == 1)
+LONGTERMPRESC <- FULL %>% filter(long_term_180 == 1)
 
-# FULL_2018 <- read.csv("../Data/FULL_2018_LONGTERM_NOILLICIT.csv")
-# FULL_2018 <- FULL_2018 %>% select(-c(prescription_id, patient_id, patient_birth_year, patient_zip, prescriber_id, 
+# FULL <- read.csv("../Data/FULL_LONGTERM_NOILLICIT.csv")
+# FULL <- FULL %>% select(-c(prescription_id, patient_id, patient_birth_year, patient_zip, prescriber_id, 
 #                                      prescriber_zip, pharmacy_id, pharmacy_zip, strength, days_supply, date_filled, presc_until, 
 #                                      conversion, class, drug, daily_dose, chronic, PRODUCTNDC, PROPRIETARYNAME, LABELERNAME, ROUTENAME,
 #                                      DEASCHEDULE, MAINDOSE, payment, prescription_year,
@@ -318,22 +301,22 @@ LONGTERMPRESC <- FULL_2018 %>% filter(long_term_180 == 1)
 #                                      alert_next31, alert_exact31, alert_next62, alert_exact62, alert_next93, alert_exact93,
 #                                      days_to_long_term, previous_dose, previous_concurrent_MME, previous_days, num_alert, long_term))
 
-FULL_2018 <- FULL_2018 %>% select(-c(prescription_id, patient_id, patient_birth_year, patient_zip, prescriber_id, 
+FULL <- FULL %>% select(-c(prescription_id, patient_id, patient_birth_year, patient_zip, prescriber_id, 
                                      prescriber_zip, pharmacy_id, pharmacy_zip, strength, date_filled, presc_until, 
                                      conversion, class, drug, chronic, PRODUCTNDC, PROPRIETARYNAME, LABELERNAME, ROUTENAME,
                                      DEASCHEDULE, MAINDOSE, payment, prescription_month, prescription_year,
                                      overlap, # alert1, alert2, alert3, alert4, alert5, alert6,
                                      days_to_long_term, previous_dose, previous_concurrent_MME, previous_days, num_alert, opioid_days, long_term))
 
-FULL_2018 <- rename(FULL_2018, concurrent_methadone_MME = concurrent_MME_methadone)
-FULL_2018 <- rename(FULL_2018, MME_diff = concurrent_MME_diff)
+FULL <- rename(FULL, concurrent_methadone_MME = concurrent_MME_methadone)
+FULL <- rename(FULL, MME_diff = concurrent_MME_diff)
 
-# write.csv(FULL_2018, "../Data/FULL_2018_INPUT_LONGTERM_NOILLICIT.csv", row.names = FALSE)
-write.csv(FULL_2018, "../Data/FULL_2019_INPUT_LONGTERM.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_INPUT_LONGTERM_NOILLICIT.csv", row.names = FALSE)
+write.csv(FULL, "../Data/FULL_2019_INPUT_LONGTERM.csv", row.names = FALSE)
 
 
 ### Proportion of long_term users, days to long_term
-PATIENT <- FULL_2018 %>% group_by(patient_id) %>% summarize(patient_gender = patient_gender[1],
+PATIENT <- FULL %>% group_by(patient_id) %>% summarize(patient_gender = patient_gender[1],
                                                             age = age[1],
                                                             first_presc_date = date_filled[1],
                                                             longterm = ifelse(sum(long_term) > 0, 1, 0), 
@@ -345,7 +328,7 @@ PATIENT_LONGTERM <- PATIENT %>% filter(longterm == 1)
 PATIENT_LONGTERM <- PATIENT_LONGTERM %>% mutate(days_to_long_term = as.numeric(as.Date(longterm_presc_date, format = "%m/%d/%Y") - 
                                                   as.Date(first_presc_date, format = "%m/%d/%Y")))
 
-TEST <- FULL_2018 %>% filter(patient_id == 64134737)
+TEST <- FULL %>% filter(patient_id == 64134737)
 
 # Note the patient is not a long term user at date_filled, but it will become during [date_filled, date_end]
 ggplot(PATIENT_LONGTERM, aes(x=ifelse(days_to_long_term>365, 365, days_to_long_term))) + 
@@ -363,14 +346,14 @@ ggsave("../Result/days_longterm.pdf", bg="white", width=8, height=6, dpi=300)
 ################################################################################
 ## Summary
 TEST <- PATIENT %>% filter(patient_gender == 0)
-TEST <- FULL_2018 %>% filter(patient_gender == 0)
+TEST <- FULL %>% filter(patient_gender == 0)
 
 # Prescriptions
-TEST <- FULL_2018 %>% filter(age <= 20)
-TEST <- FULL_2018 %>% filter(age > 20 & age <= 40)
-TEST <- FULL_2018 %>% filter(age > 40 & age <= 60)
-TEST <- FULL_2018 %>% filter(age > 60 & age <= 80)
-TEST <- FULL_2018 %>% filter(age > 80)
+TEST <- FULL %>% filter(age <= 20)
+TEST <- FULL %>% filter(age > 20 & age <= 40)
+TEST <- FULL %>% filter(age > 40 & age <= 60)
+TEST <- FULL %>% filter(age > 60 & age <= 80)
+TEST <- FULL %>% filter(age > 80)
 
 # Patient
 TEST <- PATIENT %>% filter(age <= 20)
@@ -393,9 +376,9 @@ TEST <- PATIENT_LONGTERM %>% filter(age > 80)
 ################################################################################
 
 
-# FULL_2018$payment <- factor(FULL_2018$payment, levels = c("CommercialIns", "CashCredit", "Medicare", "Medicaid", 
+# FULL$payment <- factor(FULL$payment, levels = c("CommercialIns", "CashCredit", "Medicare", "Medicaid", 
 #                                                           "Other", "WorkersComp", "MilitaryIns", "IndianNation" ))
-ggplot(FULL_2018, aes(drug)) + 
+ggplot(FULL, aes(drug)) + 
   geom_bar(aes(fill = payment)) +
   xlab("Drug type") +
   ylab("Count") +
@@ -407,8 +390,8 @@ ggplot(FULL_2018, aes(drug)) +
 ggsave("../Result/drug_payment.pdf", bg="white", width=12, height=6, dpi=300)
 
 # One prescription could have multiple alerts so it's hard to make barplot
-ALERT <- FULL_2018 %>% filter(alert1 == 1)
-ALERT <- FULL_2018 %>% filter(alert6 == 1)
+ALERT <- FULL %>% filter(alert1 == 1)
+ALERT <- FULL %>% filter(alert6 == 1)
 
 
 ################################################################################
@@ -423,7 +406,7 @@ ALERT <- FULL_2018 %>% filter(alert6 == 1)
 ############################# Ever Switch ######################################
 ################################################################################
 
-# FULL <- read.csv("../Data/FULL_2018_LONGTERM.csv")
+# FULL <- read.csv("../Data/FULL_LONGTERM.csv")
 FULL <- read.csv("../Data/FULL_2019_LONGTERM.csv")
 
 # Recompute switch_drug and switch_payment (b/c I did it wrong)
@@ -442,14 +425,14 @@ FULL <- left_join(FULL, PATIENT, by = 'patient_id')
 FULL <- FULL %>% mutate(ever_switch_drug = ifelse(as.Date(date_filled, format = "%m/%d/%Y") >= as.Date(first_switch_drug, format = "%m/%d/%Y"), 1, 0),
                         ever_switch_payment = ifelse(as.Date(date_filled, format = "%m/%d/%Y") >= as.Date(first_switch_payment, format = "%m/%d/%Y"), 1, 0))
 
-# write.csv(FULL, "../Data/FULL_2018_LONGTERM.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_LONGTERM.csv", row.names = FALSE)
 write.csv(FULL, "../Data/FULL_2019_LONGTERM.csv", row.names = FALSE)
 
 ################################################################################
 ########################## Avg MME/days, HMFO ##################################
 ################################################################################
 
-# FULL <- read.csv("../Data/FULL_2018_LONGTERM.csv")
+# FULL <- read.csv("../Data/FULL_LONGTERM.csv")
 FULL <- read.csv("../Data/FULL_2019_LONGTERM.csv")
 
 compute_avg <- function(pat_id, presc_id){
@@ -476,7 +459,7 @@ FULL$avgMME = avg[1, ]
 FULL$avgDays = avg[2, ]
 
 FULL <- FULL %>% mutate(HMFO = ifelse(drug == "Hydromorphone" | drug == "Methadone" | drug == "Fentanyl" | drug == "Oxymorphone", 1, 0))
-# write.csv(FULL, "../Data/FULL_2018_LONGTERM.csv", row.names = FALSE)
+# write.csv(FULL, "../Data/FULL_LONGTERM.csv", row.names = FALSE)
 write.csv(FULL, "../Data/FULL_2019_LONGTERM.csv", row.names = FALSE)
 
 

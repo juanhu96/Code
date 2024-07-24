@@ -1,0 +1,36 @@
+Start single training, file saved with setting tag _2018_train_single_10p_10f_original_Explore_feature7_essential1.0_second_round
+
+Finished importing STUMPS, with shape (10025197, 201)
+
+[['age20', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'patient_zip_avg_days3', 'patient_zip_avg_days5', 'patient_zip_avg_days7', 'patient_zip_avg_days10', 'patient_zip_avg_days14', 'patient_zip_avg_days21', 'patient_zip_avg_days25', 'patient_zip_avg_days30', 'patient_zip_avg_days60', 'Oxycodone', 'switch_drug', 'ever_switch_drug', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'prescriber_yr_avg_days_quartile_2.0', 'prescriber_yr_avg_days_quartile_3.0', 'prescriber_yr_avg_days_quartile_4.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_2.0', 'pharmacy_yr_avg_days_quartile_3.0', 'pharmacy_yr_avg_days_quartile_4.0']]
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+------------------------------------------------------------
+1.0
+07/03/24 @ 01:40 AM | 621 rows in lookup table
+07/03/24 @ 01:40 AM | ------------------------------------------------------------
+07/03/24 @ 01:40 AM | runnning initialization procedure
+07/03/24 @ 01:40 AM | ------------------------------------------------------------
+07/03/24 @ 01:42 AM | CPA produced 2 cuts
+07/03/24 @ 01:42 AM | running naive rounding on 22 solutions
+07/03/24 @ 01:42 AM | best objective value: 0.5070
+07/03/24 @ 01:42 AM | rounding produced 0 integer solutions
+07/03/24 @ 01:42 AM | running sequential rounding on 22 solutions
+07/03/24 @ 01:42 AM | best objective value: 0.5070
+07/03/24 @ 01:42 AM | sequential rounding produced 0 integer solutions
+07/03/24 @ 01:42 AM | initialization produced 0 feasible solutions
+07/03/24 @ 01:42 AM | ------------------------------------------------------------
+07/03/24 @ 01:42 AM | completed initialization procedure
+07/03/24 @ 01:42 AM | ------------------------------------------------------------
+07/03/24 @ 01:42 AM | 621 rows in lookup table
+register_callback
+
+07/03/24 @ 01:42 AM | adding 254 initial cuts
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-2 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| prescriber_yr_avg_days_quartile_4.0           |         3 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 1                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-2 ['prescriber_yr_avg_days_quartile_4.0'] [3.]
+159.2 seconds

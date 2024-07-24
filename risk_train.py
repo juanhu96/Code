@@ -15,35 +15,30 @@ import random
 import numpy as np
 import pandas as pd
 
-from sklearn.utils import class_weight
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
-average_precision_score, brier_score_loss, fbeta_score, accuracy_score, roc_curve, confusion_matrix
+from sklearn.metrics import recall_score, precision_score, roc_auc_score, average_precision_score, accuracy_score, confusion_matrix
 
-import utils.stumps as stumps
-import pprint
 import riskslim
 import utils.RiskSLIM as slim
 from riskslim.utils import print_model
 
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+def risk_train(year:int,
+               case:str,
+               first:bool,
+               upto180:bool,
+               scenario:str, 
+               c:float, 
+               feature_set,
+               essential_num,
+               max_points:int=5,
+               max_features:int=6, 
+               weight:str='balanced',  
+               outcome:str='long_term_180', 
+               roc:bool=False,
+               datadir:str='/export/storage_cures/CURES/Processed/',
+               exportdir:str='/export/storage_cures/CURES/Results/',
+               setting_tag:str=''):
 
-
-def risk_train(year,
-            features,
-            scenario, 
-            c, 
-            weight='balanced',  
-            max_points=5,
-            max_features=6, 
-            outcome='long_term_180', 
-            output_y=False,
-            roc=False,
-            workdir='/mnt/phd/jihu/opioid/',
-            name=''):
-    
     '''
     Train a riskSLIM model
     
@@ -51,146 +46,55 @@ def risk_train(year,
     Parameters
     ----------
     year: year of the training dataset
-    features: base/flexible/full/selected
-    scenario: single/nested
-    c: has to be a list when doing nested CV
-    weight: original/balanced/positive/positive_2/positive_4
+    case: name of the training case (e.g., LTOUR)
+    scenario: single/CV
+    c: has to be a list when doing CV
+    feature_set: set of features
     max_points: maximum point allowed per feature
+    max_features: maximum number of features
     outcome: outcome to predict
-    output_y: whether to export the predicted y
     name: index for filename (when running multiple trails)
     roc: export fpr, tpr for roc visualization (only for single)
-
     '''
 
+    if first:
+        file_suffix = "_FIRST_INPUT"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_INPUT"
+    else:
+        file_suffix = "_INPUT"
 
-    # ================================ Y INPUT ====================================
+    file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
 
-    SAMPLE = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
-                         dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
-                                'num_prescribers': int, 'num_pharmacies': int,
-                                'concurrent_benzo': int, 'consecutive_days': int,
-                                'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    SAMPLE = SAMPLE.fillna(0)
+    FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
+                                                        'concurrent_methadone_MME': float,
+                                                        'num_prescribers_past180': int,
+                                                        'num_pharmacies_past180': int,
+                                                        'concurrent_benzo': int,
+                                                        'consecutive_days': int})#.fillna(0)
     
-    # fig, ax = plt.subplots(figsize=(10, 6))
-    # for drug_category in SAMPLE['drug'].unique():
-    #     subset = SAMPLE[SAMPLE['drug'] == drug_category]
-    #     sns.kdeplot(subset['concurrent_MME'], ax=ax, label=drug_category, bw_adjust=2)  # Adjust bw_adjust as needed
+    quartile_list = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
+                             'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
+                             'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
+                             'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
+                             'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile',
+                             'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
+                             'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 
+                             'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile',
+                             'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
+                             'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 
+                             'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile',
+                             'zip_pop_density_quartile', 'median_household_income_quartile', 
+                             'family_poverty_pct_quartile', 'unemployment_pct_quartile']
+    FULL = FULL.dropna(subset=quartile_list) # drop NA rows
 
-    # ax.set_xlim(0, 300)
-    # ax.set_title('Distribution of Concurrent MME Grouped by Drug')
-    # ax.set_xlabel('Concurrent MME')
-    # ax.set_ylabel('Density')
-    # ax.legend()
-    # plt.show()
-    # fig.savefig(f'/mnt/phd/jihu/opioid/Result/density_kde.pdf', dpi=300)
-
-
-    # fig, ax = plt.subplots(figsize=(10, 6))
-    # for drug_category in SAMPLE['drug'].unique():
-    #     subset = SAMPLE[SAMPLE['drug'] == drug_category]
-    #     sns.kdeplot(subset['quantity'], ax=ax, label=drug_category, bw_adjust=2)  # Adjust bw_adjust as needed
-
-    # ax.set_xlim(0, 300)
-    # ax.set_title('Distribution of Quantity Grouped by Drug')
-    # ax.set_xlabel('Quantity')
-    # ax.set_ylabel('Density')
-    # ax.legend()
-    # plt.show()
-    # fig.savefig(f'/mnt/phd/jihu/opioid/Result/density_kde_quantity.pdf', dpi=300)
-
-    # sns.histplot(data=SAMPLE, x='concurrent_MME', hue='drug', element='step', stat='density', common_norm=False)
-    # plt.title('Distribution of Concurrent MME Grouped by Drug')
-    # plt.xlabel('Concurrent MME')
-    # plt.ylabel('Density')
-    # plt.show()
-    # fig.savefig(f'/mnt/phd/jihu/opioid/Result/density.pdf', dpi=300)
-    # print("-"*100)
-
-    # ================================ X INPUT ====================================
-
-        
-    N = 20
-    SAMPLE_STUMPS = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST0.csv', delimiter = ",")
-    for i in range(1, N):
-        TEMP = pd.read_csv(f'{workdir}Data/FULL_{str(year)}_STUMPS_UPTOFIRST{str(i)}.csv', delimiter = ",")
-        SAMPLE_STUMPS = pd.concat([SAMPLE_STUMPS, TEMP])
-
-    SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([col for col in SAMPLE_STUMPS if col.startswith(('consecutive_days', 'concurrent_methadone_MME', 'quantity'))])]
-    SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop(['avgDays60'])]
-    SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([f'num_prescribers{i}' for i in range(4, 11)])]
-    SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop([f'num_pharmacies{i}' for i in range(4, 11)])]
-    SAMPLE_STUMPS = SAMPLE_STUMPS[SAMPLE_STUMPS.columns.drop(['CommercialIns', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation'])]
-
-    SAMPLE_STUMPS['(Intercept)'] = 1
-    intercept = SAMPLE_STUMPS.pop('(Intercept)')
-    SAMPLE_STUMPS.insert(0, '(Intercept)', intercept)
-    x = SAMPLE_STUMPS
-
-    # drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], 
-    # ['Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation']]
-    drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit']]
-    
-    # Single cutoff
-    single_cutoff_features = [['num_prior_presc', 'num_prescribers', 'num_pharmacies'], ['concurrent_MME']]
-    # single_cutoff_features = [['avgDays'], ['num_prescribers'], ['num_pharmacies'], ['concurrent_MME'], ['quantity']]
-    # single_cutoff_features = [['num_prior_presc'], ['num_prescribers'], ['num_pharmacies'], ['concurrent_MME'], ['quantity'], ['concurrent_benzo']]
-    if single_cutoff_features: 
-        single_cutoff = [[col for col in x if any(col.startswith(feature) for feature in sublist)] for sublist in single_cutoff_features]
-        single_cutoff.extend(drug_payment)
-    else: 
-        single_cutoff = None
-          
-
-    # Two cutoffs
-    two_cutoffs_features = [['avgDays']]
-    if two_cutoffs_features: 
-        two_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in sublist)] for sublist in two_cutoffs_features]
-        # two_cutoffs.extend(drug_payment)
-    else: two_cutoffs = None
-
-
-    # Three cutoffs
-    three_cutoffs_features = []
-    if three_cutoffs_features: three_cutoffs = [[col for col in x if col.startswith(feature)] for feature in three_cutoffs_features]
-    else: three_cutoffs = None
-
-
-    # essential_cutoffs
-    # essential_cutoffs_feautres = [['avgDays'], ['num_prior_presc', 'num_prescribers', 'num_pharmacies'], ['concurrent_MME', 'quantity']]
-    essential_cutoffs_feautres = [['avgDays']] # NONE type not iterable
-    if essential_cutoffs_feautres:
-        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in sublist)] for sublist in essential_cutoffs_feautres]
-        essential_cutoffs.extend(drug_payment)
-    else: essential_cutoffs = None
-
-
-    # columns_to_keep = ['concurrent_MME15', 'avgDays7', 'avgDays14', 'num_prior_presc2', 
-    # 'concurrent_benzo1', 'HMFO', 'Medicare', 'Medicaid', 'CashCredit', 'switch_payment']
-    # SAMPLE_STUMPS = SAMPLE_STUMPS[columns_to_keep]
-    
-    # SAMPLE_STUMPS['(Intercept)'] = 1
-    # intercept = SAMPLE_STUMPS.pop('(Intercept)')
-    # SAMPLE_STUMPS.insert(0, '(Intercept)', intercept)
-    # x = SAMPLE_STUMPS
-
-    # single_cutoff = None
-    # two_cutoffs = None
-    # three_cutoffs = None
-    # four_cutoffs = None
-    # essential_cutoffs = None
-
-
-    # =============================== SCENARIOS ====================================
-
-    y = SAMPLE[[outcome]].to_numpy().astype('int')    
+    x, constraints = import_stumps(year, case, first, upto180, feature_set)
+    y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0]= -1
 
 
     if scenario == 'single':
         
-
         cols = x.columns.tolist() 
         outer_train_sample_weight = np.repeat(1, len(y))
         outer_train_x, outer_train_y = x.values, y.reshape(-1,1)
@@ -202,100 +106,163 @@ def risk_train(year,
             'sample_weights': outer_train_sample_weight
         }   
         
-
-        print(f"Start training {year}{scenario}{features}")
         start = time.time()    
         model_info, mip_info, lcpa_info = slim.risk_slim_constrain(new_train_data, 
                                                                    max_coefficient=max_points, 
                                                                    max_L0_value=max_features,
                                                                    c0_value=c, 
-                                                                   max_runtime=1000, 
-                                                                   max_offset=20,
                                                                    class_weight=weight,
-                                                                   single_cutoff=single_cutoff,
-                                                                   two_cutoffs=two_cutoffs,
-                                                                   three_cutoffs=three_cutoffs,
-                                                                   essential_cutoffs=essential_cutoffs)
-        print_model(model_info['solution'], new_train_data)
-        print(f"{round(time.time() - start, 1)} seconds")
-
-        # print("\n Constraints:")
-        # for i in range(mip_info['risk_slim_mip'].linear_constraints.get_num()):
-        #     row = mip_info['risk_slim_mip'].linear_constraints.get_rows(i)
-        #     senses = mip_info['risk_slim_mip'].linear_constraints.get_senses(i)
-        #     rhs = mip_info['risk_slim_mip'].linear_constraints.get_rhs(i)
-        #     names = mip_info['risk_slim_mip'].linear_constraints.get_names(i)
-        #     print(f"Constraint {names}: {row}, {senses}, {rhs}")
+                                                                   single_cutoff=constraints['single_cutoff'],
+                                                                   two_cutoffs=constraints['two_cutoffs'],
+                                                                   three_cutoffs=constraints['three_cutoffs'],
+                                                                   essential_cutoffs=constraints['essential_cutoffs'],
+                                                                   essential_num=essential_num)
+        intercept_val, rho_names, rho_values, results = print_model(model_info['solution'], new_train_data)
+        print(f"Finished riskSLIM in {round(time.time() - start, 1)} seconds\n")
 
         ## Results
         outer_train_x = outer_train_x[:,1:]
         outer_train_y[outer_train_y == -1] = 0
         outer_train_prob = slim.riskslim_prediction(outer_train_x, np.array(cols), model_info).reshape(-1,1)
-        outer_train_pred = (outer_train_prob > 0.5)
+        outer_train_pred = (outer_train_prob >= 0.5)
+        export_results_single(FULL, outer_train_y, outer_train_pred, outer_train_prob, filename = f'{exportdir}/Results{setting_tag}.csv')
         
-        export_results_single(outer_train_y, outer_train_pred, outer_train_prob, 
-        filename = f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv')
-        
-
-        if roc == True: compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenario, weight, name)
-        if output_y == True: np.savetxt(f'{workdir}Result/riskSLIM_y.csv', outer_train_pred, delimiter=",")
-
-
-    elif scenario == 'cv':
-
-        print("Start training " + str(year) + scenario + features)
-        start = time.time()
-
-        c, risk_summary = slim.risk_cv_constrain(X=x, Y=y,
-                                                y_label=outcome, 
-                                                max_coef=max_points,
-                                                max_coef_number=max_features,
-                                                c=c,
-                                                max_offset=20,
-                                                class_weight=weight, 
-                                                single_cutoff=single_cutoff,
-                                                two_cutoffs=two_cutoffs,
-                                                three_cutoffs=three_cutoffs,
-                                                essential_cutoffs=essential_cutoffs,
-                                                max_runtime=1000,
-                                                seed=42)
-
-        end = time.time()
-        print(str(round(end - start,1)) + ' seconds')    
-        export_results_cv(risk_summary, f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv') 
-
-        return c
-
-
-    elif scenario == 'nested':
-        
-        print("Start training " + str(year) + scenario + features)
-        start = time.time()
-        risk_summary = slim.risk_nested_cv_constrain(X=x,
-                                                     Y=y,
-                                                     y_label=outcome, 
-                                                     max_coef=max_points, 
-                                                     max_coef_number=max_features,
-                                                     c=c,
-                                                     class_weight=weight,
-                                                     single_cutoff=single_cutoff,
-                                                     two_cutoffs=two_cutoffs,
-                                                     three_cutoffs=three_cutoffs,
-                                                     four_cutoffs=four_cutoffs,
-                                                     seed=42)
-        
-        end = time.time()
-        print(str(round(end - start,1)) + ' seconds')    
-        export_results_cv(risk_summary, f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}.csv') 
-
+        if roc: compute_roc(outer_train_prob, outer_train_y, setting_tag)
 
     else:
         raise Exception("Scenario undefined.")
 
 
 
+def import_stumps(year, case, first, upto180, feature_set, datadir='/export/storage_cures/CURES/Processed/'):
 
-def compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenario, weight, name, workdir='/mnt/phd/jihu/opioid/'):
+    N = 20
+    data_frames = []
+
+    if first:
+        file_suffix = "_FIRST_STUMPS_"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_STUMPS_"
+    else:
+        file_suffix = "_STUMPS_"
+    
+    for i in range(N):
+        file_path = f'{datadir}/Stumps/FULL_{year}_{case}{file_suffix}{i}.csv'
+        df = pd.read_csv(file_path, delimiter=",")
+        data_frames.append(df)
+
+    STUMPS = pd.concat(data_frames, ignore_index=True)
+    print(f'Finished importing STUMPS, with shape {STUMPS.shape}\n')
+
+    # LTOUR w/p avgDays
+    base_feature_list = ['concurrent_MME', 
+                         'num_prescribers_past180',
+                         'num_pharmacies_past180', 'concurrent_benzo',
+                         'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',
+                         'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',
+                         'num_prior_prescriptions', 
+                         'diff_MME', # 'diff_quantity', 
+                         'diff_days',
+                         'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
+    
+    drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit']]
+
+    # ============================================================================================
+    
+    # (2) Spatial demographics
+    # features_set_2 = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile']
+    # features_set_2 = ['patient_HPIQuartile']
+    
+    # (3) Spatial intensity of opioid use in the patient zip code (pt_zip)
+    # features_set_3 = ['patient_zip_avg_days', 'patient_zip_avg_MME', 
+    #                   # 'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
+    #                   'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
+    
+    features_set_2 = ['patient_HPIQuartile', 'patient_zip_avg_days', 'patient_zip_avg_MME',
+                      'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
+
+    # (4) Provider prescription history
+    features_set_4 = ['prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 'prescriber_yr_num_pharmacies_quartile', 
+                      'prescriber_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile']
+    
+    # (5) Pharmacy prescription history
+    features_set_5 = ['pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 'pharmacy_yr_num_prescribers_quartile',
+                      'pharmacy_yr_avg_MME_quartile', 'pharmacy_yr_avg_days_quartile']
+    
+    # (6) Other spatial demographics measured at pt_zip level
+    features_set_6 = ['age', 'patient_gender', 'zip_pop_density_quartile', 'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile']
+
+
+    # FEATURES TO KEEP
+    if feature_set == '1': features_to_keep = base_feature_list
+    elif feature_set == '2': features_to_keep = base_feature_list + features_set_2
+    # elif feature_set == '3': features_to_keep = base_feature_list + features_set_3
+    elif feature_set == '4': features_to_keep = base_feature_list + features_set_4
+    elif feature_set == '5': features_to_keep = base_feature_list + features_set_5 
+    elif feature_set == '6': features_to_keep = base_feature_list + features_set_6
+    elif feature_set == '7': 
+        # features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6
+        features_to_keep = base_feature_list + features_set_2 + features_set_4 + features_set_5 + features_set_6
+    
+    # ============================================================================================
+    
+    # EXCLUDE SOME FEATURES
+    filtered_columns = [col for col in STUMPS.columns if any(col.startswith(feature) for feature in features_to_keep)]
+    
+    columns_to_drop = ['CommercialIns', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'age20']
+    columns_to_drop += [f'num_pharmacies_past180{i}' for i in range(4, 11)]
+    columns_to_drop += [f'num_prescribers_past180{i}' for i in range(4, 11)]
+    filtered_columns = [feature for feature in filtered_columns if feature not in columns_to_drop]
+
+    STUMPS = STUMPS[filtered_columns]
+
+    STUMPS['(Intercept)'] = 1
+    intercept = STUMPS.pop('(Intercept)')
+    STUMPS.insert(0, '(Intercept)', intercept)
+    x = STUMPS
+
+    # ============================================================================================
+    
+    # CUTOFF CONDITIONS    
+    if feature_set == '7':
+        
+        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff per feature
+        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
+        single_cutoff.extend(updated_drug_payment)
+
+        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
+
+        # features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
+        features_sets = [features_set_2, features_set_4, features_set_5, features_set_6]
+        for features_set in features_sets:
+            single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
+            essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at least one cutoff per group
+
+    else:
+        # DEFAULT SETTING FOR (1), (1) + (2), ..., (1) + (6)
+        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff each feature
+        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
+        single_cutoff.extend(updated_drug_payment)
+
+        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
+
+        # single_cutoff = [[col for col in x if any(col.startswith(feature) for feature in sublist)] for sublist in features_to_keep] # this is for [['A', 'C'], ['B']]
+        
+
+    # ============================================================================================
+
+    print(f'Single cutoffs: {single_cutoff}')
+    print('-' * 120)
+    print(f'Essential cutoffs: {essential_cutoffs}')
+    print('-' * 120)
+
+    constraints = {'single_cutoff': single_cutoff, 'two_cutoffs': None, 'three_cutoffs': None, 'essential_cutoffs': essential_cutoffs}
+
+    return x, constraints
+
+
+
+def compute_roc(outer_train_prob, outer_train_y, setting_tag, exportdir='/mnt/phd/jihu/opioid/roc/'):
 
     # to make it more consistent we have to manually compute fpr, tpr
     FPR_list = []
@@ -305,7 +272,7 @@ def compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenari
     
     for threshold in thresholds:
 
-        y_pred = (outer_train_prob > threshold)
+        y_pred = (outer_train_prob >= threshold)
 
         TN, FP, FN, TP = confusion_matrix(outer_train_y, y_pred).ravel()   
                 
@@ -326,26 +293,29 @@ def compute_roc(outer_train_prob, outer_train_y, y_pred, year, features, scenari
         FPR_list = np.array(FPR_list)
         TPR_list = np.array(TPR_list)
 
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tn.csv', TN_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fp.csv', FP_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fn.csv', FN_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tp.csv', TP_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_fpr.csv', FPR_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_tpr.csv', TPR_list, delimiter = ",")
-    np.savetxt(f'{workdir}Result/{str(year)}_{features}_{scenario}_{weight}{name}_thresholds.csv', thresholds, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/tn_{setting_tag}.csv', TN_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/fp_{setting_tag}.csv', FP_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/fn_{setting_tag}.csv', FN_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/tp_{setting_tag}.csv', TP_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/fpr_{setting_tag}.csv', FPR_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/tpr_{setting_tag}.csv', TPR_list, delimiter = ",")
+    np.savetxt(f'{exportdir}Result/thresholds_{setting_tag}.csv', thresholds, delimiter = ",")
 
     return 
 
 
 
 
-def export_results_single(y, y_pred, y_prob, filename):
+def export_results_single(x, y, y_pred, y_prob, filename):
+
+    calibration_error = compute_calibration(x, y, y_prob, y_pred)
 
     train_results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
                     "Recall": str(round(recall_score(y, y_pred), 4)),
                     "Precision": str(round(precision_score(y, y_pred), 4)),
                     "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                    "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
+                    "PR AUC": str(round(average_precision_score(y, y_prob), 4)),
+                    "Calibration error": str(round(calibration_error, 4))}
 
     train_results = pd.DataFrame.from_dict(train_results, orient='index', columns=['Train'])
     riskslim_results = train_results.T
@@ -365,3 +335,35 @@ def export_results_cv(risk_summary, filename):
     riskslim_results = results.T
     riskslim_results.to_csv(filename)
 
+
+
+def compute_calibration(x, y, y_prob, y_pred):
+    
+    num_total_presc = len(y)
+    table = []
+    calibration_error = 0
+    
+    for prob in np.unique(y_prob):
+        
+        y_temp = y[y_prob == prob]
+        y_pred_temp = y_pred[y_prob == prob]
+        
+        # prescription-level results 
+        accuracy = round(accuracy_score(y_temp, y_pred_temp), 4)
+        TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp, labels=[0,1]).ravel() 
+        observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
+        num_presc = TN + FP + FN + TP
+
+        # patient-level results
+        x_bucket = x[y_prob == prob]
+        num_patients = len(pd.unique(x_bucket['patient_id']))
+        num_longterm = len(pd.unique(x_bucket[x_bucket['days_to_long_term'] > 0]['patient_id']))
+
+        table.append({'Prob': prob, 'Num_presc': num_presc,
+        'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP,
+        'Accuracy': accuracy, 'Observed Risk': observed_risk, 
+        'Num_patients': num_patients, 'Num_longterm': num_longterm})
+
+        calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
+    
+    return calibration_error

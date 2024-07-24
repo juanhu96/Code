@@ -1,0 +1,44 @@
+/mnt/phd/jihu/opioid/Code/R/compute_features_patient_spatial.py:22: DtypeWarning: Columns (3) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_ONE = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ONE_FEATURE.csv")
+/mnt/phd/jihu/opioid/Code/R/compute_features_patient_spatial.py:26: DtypeWarning: Columns (3) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_ATLEASTTWO_4 = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_4_FEATURE.csv")
+Processing the 0; 35356 unique patient_zips and 38502 prescriptions
+
+Processing the 1; 35356 unique patient_zips and 37328 prescriptions
+
+Processing the 2; 35356 unique patient_zips and 40149 prescriptions
+
+Processing the 3; 35356 unique patient_zips and 538608 prescriptions
+
+Processing the 4; 35356 unique patient_zips and 683287 prescriptions
+
+Processing the 5; 35356 unique patient_zips and 661258 prescriptions
+
+Processing the 6; 35356 unique patient_zips and 736849 prescriptions
+
+Processing the 7; 35356 unique patient_zips and 632851 prescriptions
+
+Processing the 8; 35356 unique patient_zips and 784027 prescriptions
+
+Processing the 9; 35356 unique patient_zips and 715365 prescriptions
+
+Processing the 10; 35356 unique patient_zips and 575007 prescriptions
+
+Processing the 11; 35356 unique patient_zips and 616133 prescriptions
+
+Processing the 12; 35356 unique patient_zips and 537567 prescriptions
+
+Processing the 13; 35356 unique patient_zips and 742805 prescriptions
+
+Processing the 14; 35356 unique patient_zips and 517097 prescriptions
+
+Processing the 15; 35355 unique patient_zips and 508380 prescriptions
+
+Processing the 16; 35355 unique patient_zips and 543457 prescriptions
+
+Processing the 17; 35355 unique patient_zips and 480460 prescriptions
+
+Processing the 18; 35355 unique patient_zips and 631689 prescriptions
+
+Processing the 19; 35355 unique patient_zips and 103001 prescriptions
+

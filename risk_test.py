@@ -15,26 +15,59 @@ import random
 import numpy as np
 import pandas as pd
 from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
-average_precision_score, accuracy_score, confusion_matrix, roc_curve
+average_precision_score, accuracy_score, confusion_matrix, roc_curve, confusion_matrix, auc
 import matplotlib.pyplot as plt
 
 
-def test_table(SAMPLE, year, table, intercept, conditions, cutoffs, scores, output_table=False, roc=False, calibration=True, filename='', datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
+def risk_test(year, table, first, upto180, setting_tag, datadir='/export/storage_cures/CURES/Processed/', output_columns=True):
+
+    if first:
+        file_suffix = "_FIRST_INPUT"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_INPUT"
+    else:
+        file_suffix = "_INPUT"
+
+    file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
+
+    FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
+                                                        'concurrent_methadone_MME': float,
+                                                        'num_prescribers_past180': int,
+                                                        'num_pharmacies_past180': int,
+                                                        'concurrent_benzo': int,
+                                                        'consecutive_days': int})# .fillna(0)
+
+    if output_columns: print(FULL.columns.values.tolist())
     
-    '''
-    Compute the performance metric given a scoring table for a given year
-    For tables with the six features only
-    '''
+    results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag)
 
-    x = SAMPLE
-    y = SAMPLE['long_term_180'].values
+    df = pd.DataFrame.from_dict(results, orient='index', columns=['Value'])
+    print(df)
+    print(calibration_table)
+
+    return df, calibration_table
 
 
-    ### Performance
+def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag,
+               output_table=False, 
+               roc=True, 
+               calibration=True, 
+               fairness_results=True,
+               patient_results=False,
+               filename='', 
+               datadir='/export/storage_cures/CURES/Processed/', 
+               exportdir='/export/storage_cures/CURES/Results/'):
+    
+    x = FULL
+    y = FULL['long_term_180'].values
+
     x['Prob'] = x.apply(compute_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
+    # x['Prob'] = x.apply(compute_or_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
     
-    if table == 'CURES': x['Pred'] = (x['Prob'] > 0.5)
-    else: x['Pred'] = (x['Prob'] > 0.05)
+    # if table == 'CURES': x['Pred'] = (x['Prob'] > 0.5)
+    # else: x['Pred'] = (x['Prob'] > 0.05)
+    
+    x['Pred'] = (x['Prob'] >= 0.5)
 
     y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy().astype(int)
 
@@ -43,19 +76,9 @@ def test_table(SAMPLE, year, table, intercept, conditions, cutoffs, scores, outp
                "Precision": str(round(precision_score(y, y_pred), 4)),
                "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
                "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    
-
-    if output_table: store_predicted_table(year, table, SAMPLE, x, filename)
-    if roc: 
-        fpr, tpr, thresholds = roc_curve(y, y_prob)
-        np.savetxt(f'{resultdir}{table}_test_fpr.csv', fpr, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_test_tpr.csv', tpr, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_test_thresholds.csv', thresholds, delimiter = ",")
-
-        TPR_list, FPR_list = compute_roc(y, y_prob, y_pred, table=table, resultdir=resultdir, year=2019, export_file=True)
 
     if calibration: 
-        calibration_table, calibration_error = compute_calibration(x, y, y_prob, y_pred, resultdir, f'{table}_{filename}')
+        calibration_table, calibration_error = compute_calibration(x, y, y_prob, y_pred, setting_tag)
         results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
                "Recall": str(round(recall_score(y, y_pred), 4)),
                "Precision": str(round(precision_score(y, y_pred), 4)),
@@ -63,136 +86,22 @@ def test_table(SAMPLE, year, table, intercept, conditions, cutoffs, scores, outp
                "PR AUC": str(round(average_precision_score(y, y_prob), 4)),
                "Calibration error": str(round(calibration_error, 4))}
         
-        calibration_table.to_csv(f'{resultdir}LTOUR_calibration_table.csv', index=False)
-    
+        calibration_table.to_csv(f'{exportdir}calibration{setting_tag}.csv', index=False)
+
+    if roc: compute_roc(y, y_prob, setting_tag)
+    if fairness_results: compute_fairness(x, y, y_prob, y_pred, setting_tag)
+
+    if patient_results:
+
+
+
+
+    if output_table: store_predicted_table(FULL, x, filename)
+
     print('Test done!\n')
 
-    return results, calibration_table, tpr, fpr, thresholds
+    return results, calibration_table # , tpr, fpr, thresholds
     
-
-
-# ========================================================================================
-
-
-
-def test_table_full(year, output_table=False, roc=False, calibration=False, datadir='/mnt/phd/jihu/opioid/Data/', resultdir='/mnt/phd/jihu/opioid/Result/'):
-    
-    '''
-    Compute the performance metric given a scoring table for a given year
-    '''
-    
-    ### Import 
-    
-    SAMPLE = pd.read_csv(f'{datadir}FULL_{str(year)}_LONGTERM_UPTOFIRST.csv', delimiter = ",", 
-                         dtype={'concurrent_MME': float, 'concurrent_methadone_MME': float,
-                                'num_prescribers': int, 'num_pharmacies': int,
-                                'concurrent_benzo': int, 'consecutive_days': int,
-                                'alert1': int, 'alert2': int, 'alert3': int, 'alert4': int, 'alert5': int, 'alert6': int})
-    SAMPLE = SAMPLE.fillna(0)
-
-    x = SAMPLE
-    y = SAMPLE[['long_term_180']].to_numpy().astype('int')
-    
-
-    ### Performance
-    x['Prob'] = x.apply(compute_score_full_one, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    results_one = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-                   "Recall": str(round(recall_score(y, y_pred), 4)),
-                   "Precision": str(round(precision_score(y, y_pred), 4)),
-                   "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                   "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    results_one = pd.DataFrame.from_dict(results_one, orient='index', columns=['1'])
-    if output_table == True:
-        store_predicted_table(year, table, SAMPLE, x, 'one')
-
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_one')
-    
-    # ========================================================================================
-
-    x['Prob'] = x.apply(compute_score_full_two, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    results_two = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-                   "Recall": str(round(recall_score(y, y_pred), 4)),
-                   "Precision": str(round(precision_score(y, y_pred), 4)),
-                   "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                   "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    results_two = pd.DataFrame.from_dict(results_two, orient='index', columns=['2'])
-    if output_table == True:
-        store_predicted_table(year, table, SAMPLE, x, 'two')
-
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_two')
-        
-    # ========================================================================================
-
-    x['Prob'] = x.apply(compute_score_full_three, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    results_three = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-                     "Recall": str(round(recall_score(y, y_pred), 4)),
-                     "Precision": str(round(precision_score(y, y_pred), 4)),
-                     "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                     "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    results_three = pd.DataFrame.from_dict(results_three, orient='index', columns=['3'])
-    if output_table == True:
-        store_predicted_table(year, table, SAMPLE, x, 'three')
-    
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_three')
-    
-    # ========================================================================================
-
-    x['Prob'] = x.apply(compute_score_full_four, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    results_four = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-                    "Recall": str(round(recall_score(y, y_pred), 4)),
-                    "Precision": str(round(precision_score(y, y_pred), 4)),
-                    "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                    "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    results_four = pd.DataFrame.from_dict(results_four, orient='index', columns=['4'])
-    if output_table == True:
-        store_predicted_table(year, table, SAMPLE, x, 'four')
-    
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_four')
-    
-    # ========================================================================================
-
-    x['Prob'] = x.apply(compute_score_full_five, axis=1)
-    x['Pred'] = (x['Prob'] > 0.5)
-    y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy()
-    
-    results_five = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-                    "Recall": str(round(recall_score(y, y_pred), 4)),
-                    "Precision": str(round(precision_score(y, y_pred), 4)),
-                    "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-                    "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-    results_five = pd.DataFrame.from_dict(results_five, orient='index', columns=['5'])
-    if output_table == True:
-        store_predicted_table(year, table, SAMPLE, x, 'five')
-    
-    if calibration == True:
-        compute_calibration(x, y, y_prob, y_pred, resultdir, 'LTOUR_five')
-    
-    # ========================================================================================
-
-    results = pd.concat([results_one, results_two], axis=1)
-    results = pd.concat([results, results_three], axis=1)
-    results = pd.concat([results, results_four], axis=1)
-    results = pd.concat([results, results_five], axis=1)
-    results = results.T
-    results.to_csv(f'{resultdir}results_test_{str(year)}_LTOUR.csv')
-    
-
 
 
 # ========================================================================================
@@ -208,139 +117,47 @@ def compute_score(row, intercept, conditions, cutoffs, scores):
         condition = conditions[i]
         cutoff = cutoffs[i]
         point = scores[i]
-        
-        if row[condition] >= cutoff: score += point
 
-    # if score >= -intercept - 1: score = -intercept - 1 # group high-risk
-    # if score >= -intercept: score = -intercept # group high-risk
+        if isinstance(cutoff, str):
+            if row[condition] == int(cutoff): score += point
+        else:
+            if row[condition] >= cutoff: score += point
 
     return 1 / (1+np.exp(-(score + intercept)))
 
 
 
-# ========================================================================================
+def compute_or_score(row, intercept, conditions, cutoffs, scores):
 
+    # tables with OR conditions
 
-
-
-def compute_score_full_one(row):
-    
-    '''
-    for full features we need to implement the features & cutoffs manually    
-    '''
-       
     score = 0
-    intercept = -3
-    
-    if row['avgDays'] >= 14:
-        score += 3
-    if row['avgDays'] >= 25:
-        score += 2
-    if row['concurrent_MME'] >= 15:
-        score += 1
-    if row['concurrent_MME'] >= 100:
-        score += 1
-    if row['concurrent_benzo'] >= 1:
-        score += 1
-    if row['payment'] == 'Medicare':
-        score += 1
-    
+
+    for i in range(len(conditions)):
+
+        condition_group = conditions[i]
+        cutoff_group = cutoffs[i]
+        point = scores[i]
+
+        # Check if any condition in the group meets the cutoff
+        group_condition_met = False
+        for j in range(len(condition_group)):
+            condition = condition_group[j]
+            cutoff = cutoff_group[j]
+
+            if isinstance(cutoff, str):
+                if row[condition] == int(cutoff): 
+                    group_condition_met = True
+                    break
+            else:
+                if row[condition] >= cutoff: 
+                    group_condition_met = True
+                    break
+
+        if group_condition_met:
+            score += point
+
     return 1 / (1+np.exp(-(score + intercept)))
-
-
-def compute_score_full_two(row):
-    
-    '''
-    for full features we need to implement the features & cutoffs manually    
-    '''
-       
-    score = 0
-    intercept = -2
-    
-    if row['avgDays'] >= 10:
-        score += 2
-    if row['avgDays'] >= 21:
-        score += 2
-    if row['concurrent_benzo'] >= 1:
-        score += 1
-    # Hydromorphone, Methadone, Fentanyl, Oxymorphone
-    if row['drug'] == 'Hydromorphone' or row['drug'] == 'Methadone' or row['drug'] == 'Fentanyl' or row['drug'] == 'Oxymorphone':
-        score += 1
-    if row['payment'] == 'Medicare':
-        score += 1
-    
-    
-    return 1 / (1+np.exp(-(score + intercept)))
-
-
-def compute_score_full_three(row):
-    
-    '''
-    for full features we need to implement the features & cutoffs manually    
-    '''
-       
-    score = 0
-    intercept = -2
-    
-    if row['avgDays'] >= 10:
-        score += 2
-    if row['avgDays'] >= 21:
-        score += 2
-    if row['concurrent_benzo'] >= 1:
-        score += 1
-    # Hydromorphone, Methadone, Fentanyl, Oxymorphone
-    if row['drug'] == 'Hydromorphone' or row['drug'] == 'Methadone' or row['drug'] == 'Fentanyl' or row['drug'] == 'Oxymorphone':
-        score += 1
-    if row['payment'] == 'MilitaryIns':
-        score += 1
-    
-    return 1 / (1+np.exp(-(score + intercept)))
-
-
-def compute_score_full_four(row):
-    
-    '''
-    for full features we need to implement the features & cutoffs manually    
-    '''
-       
-    score = 0
-    intercept = -2
-    
-    if row['avgDays'] >= 10:
-        score += 2
-    if row['avgDays'] >= 25:
-        score += 2
-    if row['concurrent_benzo'] >= 1:
-        score += 1
-    # Hydromorphone, Methadone, Fentanyl, Oxymorphone
-    if row['drug'] == 'Hydromorphone' or row['drug'] == 'Methadone' or row['drug'] == 'Fentanyl' or row['drug'] == 'Oxymorphone':
-        score += 1
-    if row['payment'] == 'Medicare':
-        score += 1
-    
-    return 1 / (1+np.exp(-(score + intercept)))
-
-
-def compute_score_full(row):
-    
-    '''
-    for full features we need to implement the features & cutoffs manually    
-    '''
-       
-    score = 0
-    intercept = -7
-    
-    if row['avgDays'] >= 7:
-        score += 3
-    if row['avgDays'] >= 14:
-        score += 1
-    if row['HMFO'] >=1:
-        score += 1
-    if row['concurrent_benzo'] >= 1 or row['Medicare'] >=1:
-        score += 1
-    
-    return 1 / (1+np.exp(-(score + intercept)))
-
 
 
 # ========================================================================================
@@ -349,7 +166,7 @@ def compute_score_full(row):
 
 
 
-def store_predicted_table(year, case, SAMPLE, x, name='', datadir='/mnt/phd/jihu/opioid/Data/'):
+def store_predicted_table(SAMPLE, x, name='', datadir='/mnt/phd/jihu/opioid/Data/'):
     
     '''
     Returns a patient table with date & days
@@ -436,56 +253,9 @@ def store_predicted_table(year, case, SAMPLE, x, name='', datadir='/mnt/phd/jihu
 
 
 
-def compute_roc(y, y_prob, y_pred, table, resultdir, year=2019, export_file=False):
 
-    print("********************* HERE *********************")
+def compute_calibration(x, y, y_prob, y_pred, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
 
-    FPR_list = []
-    TPR_list = []
-    TN_list, FP_list, FN_list, TP_list = [],[],[],[]
-    thresholds = np.arange(0, 1.0, 0.05)
-
-    for threshold in thresholds:
-
-        y_pred = (y_prob > threshold)   
-        y_pred = y_pred.astype(int)
-
-        TN, FP, FN, TP = confusion_matrix(y, y_pred).ravel()   
-            
-        TN_list.append(TN)
-        FP_list.append(FP)
-        FN_list.append(FN)
-        TP_list.append(TP)
-            
-        FPR = FP/(FP+TN)
-        TPR = TP/(TP+FN)
-        FPR_list.append(FPR)
-        TPR_list.append(TPR)                
-            
-    TN_list = np.array(TN_list)
-    FP_list = np.array(FP_list)
-    FN_list = np.array(FN_list)
-    TP_list = np.array(TP_list)
-    FPR_list = np.array(FPR_list)
-    TPR_list = np.array(TPR_list)
-
-
-    if export_file:
-        np.savetxt(f'{resultdir}{table}_tn.csv', TN_list, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_fp.csv', FP_list, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_fn.csv', FN_list, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_tp.csv', TP_list, delimiter = ",")
-            
-        np.savetxt(f'{resultdir}{table}_fpr.csv', FPR_list, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_tpr.csv', TPR_list, delimiter = ",")
-        np.savetxt(f'{resultdir}{table}_thresholds.csv', thresholds, delimiter = ",")
-
-    return TPR_list, FPR_list
-
-
-
-def compute_calibration(x, y, y_prob, y_pred, resultdir, filename):
-    
     num_total_presc = len(y)
     table = []
     calibration_error = 0
@@ -514,6 +284,141 @@ def compute_calibration(x, y, y_prob, y_pred, resultdir, filename):
         calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
 
     table = pd.DataFrame(table)
+
+    # Plot calibration curve
+    fig, ax = plt.subplots()
+    ax.plot(table['Prob'], table['Observed Risk'], marker='o', linewidth=1, label='Calibration plot')
+    ax.plot([0, 1], [0, 1], linestyle='--', label='Perfectly calibrated')
+    ax.set_xlabel('Predicted Probability')
+    ax.set_ylabel('Observed Risk')
+    ax.set_title('Calibration Plot')
+    ax.legend()
+    fig.savefig(f'{exportdir}/Figures/Calibration{setting_tag}.pdf', dpi=300)
+    print(f"Calibration curve saved as Calibration{setting_tag}.pdf\n")
     
     return table, calibration_error
 
+
+
+def compute_roc(y, y_prob, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
+
+    fpr, tpr, thresholds = roc_curve(y, y_prob)
+    roc_auc = auc(fpr, tpr)
+
+    fig, ax = plt.subplots()
+    ax.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
+    ax.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    ax.set_xlim([0.0, 1.0])
+    ax.set_ylim([0.0, 1.05])
+    ax.set_xlabel('False Positive Rate')
+    ax.set_ylabel('True Positive Rate')
+    ax.set_title('Receiver Operating Characteristic')
+    ax.legend(loc="lower right")
+    fig.savefig(f'{exportdir}/Figures/ROC{setting_tag}.pdf', dpi=300)
+    print(f"ROC curve saved as ROC{setting_tag}.pdf\n")
+
+    # Compute confusion matrix for each threshold
+    for threshold in thresholds:
+        y_pred_threshold = (y_prob >= threshold).astype(int)
+        cm = confusion_matrix(y, y_pred_threshold)
+        print(f"Threshold: {threshold:.2f}")
+        print("Confusion Matrix:")
+        print(cm)
+        print()
+
+    return
+
+
+
+def compute_fairness(x, y, y_prob, y_pred, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
+    
+    genders = x['patient_gender'].astype(str).unique()
+    roc_auc_by_gender, accuracy_by_gender, calibration_by_gender = {}, {}, {}
+    fig, ax = plt.subplots()
+
+    for gender in genders:
+        gender_mask = x['patient_gender'] == gender
+        X_gender = x[gender_mask]
+        y_true_gender = y[gender_mask]
+        y_prob_gender = y_prob[gender_mask]
+            
+        # roc
+        fpr, tpr, _ = roc_curve(y_true_gender, y_prob_gender)
+        roc_auc = roc_auc_score(y_true_gender, y_prob_gender)
+        roc_auc_by_gender[gender] = roc_auc
+            
+        # accuracy
+        y_pred_gender = (y_prob_gender >= 0.5).astype(int)
+        assert(y_pred_gender == y_pred[gender_mask])
+        accuracy = accuracy_score(y_true_gender, y_pred_gender)
+        accuracy_by_gender[gender] = accuracy
+        
+        # calibration
+        _, calibration_error = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender)
+        calibration_by_gender[gender] = calibration_error
+
+        ax.plot(fpr, tpr, label=f'{gender} (AUC = {roc_auc:.2f})')
+
+    ax.plot([0, 1], [0, 1], 'k--')
+    ax.set_xlabel('False Positive Rate')
+    ax.set_ylabel('True Positive Rate')
+    ax.set_title('ROC Curve by Gender')
+    ax.legend(loc='best')
+    fig.savefig(f'{exportdir}/Figures/ROC_gender{setting_tag}.pdf', dpi=300)
+    print(f"ROC curve saved as ROC_gender{setting_tag}.pdf\n")
+
+    for gender in genders:
+        accuracy = accuracy_by_gender.get(gender, 'N/A')
+        roc_auc = roc_auc_by_gender.get(gender, 'N/A')
+        calibration_error = calibration_by_gender.get(gender, 'N/A')
+        print(f'{gender}: Accuracy = {accuracy:.4f}, ROC AUC = {roc_auc:.4f}, Calibration = {calibration_error:.4f}')
+
+    return
+
+
+
+# def compute_roc(y, y_prob, y_pred, table, resultdir, year=2019, export_file=False):
+
+#     print("********************* HERE *********************")
+
+#     FPR_list = []
+#     TPR_list = []
+#     TN_list, FP_list, FN_list, TP_list = [],[],[],[]
+#     thresholds = np.arange(0, 1.0, 0.05)
+
+#     for threshold in thresholds:
+
+#         y_pred = (y_prob > threshold)   
+#         y_pred = y_pred.astype(int)
+
+#         TN, FP, FN, TP = confusion_matrix(y, y_pred).ravel()   
+            
+#         TN_list.append(TN)
+#         FP_list.append(FP)
+#         FN_list.append(FN)
+#         TP_list.append(TP)
+            
+#         FPR = FP/(FP+TN)
+#         TPR = TP/(TP+FN)
+#         FPR_list.append(FPR)
+#         TPR_list.append(TPR)                
+            
+#     TN_list = np.array(TN_list)
+#     FP_list = np.array(FP_list)
+#     FN_list = np.array(FN_list)
+#     TP_list = np.array(TP_list)
+#     FPR_list = np.array(FPR_list)
+#     TPR_list = np.array(TPR_list)
+
+
+#     if export_file:
+#         np.savetxt(f'{resultdir}{table}_tn.csv', TN_list, delimiter = ",")
+#         np.savetxt(f'{resultdir}{table}_fp.csv', FP_list, delimiter = ",")
+#         np.savetxt(f'{resultdir}{table}_fn.csv', FN_list, delimiter = ",")
+#         np.savetxt(f'{resultdir}{table}_tp.csv', TP_list, delimiter = ",")
+            
+#         np.savetxt(f'{resultdir}{table}_fpr.csv', FPR_list, delimiter = ",")
+#         np.savetxt(f'{resultdir}{table}_tpr.csv', TPR_list, delimiter = ",")
+#         np.savetxt(f'{resultdir}{table}_thresholds.csv', thresholds, delimiter = ",")
+
+#     return TPR_list, FPR_list

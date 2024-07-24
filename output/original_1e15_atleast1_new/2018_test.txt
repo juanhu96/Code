@@ -1,0 +1,88 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:33: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start testing, file saved with setting tag _2018_test_all
+
+{'intercept': -7, 'conditions': ['age', 'num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'HMFO', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [30, 1, '4', 30, 1, '4'], 'scores': [3, 2, 2, 1, 1, 1]}
+['patient_id', 'patient_gender', 'patient_zip', 'quantity', 'days_supply', 'date_filled', 'daily_dose', 'total_dose', 'max_dose', 'age', 'concurrent_MME', 'concurrent_methadone_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'consecutive_days', 'concurrent_benzo', 'concurrent_benzo_same', 'concurrent_benzo_diff', 'days_to_long_term', 'long_term_180', 'num_prior_prescriptions', 'num_prior_prescriptions_past180', 'num_prior_prescriptions_past90', 'num_prior_prescriptions_past30', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'dose_diff', 'concurrent_MME_diff', 'quantity_diff', 'days_diff', 'avgMME_past180', 'avgDays_past180', 'avgMME_past90', 'avgDays_past90', 'avgMME_past30', 'avgDays_past30', 'HMFO', 'Codeine_MME', 'Hydrocodone_MME', 'Oxycodone_MME', 'Morphine_MME', 'Hydromorphone_MME', 'Methadone_MME', 'Fentanyl_MME', 'Oxymorphone_MME', 'gap', 'num_prior_prescriptions_benzo_past180', 'num_prior_prescriptions_benzo_past90', 'num_prior_prescriptions_benzo_past30', 'patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile', 'zip_pop', 'zip_pop_density', 'median_household_income', 'family_poverty_pct', 'unemployment_pct', 'patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity', 'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile', 'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity', 'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'Hydromorphone', 'Methadone', 'Fentanyl', 'Oxymorphone', 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'zip_pop_density_quartile', 'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile', 'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop', 'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
+Calibration curve saved as Calibration_2018_test_all.pdf
+
+ROC curve saved as ROC_2018_test_all.pdf
+
+Threshold: inf
+Confusion Matrix:
+[[7147103       0]
+ [2878089       0]]
+
+Threshold: 0.95
+Confusion Matrix:
+[[7141945    5158]
+ [2821872   56217]]
+
+Threshold: 0.88
+Confusion Matrix:
+[[7053812   93291]
+ [2291919  586170]]
+
+Threshold: 0.73
+Confusion Matrix:
+[[6743887  403216]
+ [1456504 1421585]]
+
+Threshold: 0.50
+Confusion Matrix:
+[[6276719  870384]
+ [ 974233 1903856]]
+
+Threshold: 0.27
+Confusion Matrix:
+[[4899166 2247937]
+ [ 365236 2512853]]
+
+Threshold: 0.12
+Confusion Matrix:
+[[3867343 3279760]
+ [ 120942 2757147]]
+
+Threshold: 0.05
+Confusion Matrix:
+[[2305099 4842004]
+ [  50538 2827551]]
+
+Threshold: 0.02
+Confusion Matrix:
+[[ 855567 6291536]
+ [   7465 2870624]]
+
+Threshold: 0.01
+Confusion Matrix:
+[[ 741154 6405949]
+ [   2052 2876037]]
+
+Threshold: 0.00
+Confusion Matrix:
+[[ 374146 6772957]
+ [    875 2877214]]
+
+Threshold: 0.00
+Confusion Matrix:
+[[      0 7147103]
+ [      0 2878089]]
+
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/risk_main.py", line 234, in <module>
+    elif mode == 'test': main(year, mode, first, upto180, setting_tag, table_case=table_case)
+  File "/mnt/phd/jihu/opioid/Code/risk_main.py", line 164, in main
+    df, calibration_table = risk_test(year=year, table=table, first=first, upto180=upto180, setting_tag=setting_tag)
+  File "/mnt/phd/jihu/opioid/Code/risk_test.py", line 42, in risk_test
+    results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag)
+  File "/mnt/phd/jihu/opioid/Code/risk_test.py", line 140, in test_table
+    
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/utils/_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_ranking.py", line 1145, in roc_curve
+    fps, tps, thresholds = _binary_clf_curve(
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_ranking.py", line 834, in _binary_clf_curve
+    pos_label = _check_pos_label_consistency(pos_label, y_true)
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/utils/validation.py", line 2503, in _check_pos_label_consistency
+    raise ValueError(
+ValueError: y_true takes value in {} and pos_label is not specified: either make y_true take value in {0, 1} or {-1, 1} or pass pos_label explicitly.
