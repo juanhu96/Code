@@ -19,7 +19,8 @@ average_precision_score, accuracy_score, confusion_matrix, roc_curve, confusion_
 import matplotlib.pyplot as plt
 
 
-def risk_test(year, table, first, upto180, setting_tag, datadir='/export/storage_cures/CURES/Processed/', output_columns=True):
+
+def risk_test(year, table, first, upto180, setting_tag, datadir='/export/storage_cures/CURES/Processed/', output_columns=False):
 
     if first:
         file_suffix = "_FIRST_INPUT"
@@ -38,7 +39,7 @@ def risk_test(year, table, first, upto180, setting_tag, datadir='/export/storage
                                                         'consecutive_days': int})# .fillna(0)
 
     if output_columns: print(FULL.columns.values.tolist())
-    
+
     results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag)
 
     df = pd.DataFrame.from_dict(results, orient='index', columns=['Value'])
@@ -48,14 +49,11 @@ def risk_test(year, table, first, upto180, setting_tag, datadir='/export/storage
     return df, calibration_table
 
 
+
 def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag,
-               output_table=False, 
-               roc=True, 
-               calibration=True, 
+               roc=False, 
                fairness_results=True,
-               patient_results=False,
-               filename='', 
-               datadir='/export/storage_cures/CURES/Processed/', 
+               patient_results=True,
                exportdir='/export/storage_cures/CURES/Results/'):
     
     x = FULL
@@ -63,47 +61,30 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag,
 
     x['Prob'] = x.apply(compute_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
     # x['Prob'] = x.apply(compute_or_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
-    
-    # if table == 'CURES': x['Pred'] = (x['Prob'] > 0.5)
-    # else: x['Pred'] = (x['Prob'] > 0.05)
-    
     x['Pred'] = (x['Prob'] >= 0.5)
-
     y_prob, y_pred = x['Prob'].to_numpy(), x['Pred'].to_numpy().astype(int)
 
+    calibration_table, calibration_error = compute_calibration(x, y, y_prob, y_pred, setting_tag)
     results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
                "Recall": str(round(recall_score(y, y_pred), 4)),
                "Precision": str(round(precision_score(y, y_pred), 4)),
                "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
-               "PR AUC": str(round(average_precision_score(y, y_prob), 4))}
-
-    if calibration: 
-        calibration_table, calibration_error = compute_calibration(x, y, y_prob, y_pred, setting_tag)
-        results = {"Accuracy": str(round(accuracy_score(y, y_pred), 4)),
-               "Recall": str(round(recall_score(y, y_pred), 4)),
-               "Precision": str(round(precision_score(y, y_pred), 4)),
-               "ROC AUC": str(round(roc_auc_score(y, y_prob), 4)),
                "PR AUC": str(round(average_precision_score(y, y_prob), 4)),
-               "Calibration error": str(round(calibration_error, 4))}
-        
-        calibration_table.to_csv(f'{exportdir}calibration{setting_tag}.csv', index=False)
+               "Calibration error": str(round(calibration_error, 4))}     
+    calibration_table.to_csv(f'{exportdir}calibration{setting_tag}.csv', index=False)
 
     if roc: compute_roc(y, y_prob, setting_tag)
     if fairness_results: compute_fairness(x, y, y_prob, y_pred, setting_tag)
-
-    if patient_results:
-
-
-
-
-    if output_table: store_predicted_table(FULL, x, filename)
+    if patient_results: compute_patient(FULL, setting_tag)
 
     print('Test done!\n')
 
-    return results, calibration_table # , tpr, fpr, thresholds
+    return results, calibration_table
     
 
 
+# ========================================================================================
+# ========================================================================================
 # ========================================================================================
 
 
@@ -166,36 +147,34 @@ def compute_or_score(row, intercept, conditions, cutoffs, scores):
 
 
 
-def store_predicted_table(SAMPLE, x, name='', datadir='/mnt/phd/jihu/opioid/Data/'):
+def compute_patient(FULL, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
     
     '''
     Returns a patient table with date & days
     This is to see how early an alarm detects a patient
     '''
     
-    # Convert column to integer
-    SAMPLE['Pred'] = x['Pred'].astype(int)
+    FULL['Pred'] = FULL['Pred'].astype(int)
 
-    # true positive prescriptions
-    SAMPLE_TP = SAMPLE[(SAMPLE['long_term_180'] == 1) & (SAMPLE['Pred'] == 1)] # presc from TP patient 
-    print("-"*100)
-    print('True positives prescriptions and alert by type: \n')
-    print(SAMPLE_TP.shape, SAMPLE_TP['alert1'].sum(), SAMPLE_TP['alert2'].sum(), SAMPLE_TP['alert3'].sum(), SAMPLE_TP['alert4'].sum(), SAMPLE_TP['alert5'].sum(), SAMPLE_TP['alert6'].sum())
-    print("-"*100)
+    # TP prescriptions
+    FULL_TP = FULL[(FULL['long_term_180'] == 1) & (FULL['Pred'] == 1)] # presc from TP patient 
+    # print("-"*100)
+    # print(f"True positives prescriptions and alert by type:\n{FULL_TP.shape} {FULL_TP['alert1'].sum()} {FULL_TP['alert2'].sum()} {FULL_TP['alert3'].sum()} {FULL_TP['alert4'].sum()} {FULL_TP['alert5'].sum()} {FULL_TP['alert6'].sum()}")
+    # print("-"*100)
 
     # prescriptions from true positive patients
-    TP_PATIENT_ID = SAMPLE_TP['patient_id'].unique()
-    SAMPLE = SAMPLE[SAMPLE.patient_id.isin(TP_PATIENT_ID)]
+    TP_PATIENT_ID = FULL_TP['patient_id'].unique()
+    FULL = FULL[FULL.patient_id.isin(TP_PATIENT_ID)]
     print("-"*100)
-    print('Total prescriptions from true positive patients: \n')
-    print(SAMPLE.shape)
+    print(f"Total prescriptions from true positive patients: \n {FULL.shape}")
     print("-"*100)
 
-    PATIENT_TP = SAMPLE.groupby('patient_id').apply(lambda x: pd.Series({
+    PATIENT_TP = FULL.groupby('patient_id').apply(lambda x: pd.Series({
         'first_presc_date': x['date_filled'].iloc[0],
         'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
         'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min(),
         'first_long_term_180_date': x.loc[x['long_term_180'] == 1, 'date_filled'].iloc[0]
+        # 'first_long_term_date': x.loc[x['long_term'] == 1, 'date_filled'].iloc[0] # don't exist if upto first long_term_180
     })).reset_index()
     
     PATIENT_TP = PATIENT_TP.groupby('patient_id').agg(
@@ -217,22 +196,22 @@ def store_predicted_table(SAMPLE, x, name='', datadir='/mnt/phd/jihu/opioid/Data
                                                 - pd.to_datetime(PATIENT_TP['first_presc_date'], format='%m/%d/%Y')).dt.days
     
 
-    within_month = PATIENT_TP['firstpred_from_firstpresc'] < 30
+    within_month = PATIENT_TP['firstpred_from_firstpresc'] <= 30
     proportion = within_month.mean()
     print(f'Proportion of LT users detected within a month: {proportion}')
 
     # PATIENT_TP.to_csv(f'{datadir}PATIENT_{str(year)}_LONGTERM_{case}_output_{name}.csv')
     
     
-    # SAMPLE_FP = SAMPLE[(SAMPLE['long_term_180'] == 0) & (SAMPLE['Pred'] == 1)] # presc from FP patient 
-    # print(SAMPLE_FP.shape, SAMPLE_FP['patient_id'].unique().shape)
-    # SAMPLE_ALERT16 = SAMPLE_FP[(SAMPLE_FP['alert1'] == 1) | (SAMPLE_FP['alert6'] == 1)]
-    # print(SAMPLE_ALERT16.shape, SAMPLE_ALERT16['patient_id'].unique().shape)
+    # FULL_FP = FULL[(FULL['long_term_180'] == 0) & (FULL['Pred'] == 1)] # presc from FP patient 
+    # print(FULL_FP.shape, FULL_FP['patient_id'].unique().shape)
+    # FULL_ALERT16 = FULL_FP[(FULL_FP['alert1'] == 1) | (FULL_FP['alert6'] == 1)]
+    # print(FULL_ALERT16.shape, FULL_ALERT16['patient_id'].unique().shape)
     
-    # FP_PATIENT_ID = SAMPLE_FP['patient_id'].unique()
-    # SAMPLE = SAMPLE[SAMPLE.patient_id.isin(FP_PATIENT_ID)]
+    # FP_PATIENT_ID = FULL_FP['patient_id'].unique()
+    # FULL = FULL[FULL.patient_id.isin(FP_PATIENT_ID)]
 
-    # PATIENT_FP = SAMPLE.groupby('patient_id').apply(lambda x: pd.Series({
+    # PATIENT_FP = FULL.groupby('patient_id').apply(lambda x: pd.Series({
     #     'first_presc_date': x['date_filled'].iloc[0],
     #     'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
     #     'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min()
@@ -332,29 +311,33 @@ def compute_roc(y, y_prob, setting_tag, exportdir='/export/storage_cures/CURES/R
 
 def compute_fairness(x, y, y_prob, y_pred, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
     
-    genders = x['patient_gender'].astype(str).unique()
+    genders = x['patient_gender'].unique()
     roc_auc_by_gender, accuracy_by_gender, calibration_by_gender = {}, {}, {}
     fig, ax = plt.subplots()
 
-    for gender in genders:
+    for gender in genders: # Male: 0, Female: 1
         gender_mask = x['patient_gender'] == gender
         X_gender = x[gender_mask]
         y_true_gender = y[gender_mask]
         y_prob_gender = y_prob[gender_mask]
+
+        # print(y_true_gender)
+        # print("-"*100)
+        # print(y_prob_gender)
             
         # roc
         fpr, tpr, _ = roc_curve(y_true_gender, y_prob_gender)
-        roc_auc = roc_auc_score(y_true_gender, y_prob_gender)
+        roc_auc = auc(fpr, tpr)
         roc_auc_by_gender[gender] = roc_auc
             
         # accuracy
         y_pred_gender = (y_prob_gender >= 0.5).astype(int)
-        assert(y_pred_gender == y_pred[gender_mask])
+        assert np.array_equal(y_pred_gender, y_pred[gender_mask])
         accuracy = accuracy_score(y_true_gender, y_pred_gender)
         accuracy_by_gender[gender] = accuracy
         
         # calibration
-        _, calibration_error = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender)
+        _, calibration_error = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender, f'{setting_tag}_gender')
         calibration_by_gender[gender] = calibration_error
 
         ax.plot(fpr, tpr, label=f'{gender} (AUC = {roc_auc:.2f})')
@@ -364,8 +347,8 @@ def compute_fairness(x, y, y_prob, y_pred, setting_tag, exportdir='/export/stora
     ax.set_ylabel('True Positive Rate')
     ax.set_title('ROC Curve by Gender')
     ax.legend(loc='best')
-    fig.savefig(f'{exportdir}/Figures/ROC_gender{setting_tag}.pdf', dpi=300)
-    print(f"ROC curve saved as ROC_gender{setting_tag}.pdf\n")
+    fig.savefig(f'{exportdir}/Figures/ROC{setting_tag}_gender.pdf', dpi=300)
+    print(f"ROC curve saved as ROC{setting_tag}_gender.pdf\n")
 
     for gender in genders:
         accuracy = accuracy_by_gender.get(gender, 'N/A')

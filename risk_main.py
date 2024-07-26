@@ -115,11 +115,11 @@ def main(year, mode, first, upto180, setting_tag, scenario=None, max_points=None
         #                              'cutoffs': [14, 25, 30, 1, 1], # '4' refers to quartiles
         #                              'scores': [2, 2, 1, 1, 1]}
 
-        all_table = {'intercept': -7, 
-                     'conditions': ['age', 'num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 
-                                    'concurrent_MME', 'HMFO', 'pharmacy_yr_avg_days_quartile'], 
-                                    'cutoffs': [30, 1, '4', 30, 1, '4'],
-                                    'scores': [3, 2, 2, 1, 1, 1]}
+        all_table = {'intercept': -5, 
+                     'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 
+                                    'age', 'HMFO', 'patient_HPIQuartile', 'pharmacy_yr_avg_days_quartile'], 
+                                    'cutoffs': [1, '4', 40, 30, 1, '1', '4'],
+                                    'scores': [2, 2, 1, 1, 1, 1, 1]}
 
         first_table = {'intercept': -6,
                        'conditions':['prescriber_yr_avg_days_quartile', 'age', 'concurrent_MME', 

@@ -14,8 +14,21 @@ library(data.table)
 setwd("/export/storage_cures/CURES/Processed/")
 year = 2018
 
-FULL <- read.csv(paste("FULL_OPIOID_", year ,"_FEATURE.csv", sep=""))
+FULL <- read.csv(paste("FULL_OPIOID_", year ,"_FEATURE.csv", sep="")) # 10025192 prescriptions from 4847777 patients
 # TEST <- FULL[1:20, ]
+
+################################################################################
+################################# FILTER #######################################
+################################################################################
+
+year = 2019
+RAW <- read.csv(paste("../RX_", year, ".csv", sep="")) 
+DUPLICATES <- RAW %>% group_by(across(-X)) %>% filter(n() > 1) # 140566 prescriptions from 27935 patients
+UNDERAGE <- RAW %>% filter(patient_birth_year > year - 18) # 1396129 prescriptions from 393937 patients
+# OVERAGE <- RAW %>% filter(patient_birth_year < year - 100) # 22279 prescriptions from 4825 patients (we should keep it)
+
+EXCLUDED_ID <- union(DUPLICATES$patient_id, UNDERAGE$patient_id) # 421188 patients
+FULL <- FULL %>% filter(!patient_id %in% EXCLUDED_ID) # 9763662 prescriptions from 4676803 patients
 
 ################################################################################
 ######################### ENCODE CATEGORICAL VARIABLES #########################
@@ -51,7 +64,7 @@ FULL <- FULL %>% mutate(Codeine = ifelse(Codeine_MME > 0, 1, 0),
 
 colnames(FULL)
 
-# drop irrelavent features or have been encoded (do not drop patient_id, patient_zip, date_filled, days_to_long_term!)
+# drop irrelavent features or have been encoded (do not drop patient_id, patient_zip, date_filled, long_term, days_to_long_term!)
 FULL_INPUT <- FULL %>% select(-c(patient_birth_year, prescriber_id, 
                                  prescriber_zip, pharmacy_id, pharmacy_zip, strength, # date_filled,
                                  MAINDOSE, drx_refill_number, drx_refill_authorized_number, 
@@ -59,7 +72,7 @@ FULL_INPUT <- FULL %>% select(-c(patient_birth_year, prescriber_id,
                                  outliers, prescription_month, prescription_year, num_prescriptions, presc_until, 
                                  # num_prescriptions here is the total prescriptions (including future)
                                  prescription_id, overlap, alert1, alert2, alert3, alert4, alert5, alert6,
-                                 num_alert, any_alert, overlap_lt, opioid_days, long_term, # days_to_long_term,
+                                 num_alert, any_alert, overlap_lt, opioid_days, # long_term, days_to_long_term,
                                  city_name))
 
 colnames(FULL_INPUT)

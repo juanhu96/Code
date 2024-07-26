@@ -11,7 +11,7 @@ library(parallel)
 library(data.table)
 
 setwd("/export/storage_cures/CURES/Processed/")
-year = 2018
+year = 2019
 
 ################################################################################
 ### SINGLE FEATURES: CURES features/alerts, LT use, up to first LT
@@ -89,7 +89,7 @@ rm(num_prior_prescriptions_benzo)
 ### MULTIPLE FEATURES: CURES features/alerts, LT use, up to first LT
 ################################################################################
 
-batch = 4
+batch = 3
 FULL <- read.csv(paste("FULL_OPIOID_", year, "_ATLEASTTWO_", batch ,"_TEMP.csv", sep=""))
 FULL <- as.data.frame(FULL)
 FULL <- FULL %>% mutate(patient_zip = as.character(patient_zip)) %>%

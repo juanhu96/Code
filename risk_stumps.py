@@ -77,7 +77,7 @@ def main(year, case, first, upto180, cutoff='greater'):
             LTOUR_feature_list.remove('avgDays_past180')
             LTOUR_stumps_feature_list.remove('avgDays_past180')
 
-            quartile_list = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
+            quartile_list = ['patient_HPIQuartile', # 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
                              'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
                              'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
                              'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 

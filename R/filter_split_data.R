@@ -14,7 +14,7 @@ library(parallel)
 
 setwd("/export/storage_cures/CURES/")
 export_dir = "Processed/"
-year = 2019
+year = 2018
 previous_year = year - 1
 
 # Number of prescriptions 2017: 36182453, 2018: 33108449, 2019: 37175510

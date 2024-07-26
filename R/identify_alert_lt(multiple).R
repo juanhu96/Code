@@ -16,7 +16,7 @@ library(data.table)
 
 setwd("/export/storage_cures/CURES/Processed/")
 year = 2019
-case = "3"
+case = "4"
 
 FULL_ATLEASTTWO <- read.csv(paste("FULL_OPIOID_", year, "_ATLEASTTWO_", case, ".csv", sep=""))
 BENZO_TABLE <- read.csv(paste("FULL_BENZO_", year, ".csv", sep=""))

@@ -11,6 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC, SVC
 from sklearn.linear_model import LogisticRegression, Lasso
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
     average_precision_score, brier_score_loss, fbeta_score, accuracy_score, confusion_matrix
 # from interpret.glassbox import ExplainableBoostingClassifier
@@ -50,8 +51,8 @@ def XGB(X,Y,
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
-    summary = cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
+    return best_model
 
 
 ################################# Random Forest ###########################################
@@ -73,8 +74,8 @@ def RF(X, Y,
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
-    summary = cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
+    return best_model
 
 
 
@@ -84,26 +85,25 @@ def LinearSVM(X, Y, C, class_weight=None, seed=None):
     ### model & parameters
     # Similar to SVC with parameter kernel=’linear’, but implemented in terms of liblinear rather than libsvm
 
-    svm = SVC(kernel='linear',
-              probability=True,
-              class_weight=class_weight,
-              random_state=seed,
-              max_iter=10000, # used to be 1e6
-              tol=0.1) # # used to be 0.01
+    # svm = SVC(kernel='linear',
+    #           probability=True,
+    #           class_weight=class_weight,
+    #           random_state=seed,
+    #           max_iter=10000, # used to be 1e6
+    #           tol=0.1) # # used to be 0.01
 
-    # svm = LinearSVC(class_weight=class_weight,
-    #                 dual=False,
-    #                 max_iter=1e8,
-    #                 random_state=seed,
-    #                 tol=0.01)
+    svm = LinearSVC(class_weight=class_weight,
+                    max_iter=1000,
+                    random_state=seed,
+                    tol=0.01)
     
     # c_grid = {"estimator__C": C}
     c_grid = {"C": C}
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
     
     # summary = nested_cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,index=index,model='LinearSVM')
-    summary = cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,model='LinearSVM')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,model='LinearSVM')
+    return best_model
 
 
 
@@ -129,8 +129,8 @@ def Lasso(X, Y, C, class_weight=None, seed=None):
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
     
     # summary = nested_cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
-    summary = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
+    return best_model
 
 
 
@@ -142,15 +142,15 @@ def Logistic(X, Y, C, class_weight=None, seed=None):
                             # liblinear good for small datasets, sag are faster for large ones
                             # solver = 'sag',
                             solver='liblinear',
-                            max_iter=1e6,
+                            max_iter=10000,
                             random_state=seed, 
                             penalty = 'l2')
     c_grid = {"C": C}
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X, Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
-    summary = cross_validate(X=X,Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
+    return best_model
 
 
 
@@ -176,8 +176,8 @@ def DecisionTree(X, Y,
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X, Y=Y, estimator=dt, c_grid=c_grid,seed=seed,model='DT')
-    summary = cross_validate(X=X,Y=Y,estimator=dt,c_grid=c_grid,seed=seed,model='DT')
-    return summary
+    _, best_model = cross_validate(X=X,Y=Y,estimator=dt,c_grid=c_grid,seed=seed,model='DT')
+    return best_model
 
 
 
@@ -204,10 +204,39 @@ def DecisionTree(X, Y,
 #     return summary
 
 
+########################################### NN ###########################################
+
+def NeuralNetwork(X, Y,
+                  hidden_layers=(32,), # hidden_layers=(64, 32),
+                  activation='relu',
+                  solver='adam',
+                  alpha=None,
+                  batch_size=None,
+                  learning_rate_init=None,
+                  max_iter=200,
+                  seed=None):
+    
+    ### Model & Parameters
+    nn = MLPClassifier(hidden_layer_sizes=hidden_layers,
+                       activation=activation,
+                       solver=solver,
+                       random_state=seed,
+                       max_iter=max_iter)
+   
+    c_grid = {"alpha": alpha,
+              "batch_size": batch_size,
+              "learning_rate_init": learning_rate_init}
+    
+    c_grid = {k: v for k, v in c_grid.items() if v is not None}
+
+    _, best_model = cross_validate(X=X, Y=Y, estimator=nn, c_grid=c_grid, seed=seed, model='NN')
+    return best_model
+
 
 
 ################################## Deep Neural Network ##################################
 
+'''
 def DNN(X, Y):
 
     import tensorflow as tf
@@ -222,18 +251,18 @@ def DNN(X, Y):
     import contextlib
     
     # Define a context manager to suppress output
-    @contextlib.contextmanager
-    def suppress_output():
-        with open(os.devnull, 'w') as devnull:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = devnull
-            sys.stderr = devnull
-            try:
-                yield
-            finally:
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
+    # @contextlib.contextmanager
+    # def suppress_output():
+    #     with open(os.devnull, 'w') as devnull:
+    #         old_stdout = sys.stdout
+    #         old_stderr = sys.stderr
+    #         sys.stdout = devnull
+    #         sys.stderr = devnull
+    #         try:
+    #             yield
+    #         finally:
+    #             sys.stdout = old_stdout
+    #             sys.stderr = old_stderr
 
     # Split the dataset into training and testing sets
     # X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
@@ -269,16 +298,29 @@ def DNN(X, Y):
         directory='my_dir',
         project_name='hyperparameter_tuning')
     
-    with suppress_output():
-        tuner.search(X, Y, epochs=3, validation_split=0.2) # Reduced number of epochs for quicker search
-    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0] # Get the best hyperparameters
-    model = build_model(best_hps) # Build the model with the best hyperparameters
+    # Suppress output
+    class HiddenPrints:
+        def __enter__(self):
+            self._original_stdout = sys.stdout
+            self._original_stderr = sys.stderr
+            sys.stdout = open(os.devnull, 'w')
+            sys.stderr = open(os.devnull, 'w')
 
-    with suppress_output():
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            sys.stdout.close()
+            sys.stderr.close()
+            sys.stdout = self._original_stdout
+            sys.stderr = self._original_stderr
+
+    with HiddenPrints():
+        tuner.search(X, Y, epochs=3, validation_split=0.2) # Reduced number of epochs for quicker search
+        best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+        model = build_model(best_hps)
         history = model.fit(X, Y, epochs=10, verbose=0, batch_size=16)
 
     # loss, accuracy = model.evaluate(X_test, Y_test)
-    loss, accuracy = model.evaluate(X, Y)
+        loss, accuracy = model.evaluate(X, Y)
+        
     print(f"Test Accuracy: {accuracy:.4f}")
 
     # Predict probabilities on new data
@@ -292,6 +334,10 @@ def DNN(X, Y):
         calibration_error = 0
         
         for prob in np.unique(y_prob):
+            
+            print(prob)
+            print("-"*100)
+            print(y_prob)
             
             y_temp = y[y_prob == prob]
             y_pred_temp = y_pred[y_prob == prob]
@@ -322,3 +368,4 @@ def DNN(X, Y):
     num_features = input_shape[1]
     print(f"Number of input features: {num_features}")
     print(results)
+'''

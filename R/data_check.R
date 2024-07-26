@@ -88,3 +88,25 @@ PATIENT_NEW_UPTOFIRST_LT <- FULL_NEW_UPTOFIRST %>%
   summarize(num_presc = n(), 
             long_term = ifelse(sum(long_term_180) > 0, 1, 0))
 long_term_counts <- PATIENT_NEW_UPTOFIRST_LT %>% group_by(long_term) %>% summarise(count = n())
+
+################################################################################
+############################### DUPLICATES #####################################
+################################################################################
+
+year = 2019
+setwd("/export/storage_cures/CURES/Processed/")
+FULL_CURRENT <- read.csv(paste("../RX_", year, ".csv", sep="")) 
+# 2018: 140566 prescriptions from 27935 patients
+# 2019: 12474910 prescriptions from 1643910 patients
+DUPLICATES <- FULL_CURRENT %>% group_by(across(-X)) %>% filter(n() > 1) 
+
+UNDERAGE <- FULL_CURRENT %>% filter(patient_birth_year > 2000) # 1396129 prescriptions from 393937 patients
+OVERAGE <- FULL_CURRENT %>% filter(patient_birth_year < 1918) # 22279 prescriptions from 4825 patients (we should keep it)
+
+DUP <- DUPLICATES %>% filter(patient_id == 54195156) # 2019
+DUP <- DUPLICATES %>% filter(patient_id == 68043086) # 2019
+DUP <- DUPLICATES %>% filter(patient_id == 48) # 2019
+
+
+
+

@@ -8,21 +8,38 @@ Baseline comparisons
 import time
 import numpy as np
 import pandas as pd
-from sklearn import tree, metrics
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import recall_score, precision_score, roc_auc_score, average_precision_score, accuracy_score
+from sklearn.model_selection import StratifiedShuffleSplit
 import utils.baseline_functions as base
+from utils.model_selection import compute_calibration
+from risk_test import compute_fairness
+
 
 def baseline_main(year:int,
                   first:bool,
                   upto180:bool,
                   model:str,
-                  class_weight=None, # unbalanced
-                  case:str='Explore',
-                  setting_tag:str='',
-                  datadir:str='/export/storage_cures/CURES/Processed/',
-                  exportdir:str='/export/storage_cures/CURES/Results/',):
+                  setting_tag:str):
+    
+    best_model, filtered_columns = baseline_train(year, first, upto180, model, setting_tag=setting_tag)
+    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag)
+    
+    return
 
-    print(f"Baseline test with model {model}\n")
+
+def baseline_train(year:int,
+                   first:bool,
+                   upto180:bool,
+                   model:str,
+                   class_weight=None, # unbalanced
+                   case:str='Explore',
+                   setting_tag:str='',
+                   output_columns:bool=False,
+                   sample:bool=False,
+                   datadir:str='/export/storage_cures/CURES/Processed/',
+                   exportdir:str='/export/storage_cures/CURES/Results/'):
+
+    print(f"Baseline train with model {model}\n")
 
     # ===========================================================================================
     
@@ -109,9 +126,6 @@ def baseline_main(year:int,
     columns_to_drop += [f'num_prescribers_past180{i}' for i in range(4, 11)]
     filtered_columns = [feature for feature in filtered_columns if feature not in columns_to_drop]
 
-
-    # TODO: DO WE WANT THE INPUT FOR BASELINE MODELS ALSO STUMPS?
-
     FULL_STUMPS = FULL_STUMPS[filtered_columns]
 
     FULL_STUMPS['(Intercept)'] = 1
@@ -119,7 +133,15 @@ def baseline_main(year:int,
     FULL_STUMPS.insert(0, '(Intercept)', intercept)
     x = FULL_STUMPS
 
-    print(FULL_STUMPS.columns.tolist()) # so that we know the order of features
+    if output_columns: print(FULL_STUMPS.columns.tolist()) # so that we know the order of features
+
+    if sample:
+        sss = StratifiedShuffleSplit(n_splits=1, test_size=10000/len(y), random_state=42)
+        for train_index, test_index in sss.split(x, y):
+            x_sample, y_sample = x.iloc[test_index], y[test_index] # x: dataframe y: np array
+
+        x = x_sample
+        y = y_sample
 
     # ===========================================================================================
     
@@ -128,56 +150,176 @@ def baseline_main(year:int,
     # results = pd.DataFrame()
 
     if model == 'DecisionTree':
-        depth = [5,7]
-        min_samples = [10,20]
-        impurity = [0.001,0.01,0.1]
-        summary = base.DecisionTree(X=x, Y=y, depth=depth, min_samples=min_samples, impurity=impurity, class_weight=class_weight, seed=42)
+        best_model = base.DecisionTree(X=x, 
+                                       Y=y, 
+                                       depth=[4, 6], 
+                                       min_samples=[10, 50], 
+                                       impurity=[0.001, 0.01, 0.1], 
+                                       class_weight=class_weight, 
+                                       seed=42)
 
-    if model == 'L2':
-        c = [1e-15, 1e-10, 1e-5, 1e-1, 10]
-        summary = base.Logistic(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
+    elif model == 'L2':
+        best_model = base.Logistic(X=x, 
+                                   Y=y, 
+                                   C=[1e-15, 1e-10, 1e-5, 1e-1, 10], 
+                                   class_weight=class_weight, 
+                                   seed=42)
 
-    if model == 'L1':
-        c = [1e-15, 1e-10, 1e-5, 1e-1, 10]
-        summary = base.Lasso(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
+    elif model == 'L1':
+        best_model = base.Lasso(X=x, 
+                                Y=y, 
+                                C=[1e-15, 1e-10, 1e-5, 1e-1, 10], 
+                                class_weight=class_weight, 
+                                seed=42)
 
-    if model == 'SVM':
-        # c = np.linspace(1e-6,1e-2,5).tolist()
-        c = [1e-15, 1e-10, 1e-5, 1e-1]
-        summary = base.LinearSVM(X=x, Y=y, C=c, class_weight=class_weight, seed=42)
+    elif model == 'SVM':
+        best_model = base.LinearSVM(X=x, 
+                                    Y=y, 
+                                    C=[1e-15, 1e-5, 1e-1], 
+                                    class_weight=class_weight, 
+                                    seed=42)
 
-    if model == 'RandomForest':
-        depth = [3,4,5,6]
-        n_estimators = [50,100,200]
-        impurity = [0.001,0.01]
-        summary = base.RF(X=x, Y=y, depth=depth, estimators=n_estimators, impurity=impurity, class_weight=class_weight, seed=42)
+    elif model == 'RandomForest':
+        best_model = base.RF(X=x, 
+                             Y=y, 
+                             depth=[4, 6], 
+                             estimators=[50, 150], 
+                             impurity=[0.001, 0.01], 
+                             class_weight=class_weight, 
+                             seed=42)
 
-    if model == 'XGB':
-        depth = [4,5,6]
-        n_estimators =  [50,100,150]
-        gamma = [5,10]
-        child_weight = [5,10]
-        summary = base.XGB(X=x, Y=y, depth=depth, estimators=n_estimators, gamma=gamma, child_weight=child_weight, class_weight=class_weight, seed=42)
-    
-    if model == 'DNN':
-        base.DNN(X=x, Y=y)
-        
-    # balanced = {"Accuracy": str(round(np.mean(summary['holdout_test_accuracy']), 4)) + " (" + str(round(np.std(summary['holdout_test_accuracy']), 4)) + ")",
-    #     "Recall": str(round(np.mean(summary['holdout_test_recall']), 4)) + " (" + str(round(np.std(summary['holdout_test_recall']), 4)) + ")",
-    #     "Precision": str(round(np.mean(summary['holdout_test_precision']), 4)) + " (" + str(round(np.std(summary['holdout_test_precision']), 4)) + ")",
-    #     "ROC AUC": str(round(np.mean(summary['holdout_test_roc_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_roc_auc']), 4)) + ")",
-    #     "PR AUC": str(round(np.mean(summary['holdout_test_pr_auc']), 4)) + " (" + str(round(np.std(summary['holdout_test_pr_auc']), 4)) + ")",
-    #     "Brier": str(round(np.mean(summary['holdout_test_brier']), 4)) + " (" + str(round(np.std(summary['holdout_test_brier']), 4)) + ")",
-    #     "F2": str(round(np.mean(summary['holdout_test_f2']), 4)) + " (" + str(round(np.std(summary['holdout_test_f2']), 4)) + ")",
-    #     "Calibration Error": str(round(np.mean(summary['holdout_calibration_error']), 4)) + " (" + str(round(np.std(summary['holdout_calibration_error']), 4)) + ")"}
-    # balanced = pd.DataFrame.from_dict(balanced, orient='index', columns=[model])
+    elif model == 'XGB':
+        best_model = base.XGB(X=x, 
+                              Y=y, 
+                              depth=[4, 6], 
+                              estimators=[50, 150], 
+                              gamma=[5, 10], 
+                              child_weight=[5, 10], 
+                              class_weight=class_weight, 
+                              seed=42)
 
-    # results = pd.concat([results, balanced], axis=1)
-
-    # results = results.T
-    # results.to_csv(f"{exportdir}Result/baseline_results{setting_tag}.csv")
+    elif model == 'NN':
+        best_model = base.NeuralNetwork(X=x, 
+                                        Y=y, 
+                                        alpha=[0.0001, 0.001], 
+                                        batch_size=[32], 
+                                        learning_rate_init=[0.001], 
+                                        seed=42)
 
     end = time.time()
     print(str(round(end - start,1)) + ' seconds')
+
+    return best_model, filtered_columns
+
+
+# ================================================================================
+# ================================================================================
+# ================================================================================
+
+
+def baseline_test(best_model,
+                  filtered_columns,
+                  year:int,
+                  first:bool,
+                  upto180:bool,
+                  model:str,
+                  class_weight=None, # unbalanced
+                  case:str='Explore',
+                  setting_tag:str='',
+                  output_columns:bool=False,
+                  sample:bool=False,
+                  datadir:str='/export/storage_cures/CURES/Processed/',
+                  exportdir:str='/export/storage_cures/CURES/Results/'):
+
+    ### OUT-SAMPLE TEST ###
+
+    print(f"Baseline test with model {model}\n")
+
+    # ===========================================================================================
     
+    if first:
+        file_suffix = "_FIRST_INPUT"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_INPUT"
+    else:
+        file_suffix = "_INPUT"
+
+    test_file_path = f'{datadir}FULL_OPIOID_{year+1}{file_suffix}.csv'
+
+    FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float, 
+                                                                  'concurrent_methadone_MME': float,
+                                                                  'num_prescribers_past180': int,
+                                                                  'num_pharmacies_past180': int,
+                                                                  'concurrent_benzo': int,
+                                                                  'consecutive_days': int})#.fillna(0)
     
+    quartile_list = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
+                     'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
+                     'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
+                     'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
+                     'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile',
+                     'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
+                     'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 
+                     'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile',
+                     'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
+                     'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 
+                     'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile',
+                     'zip_pop_density_quartile', 'median_household_income_quartile', 
+                     'family_poverty_pct_quartile', 'unemployment_pct_quartile']
+    
+    FULL_TEST = FULL_TEST.dropna(subset=quartile_list) # drop NA rows
+    y_test = FULL_TEST['long_term_180'].values
+
+    # ================================================================================
+
+    if first:
+        file_suffix = "_FIRST_STUMPS_"
+    elif upto180:
+        file_suffix = "_UPTOFIRST_STUMPS_"
+    else:
+        file_suffix = "_STUMPS_"
+
+    data_frames = []
+    for i in range(20):
+        test_file_path = f'{datadir}/Stumps/FULL_{year+1}_{case}{file_suffix}{i}.csv'
+        df = pd.read_csv(test_file_path, delimiter=",")
+        data_frames.append(df)
+
+    FULL_STUMPS_TEST = pd.concat(data_frames, ignore_index=True)
+    print(f'Finished importing TEST STUMPS, with shape {FULL_STUMPS_TEST.shape}\n')
+    
+    FULL_STUMPS_TEST = FULL_STUMPS_TEST[filtered_columns]
+
+    FULL_STUMPS_TEST['(Intercept)'] = 1
+    intercept = FULL_STUMPS_TEST.pop('(Intercept)')
+    FULL_STUMPS_TEST.insert(0, '(Intercept)', intercept)
+    x_test = FULL_STUMPS_TEST
+
+    # ================================================================================
+
+    prob = best_model.predict_proba(x_test)[:, 1]
+    pred = (prob >= 0.5)
+
+    test_results = {'test_accuracy': accuracy_score(y_test, pred),
+            'test_recall': recall_score(y_test, pred),
+            "test_precision": precision_score(y_test, pred),
+            'test_roc_auc': roc_auc_score(y_test, prob),
+            'test_pr_auc': average_precision_score(y_test, prob),
+            "test_calibration_error": compute_calibration(y_test, prob, pred)}
+
+    print(test_results)
+
+    compute_fairness(x_test, y_test, prob, pred, setting_tag)
+
+    # get the test results by n th prescriptions
+    FULL_TEST['num_prescriptions'] = FULL_TEST['num_prior_prescriptions'] + 1
+    FULL_TEST['prod'], FULL_TEST['pred'] = prob, pred
+    test_results_by_prescriptions = FULL_TEST.groupby('num_prescriptions').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['pred']),
+                                                                                           'test_recall': recall_score(x['long_term_180'], x['pred']),
+                                                                                           'test_precision': precision_score(x['long_term_180'], x['pred']),
+                                                                                           'test_roc_auc': roc_auc_score(x['long_term_180'], x['prob']),
+                                                                                           'test_pr_auc': average_precision_score(x['long_term_180'], x['prob']),
+                                                                                           'test_calibration_error': compute_calibration(x['long_term_180'], x['prob'], x['pred'])}).to_dict()
+    print(test_results_by_prescriptions)
+
+    return

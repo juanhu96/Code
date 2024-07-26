@@ -179,59 +179,70 @@ def nested_cross_validate(X, Y, estimator, c_grid, seed, model, n_splits=5, inde
 
 
 
-def cross_validate(model, X, Y, estimator, c_grid, seed):
+def cross_validate(model, X, Y, estimator, c_grid, seed, cv=3, exportdir='/export/storage_cures/CURES/Results/'):
     
-    cv = StratifiedKFold(n_splits=5, random_state=seed, shuffle=True)
+    # temp change to 3 for computational efficiency
+    cv = StratifiedKFold(n_splits=cv, random_state=seed, shuffle=True) 
     clf = GridSearchCV(estimator=estimator, 
                        param_grid=c_grid, 
                        scoring='roc_auc',
                        cv=cv, 
                        return_train_score=True).fit(X, Y) 
-    pred = clf.predict(X)
-    prob = clf.predict_proba(X)[:, 1]
     
-    # if model == 'svm':
-    #         best_model = CalibratedClassifierCV(clf, cv=5)
-    #         best_model.fit(X, Y)
-    #         prob = best_model.predict_proba(X)[:, 1]
-    #         pred = best_model.predict(X)         
-    # else:
-    #     pred = clf.predict(X)
-    #     prob = clf.predict_proba(X)[:, 1]
+    if model == 'LinearSVM':
+            # used with classifiers like SVM (LinearSVC) which do not have a predict_proba method by default
+            best_model = clf.best_estimator_
+            clf = CalibratedClassifierCV(clf, cv=cv).fit(X, Y)
+            prob = clf.predict_proba(X)[:, 1]
+            pred = clf.predict(X)     
 
-    best_estimator = clf.best_estimator_
-    feature_names = X.columns.tolist()
+            feature_names = X.columns.tolist()
+            selected_features = [feature_names[i] for i in np.where(best_model.coef_.ravel() != 0)[0]]   
+            print(f'{len(selected_features)} features selected: {selected_features}') 
+    
+    elif model == 'NN':
+        best_model = clf.best_estimator_
+        num_features = X.shape[1]
+        pred = clf.predict(X)
+        prob = clf.predict_proba(X)[:, 1]
+        print(f'All {num_features} features are selected as input for neural network\n')
 
-    if model == 'DT' or model == 'RF' or model == 'XGB':
-        feature_importances = best_estimator.feature_importances_
-        selected_features = [feature_names[i] for i in np.where(feature_importances > 0)[0]]
-    # elif model == 'Lasso' or model == 'Logistic':
-    #     coefficients = best_estimator.coef_[0]
-    #     selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
-    # elif model == 'LinearSVM':
-    #     coefficients = best_estimator.coef_[0]
-    #     selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
     else:
-        coefficients = best_estimator.coef_[0]
-        selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
+        pred = clf.predict(X)
+        prob = clf.predict_proba(X)[:, 1]
+        
+        best_model = clf.best_estimator_
+        feature_names = X.columns.tolist()
 
-    results = {'test_accuracy': accuracy_score(Y, pred),
-            'test_recall': recall_score(Y, pred),
-            "test_precision": precision_score(Y, pred),
-            'test_roc_auc': roc_auc_score(Y, prob),
-            'test_pr_auc': average_precision_score(Y, prob),
-            "calibration_error": compute_calibration(Y, prob, pred)}
+        if model == 'DT' or model == 'RF' or model == 'XGB':
+            feature_importances = best_model.feature_importances_
+            selected_features = [feature_names[i] for i in np.where(feature_importances > 0)[0]]
+
+            if model == 'DT':
+                plt.figure(figsize=(30, 30))
+                tree.plot_tree(best_model)
+                plt.savefig(f'{exportdir}DecisionTree_CV.png', dpi=300)
+            
+        else: # L1, L2
+            coefficients = best_model.coef_[0]
+            selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
+
+        print(f'{len(selected_features)} features selected: {selected_features}')
+
+    results = {'training_accuracy': accuracy_score(Y, pred),
+               'training_recall': recall_score(Y, pred),
+               "training_precision": precision_score(Y, pred),
+               'training_roc_auc': roc_auc_score(Y, prob),
+               'training_pr_auc': average_precision_score(Y, prob),
+               "training_calibration_error": compute_calibration(Y, prob, pred)}
     
-    results['calibration_error'] = float(f"{results['calibration_error']:.6f}")
-
-    print(selected_features, len(selected_features))
     print(results)
-
-    return results
+    
+    return results, best_model
     
     
 
-def compute_calibration(y, y_prob, y_pred):
+def compute_calibration(y, y_prob, y_pred, output_table=False):
 
     table = []
     num_total_presc = len(y)
@@ -251,6 +262,6 @@ def compute_calibration(y, y_prob, y_pred):
         table.append({'Prob': prob, 'Num_presc': num_presc,
         'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP, 'Observed Risk': observed_risk})
 
-    print(table)
+    if output_table: print(table)
 
     return calibration_error

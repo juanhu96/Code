@@ -23,7 +23,7 @@
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 train single 5 20 original 1e-15 Explore feature7 essential1 upto180 > output/original_1e15_atleast1_new/2018_upto180_train_combined_onepergroup.txt & 
 
 ### TEST
-nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 test all tableall > output/original_1e15_atleast1_new/2018_test.txt & 
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 test all tableall > output/original_1e15_atleast1_new/2018_test.txt & 
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 test first tablefirst > output/original_1e15_atleast1_new/2018_test_first.txt & 
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 test upto180 tableupto180 > output/original_1e15_atleast1_new/2018_test_upto180.txt & 
 
@@ -35,13 +35,12 @@ nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 test all tableall > ou
 
 # ====================================================================
 ### BASELINE
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train DecisionTree > output/baseline/2018_DT.txt & 
-
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train L2 > output/baseline/2018_L2.txt & 
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train RandomForest > output/baseline/2018_RF.txt & 
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train XGB > output/baseline/2018_XGB.txt & 
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train L1 > output/baseline/2018_L1.txt & 
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train SVM > output/baseline/2018_SVM.txt & 
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train DNN > output/baseline/2018_DNN.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train DecisionTree > output/baseline/2018_DT.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train RandomForest > output/baseline/2018_RF.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train L1 > output/baseline/2018_L1.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train L2 > output/baseline/2018_L2.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train SVM > output/baseline/2018_SVM.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train XGB > output/baseline/2018_XGB.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py 2018 base_train NN > output/baseline/2018_NN.txt & 
 
 

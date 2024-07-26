@@ -196,4 +196,4 @@ FULL <- FULL %>% left_join(PHARMACY, by = c("pharmacy_id"))
 
 rm(PHARMACY)
 
-
+rm(FULL_PREVIOUS_OPIOID)
