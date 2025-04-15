@@ -1,0 +1,71 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model NN
+
+WARNING: Working on median stumps
+GridSearchCV for NN: 7443.6s
+
+
+Fitting for NN: 939.5s
+
+All 75 features are selected as input for neural network
+
+{'training_accuracy': 0.912, 'training_roc_auc': 0.896, 'training_calibration_error': 0.006}
+Finished training and fitting NN: 2.33 hours
+============================================================ 
+Baseline test with model NN
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+Optimal threshold for binary classification: 0.13139867885735923
+test_accuracy
+0.8
+test_roc_auc
+0.896
+test_pr_auc
+0.478
+test_calibration_error
+0.008
+
+
+0: Accuracy = 0.7979, ROC AUC = 0.8923, Calibration = 0.0099
+1: Accuracy = 0.8017, ROC AUC = 0.8980, Calibration = 0.0073
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (580349, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 70.8; two months: 88.6, three months: 94.5
+1
+{'test_accuracy': 0.936, 'test_recall': 0.449, 'test_precision': 0.185, 'test_roc_auc': 0.892, 'test_pr_auc': 0.195, 'test_calibration_error': 0.003}
+2
+{'test_accuracy': 0.667, 'test_recall': 0.884, 'test_precision': 0.204, 'test_roc_auc': 0.851, 'test_pr_auc': 0.378, 'test_calibration_error': 0.057}
+3
+{'test_accuracy': 0.56, 'test_recall': 0.925, 'test_precision': 0.304, 'test_roc_auc': 0.812, 'test_pr_auc': 0.517, 'test_calibration_error': 0.03}
+
+
+ROC information for NN saved to output/baseline/NN_roc_test_info_median.pkl
+Calibration information for NN saved to output/baseline/NN_calibration_test_info_median.pkl
+Proportions information for NN saved to output/baseline/NN_proportions_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

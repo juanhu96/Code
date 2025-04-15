@@ -59,7 +59,7 @@ def main(year, case, first, upto180, cutoff='greater'):
 
         LTOUR_feature_list = ['concurrent_MME', 'num_prescribers_past180',
                               'num_pharmacies_past180', 'concurrent_benzo',
-                              'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO',
+                              'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', # new feature
                               'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit',  'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation',
                               'num_prior_prescriptions', 'avgDays_past180', 'diff_MME', 'diff_quantity', 'diff_days',
                               'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment']
@@ -109,15 +109,15 @@ def main(year, case, first, upto180, cutoff='greater'):
 
 def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list, quartile_list,
                   datadir="/export/storage_cures/CURES/Processed/",
-                  output_columns=True):
+                  output_columns=True, median=True):
     
     print(f"Start creating stumps for year {year} with features {feature_list}\n")
 
     if first:
         file_suffix = "_FIRST_INPUT"
-    elif upto180:
+    elif upto180: # up to first long_term_180
         file_suffix = "_UPTOFIRST_INPUT"
-    else:
+    else: # up to first long_term
         file_suffix = "_INPUT"
 
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
@@ -139,8 +139,16 @@ def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list,
     #       FULL['unemployment_pct_quartile'].value_counts())
 
     if quartile_list: 
-        FULL = FULL.dropna(subset=quartile_list) # drop NA rows
-        FULL = pd.get_dummies(FULL, columns=quartile_list)
+        
+        if median:
+            print('Note: encoding quartile values to binary...\n')
+            for col in quartile_list:
+                FULL[col] = FULL[col].replace({1: 0, 2: 0, 3: 1, 4: 1})
+            FULL = FULL.dropna(subset=quartile_list)
+            FULL = pd.get_dummies(FULL, columns=quartile_list)
+        else:
+            FULL = FULL.dropna(subset=quartile_list) # drop NA rows
+            FULL = pd.get_dummies(FULL, columns=quartile_list)
 
     cutoffs = []
     for column_name in FULL.columns:
@@ -168,7 +176,7 @@ def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list,
 
     N = 20 # number of splits/cores
     FULL_splited = np.array_split(FULL, N)
-    args = [(FULL_splited[i], i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180) for i in range(N)]
+    args = [(FULL_splited[i], i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180, median) for i in range(N)]
 
     with Pool(N) as pool:
         pool.map(process_fold, args) # requires process_fold be global and single argument
@@ -180,7 +188,7 @@ def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list,
 
 def process_fold(args):
     
-    FULL_fold, i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180 = args # unpack
+    FULL_fold, i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180, median = args # unpack
 
     x = FULL_fold[stumps_feature_list]
     x_stumps = create_stumps_helper(x.values, x.columns, cutoffs)
@@ -196,6 +204,7 @@ def process_fold(args):
     else:
         file_suffix = "_STUMPS_"
 
+    if median: file_suffix += 'median_'
     file_path = f'{datadir}/Stumps/FULL_{year}_{case}{file_suffix}{i}.csv'
     new_data.to_csv(file_path, header=True, index=False)
 

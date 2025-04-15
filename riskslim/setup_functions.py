@@ -57,6 +57,8 @@ def setup_loss_functions(data, coef_set, L0_max = None, loss_computation = None,
     else:
         final_loss_computation = 'fast'
 
+    final_loss_computation = 'normal' # NOTE: JH: force to use normal loss computation for test
+
     if final_loss_computation != loss_computation:
         print_log("switching loss computation from %s to %s" % (loss_computation, final_loss_computation))
 
@@ -139,7 +141,7 @@ def setup_loss_functions(data, coef_set, L0_max = None, loss_computation = None,
         compute_loss_real = compute_loss
         compute_loss_cut_real = compute_loss_cut
         compute_loss_from_scores_real = compute_loss_from_scores
-
+        
     return (Z,
             compute_loss,
             compute_loss_cut,

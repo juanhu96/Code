@@ -1,0 +1,165 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:70: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start single training, file saved with setting tag _single_p5_f6_median_featureexactlyonecutoff_group_essential1.0
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv
+FULL_2018_Explore_STUMPS_median_
+Finished importing STUMPS, with shape (6263383, 146)
+
+Single cutoffs:
+['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300']
+['num_prescribers_past1802', 'num_prescribers_past1803']
+['num_pharmacies_past1802', 'num_pharmacies_past1803']
+['concurrent_benzo1']
+['Codeine']
+['Hydrocodone']
+['Oxycodone']
+['Morphine']
+['HMFO']
+['Medicaid']
+[]
+['Medicare']
+['CashCredit']
+[]
+[]
+[]
+[]
+['num_prior_prescriptions1']
+['diff_MME1']
+['diff_days1']
+['switch_drug']
+['switch_payment']
+['ever_switch_drug']
+['ever_switch_payment']
+['age30', 'age40', 'age50', 'age60', 'age70', 'age80']
+['patient_gender']
+[]
+[]
+['patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0']
+['patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0']
+['prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0']
+['prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0']
+['prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0']
+['prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0']
+['pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0']
+['pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0']
+['pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0']
+['pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0']
+['zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0']
+['median_household_income_quartile_0.0', 'median_household_income_quartile_1.0']
+['family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0']
+['unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO']
+['Medicaid', 'Medicare', 'CashCredit']
+['patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+------------------------------------------------------------
+Two cutoffs
+Essential cutoffs with lower bound: 1.0
+['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO']
+['Medicaid', 'Medicare', 'CashCredit']
+------------------------------------------------------------
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+08/08/24 @ 09:53 AM | switching loss computation from lookup to weighted
+08/08/24 @ 09:54 AM | ------------------------------------------------------------
+08/08/24 @ 09:54 AM | runnning initialization procedure
+08/08/24 @ 09:54 AM | ------------------------------------------------------------
+08/08/24 @ 09:58 AM | CPA produced 2 cuts
+08/08/24 @ 09:58 AM | running naive rounding on 2 solutions
+08/08/24 @ 09:58 AM | best objective value: 0.8936
+08/08/24 @ 09:58 AM | rounding produced 0 integer solutions
+08/08/24 @ 09:58 AM | running sequential rounding on 2 solutions
+08/08/24 @ 09:58 AM | best objective value: 0.8936
+08/08/24 @ 09:58 AM | sequential rounding produced 0 integer solutions
+08/08/24 @ 09:58 AM | initialization produced 0 feasible solutions
+08/08/24 @ 09:58 AM | ------------------------------------------------------------
+08/08/24 @ 09:58 AM | completed initialization procedure
+08/08/24 @ 09:58 AM | ------------------------------------------------------------
+08/08/24 @ 09:58 AM | switching loss computation from lookup to weighted
+register_callback
+
+08/08/24 @ 09:58 AM | adding 303 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
++---------------------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score)))             |                  |           |
+| ======================================================= | ================ | ========= |
+| prescriber_yr_avg_days_quartile_1.0                     |         3 points |   + ..... |
+| HMFO                                                    |         1 points |   + ..... |
+| Medicare                                                |         1 points |   + ..... |
+| patient_HPIQuartile_0.0                                 |         1 points |   + ..... |
+| patient_zip_yr_num_prescriptions_per_pop_quartile_1.0   |         1 points |   + ..... |
+| pharmacy_yr_num_patients_quartile_0.0                   |         1 points |   + ..... |
+| ======================================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                             |            SCORE |   = ..... |
++---------------------------------------------------------+------------------+-----------+
+-6 ['prescriber_yr_avg_days_quartile_1.0', 'HMFO', 'Medicare', 'patient_HPIQuartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0'] [3. 1. 1. 1. 1. 1.]
+{'intercept': -6, 'conditions': ['prescriber_yr_avg_days_quartile', 'HMFO', 'Medicare', 'patient_HPIQuartile', 'patient_zip_yr_num_prescriptions_per_pop_quartile', 'pharmacy_yr_num_patients_quartile'], 'cutoffs': ['1', 1, 1, '0', '1', '0'], 'scores': [3, 1, 1, 1, 1, 1]}
+Finished riskSLIM in 676.9 seconds
+
+Start testing with table:
+Intercept: -6
+
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 3
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: Medicare, Cutoff: 1, Score: 1
+ - Condition: patient_HPIQuartile, Cutoff: 0, Score: 1
+ - Condition: patient_zip_yr_num_prescriptions_per_pop_quartile, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_num_patients_quartile, Cutoff: 0, Score: 1
+WARNING: Encoding quartile values to binary
+
+0: Accuracy = 0.892, ROC AUC = 0.776, Calibration = 0.035
+1: Accuracy = 0.889, ROC AUC = 0.785, Calibration = 0.034
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (95056, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.8249331924678391
+1
+{'test_accuracy': 0.9597305506110916, 'test_roc_auc': 0.8266574837962657, 'test_pr_auc': 0.08752182284844283, 'test_calibration_error': 0.03736713670582357}
+2
+{'test_accuracy': 0.8835166124425231, 'test_roc_auc': 0.7436279503764425, 'test_pr_auc': 0.18563262809341768, 'test_calibration_error': 0.039434192746756205}
+3
+{'test_accuracy': 0.7811141736457119, 'test_roc_auc': 0.6934046580366482, 'test_pr_auc': 0.310761860454491, 'test_calibration_error': 0.08448486040053517}
+
+
+Test done!
+
+                   Value
+Accuracy            0.89
+Recall             0.106
+Precision          0.296
+ROC AUC            0.781
+PR AUC             0.218
+Calibration error  0.035
+       Prob  Num_presc       TN      FP      FN     TP  Accuracy  \
+0  0.002473     879232   868296       0   10936      0    0.9876   
+1  0.006693    1476162  1456379       0   19783      0    0.9866   
+2  0.017986    1001248   977996       0   23252      0    0.9768   
+3  0.047426     649291   567815       0   81476      0    0.8745   
+4  0.119203    1123975   935008       0  188967      0    0.8319   
+5  0.268941     966251   748713       0  217538      0    0.7749   
+6  0.500000     208062        0  147890       0  60172    0.2892   
+7  0.731059       8489        0    4538       0   3951    0.4654   
+8  0.880797        128        0      43       0     85    0.6641   
+
+   Observed Risk  Num_patients  Num_longterm  
+0       0.012438        706474          4565  
+1       0.013402       1163351          9405  
+2       0.023223        767205         10857  
+3       0.125485        390717         19584  
+4       0.168124        600912         43087  
+5       0.225136        474798         51463  
+6       0.289202         97637         15781  
+7       0.465426          3980          1190  
+8       0.664062            52            23  

@@ -1,0 +1,44 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:37: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+Start testing, file saved with setting tag _2019_test_all
+
+{'intercept': -5, 'conditions': ['num_prior_prescriptions'], 'cutoffs': [1], 'scores': [4]}
+0: Accuracy = 0.9053, ROC AUC = 0.7430, Calibration = 0.0394
+1: Accuracy = 0.9030, ROC AUC = 0.7420, Calibration = 0.0382
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (0, 122)
+----------------------------------------------------------------------------------------------------
+No true positive patient found!
+1
+{'test_accuracy': 0.9742916696995163, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.5, 'test_pr_auc': 0.025708330300483712, 'test_calibration_error': 0.019015479375742744}
+2
+{'test_accuracy': 0.9047222385170411, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.5, 'test_pr_auc': 0.09527776148295888, 'test_calibration_error': 0.1736636598893597}
+3
+{'test_accuracy': 0.7950413442171101, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.5, 'test_pr_auc': 0.20495865578288985, 'test_calibration_error': 0.06398276558626198}
+
+
+Test done!
+
+                    Value
+Accuracy            0.904
+Recall                0.0
+Precision             0.0
+ROC AUC            0.7424
+PR AUC              0.184
+Calibration error  0.0387
+       Prob  Num_presc       TN  FP      FN  TP  Accuracy  Observed Risk  \
+0  0.006693    3778075  3680947   0   97128   0    0.9743       0.025708   
+1  0.268941    2534763  2025731   0  509032   0    0.7992       0.200820   
+
+   Num_patients  Num_longterm  
+0       3778075        113692  
+1       1108055        112565  

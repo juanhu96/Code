@@ -1,0 +1,177 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+============================================================ 
+Baseline train with model DecisionTree
+
+WARNING: Working on median stumps
+GridSearchCV for DT: 1052.7s
+
+
+Fitting for DT: 56.6s
+
+5 features selected: ['concurrent_MME75', 'num_prior_prescriptions1', 'diff_days1', 'prescriber_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_0.0']
+{'training_accuracy': 0.906, 'training_roc_auc': 0.841, 'training_calibration_error': 0.0}
+Finished training and fitting DecisionTree: 0.31 hours
+============================================================ 
+Baseline test with model DecisionTree
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+Optimal threshold for binary classification: 0.18731431702466048
+test_accuracy
+0.789
+test_roc_auc
+0.845
+test_pr_auc
+0.338
+test_calibration_error
+0.004
+
+
+0: Accuracy = 0.7853, ROC AUC = 0.8420, Calibration = 0.0055
+1: Accuracy = 0.7920, ROC AUC = 0.8466, Calibration = 0.0032
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (575854, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 54.1; two months: 85.5, three months: 93.8
+1
+{'test_accuracy': 0.975, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.803, 'test_pr_auc': 0.068, 'test_calibration_error': 0.009}
+2
+{'test_accuracy': 0.527, 'test_recall': 0.945, 'test_precision': 0.159, 'test_roc_auc': 0.793, 'test_pr_auc': 0.24, 'test_calibration_error': 0.064}
+3
+{'test_accuracy': 0.491, 'test_recall': 0.952, 'test_precision': 0.277, 'test_roc_auc': 0.766, 'test_pr_auc': 0.39, 'test_calibration_error': 0.031}
+
+
+[0, 10)
+{'test_accuracy': 0.6965412170127868, 'test_recall': 0.7458772490892406, 'test_roc_auc': 0.7683614944703485, 'test_pr_auc': 0.2941968105711396, 'test_calibration_error': 0.004797021802545661, 'correctly_predicted_positives_ratio': 0.09729210120613041}
+[10, 20)
+{'test_accuracy': 0.8050570779876162, 'test_recall': 0.7431121143016708, 'test_roc_auc': 0.8464880719902685, 'test_pr_auc': 0.2801236261633438, 'test_calibration_error': 0.007795723761940549, 'correctly_predicted_positives_ratio': 0.05957695687295834}
+[20, 30)
+{'test_accuracy': 0.8614673963903856, 'test_recall': 0.7382785068091376, 'test_roc_auc': 0.8708255453223501, 'test_pr_auc': 0.23911335345869442, 'test_calibration_error': 0.017201433886826763, 'correctly_predicted_positives_ratio': 0.03609749069386815}
+[30, 40)
+{'test_accuracy': 0.8373488695374999, 'test_recall': 0.7388969248901747, 'test_roc_auc': 0.86333746955417, 'test_pr_auc': 0.2831198687639215, 'test_calibration_error': 0.00905216265094105, 'correctly_predicted_positives_ratio': 0.048847844661569585}
+[40, 50)
+{'test_accuracy': 0.7558844783513754, 'test_recall': 0.7589641434262948, 'test_roc_auc': 0.8237386602332992, 'test_pr_auc': 0.3367124582377993, 'test_calibration_error': 0.013410099130681852, 'correctly_predicted_positives_ratio': 0.08903565380895713}
+[50, 60)
+{'test_accuracy': 0.8218070335949663, 'test_recall': 0.7565106537971226, 'test_roc_auc': 0.8271602743969526, 'test_pr_auc': 0.21008809006785434, 'test_calibration_error': 0.022911561544312484, 'correctly_predicted_positives_ratio': 0.04000577839842057}
+[60, 70)
+{'test_accuracy': 0.6959655307481395, 'test_recall': 0.8057257157144643, 'test_roc_auc': 0.7999890717737552, 'test_pr_auc': 0.3785411449273732, 'test_calibration_error': 0.02467660261838391, 'correctly_predicted_positives_ratio': 0.12622405013709362}
+[70, 80)
+{'test_accuracy': 0.7491850764410137, 'test_recall': 0.8128245653646421, 'test_roc_auc': 0.812475895133324, 'test_pr_auc': 0.2987066243172919, 'test_calibration_error': 0.02816936532256058, 'correctly_predicted_positives_ratio': 0.08524139890606872}
+[80, 90)
+{'test_accuracy': 0.6675406567927452, 'test_recall': 0.8753050930194717, 'test_roc_auc': 0.8079253614459592, 'test_pr_auc': 0.46655767295963585, 'test_calibration_error': 0.024432477607929614, 'correctly_predicted_positives_ratio': 0.17484858662795108}
+[90, 100)
+{'test_accuracy': 0.6298485554751113, 'test_recall': 0.8148094197620782, 'test_roc_auc': 0.759582379103637, 'test_pr_auc': 0.4059905543103785, 'test_calibration_error': 0.03534257643222983, 'correctly_predicted_positives_ratio': 0.16643029287209038}
+above 100
+{'test_accuracy': 0.6040438060694415, 'test_recall': 0.8567810055762254, 'test_roc_auc': 0.7545370875092963, 'test_pr_auc': 0.4587531562458573, 'test_calibration_error': 0.04132810259445267, 'correctly_predicted_positives_ratio': 0.2027457834023475}
+
+
+ROC information for DecisionTree saved to output/baseline/DecisionTree_roc_test_info_median.pkl
+Calibration information for DecisionTree saved to output/baseline/DecisionTree_calibration_test_info_median.pkl
+Proportions information for DecisionTree saved to output/baseline/DecisionTree_proportions_test_info_median.pkl
+Recall by MME information for riskSLIM saved to output/baseline/DecisionTree_recallMME_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

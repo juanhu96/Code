@@ -107,6 +107,18 @@ DUP <- DUPLICATES %>% filter(patient_id == 54195156) # 2019
 DUP <- DUPLICATES %>% filter(patient_id == 68043086) # 2019
 DUP <- DUPLICATES %>% filter(patient_id == 48) # 2019
 
+################################################################################
+################################################################################
+################################################################################
 
+FULL <- read.csv(paste("../Results/FULL_LTOUR_table.csv", sep="")) 
+prop_data <- FULL %>%
+  group_by(num_prior_prescriptions_binary) %>%
+  summarize(proportion_true = mean(True == 1),
+            probability = mean(Prob))
 
+ggplot(prop_data, aes(x = factor(num_prior_prescriptions_binary), y = proportion_true)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Dodge places bars next to each other
+  ggtitle("Count of 'True' by 'Binary'") +
+  theme_minimal()
 

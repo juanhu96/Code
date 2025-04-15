@@ -1,0 +1,86 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model RandomForest
+
+WARNING: Working on median stumps
+GridSearchCV for RF: 3666.3s
+
+
+Fitting for RF: 45.8s
+
+25 features selected: ['concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_days1', 'age40', 'age50', 'Codeine', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+{'training_accuracy': 0.903, 'training_roc_auc': 0.859, 'training_calibration_error': 0.052}
+Finished training and fitting RandomForest: 1.03 hours
+============================================================ 
+Baseline test with model RandomForest
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+Optimal threshold for binary classification: 0.12855017273710345
+test_accuracy
+0.766
+test_roc_auc
+0.858
+test_pr_auc
+0.347
+test_calibration_error
+0.051
+
+
+0: Accuracy = 0.7596, ROC AUC = 0.8551, Calibration = 0.0502
+1: Accuracy = 0.7702, ROC AUC = 0.8604, Calibration = 0.0529
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (578027, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 59.0; two months: 86.6, three months: 94.2
+1
+{'test_accuracy': 0.941, 'test_recall': 0.18, 'test_precision': 0.107, 'test_roc_auc': 0.849, 'test_pr_auc': 0.109, 'test_calibration_error': 0.035}
+2
+{'test_accuracy': 0.521, 'test_recall': 0.947, 'test_precision': 0.157, 'test_roc_auc': 0.753, 'test_pr_auc': 0.203, 'test_calibration_error': 0.046}
+3
+{'test_accuracy': 0.481, 'test_recall': 0.956, 'test_precision': 0.274, 'test_roc_auc': 0.68, 'test_pr_auc': 0.304, 'test_calibration_error': 0.085}
+
+
+ROC information for RandomForest saved to output/baseline/RandomForest_roc_test_info_median.pkl
+Calibration information for RandomForest saved to output/baseline/RandomForest_calibration_test_info_median.pkl
+Proportions information for RandomForest saved to output/baseline/RandomForest_proportions_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

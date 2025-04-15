@@ -1,0 +1,56 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:37: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start testing, file saved with setting tag _2019_test_all
+
+{'intercept': -9, 'conditions': ['num_prior_prescriptions', 'age', 'HMFO', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'Hydrocodone', 'Oxycodone', 'prescriber_yr_num_patients_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 30, 1, '4', 40, 1, 1, '4', '4'], 'scores': [2, 2, 2, 2, 1, 1, 1, 1, 1]}
+0: Accuracy = 0.9093, ROC AUC = 0.8487, Calibration = 0.0277
+1: Accuracy = 0.9108, ROC AUC = 0.8563, Calibration = 0.0311
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (290953, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.4920896256765452
+1
+{'test_accuracy': 0.9742768473362757, 'test_recall': 0.007423194135573676, 'test_precision': 0.48130841121495327, 'test_roc_auc': 0.8281696531250361, 'test_pr_auc': 0.16531395458829762, 'test_calibration_error': 0.012008343585789635}
+2
+{'test_accuracy': 0.8904810681780236, 'test_recall': 0.3506957271272011, 'test_precision': 0.41216547179053303, 'test_roc_auc': 0.7816579441541779, 'test_pr_auc': 0.29362621072648953, 'test_calibration_error': 0.0352584899025995}
+3
+{'test_accuracy': 0.8132979206736229, 'test_recall': 0.3548014667171582, 'test_precision': 0.5717730412002858, 'test_roc_auc': 0.755437687955436, 'test_pr_auc': 0.4382514993895645, 'test_calibration_error': 0.050151517631911766}
+
+
+Test done!
+
+                    Value
+Accuracy           0.9102
+Recall             0.2678
+Precision          0.5686
+ROC AUC             0.853
+PR AUC             0.3798
+Calibration error  0.0296
+        Prob  Num_presc       TN      FP      FN      TP  Accuracy  \
+0   0.000123      23991    23963       0      28       0    0.9988   
+1   0.000335     143327   143146       0     181       0    0.9987   
+2   0.000911     414277   413116       0    1161       0    0.9972   
+3   0.002473     837164   829666       0    7498       0    0.9910   
+4   0.006693    1487773  1468193       0   19580       0    0.9868   
+5   0.017986    1012050   964266       0   47784       0    0.9528   
+6   0.047426    1001324   888024       0  113300       0    0.8868   
+7   0.119203     724126   604264       0  119862       0    0.8345   
+8   0.268941     383242   248834       0  134408       0    0.6493   
+9   0.500000     213162        0  100222       0  112940    0.5298   
+10  0.731059      66202        0   21397       0   44805    0.6768   
+11  0.880797       6200        0    1587       0    4613    0.7440   
+
+    Observed Risk  Num_patients  Num_longterm  
+0        0.001167         23991            31  
+1        0.001263        143327           239  
+2        0.002802        412535          1481  
+3        0.008956        829874          8905  
+4        0.013161       1454789         20556  
+5        0.047215        877481         31043  
+6        0.113150        666554         58342  
+7        0.165526        434445         55931  
+8        0.350713        209801         56802  
+9        0.529832        106865         45122  
+10       0.676792         30216         16929  
+11       0.744032          2498          1535  

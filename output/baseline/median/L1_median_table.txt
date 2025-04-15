@@ -1,0 +1,45 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/statsmodels/base/l1_solvers_common.py:71: ConvergenceWarning: QC check did not pass for 75 out of 75 parameters
+Try increasing solver accuracy or number of iterations, decreasing alpha, or switch solvers
+  warnings.warn(message, ConvergenceWarning)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/statsmodels/base/l1_solvers_common.py:144: ConvergenceWarning: Could not trim params automatically due to failed QC check. Trimming using trim_mode == 'size' will still work.
+  warnings.warn(msg, ConvergenceWarning)
+============================================================ 
+Baseline train with model L1
+
+WARNING: Working on median stumps
+GridSearchCV for Lasso: 1052.7s
+
+
+Fitting for Lasso: 99.2s
+
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 0.22121670418889935
+            Iterations: 194
+            Function evaluations: 194
+            Gradient evaluations: 194
+                                                                   Feature  ...      CI Upper
+(Intercept)                                                    (Intercept)  ...           NaN
+concurrent_MME10                                          concurrent_MME10  ...     -0.080471
+concurrent_MME15                                          concurrent_MME15  ...     -0.416082
+concurrent_MME20                                          concurrent_MME20  ...      0.015092
+concurrent_MME25                                          concurrent_MME25  ...     -0.534600
+...                                                                    ...  ...           ...
+median_household_income_quartile_1.0  median_household_income_quartile_1.0  ...  27014.254855
+family_poverty_pct_quartile_0.0            family_poverty_pct_quartile_0.0  ...           NaN
+family_poverty_pct_quartile_1.0            family_poverty_pct_quartile_1.0  ...           NaN
+unemployment_pct_quartile_0.0                unemployment_pct_quartile_0.0  ...  30601.404291
+unemployment_pct_quartile_1.0                unemployment_pct_quartile_1.0  ...  30601.502118
+
+[75 rows x 5 columns]
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 43, in baseline_main
+    best_model, filtered_columns = baseline_train(year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 191, in baseline_train
+    best_model, prob, pred = base.Lasso(X=x, 
+  File "/mnt/phd/jihu/opioid/Code/utils/baseline_functions.py", line 135, in Lasso
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
+TypeError: cannot unpack non-iterable NoneType object

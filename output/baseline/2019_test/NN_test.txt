@@ -1,0 +1,59 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:59: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:256: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+======================================================================================================================== 
+Baseline train with model NN
+
+GridSearchCV for NN: 5030.9s
+
+
+Fitting for NN: 1026.1s
+
+All 109 features are selected as input for neural network
+
+{'training_accuracy': 0.918, 'training_roc_auc': 0.911, 'training_calibration_error': 0.005}
+Finished training and fitting NN: 1.7 hours
+======================================================================================================================== 
+Baseline test with model NN
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+test_accuracy
+0.92
+test_roc_auc
+0.91
+test_pr_auc
+0.542
+test_calibration_error
+0.008
+
+
+ROC information for NN saved to output/baseline/NN_roc_test_info.pkl
+Calibration information for NN saved to output/baseline/NN_calibration_test_info.pkl
+0: Accuracy = 0.9194, ROC AUC = 0.9066, Calibration = 0.0080
+1: Accuracy = 0.9200, ROC AUC = 0.9124, Calibration = 0.0076
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (366607, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.40475140395754317
+1
+{'test_accuracy': 0.975, 'test_recall': 0.06, 'test_precision': 0.52, 'test_roc_auc': 0.91, 'test_pr_auc': 0.276, 'test_calibration_error': 0.001}
+2
+{'test_accuracy': 0.908, 'test_recall': 0.419, 'test_precision': 0.509, 'test_roc_auc': 0.873, 'test_pr_auc': 0.45, 'test_calibration_error': 0.054}
+3
+{'test_accuracy': 0.84, 'test_recall': 0.471, 'test_precision': 0.636, 'test_roc_auc': 0.842, 'test_pr_auc': 0.59, 'test_calibration_error': 0.035}
+
+
+
+Finished computing and exporting results: 0.03hours
+

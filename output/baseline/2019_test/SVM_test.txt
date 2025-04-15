@@ -1,0 +1,58 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:59: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:256: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+======================================================================================================================== 
+Baseline train with model LinearSVM
+
+GridSearchCV for LinearSVM: 497.7s
+
+109 features selected: ['(Intercept)', 'concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_1.0', 'patient_HPIQuartile_2.0', 'patient_HPIQuartile_3.0', 'patient_HPIQuartile_4.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_2.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_3.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_4.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_2.0', 'patient_zip_yr_num_patients_per_pop_quartile_3.0', 'patient_zip_yr_num_patients_per_pop_quartile_4.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_2.0', 'prescriber_yr_num_prescriptions_quartile_3.0', 'prescriber_yr_num_prescriptions_quartile_4.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_patients_quartile_2.0', 'prescriber_yr_num_patients_quartile_3.0', 'prescriber_yr_num_patients_quartile_4.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_2.0', 'prescriber_yr_num_pharmacies_quartile_3.0', 'prescriber_yr_num_pharmacies_quartile_4.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_MME_quartile_2.0', 'prescriber_yr_avg_MME_quartile_3.0', 'prescriber_yr_avg_MME_quartile_4.0', 'prescriber_yr_avg_days_quartile_1.0', 'prescriber_yr_avg_days_quartile_2.0', 'prescriber_yr_avg_days_quartile_3.0', 'prescriber_yr_avg_days_quartile_4.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_2.0', 'pharmacy_yr_num_prescriptions_quartile_3.0', 'pharmacy_yr_num_prescriptions_quartile_4.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_patients_quartile_2.0', 'pharmacy_yr_num_patients_quartile_3.0', 'pharmacy_yr_num_patients_quartile_4.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_2.0', 'pharmacy_yr_num_prescribers_quartile_3.0', 'pharmacy_yr_num_prescribers_quartile_4.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_2.0', 'pharmacy_yr_avg_MME_quartile_3.0', 'pharmacy_yr_avg_MME_quartile_4.0', 'pharmacy_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_2.0', 'pharmacy_yr_avg_days_quartile_3.0', 'pharmacy_yr_avg_days_quartile_4.0', 'zip_pop_density_quartile_1.0', 'zip_pop_density_quartile_2.0', 'zip_pop_density_quartile_3.0', 'zip_pop_density_quartile_4.0', 'median_household_income_quartile_1.0', 'median_household_income_quartile_2.0', 'median_household_income_quartile_3.0', 'median_household_income_quartile_4.0', 'family_poverty_pct_quartile_1.0', 'family_poverty_pct_quartile_2.0', 'family_poverty_pct_quartile_3.0', 'family_poverty_pct_quartile_4.0', 'unemployment_pct_quartile_1.0', 'unemployment_pct_quartile_2.0', 'unemployment_pct_quartile_3.0', 'unemployment_pct_quartile_4.0']
+
+Fitting for LinearSVM: 219.2s
+
+{'training_accuracy': 0.915, 'training_roc_auc': 0.895, 'training_calibration_error': 0.009}
+Finished training and fitting LinearSVM: 0.24 hours
+======================================================================================================================== 
+Baseline test with model LinearSVM
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+test_accuracy
+0.917
+test_roc_auc
+0.898
+test_pr_auc
+0.506
+test_calibration_error
+0.008
+
+
+ROC information for LinearSVM saved to output/baseline/LinearSVM_roc_test_info.pkl
+Calibration information for LinearSVM saved to output/baseline/LinearSVM_calibration_test_info.pkl
+0: Accuracy = 0.9173, ROC AUC = 0.8950, Calibration = 0.0079
+1: Accuracy = 0.9176, ROC AUC = 0.8996, Calibration = 0.0081
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (327181, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.36900183073279696
+1
+{'test_accuracy': 0.975, 'test_recall': 0.011, 'test_precision': 0.579, 'test_roc_auc': 0.894, 'test_pr_auc': 0.249, 'test_calibration_error': 0.008}
+2
+{'test_accuracy': 0.91, 'test_recall': 0.339, 'test_precision': 0.53, 'test_roc_auc': 0.857, 'test_pr_auc': 0.431, 'test_calibration_error': 0.041}
+3
+{'test_accuracy': 0.833, 'test_recall': 0.385, 'test_precision': 0.638, 'test_roc_auc': 0.828, 'test_pr_auc': 0.558, 'test_calibration_error': 0.009}
+
+
+
+Finished computing and exporting results: 0.03hours
+

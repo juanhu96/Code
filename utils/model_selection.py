@@ -5,213 +5,76 @@ Created on Mar 14 2022
 @Author: Jingyuan Hu
 """
 
+import time
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
-    average_precision_score, brier_score_loss, fbeta_score, accuracy_score, confusion_matrix
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_split
+from sklearn.metrics import auc, roc_auc_score, roc_curve, accuracy_score, confusion_matrix, recall_score, precision_score, average_precision_score
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.feature_selection import SelectFromModel
 from sklearn import tree
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
-
-
-def nested_cross_validate(X, Y, estimator, c_grid, seed, model, n_splits=5, index=None, plot_DT=True, resultdir='/mnt/phd/jihu/opioid/Result/'):
+def cross_validate(model, X, Y, estimator, c_grid, seed, cv=5, partial=False, exportdir='/export/storage_cures/CURES/Results/'):
     
-    ## outer cv
-    train_outer = []
-    test_outer = []
-    outer_cv = StratifiedKFold(n_splits=n_splits, random_state=seed, shuffle=True)
-    
-    for train, test in outer_cv.split(X, Y):
-        train_outer.append(train)
-        test_outer.append(test)
-        
-    ## storing lists
-    best_params = []
-    train_auc = []
-    validation_auc = []
-    auc_diffs = []
-    
-    holdout_prediction = []
-    holdout_probability = []
-    holdout_y = []
-    holdout_accuracy = []
-    holdout_recall = []
-    holdout_precision = []
-    holdout_roc_auc = []
-    holdout_pr_auc = []
-    holdout_f1 = []
-    holdout_f2 = []
-    holdout_brier = []
-    holdout_calibration = []
-    
-    ## inner cv
-    inner_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
-
-    for i in range(len(train_outer)):
-        
-        ## subset train & test sets in inner loop
-        train_x, test_x = X.iloc[train_outer[i]], X.iloc[test_outer[i]]
-        train_y, test_y = Y[train_outer[i]], Y[test_outer[i]]
-      
-        '''
-        ### Jingyuan: to specify grid on estimator, need to add 'estimator__' in c_grid in baseline_functions.py
-        pipeline = Pipeline(steps=[('sampler', SMOTETomek(tomek=TomekLinks(sampling_strategy='majority'))),
-                                    ('estimator', estimator)])
-
-        clf = GridSearchCV(estimator=pipeline, 
-                           param_grid=c_grid, 
-                           scoring='roc_auc',
-                           cv=inner_cv, 
-                           return_train_score=True).fit(train_x, train_y) 
-        '''
-        
-        ## GridSearch: inner CV
-        clf = GridSearchCV(estimator=estimator, 
-                            param_grid=c_grid, 
-                            scoring='roc_auc',
-                            cv=inner_cv, 
-                            return_train_score=True).fit(train_x, train_y) 
-    
-        ## best parameter & scores
-        mean_train_score = clf.cv_results_['mean_train_score']
-        mean_test_score = clf.cv_results_['mean_test_score']        
-        best_param = clf.best_params_
-        train_auc.append(mean_train_score[np.where(mean_test_score == clf.best_score_)[0][0]])
-        validation_auc.append(clf.best_score_)
-        auc_diffs.append(mean_train_score[np.where(mean_test_score == clf.best_score_)[0][0]] - clf.best_score_)
-
-        ## train model on best param
-        if index == 'svm':
-            best_model = CalibratedClassifierCV(clf, cv=5)
-            best_model.fit(train_x, train_y)
-            prob = best_model.predict_proba(test_x)[:, 1]
-            holdout_pred = best_model.predict(test_x)
-            holdout_acc = best_model.score(test_x, test_y)            
-        else:
-            prob = clf.predict_proba(test_x)[:, 1]
-            holdout_pred = clf.predict(test_x)
-            holdout_acc = clf.score(test_x, test_y)
-        
-        ## store results
-        best_params.append(best_param)
-        holdout_probability.append(prob)
-        holdout_prediction.append(holdout_pred)
-        holdout_y.append(test_y)
-        holdout_accuracy.append(accuracy_score(test_y, holdout_pred))
-        holdout_recall.append(recall_score(test_y, holdout_pred))
-        holdout_precision.append(precision_score(test_y, holdout_pred))
-        holdout_roc_auc.append(roc_auc_score(test_y, prob))
-        holdout_pr_auc.append(average_precision_score(test_y, prob))
-        holdout_brier.append(brier_score_loss(test_y, prob))
-        holdout_f1.append(fbeta_score(test_y, holdout_pred, beta = 1))
-        holdout_f2.append(fbeta_score(test_y, holdout_pred, beta = 2))
-    
-        # NEW: calibration error
-        holdout_calibration.append(compute_calibration(test_y, prob, holdout_pred))
-
-
-        best_estimator = clf.best_estimator_
-        if model == 'XGB':
-            importance_scores = best_estimator.feature_importances_
-            nonzero_indices = np.nonzero(importance_scores)[0]
-            print(f'XGB iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
-
-        elif model == 'RF':
-            importance_scores = best_estimator.feature_importances_
-            nonzero_indices = np.nonzero(importance_scores)[0]
-            print(f'RF iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
-
-        elif model == 'LinearSVM':
-            # create a SelectFromModel object based on the trained model
-            sfm = SelectFromModel(best_estimator)
-            # fit the SelectFromModel object to the training data
-            sfm.fit(train_x, train_y)
-            # get the number of selected features
-            num_selected = np.sum(sfm.get_support())
-            # print('LinearSVM iteration ' + str(i) + '...' + str(num_selected) + '\n')
-            print(f'LinearSVM iteration {str(i)}\n Indices: {num_selected}\n Number of features: {num_selected}\n')
-
-        elif model == 'Lasso':
-            coefficients = best_estimator.coef_[0]
-            nonzero_indices = np.nonzero(coefficients)[0]
-            # print('Lasso iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
-            # print(coefficients)
-            print(f'Lasso (L1) iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Coefficients: {coefficients}\n Number of features: {len(nonzero_indices)}\n')
-
-        elif model == 'Logistic':
-            coefficients = best_estimator.coef_[0]
-            nonzero_indices = np.nonzero(coefficients)[0]
-            # print('Logistic iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
-            # print(coefficients)
-            print(f'Logistic (L2) iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Coefficients: {coefficients}\n Number of features: {len(nonzero_indices)}\n')
-
-        elif model == 'DT':
-            
-            importance_scores = best_estimator.feature_importances_
-            nonzero_indices = np.nonzero(importance_scores)[0]
-            # print('DT iteration ' + str(i) + '...' + str(nonzero_indices) + '\n')
-            print(f'DT iteration {str(i)}\n Indices: {str(nonzero_indices)}\n Number of features: {len(nonzero_indices)}\n')
-            print(best_estimator.tree_)
-
-            # plot
-            if plot_DT:
-                plt.figure(figsize=(30, 30))
-                tree.plot_tree(best_estimator)
-                plt.savefig(f'{resultdir}DecisionTree_CV.png', dpi=300)
-
-
-    return {'best_param': best_params,
-            'train_auc': train_auc,
-            'validation_auc': validation_auc,
-            'auc_diffs': auc_diffs,
-            'holdout_test_accuracy': holdout_accuracy,
-            'holdout_test_recall': holdout_recall,
-            "holdout_test_precision": holdout_precision,
-            'holdout_test_roc_auc': holdout_roc_auc,
-            'holdout_test_pr_auc': holdout_pr_auc,
-            "holdout_test_brier": holdout_brier,
-            'holdout_test_f1': holdout_f1,
-            "holdout_test_f2": holdout_f2,
-            "holdout_calibration_error": holdout_calibration}
-
-
-
-def cross_validate(model, X, Y, estimator, c_grid, seed, cv=3, exportdir='/export/storage_cures/CURES/Results/'):
-    
-    # temp change to 3 for computational efficiency
+    # Use half of it for hyperparmeter selection
     cv = StratifiedKFold(n_splits=cv, random_state=seed, shuffle=True) 
+    if partial:
+        X_sub, _, Y_sub, _ = train_test_split(X, Y, test_size=0.5, random_state=seed)
+    else:
+        X_sub, Y_sub = X, Y
+
+    start = time.time()
+
     clf = GridSearchCV(estimator=estimator, 
                        param_grid=c_grid, 
                        scoring='roc_auc',
                        cv=cv, 
-                       return_train_score=True).fit(X, Y) 
+                       return_train_score=True).fit(X_sub, Y_sub) 
     
+    print(f'GridSearchCV for {model}: {str(round(time.time() - start,1))}s\n')
+
+    # best_params = clf.best_params_
+    # final_model = estimator.set_params(**best_params)
+    
+    start = time.time()
     if model == 'LinearSVM':
             # used with classifiers like SVM (LinearSVC) which do not have a predict_proba method by default
             best_model = clf.best_estimator_
-            clf = CalibratedClassifierCV(clf, cv=cv).fit(X, Y)
-            prob = clf.predict_proba(X)[:, 1]
-            pred = clf.predict(X)     
+
+            # clf = CalibratedClassifierCV(clf, cv=cv).fit(X, Y)
+            # prob = clf.predict_proba(X)[:, 1]
+            # pred = clf.predict(X)   
 
             feature_names = X.columns.tolist()
             selected_features = [feature_names[i] for i in np.where(best_model.coef_.ravel() != 0)[0]]   
             print(f'{len(selected_features)} features selected: {selected_features}') 
-    
+
+            best_model = CalibratedClassifierCV(best_model, cv=cv)
+            best_model.fit(X, Y)
+            print(f'\nFitting for {model}: {str(round(time.time() - start,1))}s\n')
+
+            prob = best_model.predict_proba(X)[:, 1]
+            pred = (prob >= 0.5)
+
     elif model == 'NN':
         best_model = clf.best_estimator_
+        best_model.fit(X, Y)
+        print(f'\nFitting for {model}: {str(round(time.time() - start,1))}s\n')
+
         num_features = X.shape[1]
-        pred = clf.predict(X)
         prob = clf.predict_proba(X)[:, 1]
+        pred = (prob >= 0.5)
         print(f'All {num_features} features are selected as input for neural network\n')
 
     else:
-        pred = clf.predict(X)
-        prob = clf.predict_proba(X)[:, 1]
-        
         best_model = clf.best_estimator_
+        best_model.fit(X, Y)
+        print(f'\nFitting for {model}: {str(round(time.time() - start,1))}s\n')
+
+        prob = best_model.predict_proba(X)[:, 1]
+        pred = (prob >= 0.5)
+
         feature_names = X.columns.tolist()
 
         if model == 'DT' or model == 'RF' or model == 'XGB':
@@ -219,49 +82,231 @@ def cross_validate(model, X, Y, estimator, c_grid, seed, cv=3, exportdir='/expor
             selected_features = [feature_names[i] for i in np.where(feature_importances > 0)[0]]
 
             if model == 'DT':
-                plt.figure(figsize=(30, 30))
-                tree.plot_tree(best_model)
-                plt.savefig(f'{exportdir}DecisionTree_CV.png', dpi=300)
+                plt.figure(figsize=(25, 25))
+                tree.plot_tree(best_model, feature_names=feature_names, filled=True, fontsize=8)
+                plt.savefig(f'{exportdir}DecisionTree_CV.png', dpi=150, bbox_inches='tight')
             
         else: # L1, L2
             coefficients = best_model.coef_[0]
             selected_features = [feature_names[i] for i in np.where(coefficients != 0)[0]]
 
+            if model == 'Lasso':
+                best_C = clf.best_params_['C']
+                logit_model = sm.Logit(Y, X).fit_regularized(method='l1', alpha=best_C)
+
+                coefficients = logit_model.params
+                conf = logit_model.conf_int()
+                odds_ratios = np.exp(coefficients)
+                conf['OR lower'] = conf[0]
+                conf['OR upper'] = conf[1]
+
+                results = pd.DataFrame({
+                    'Feature': X_sub.columns,  # Use existing column names of X_sub
+                    'Coefficient': coefficients,
+                    'Odds Ratio': odds_ratios,
+                    'CI Lower': conf['OR lower'],
+                    'CI Upper': conf['OR upper']
+                })
+                print(results)
+                results.to_csv(f'{exportdir}LogisticRegression_L1.csv', index=False)
+
+                return
         print(f'{len(selected_features)} features selected: {selected_features}')
 
-    results = {'training_accuracy': accuracy_score(Y, pred),
-               'training_recall': recall_score(Y, pred),
-               "training_precision": precision_score(Y, pred),
-               'training_roc_auc': roc_auc_score(Y, prob),
-               'training_pr_auc': average_precision_score(Y, prob),
-               "training_calibration_error": compute_calibration(Y, prob, pred)}
-    
+    results = {'training_accuracy': round(accuracy_score(Y, pred), 3),
+               'training_roc_auc': round(roc_auc_score(Y, prob), 3),
+               "training_calibration_error": round(compute_calibration(Y, prob, pred), 3)}
     print(results)
     
-    return results, best_model
-    
-    
+    return results, best_model, prob, pred
 
-def compute_calibration(y, y_prob, y_pred, output_table=False):
 
-    table = []
+
+def compute_calibration(y, y_prob, y_pred, n_bins=50, output_table=False):
+    
+    # Bin the predicted probabilities into `n_bins`
+    bins = np.linspace(0, 1, n_bins + 1)
+    bin_indices = np.digitize(y_prob, bins, right=True)
+    
+    # Initialize variables
     num_total_presc = len(y)
     calibration_error = 0
+    table = []
     
-    for prob in np.unique(y_prob):
-        
-        y_temp = y[y_prob == prob]
-        y_pred_temp = y_pred[y_prob == prob]
-        
-        # prescription-level results 
+    # Group by bin index
+    for b in range(1, n_bins + 1):
+        mask = bin_indices == b
+        y_temp = y[mask]
+        y_pred_temp = y_pred[mask]
+        prob = np.mean(y_prob[mask])
+
+        if len(y_temp) == 0:  # Skip empty bins
+            continue
+
+        # Confusion matrix components
         TN, FP, FN, TP = confusion_matrix(y_temp, y_pred_temp, labels=[0,1]).ravel() 
-        observed_risk = np.count_nonzero(y_temp == 1) / len(y_temp)
+        observed_risk = np.mean(y_temp == 1)
         num_presc = TN + FP + FN + TP
-        calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
+        calibration_error += abs(prob - observed_risk) * num_presc / num_total_presc
 
         table.append({'Prob': prob, 'Num_presc': num_presc,
-        'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP, 'Observed Risk': observed_risk})
+                      'TN': TN, 'FP': FP, 'FN': FN, 'TP': TP,
+                      'Observed Risk': observed_risk})
 
-    if output_table: print(table)
+    if output_table:
+        print(pd.DataFrame(table))
 
     return calibration_error
+
+
+
+def compute_patient(FULL, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
+    
+    FULL['Pred'] = FULL['Pred'].astype(int)
+
+    # TP prescriptions
+    FULL_TP = FULL[(FULL['long_term_180'] == 1) & (FULL['Pred'] == 1)] # presc from TP patient 
+
+    # prescriptions from true positive patients
+    TP_PATIENT_ID = FULL_TP['patient_id'].unique()
+    FULL = FULL[FULL.patient_id.isin(TP_PATIENT_ID)]
+    print("-"*100)
+    print(f"Total prescriptions from true positive patients: \n {FULL.shape}")
+    print("-"*100)
+
+    if FULL_TP.shape[0] == 0:
+        print("No true positive patient found!")
+        return
+
+    PATIENT_TP = FULL.groupby('patient_id').apply(lambda x: pd.Series({
+        'first_presc_date': x['date_filled'].iloc[0],
+        'first_pred_date': x.loc[x['Pred'] == 1, 'date_filled'].iloc[0],
+        'first_pred_presc': x.index[x['Pred'] == 1][0] - x.index.min(),
+        'first_long_term_180_date': x.loc[x['long_term_180'] == 1, 'date_filled'].iloc[0]
+        # 'first_long_term_date': x.loc[x['long_term'] == 1, 'date_filled'].iloc[0] # don't exist if upto first long_term_180
+    })).reset_index()
+    
+    PATIENT_TP = PATIENT_TP.groupby('patient_id').agg(
+        first_presc_date=('first_presc_date', 'first'),
+        first_pred_date=('first_pred_date', 'first'),
+        first_pred_presc=('first_pred_presc', 'first'),
+        first_long_term_180_date=('first_long_term_180_date', 'first')
+    ).reset_index()    
+
+    # NOTE: we don't have first_long_term_date as we focus up to first presciption
+    # PATIENT_TP['day_to_long_term'] = (pd.to_datetime(PATIENT_TP['first_long_term_date'], format='%m/%d/%Y')
+    #                                    - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+
+    # PATIENT_TP['day_to_long_term_180'] = (pd.to_datetime(PATIENT_TP['first_long_term_180_date'], format='%m/%d/%Y')
+    #                                         - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+    
+    # main metric how long it takes the model to predict long term
+    PATIENT_TP['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')
+                                                - pd.to_datetime(PATIENT_TP['first_presc_date'], format='%m/%d/%Y')).dt.days
+    
+    proportions = {}
+    for months in [1, 2, 3]:
+        within_month = (PATIENT_TP['firstpred_from_firstpresc'] <= months * 30)
+        proportions[months] = round(within_month.mean() * 100, 1)
+        
+    print(f"Proportion of LT users detected within a month: {proportions[1]}; two months: {proportions[2]}, three months: {proportions[3]}")  
+    
+    return proportions
+
+
+
+def compute_fairness(x, y, y_prob, y_pred, optimal_threshold, setting_tag, plot=False, exportdir='/export/storage_cures/CURES/Results/'):
+    
+    genders = x['patient_gender'].unique()
+    roc_auc_by_gender, accuracy_by_gender, calibration_by_gender = {}, {}, {}
+    fig, ax = plt.subplots()
+
+    for gender in genders: # Male: 0, Female: 1
+        gender_mask = x['patient_gender'] == gender
+        X_gender = x[gender_mask]
+        y_true_gender = y[gender_mask]
+        y_prob_gender = y_prob[gender_mask]
+
+        # print(y_true_gender)
+        # print("-"*100)
+        # print(y_prob_gender)
+            
+        # roc
+        fpr, tpr, _ = roc_curve(y_true_gender, y_prob_gender)
+        roc_auc = auc(fpr, tpr)
+        roc_auc_by_gender[gender] = roc_auc
+            
+        # accuracy
+        y_pred_gender = (y_prob_gender >= optimal_threshold).astype(int)
+        assert np.array_equal(y_pred_gender, y_pred[gender_mask])
+        accuracy = accuracy_score(y_true_gender, y_pred_gender)
+        accuracy_by_gender[gender] = accuracy
+        
+        # calibration
+        calibration_error = compute_calibration(y_true_gender, y_prob_gender, y_pred_gender)
+        # _, calibration_error = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender, f'{setting_tag}_gender')
+        calibration_by_gender[gender] = calibration_error
+
+        ax.plot(fpr, tpr, label=f'{gender} (AUC = {roc_auc:.2f})')
+
+    if plot:
+        ax.plot([0, 1], [0, 1], 'k--')
+        ax.set_xlabel('False Positive Rate')
+        ax.set_ylabel('True Positive Rate')
+        ax.set_title('ROC Curve by Gender')
+        ax.legend(loc='best')
+        fig.savefig(f'{exportdir}/Figures/ROC{setting_tag}_gender.pdf', dpi=300)
+        print(f"ROC curve saved as ROC{setting_tag}_gender.pdf\n")
+
+    for gender in genders:
+        accuracy = accuracy_by_gender.get(gender, 'N/A')
+        roc_auc = roc_auc_by_gender.get(gender, 'N/A')
+        calibration_error = calibration_by_gender.get(gender, 'N/A')
+        print(f'{gender}: Accuracy = {accuracy:.4f}, ROC AUC = {roc_auc:.4f}, Calibration = {calibration_error:.4f}')
+
+    return
+
+
+def compute_nth_presc(FULL, exportdir='/export/storage_cures/CURES/Results/'):
+
+    FULL['num_prescriptions'] = FULL['num_prior_prescriptions'] + 1
+    test_results_by_prescriptions = FULL[FULL['num_prescriptions'] <= 3].groupby('num_prescriptions').apply(lambda x: {'test_accuracy': round(accuracy_score(x['long_term_180'], x['Pred']), 3),
+                                                                                                                        'test_recall': round(recall_score(x['long_term_180'], x['Pred']), 3),
+                                                                                                                        'test_precision': round(precision_score(x['long_term_180'], x['Pred']), 3),
+                                                                                                                        'test_roc_auc': round(roc_auc_score(x['long_term_180'], x['Prob']), 3),
+                                                                                                                        'test_pr_auc': round(average_precision_score(x['long_term_180'], x['Prob']), 3),
+                                                                                                                        'test_calibration_error': round(compute_calibration(x['long_term_180'], x['Prob'], x['Pred']), 3)}).to_dict()
+    print_results(test_results_by_prescriptions)
+
+    return
+
+
+
+def compute_MME_presc(FULL, exportdir='/export/storage_cures/CURES/Results/'):
+
+    cutoffs = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, float('inf')]
+    bin_labels = ['[0, 10)', '[10, 20)', '[20, 30)', '[30, 40)', '[40, 50)', '[50, 60)', 
+    '[60, 70)', '[70, 80)', '[80, 90)', '[90, 100)', 'above 100']
+
+    MME_bins = pd.cut(FULL['concurrent_MME'], bins=cutoffs, labels=bin_labels, right=False)
+    FULL['MME_bins'] = MME_bins
+    test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+                                                                    'test_recall': recall_score(x['long_term_180'], x['Pred']),           
+                                                                    'test_roc_auc': roc_auc_score(x['long_term_180'], x['Prob']),
+                                                                    'test_pr_auc': average_precision_score(x['long_term_180'], x['Prob']),
+                                                                    'test_calibration_error': compute_calibration(x['long_term_180'], x['Prob'], x['Pred']),
+                                                                    'correctly_predicted_positives_ratio': ((x['Pred'] == 1) & (x['long_term_180'] == 1)).sum() / len(x)}).to_dict()
+
+    print_results(test_results_by_MME)
+
+    return test_results_by_MME
+
+
+
+def print_results(results):
+    # print results of dict in seperate rows
+    for key, value in results.items():
+        print(key)
+        print(value)   
+    print('\n')
+    return

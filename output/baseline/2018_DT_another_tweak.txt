@@ -1,0 +1,50 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:59: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+======================================================================================================================== 
+Baseline train with model DecisionTree
+
+GridSearchCV for DT: 152.5s
+
+
+Fitting for DT: 159.9s
+
+
+Predicting for DT: 162.1s
+
+5 features selected: ['concurrent_MME75', 'num_prior_prescriptions1', 'diff_days1', 'prescriber_yr_avg_days_quartile_3.0', 'prescriber_yr_avg_days_quartile_4.0']
+training_accuracy
+0.9095369068121812
+training_recall
+0.12295487858020045
+training_precision
+0.6787058212531776
+training_roc_auc
+0.8654640671215592
+training_pr_auc
+0.3933881591557359
+training_calibration_error
+0.0004251584611599136
+184.6 seconds
+Calibration curve saved as Calibration_2018_base_train_DecisionTree_gender.pdf
+
+Calibration curve saved as Calibration_2018_base_train_DecisionTree_gender.pdf
+
+ROC curve saved as ROC_2018_base_train_DecisionTree_gender.pdf
+
+1: Accuracy = 0.9107, ROC AUC = 0.8681, Calibration = 0.0008
+0: Accuracy = 0.9080, ROC AUC = 0.8620, Calibration = 0.0013
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (164927, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.4827389984825493
+1
+{'test_accuracy': 0.9735367512673839, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.7944402496498607, 'test_pr_auc': 0.11394167340484476, 'test_calibration_error': 0.0001616845350329793}
+2
+{'test_accuracy': 0.9043535016828376, 'test_recall': 0.12009609182939027, 'test_precision': 0.505886522030161, 'test_roc_auc': 0.8271862389674141, 'test_pr_auc': 0.30621893074826995, 'test_calibration_error': 0.07562613644907452}
+3
+{'test_accuracy': 0.807061056842129, 'test_recall': 0.13227415821351646, 'test_precision': 0.6371940404398723, 'test_roc_auc': 0.8016664524644925, 'test_pr_auc': 0.4596322754219968, 'test_calibration_error': 0.031223699730104793}
+
+

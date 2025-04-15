@@ -15,7 +15,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import recall_score, precision_score, roc_auc_score,\
     average_precision_score, brier_score_loss, fbeta_score, accuracy_score, confusion_matrix
 # from interpret.glassbox import ExplainableBoostingClassifier
-from utils.model_selection import nested_cross_validate, cross_validate
+from utils.model_selection import cross_validate
 
 
 num_threads = 40
@@ -38,7 +38,7 @@ def XGB(X,Y,
          
     ### model & parameters
     xgboost = xgb.XGBClassifier(scale_pos_weight= scale_pos_weight, 
-                                use_label_encoder=False, 
+                                # use_label_encoder=False, # deprecated in 1.7.0
                                 eval_metric='auc',
                                 random_state=seed,
                                 nthread=num_threads)
@@ -51,8 +51,8 @@ def XGB(X,Y,
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=xgboost,c_grid=c_grid,seed=seed,model='XGB')
+    return best_model, prob, pred
 
 
 ################################# Random Forest ###########################################
@@ -66,16 +66,18 @@ def RF(X, Y,
     ### model & parameters
     rf = RandomForestClassifier(class_weight=class_weight, 
                                 bootstrap=True,
-                                random_state=seed,
-                                n_jobs=num_threads)
+                                max_samples=0.1,
+                                # n_jobs=num_threads,
+                                random_state=seed)
+
     c_grid = {"n_estimators": estimators,
               "max_depth": depth,
               "min_impurity_decrease": impurity}
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=rf,c_grid=c_grid,seed=seed,model='RF')
+    return best_model, prob, pred
 
 
 
@@ -93,7 +95,7 @@ def LinearSVM(X, Y, C, class_weight=None, seed=None):
     #           tol=0.1) # # used to be 0.01
 
     svm = LinearSVC(class_weight=class_weight,
-                    max_iter=1000,
+                    max_iter=100000,
                     random_state=seed,
                     tol=0.01)
     
@@ -102,8 +104,8 @@ def LinearSVM(X, Y, C, class_weight=None, seed=None):
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
     
     # summary = nested_cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,index=index,model='LinearSVM')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,model='LinearSVM')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=svm,c_grid=c_grid,seed=seed,model='LinearSVM')
+    return best_model, prob, pred
 
 
 
@@ -118,9 +120,10 @@ def Lasso(X, Y, C, class_weight=None, seed=None):
     #               selection='random')
 
     lasso = LogisticRegression(class_weight=class_weight,
-                               # solver = 'sag',
-                               solver='liblinear',
-                               max_iter=10000,
+                               solver = 'saga',
+                               # solver='liblinear', # ‘sag’ support only L2 regularization with primal formulation, or no regularization.
+                               max_iter=100000,
+                               tol=0.01,
                                random_state=seed, 
                                penalty = 'l1')
 
@@ -129,8 +132,8 @@ def Lasso(X, Y, C, class_weight=None, seed=None):
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
     
     # summary = nested_cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
+    return best_model, prob, pred
 
 
 
@@ -140,17 +143,18 @@ def Logistic(X, Y, C, class_weight=None, seed=None):
     ### model & parameters
     lr = LogisticRegression(class_weight=class_weight,
                             # liblinear good for small datasets, sag are faster for large ones
-                            # solver = 'sag',
-                            solver='liblinear',
-                            max_iter=10000,
+                            solver = 'sag',
+                            # solver='liblinear',
+                            max_iter=100000,
+                            tol=0.01,
                             random_state=seed, 
                             penalty = 'l2')
     c_grid = {"C": C}
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X, Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=lr,c_grid=c_grid,seed=seed,model='Logistic')
+    return best_model, prob, pred
 
 
 
@@ -176,8 +180,8 @@ def DecisionTree(X, Y,
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
     # summary = nested_cross_validate(X=X, Y=Y, estimator=dt, c_grid=c_grid,seed=seed,model='DT')
-    _, best_model = cross_validate(X=X,Y=Y,estimator=dt,c_grid=c_grid,seed=seed,model='DT')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=dt,c_grid=c_grid,seed=seed,model='DT')
+    return best_model, prob, pred
 
 
 
@@ -217,6 +221,11 @@ def NeuralNetwork(X, Y,
                   seed=None):
     
     ### Model & Parameters
+    
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+
     nn = MLPClassifier(hidden_layer_sizes=hidden_layers,
                        activation=activation,
                        solver=solver,
@@ -229,8 +238,8 @@ def NeuralNetwork(X, Y,
     
     c_grid = {k: v for k, v in c_grid.items() if v is not None}
 
-    _, best_model = cross_validate(X=X, Y=Y, estimator=nn, c_grid=c_grid, seed=seed, model='NN')
-    return best_model
+    _, best_model, prob, pred = cross_validate(X=X, Y=Y, estimator=nn, c_grid=c_grid, seed=seed, model='NN')
+    return best_model, prob, pred
 
 
 

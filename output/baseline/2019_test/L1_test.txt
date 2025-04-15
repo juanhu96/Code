@@ -1,0 +1,66 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:59: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:256: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+======================================================================================================================== 
+Baseline train with model L1
+
+GridSearchCV for Lasso: 1261.2s
+
+
+Fitting for Lasso: 183.8s
+
+91 features selected: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_1.0', 'patient_HPIQuartile_2.0', 'patient_HPIQuartile_3.0', 'patient_HPIQuartile_4.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_2.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_4.0', 'patient_zip_yr_num_patients_per_pop_quartile_2.0', 'patient_zip_yr_num_patients_per_pop_quartile_3.0', 'patient_zip_yr_num_patients_per_pop_quartile_4.0', 'prescriber_yr_num_prescriptions_quartile_2.0', 'prescriber_yr_num_prescriptions_quartile_3.0', 'prescriber_yr_num_prescriptions_quartile_4.0', 'prescriber_yr_num_patients_quartile_2.0', 'prescriber_yr_num_patients_quartile_4.0', 'prescriber_yr_num_pharmacies_quartile_3.0', 'prescriber_yr_num_pharmacies_quartile_4.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_MME_quartile_2.0', 'prescriber_yr_avg_MME_quartile_3.0', 'prescriber_yr_avg_MME_quartile_4.0', 'prescriber_yr_avg_days_quartile_1.0', 'prescriber_yr_avg_days_quartile_2.0', 'prescriber_yr_avg_days_quartile_3.0', 'prescriber_yr_avg_days_quartile_4.0', 'pharmacy_yr_num_prescriptions_quartile_3.0', 'pharmacy_yr_num_prescriptions_quartile_4.0', 'pharmacy_yr_num_patients_quartile_2.0', 'pharmacy_yr_num_patients_quartile_3.0', 'pharmacy_yr_num_patients_quartile_4.0', 'pharmacy_yr_num_prescribers_quartile_2.0', 'pharmacy_yr_num_prescribers_quartile_3.0', 'pharmacy_yr_num_prescribers_quartile_4.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_2.0', 'pharmacy_yr_avg_MME_quartile_3.0', 'pharmacy_yr_avg_MME_quartile_4.0', 'pharmacy_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_2.0', 'pharmacy_yr_avg_days_quartile_3.0', 'pharmacy_yr_avg_days_quartile_4.0', 'zip_pop_density_quartile_1.0', 'zip_pop_density_quartile_2.0', 'zip_pop_density_quartile_4.0', 'median_household_income_quartile_1.0', 'median_household_income_quartile_2.0', 'median_household_income_quartile_3.0', 'family_poverty_pct_quartile_1.0', 'family_poverty_pct_quartile_2.0', 'family_poverty_pct_quartile_3.0', 'family_poverty_pct_quartile_4.0', 'unemployment_pct_quartile_3.0', 'unemployment_pct_quartile_4.0']
+{'training_accuracy': 0.914, 'training_roc_auc': 0.897, 'training_calibration_error': 0.006}
+Finished training and fitting L1: 0.44 hours
+======================================================================================================================== 
+Baseline test with model L1
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+test_accuracy
+0.917
+test_roc_auc
+0.899
+test_pr_auc
+0.505
+test_calibration_error
+0.007
+
+
+ROC information for L1 saved to output/baseline/L1_roc_test_info.pkl
+Calibration information for L1 saved to output/baseline/L1_calibration_test_info.pkl
+0: Accuracy = 0.9171, ROC AUC = 0.8963, Calibration = 0.0064
+1: Accuracy = 0.9172, ROC AUC = 0.9014, Calibration = 0.0076
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (310349, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.3608063509053608
+1
+{'test_accuracy': 0.975, 'test_recall': 0.002, 'test_precision': 0.627, 'test_roc_auc': 0.899, 'test_pr_auc': 0.249, 'test_calibration_error': 0.008}
+2
+{'test_accuracy': 0.911, 'test_recall': 0.305, 'test_precision': 0.54, 'test_roc_auc': 0.861, 'test_pr_auc': 0.431, 'test_calibration_error': 0.046}
+3
+{'test_accuracy': 0.83, 'test_recall': 0.353, 'test_precision': 0.641, 'test_roc_auc': 0.83, 'test_pr_auc': 0.555, 'test_calibration_error': 0.019}
+
+
+
+Finished computing and exporting results: 0.03hours
+

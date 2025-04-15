@@ -1,0 +1,58 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:37: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start testing, file saved with setting tag _2019_test_all
+
+{'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'num_prescribers_past180', 'concurrent_benzo', 'age', 'Medicaid', 'patient_HPIQuartile', 'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile'], 'cutoffs': [1, '4', 40, 3, 1, 40, 1, '1', '4', '3'], 'scores': [2, 2, 1, 1, 1, 1, 1, 1, 1, 1]}
+0: Accuracy = 0.8946, ROC AUC = 0.8487, Calibration = 0.0221
+1: Accuracy = 0.8952, ROC AUC = 0.8537, Calibration = 0.0214
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (398299, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.47720582956421853
+1
+{'test_accuracy': 0.9736056060295256, 'test_recall': 0.029651593773165306, 'test_precision': 0.3448275862068966, 'test_roc_auc': 0.8194944823105073, 'test_pr_auc': 0.13070025910347047, 'test_calibration_error': 0.003835918184113748}
+2
+{'test_accuracy': 0.8582110093813032, 'test_recall': 0.45804324969452415, 'test_precision': 0.326183297245887, 'test_roc_auc': 0.7727936596812327, 'test_pr_auc': 0.2619379513459488, 'test_calibration_error': 0.08146069970232749}
+3
+{'test_accuracy': 0.7645954173039936, 'test_recall': 0.4843399310975441, 'test_precision': 0.4335198948421392, 'test_roc_auc': 0.719385135475922, 'test_pr_auc': 0.3713751780493487, 'test_calibration_error': 0.06042891491858694}
+
+
+Test done!
+
+                    Value
+Accuracy            0.895
+Recall             0.3985
+Precision          0.4473
+ROC AUC            0.8516
+PR AUC             0.3531
+Calibration error  0.0217
+        Prob  Num_presc       TN      FP      FN      TP  Accuracy  \
+0   0.000911      70155    70007       0     148       0    0.9979   
+1   0.002473     626603   624344       0    2259       0    0.9964   
+2   0.006693    1424049  1412727       0   11322       0    0.9920   
+3   0.017986    1136933  1113279       0   23654       0    0.9792   
+4   0.047426    1006764   937417       0   69347       0    0.9311   
+5   0.119203     889188   775459       0  113729       0    0.8721   
+6   0.268941     619038   474907       0  144131       0    0.7672   
+7   0.500000     350125        0  212313       0  137812    0.3936   
+8   0.731059     145060        0   69304       0   75756    0.5222   
+9   0.880797      39111        0   15033       0   24078    0.6156   
+10  0.952574       5477        0    1783       0    3694    0.6745   
+11  0.982014        328        0     103       0     225    0.6860   
+12  0.993307          7        0       2       0       5    0.7143   
+
+    Observed Risk  Num_patients  Num_longterm  
+0        0.002110         70155           192  
+1        0.003605        626603          2988  
+2        0.007951       1421171         14379  
+3        0.020805       1098407         22710  
+4        0.068881        808789         45835  
+5        0.127902        577450         58118  
+6        0.232831        344538         60705  
+7        0.393608        180074         54374  
+8        0.522239         72861         30474  
+9        0.615632         19321          9933  
+10       0.674457          2786          1640  
+11       0.685976           184           119  
+12       0.714286             5             4  

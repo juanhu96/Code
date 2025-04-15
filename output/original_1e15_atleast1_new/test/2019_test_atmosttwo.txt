@@ -1,0 +1,52 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:37: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start testing, file saved with setting tag _2019_test_all
+
+{'intercept': -6, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'num_pharmacies_past180', 'age', 'HMFO', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '4', 40, 3, 30, 1, '4'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+0: Accuracy = 0.9057, ROC AUC = 0.8597, Calibration = 0.0158
+1: Accuracy = 0.9078, ROC AUC = 0.8647, Calibration = 0.0157
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (347361, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.48850852593237276
+1
+{'test_accuracy': 0.9742432323339266, 'test_recall': 0.009111687669878923, 'test_precision': 0.45314900153609833, 'test_roc_auc': 0.8377739810853041, 'test_pr_auc': 0.15588287832898207, 'test_calibration_error': 0.00803671985070325}
+2
+{'test_accuracy': 0.876830121248494, 'test_recall': 0.417502581152378, 'test_precision': 0.37020829833697294, 'test_roc_auc': 0.7929701152072931, 'test_pr_auc': 0.2904830099593823, 'test_calibration_error': 0.059385110837237784}
+3
+{'test_accuracy': 0.8030905938119974, 'test_recall': 0.42731529800774, 'test_precision': 0.5240830104895897, 'test_roc_auc': 0.7620149787323017, 'test_pr_auc': 0.42791553469795, 'test_calibration_error': 0.03336683101017544}
+
+
+Test done!
+
+                    Value
+Accuracy           0.9069
+Recall             0.3362
+Precision          0.5237
+ROC AUC            0.8626
+PR AUC             0.3829
+Calibration error  0.0158
+       Prob  Num_presc       TN      FP      FN      TP  Accuracy  \
+0  0.002473     406443   406049       0     394       0    0.9990   
+1  0.006693    2021318  2005887       0   15431       0    0.9924   
+2  0.017986     935490   921372       0   14118       0    0.9849   
+3  0.047426    1151634  1053054       0   98580       0    0.9144   
+4  0.119203     925449   798676       0  126773       0    0.8630   
+5  0.268941     483419   336338       0  147081       0    0.6957   
+6  0.500000     283630        0  149072       0  134558    0.4744   
+7  0.731059      94565        0   32944       0   61621    0.6516   
+8  0.880797      10642        0    3208       0    7434    0.6986   
+9  0.952574        248        0      78       0     170    0.6855   
+
+   Observed Risk  Num_patients  Num_longterm  
+0       0.000969        406443           538  
+1       0.007634       2021318         20405  
+2       0.015092        919193         16245  
+3       0.085600        804422         56482  
+4       0.136985        550579         56042  
+5       0.304252        262541         60851  
+6       0.474414        141646         51297  
+7       0.651626         42026         21864  
+8       0.698553          4751          2734  
+9       0.685484           145            87  

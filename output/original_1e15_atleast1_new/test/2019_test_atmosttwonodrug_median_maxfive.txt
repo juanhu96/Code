@@ -1,0 +1,52 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:37: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+Start testing, file saved with setting tag _2019_test_all
+
+{'intercept': -6, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'Medicaid', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 1, '1'], 'scores': [2, 2, 1, 1, 1]}
+Note: encoding quartile values to binary...
+
+0: Accuracy = 0.8959, ROC AUC = 0.8460, Calibration = 0.0161
+1: Accuracy = 0.8987, ROC AUC = 0.8498, Calibration = 0.0143
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (279470, 122)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 0.5129778988163821
+1
+{'test_accuracy': 0.9742916696995163, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.8286240408520191, 'test_pr_auc': 0.09070645597542014, 'test_calibration_error': 0.006196503108577661}
+2
+{'test_accuracy': 0.8565811263881306, 'test_recall': 0.301876426737897, 'test_precision': 0.2722000632030269, 'test_roc_auc': 0.7551457980854854, 'test_pr_auc': 0.1990873229219462, 'test_calibration_error': 0.0762367360913846}
+3
+{'test_accuracy': 0.7727260680589421, 'test_recall': 0.30877721231377403, 'test_precision': 0.42506039415130326, 'test_roc_auc': 0.7121989355524451, 'test_pr_auc': 0.3326251212378621, 'test_calibration_error': 0.028521167808286164}
+
+
+Test done!
+
+                    Value
+Accuracy           0.8975
+Recall             0.2588
+Precision          0.4422
+ROC AUC            0.8481
+PR AUC             0.3108
+Calibration error  0.0151
+       Prob  Num_presc       TN      FP      FN      TP  Accuracy  \
+0  0.002473    1135322  1132630       0    2692       0    0.9976   
+1  0.006693    1148735  1143613       0    5122       0    0.9955   
+2  0.017986     994593   965564       0   29029       0    0.9708   
+3  0.047426    1081115  1009686       0   71429       0    0.9339   
+4  0.119203     725849   610697       0  115152       0    0.8414   
+5  0.268941     872441   646589       0  225852       0    0.7411   
+6  0.500000     341152        0  191550       0  149602    0.4385   
+7  0.731059      13631        0    6349       0    7282    0.5342   
+
+   Observed Risk  Num_patients  Num_longterm  
+0       0.002371       1135322          3886  
+1       0.004459       1148735          7037  
+2       0.029187        879356         26701  
+3       0.066070        901203         59843  
+4       0.158645        486481         58097  
+5       0.258874        420162         71862  
+6       0.438520        159356         47128  
+7       0.534223          6880          2774  

@@ -1,0 +1,109 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:71: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start single training, file saved with setting tag _single_p5_f6_median_nodrug_feature7_essential1.0
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv
+FULL_2018_Explore_STUMPS_median_
+Finished importing STUMPS, with shape (6263383, 146)
+
+Quick test forcing switch payment...
+Single cutoffs:
+['num_prior_prescriptions1']
+['prescriber_yr_avg_days_quartile_1.0']
+['concurrent_MME40']
+['age30']
+['pharmacy_yr_avg_days_quartile_1.0']
+['ever_switch_payment']
+[]
+------------------------------------------------------------
+Two cutoffs
+Essential cutoffs with lower bound: 1.0
+['concurrent_MME40', 'num_prior_prescriptions1', 'age30', 'ever_switch_payment', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['ever_switch_payment']
+------------------------------------------------------------
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+09/24/24 @ 12:37 PM | switching loss computation from lookup to weighted
+09/24/24 @ 12:37 PM | ------------------------------------------------------------
+09/24/24 @ 12:37 PM | runnning initialization procedure
+09/24/24 @ 12:37 PM | ------------------------------------------------------------
+09/24/24 @ 12:38 PM | CPA produced 2 cuts
+09/24/24 @ 12:38 PM | running naive rounding on 81 solutions
+09/24/24 @ 12:38 PM | best objective value: 0.2390
+09/24/24 @ 12:38 PM | rounding produced 0 integer solutions
+09/24/24 @ 12:38 PM | running sequential rounding on 81 solutions
+09/24/24 @ 12:38 PM | best objective value: 0.2390
+09/24/24 @ 12:38 PM | sequential rounding produced 0 integer solutions
+09/24/24 @ 12:38 PM | initialization produced 0 feasible solutions
+09/24/24 @ 12:38 PM | ------------------------------------------------------------
+09/24/24 @ 12:38 PM | completed initialization procedure
+09/24/24 @ 12:38 PM | ------------------------------------------------------------
+09/24/24 @ 12:38 PM | switching loss computation from lookup to weighted
+register_callback
+
+09/24/24 @ 12:38 PM | adding 80 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-7 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| prior_prescription                            |         2 points |   + ..... |
+| Top_prescriber                                |         2 points |   + ..... |
+| concurrent_MME40                              |         1 points |   + ..... |
+| age30                                         |         1 points |   + ..... |
+| ever_switch_insurance                         |         1 points |   + ..... |
+| Top_dispenser                                 |         1 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-7 ['num_prior_prescriptions1', 'prescriber_yr_avg_days_quartile_1.0', 'concurrent_MME40', 'age30', 'ever_switch_payment', 'pharmacy_yr_avg_days_quartile_1.0'] [2. 2. 1. 1. 1. 1.]
+{'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'ever_switch_payment', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+Finished riskSLIM in 59.7 seconds
+
+                         Train
+Train accuracy           0.886
+Train Recall             0.336
+Train Precision          0.394
+Train ROC AUC            0.852
+Train PR AUC              0.31
+Train Calibration error  0.022
+Start testing with table:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_MME, Cutoff: 40, Score: 1
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: ever_switch_payment, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+WARNING: Encoding quartile values to binary
+
+Test done!
+
+                   Value
+Accuracy           0.754
+Recall             0.823
+Precision          0.256
+ROC AUC            0.849
+PR AUC             0.303
+Calibration error  0.023
+       Prob  Num_presc       TN      FP     FN      TP  Accuracy  \
+0  0.000911     255784   255664       0    120       0    0.9995   
+1  0.002473    1244292  1241140       0   3152       0    0.9975   
+2  0.006693     976168   970486       0   5682       0    0.9942   
+3  0.017986     892341   862611       0  29730       0    0.9667   
+4  0.047426     997023   928463       0  68560       0    0.9312   
+5  0.119203     675382        0  566546      0  108836    0.1611   
+6  0.268941     784479        0  585027      0  199452    0.2542   
+7  0.500000     422845        0  259774      0  163071    0.3857   
+8  0.731059      64524        0   36967      0   27557    0.4271   
+
+   Observed Risk  Num_patients  Num_longterm  
+0       0.000469        255784           174  
+1       0.002533       1244292          4556  
+2       0.005821        969876          7506  
+3       0.033317        789558         28620  
+4       0.068765        840036         60010  
+5       0.161147        451494         55340  
+6       0.254248        396141         68589  
+7       0.385652        193953         51104  
+8       0.427081         30168          9109  

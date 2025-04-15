@@ -2,77 +2,51 @@
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
 Start testing, file saved with setting tag _2018_test_all
 
-{'intercept': -5, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'HMFO', 'patient_HPIQuartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '4', 40, 30, 1, '1', '4'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+{'intercept': -6, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'Medicaid', 'patient_HPIQuartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '4', 40, 40, 1, '1', '4'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
 Calibration curve saved as Calibration_2018_test_all.pdf
 
-1 0           True
-1           True
-2          False
-3          False
-4           True
-           ...  
-9763657    False
-9763658    False
-9763659    False
-9763660    False
-9763661    False
-Name: patient_gender, Length: 9763662, dtype: bool
-----------------------------------------------------------------------------------------------------
 Calibration curve saved as Calibration_2018_test_all_gender.pdf
 
-0 0          False
-1          False
-2           True
-3           True
-4          False
-           ...  
-9763657     True
-9763658     True
-9763659     True
-9763660     True
-9763661     True
-Name: patient_gender, Length: 9763662, dtype: bool
-----------------------------------------------------------------------------------------------------
 Calibration curve saved as Calibration_2018_test_all_gender.pdf
 
 ROC curve saved as ROC_2018_test_all_gender.pdf
 
-1: Accuracy = 0.8072, ROC AUC = 0.8643, Calibration = 0.0260
-0: Accuracy = 0.8059, ROC AUC = 0.8658, Calibration = 0.0262
+1: Accuracy = 0.9004, ROC AUC = 0.8550, Calibration = 0.0167
+0: Accuracy = 0.8955, ROC AUC = 0.8515, Calibration = 0.0187
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (2565218, 122)
+ (412844, 122)
 ----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 0.6641257067621527
+Proportion of LT users detected within a month: 0.4785994714018116
 Test done!
 
                     Value
-Accuracy           0.8066
-Recall             0.7015
-Precision          0.6575
-ROC AUC             0.865
-PR AUC             0.6831
-Calibration error  0.0261
+Accuracy           0.8983
+Recall             0.3866
+Precision          0.4773
+ROC AUC            0.8535
+PR AUC             0.3683
+Calibration error  0.0176
        Prob  Num_presc       TN      FP      FN      TP  Accuracy  \
-0  0.006693     318149   317504       0     645       0    0.9980   
-1  0.017986    1791480  1754489       0   36991       0    0.9794   
-2  0.047426    1408572  1355361       0   53211       0    0.9622   
-3  0.119203    1540297  1274639       0  265658       0    0.8275   
-4  0.268941    1670936  1178441       0  492495       0    0.7053   
-5  0.500000    1125415        0  589615       0  535800    0.4761   
-6  0.731059    1045989        0  311082       0  734907    0.7026   
-7  0.880797     629718        0  114106       0  515612    0.8188   
-8  0.952574     215997        0   23071       0  192926    0.8932   
-9  0.982014      17109        0    1241       0   15868    0.9275   
+0  0.002473     532341   531185       0    1156       0    0.9978   
+1  0.006693    1575625  1563901       0   11724       0    0.9926   
+2  0.017986    1296304  1274551       0   21753       0    0.9832   
+3  0.047426    1157079  1073573       0   83506       0    0.9278   
+4  0.119203    1111738   962940       0  148798       0    0.8662   
+5  0.268941     555132   414839       0  140293       0    0.7473   
+6  0.500000     345614        0  200427       0  145187    0.4201   
+7  0.731059     155762        0   69214       0   86548    0.5556   
+8  0.880797      35280        0   11188       0   24092    0.6829   
+9  0.952574       1136        0     259       0     877    0.7720   
 
    Observed Risk  Num_patients  Num_longterm  
-0       0.002027        318149           837  
-1       0.020648       1791480         44785  
-2       0.037777       1389695         60571  
-3       0.172472       1090065        171764  
-4       0.294742        969341        261904  
-5       0.476091        616799        271833  
-6       0.702595        452386        280375  
-7       0.818798        236545        174741  
-8       0.893188         74071         61485  
-9       0.927465          5812          5063  
+0       0.002172        532341          1543  
+1       0.007441       1575625         15529  
+2       0.016781       1260221         22873  
+3       0.072170        877612         48732  
+4       0.133843        669438         64735  
+5       0.252720        332070         64187  
+6       0.420084        183109         57118  
+7       0.555643         74064         32054  
+8       0.682880         15742          8746  
+9       0.772007           537           361  

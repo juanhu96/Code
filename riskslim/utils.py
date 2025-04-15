@@ -286,7 +286,8 @@ def print_model(rho, data, show_omitted_variables = False):
                 # categorical variable
                 cutoffs.append(1)
                 converted_condition = name
-
+            converted_conditions.append(converted_condition)
+            
     # Convert rho_values to integer scores
     scores = [int(val) for val in rho_values]
 

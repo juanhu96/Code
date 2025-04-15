@@ -1,0 +1,157 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:71: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Start single training, file saved with setting tag _single_p5_f6_median_nodrug_featurerandom_essential1.0
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv
+FULL_2018_Explore_STUMPS_median_
+Finished importing STUMPS, with shape (6264001, 147)
+
+Single cutoffs:
+['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300']
+['num_prescribers_past1802', 'num_prescribers_past1803']
+['num_pharmacies_past1802', 'num_pharmacies_past1803']
+['concurrent_benzo1']
+['long_acting']
+['Medicaid']
+[]
+['Medicare', 'Medicare_Medicaid']
+['CashCredit']
+[]
+[]
+[]
+[]
+['Medicare_Medicaid']
+['num_prior_prescriptions1']
+['diff_MME1']
+['diff_days1']
+['switch_drug']
+['switch_payment']
+['ever_switch_drug']
+['ever_switch_payment']
+['age30', 'age40', 'age50', 'age60', 'age70', 'age80']
+['patient_gender']
+[]
+[]
+['patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0']
+['patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0']
+['prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0']
+['prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0']
+['prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0']
+['prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0']
+['pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0']
+['pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0']
+['pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0']
+['pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0']
+['zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0']
+['median_household_income_quartile_0.0', 'median_household_income_quartile_1.0']
+['family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0']
+['unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']
+------------------------------------------------------------
+Two cutoffs
+Essential cutoffs with lower bound: 1.0
+['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0', 'Medicare_Medicaid']
+------------------------------------------------------------
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+09/26/24 @ 02:48 PM | 751 rows in lookup table
+09/26/24 @ 02:58 PM | ------------------------------------------------------------
+09/26/24 @ 02:58 PM | runnning initialization procedure
+09/26/24 @ 02:58 PM | ------------------------------------------------------------
+09/26/24 @ 03:01 PM | CPA produced 2 cuts
+09/26/24 @ 03:01 PM | running naive rounding on 4 solutions
+09/26/24 @ 03:01 PM | best objective value: 0.4222
+09/26/24 @ 03:01 PM | rounding produced 0 integer solutions
+09/26/24 @ 03:01 PM | running sequential rounding on 4 solutions
+09/26/24 @ 03:01 PM | best objective value: 0.4222
+09/26/24 @ 03:01 PM | sequential rounding produced 0 integer solutions
+09/26/24 @ 03:01 PM | initialization produced 0 feasible solutions
+09/26/24 @ 03:01 PM | ------------------------------------------------------------
+09/26/24 @ 03:01 PM | completed initialization procedure
+09/26/24 @ 03:01 PM | ------------------------------------------------------------
+09/26/24 @ 03:01 PM | 751 rows in lookup table
+register_callback
+
+09/26/24 @ 03:01 PM | adding 436 initial cuts
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:532: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-7 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| any_prior_prescriptions                       |         2 points |   + ..... |
+| top_prescriber                                |         2 points |   + ..... |
+| concurrent_MME40                              |         1 points |   + ..... |
+| age30                                         |         1 points |   + ..... |
+| long_acting_opioid                            |         1 points |   + ..... |
+| top_dispenser                                 |         1 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 6                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-7 ['num_prior_prescriptions1', 'prescriber_yr_avg_days_quartile_1.0', 'concurrent_MME40', 'age30', 'long_acting', 'pharmacy_yr_avg_days_quartile_1.0'] [2. 2. 1. 1. 1. 1.]
+{'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+Finished riskSLIM in 8232.2 seconds
+
+                         Train
+Train accuracy           0.896
+Train Recall             0.276
+Train Precision          0.443
+Train ROC AUC            0.855
+Train PR AUC             0.327
+Train Calibration error  0.016
+Start testing with table:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_MME, Cutoff: 40, Score: 1
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+WARNING: Encoding quartile values to binary
+
+489561 1485580
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 40
+Feature: age, Cutoff: 30
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Test done!
+
+                   Value
+Accuracy           0.759
+Recall             0.815
+Precision          0.268
+ROC AUC             0.85
+PR AUC             0.329
+Calibration error  0.017
+       Prob  Num_presc      TN      FP     FN      TP  Accuracy  \
+0  0.000911     181744  181646       0     98       0    0.9995   
+1  0.002473     902132  899720       0   2412       0    0.9973   
+2  0.006693     816079  811164       0   4915       0    0.9940   
+3  0.017986     701121  677044       0  24077       0    0.9657   
+4  0.047426     806729  747473       0  59256       0    0.9265   
+5  0.119203     536457       0  444681      0   91776    0.1711   
+6  0.268941     653264       0  478612      0  174652    0.2674   
+7  0.500000     271453       0  155767      0  115686    0.4262   
+8  0.731059      24406       0    7717      0   16689    0.6838   
+
+   Observed Risk  Num_patients  Num_longterm  
+0       0.000539        181743           142  
+1       0.002674        902111          3466  
+2       0.006023        809832          6404  
+3       0.034341        607856         21702  
+4       0.073452        671231         49909  
+5       0.171078        355411         45643  
+6       0.267353        324236         60200  
+7       0.426173        129812         39032  
+8       0.683807         11697          6193  
