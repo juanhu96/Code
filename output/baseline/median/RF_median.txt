@@ -8,7 +8,7 @@
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -38,49 +38,77 @@
 Baseline train with model RandomForest
 
 WARNING: Working on median stumps
-GridSearchCV for RF: 3666.3s
+GridSearchCV for RF: 3612.9s
 
 
-Fitting for RF: 45.8s
+Fitting for RF: 57.5s
 
-25 features selected: ['concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_days1', 'age40', 'age50', 'Codeine', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
-{'training_accuracy': 0.903, 'training_roc_auc': 0.859, 'training_calibration_error': 0.052}
-Finished training and fitting RandomForest: 1.03 hours
+27 features selected: ['concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age40', 'age50', 'age70', 'Codeine', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+{'training_accuracy': 0.904, 'training_roc_auc': 0.858, 'training_calibration_error': 0.053}
+Finished training and fitting RandomForest: 1.02 hours
 ============================================================ 
 Baseline test with model RandomForest
 
 The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
 WARNING: Working on median stumps
-Optimal threshold for binary classification: 0.12855017273710345
+Optimal threshold for binary classification: 0.13032683853110558
 test_accuracy
 0.766
 test_roc_auc
 0.858
 test_pr_auc
-0.347
+0.346
 test_calibration_error
 0.051
 
 
-0: Accuracy = 0.7596, ROC AUC = 0.8551, Calibration = 0.0502
-1: Accuracy = 0.7702, ROC AUC = 0.8604, Calibration = 0.0529
+0: Accuracy = 0.7596, ROC AUC = 0.8548, Calibration = 0.0505
+1: Accuracy = 0.7701, ROC AUC = 0.8602, Calibration = 0.0527
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (578027, 122)
+ (579651, 129)
 ----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 59.0; two months: 86.6, three months: 94.2
+Proportion of LT users detected within a month: 59.1; two months: 86.6, three months: 94.2
 1
-{'test_accuracy': 0.941, 'test_recall': 0.18, 'test_precision': 0.107, 'test_roc_auc': 0.849, 'test_pr_auc': 0.109, 'test_calibration_error': 0.035}
+{'test_accuracy': 0.944, 'test_recall': 0.172, 'test_precision': 0.111, 'test_roc_auc': 0.849, 'test_pr_auc': 0.112, 'test_calibration_error': 0.036}
 2
-{'test_accuracy': 0.521, 'test_recall': 0.947, 'test_precision': 0.157, 'test_roc_auc': 0.753, 'test_pr_auc': 0.203, 'test_calibration_error': 0.046}
+{'test_accuracy': 0.533, 'test_recall': 0.943, 'test_precision': 0.154, 'test_roc_auc': 0.762, 'test_pr_auc': 0.207, 'test_calibration_error': 0.046}
 3
-{'test_accuracy': 0.481, 'test_recall': 0.956, 'test_precision': 0.274, 'test_roc_auc': 0.68, 'test_pr_auc': 0.304, 'test_calibration_error': 0.085}
+{'test_accuracy': 0.485, 'test_recall': 0.953, 'test_precision': 0.268, 'test_roc_auc': 0.688, 'test_pr_auc': 0.306, 'test_calibration_error': 0.082}
 
 
-ROC information for RandomForest saved to output/baseline/RandomForest_roc_test_info_median.pkl
-Calibration information for RandomForest saved to output/baseline/RandomForest_calibration_test_info_median.pkl
-Proportions information for RandomForest saved to output/baseline/RandomForest_proportions_test_info_median.pkl
+[0, 10)
+{'test_accuracy': 0.6964861367972456, 'test_recall': 0.741091768146919, 'test_roc_auc': 0.7710966046600126, 'test_pr_auc': 0.27999952041095966, 'test_calibration_error': 0.05799766807412705, 'correctly_predicted_positives_ratio': 0.09631143047199947}
+[10, 20)
+{'test_accuracy': 0.8038641077367233, 'test_recall': 0.7393381578022904, 'test_roc_auc': 0.8543302390858739, 'test_pr_auc': 0.27060003981166036, 'test_calibration_error': 0.04906834016249348, 'correctly_predicted_positives_ratio': 0.05968588763118739}
+[20, 30)
+{'test_accuracy': 0.8604325482759019, 'test_recall': 0.7350930129553759, 'test_roc_auc': 0.887860312313599, 'test_pr_auc': 0.23895963145270024, 'test_calibration_error': 0.044483711154330925, 'correctly_predicted_positives_ratio': 0.036086911911894906}
+[30, 40)
+{'test_accuracy': 0.835869077002146, 'test_recall': 0.7407920020424892, 'test_roc_auc': 0.8797327740027956, 'test_pr_auc': 0.2754918734021433, 'test_calibration_error': 0.047428206831405445, 'correctly_predicted_positives_ratio': 0.04826829005627171}
+[40, 50)
+{'test_accuracy': 0.7505184352649752, 'test_recall': 0.7825287845186378, 'test_roc_auc': 0.8350788031397719, 'test_pr_auc': 0.3248615502230223, 'test_calibration_error': 0.059394428283539816, 'correctly_predicted_positives_ratio': 0.0888054182733994}
+[50, 60)
+{'test_accuracy': 0.7881909532239857, 'test_recall': 0.8171898811338006, 'test_roc_auc': 0.8734760746893655, 'test_pr_auc': 0.23800395951419626, 'test_calibration_error': 0.04785708721440881, 'correctly_predicted_positives_ratio': 0.04134770191162954}
+[60, 70)
+{'test_accuracy': 0.6492243504182919, 'test_recall': 0.8788309441423628, 'test_roc_auc': 0.8100729927907875, 'test_pr_auc': 0.36217560321741493, 'test_calibration_error': 0.06770432600989273, 'correctly_predicted_positives_ratio': 0.13032562316166926}
+[70, 80)
+{'test_accuracy': 0.707630040473692, 'test_recall': 0.8710066305003014, 'test_roc_auc': 0.8458112217656091, 'test_pr_auc': 0.3223305922297253, 'test_calibration_error': 0.062061566023331634, 'correctly_predicted_positives_ratio': 0.08664368160695547}
+[80, 90)
+{'test_accuracy': 0.5780148542907424, 'test_recall': 0.9216899046021596, 'test_roc_auc': 0.8065067787817951, 'test_pr_auc': 0.4363621966995949, 'test_calibration_error': 0.10077583188572471, 'correctly_predicted_positives_ratio': 0.17483122383845212}
+[90, 100)
+{'test_accuracy': 0.56787004976254, 'test_recall': 0.9053591240171723, 'test_roc_auc': 0.7773341682246835, 'test_pr_auc': 0.4123991063868185, 'test_calibration_error': 0.08218749692810266, 'correctly_predicted_positives_ratio': 0.17756523055382112}
+above 100
+{'test_accuracy': 0.44861634509739495, 'test_recall': 0.9577217481961097, 'test_roc_auc': 0.7897174372835906, 'test_pr_auc': 0.49286437658146626, 'test_calibration_error': 0.09337853339792684, 'correctly_predicted_positives_ratio': 0.21506771951081766}
 
-Finished computing and exporting results: 0.03hours
 
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
+    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
+    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
+    with open(filename, 'wb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/RandomForest_roc_test_info_median.pkl'

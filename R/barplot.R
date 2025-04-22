@@ -1,15 +1,18 @@
-library(ggplot2)
 library(dplyr)
+library(ggplot2)
+library(ggrepel)
 library(gridExtra)
+
 
 setwd("/export/storage_cures/CURES/Results/")
 export_path <- "../Plots/"
 
 FULL_LTOUR = read.csv("FULL_LTOUR_table.csv", header = TRUE) 
-FULL_LTOUR <- FULL_LTOUR %>% rename(top_prescriber_binary = prescriber_yr_avg_days_median_binary, 
-                                    top_pharmacy_binary = pharmacy_yr_avg_days_median_binary)
+# LTOUR <- FULL_LTOUR %>% rename(top_prescriber_binary = prescriber_yr_avg_days_median_binary, 
+#                                top_pharmacy_binary = pharmacy_yr_avg_days_median_binary)
 
 # ============================================================================
+
 binary_vars <- c("num_prior_prescriptions_binary", 
                  "top_prescriber_binary", 
                  "concurrent_MME_binary", 
@@ -62,7 +65,7 @@ SUMMARY = rbind(PRIOR, PRESCRIBER, PHARMACY, MME, AGE, LONGACT)
 SUMMARY$Feature = factor(SUMMARY$Feature, levels=c("Prior opioid prescription", "Top opioid prescriber", "Top opioid dispenser", "Total daily MME above 40", "Age above 30 years", "Long acting opioid"))
 
 
-ggplot(data=SUMMARY) + facet_wrap(~Feature, nrow=2) +
+ggplot(data=SUMMARY) + facet_wrap(~Feature, nrow=3) +
   geom_col(aes(x=Group, y=PropPos, fill=Group), width=0.5) +
   geom_point(aes(x=Group, y=LTOUR, color=""), size=3) +
   geom_text(aes(x=Group, y=-0.01, label=paste("n =", scales::comma(n))), size=3, color="black") +
@@ -72,12 +75,64 @@ ggplot(data=SUMMARY) + facet_wrap(~Feature, nrow=2) +
   scale_x_discrete("Rule outcome") +
   scale_y_continuous("Proportion that become long-term opioid users", labels=scales::percent, limits=c(-0.01,0.45)) +
   theme_bw() + theme(legend.position = "bottom")
-# ggsave("C:/Users/elong/Dropbox/Interpretable Opioids/LTOUR/FeatureBars.pdf",  width = 6, height = 10)
 ggsave(paste(export_path, "FeatureBars_horizontal.pdf", sep = ""),  width = 10, height = 6, dpi=300)
 
 
+# ============================================================================
+# ============================================================================
+# ============================================================================
 
-# ============================================================================
-# ============================================================================
-# ============================================================================
+### BY COUNTY
+CA = read.csv("../CA/California_DemographicsByZip2020.csv", header = TRUE) %>% rename(zip = X......name) %>% select(zip, county_name)
+CA$county <- sub(";.*", "", CA$county)
+CA <- CA %>% select(zip, county)
+# write.csv(CA, "../CA/zip_county.csv", row.names = FALSE)
+
+MERGED <- merge(CA, LTOUR, by.x = "zip", by.y = "patient_zip", all = FALSE)
+
+COUNTY_SUMMARY <- MERGED %>% group_by(county) %>%
+  summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
+  # mutate(county = factor(county, levels = rev(sort(unique(county)))))
+  # mutate(county = reorder(county, n))
+  mutate(county = reorder(county, PropPos))
+
+ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = county)) +
+  geom_col(aes(x=PropPos, y=county), width=0.5) +
+  geom_point(aes(x=LTOUR, y=county, color=""), size=3) +
+  geom_text(aes(x=-0.01, y=county, label=paste("n =", scales::comma(n))), size=3, color="black") +
+  geom_text(aes(x = max(PropPos, LTOUR) + 0.02, y=county, label=scales::percent(LTOUR)), size=3, color="blue") +
+  scale_color_manual("Mean predicted probability (LTOUR)", values = "blue") +
+  scale_y_discrete("County") +
+  labs(x = "Proportion Positive", y = "County") +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 14, face = "bold"),
+    legend.position = "bottom"
+  )
+ggsave(paste(export_path, "CountyBars_Sorted.pdf", sep = ""),  width = 14, height = 9, dpi=300)
+
+
+ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = LTOUR, size = n, label = county)) +
+  geom_point(alpha = 0.7, color = "#2774AE") +
+  scale_size_continuous(name = "#Prescriptions", range = c(0.5, 15)) +
+  geom_text_repel(size = 2, max.overlaps = Inf) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray40") +
+  coord_fixed(xlim = c(0, 0.2), ylim = c(0, 0.2), ratio = 1) +
+  labs(x = "Proportion Positive", y = "Mean predicted probability (LTOUR)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
+ggsave(paste(export_path, "CountyScatter.pdf", sep = ""),  width = 8, height = 7, dpi=300)
+
+
+
+
+
+
 

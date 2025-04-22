@@ -39,9 +39,7 @@ def risk_test(year, table, first, upto180, median, setting_tag, output_columns=F
                                                         'num_pharmacies_past180': int,
                                                         'concurrent_benzo': int,
                                                         'consecutive_days': int})# .fillna(0)
-
-    # TODO: TEMP
-    FULL['Medicare_Medicaid'] = FULL['Medicare'] + FULL['Medicaid']
+    print(f'{file_path} imported with shape {FULL.shape}')
 
     if output_columns: print(FULL.columns.values.tolist())
 
@@ -71,24 +69,24 @@ def risk_test(year, table, first, upto180, median, setting_tag, output_columns=F
     print(df)
     print(calibration_table)
 
-    return df, calibration_table
+    return
 
 
 
 def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median, 
-               fairness_results=True,
-               patient_results=True,
-               nth_presc_results=True,
-               MME_results=True,
-               export_files=True,
-               barplot=False,
+               fairness_results=False,
+               patient_results=False,
+               nth_presc_results=False,
+               MME_results=False,
+               export_files=False,
+               barplot=True,
                exportdir='/export/storage_cures/CURES/Results/'):
     
     x = FULL
     y = FULL['long_term_180'].values
 
     x['Prob'] = x.apply(compute_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
-    # x['Prob'] = x.apply(compute_or_score, axis=1, args=(intercept, conditions, cutoffs, scores,))
+    # x['Prob'] = x.apply(compute_or_score, axis=1, args=(intercept, conditions, cutoffs, scores,)) # OR table
     y_prob = x['Prob'].to_numpy()
 
     fpr, tpr, thresholds = roc_curve(y, y_prob)
@@ -526,7 +524,7 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, exportdir='/export/storag
 
     # conditions.extend([f"{feature}_binary" for feature in conditions])
     conditions = [f"{feature}_binary" for feature in conditions]
-    conditions.extend(['long_term_180', 'Pred', 'Prob'])
+    conditions.extend(['long_term_180', 'Pred', 'Prob', 'patient_zip'])
 
     FULL_filtered = FULL[conditions]
     FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
@@ -536,235 +534,3 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, exportdir='/export/storag
     FULL_filtered.to_csv(f'{exportdir}FULL_LTOUR_table.csv', index=False)
 
     return
-
-
-    FULL['concurrent_MME_int'] = FULL['concurrent_MME'].round().astype(int)
-    unique_concurrent_MME = sorted(FULL['concurrent_MME_int'].unique())
-    mme_values, longterm_proportions, avg_risks, total_users = [], [], [], []
-    for mme_value in unique_concurrent_MME:
-        subset = FULL[FULL['concurrent_MME_int'] == mme_value]
-        if subset.shape[0] > 0: 
-            longterm_proportion = subset[subset['long_term_180'] == 1].shape[0] / subset.shape[0]
-            avg_risk = subset['Prob'].mean()
-            mme_values.append(mme_value)
-            longterm_proportions.append(longterm_proportion)
-            avg_risks.append(avg_risk)
-            total_users.append(subset[true_longterm_condition].shape[0])
-    
-
-    # bubble_size = np.array(total_users) * 0.05
-
-    # plt.figure(figsize=(10, 6))
-    # plt.scatter(mme_values, longterm_proportions, s=bubble_size, alpha=0.5, color='b', edgecolors='w')
-    # plt.xlim(0, 200)
-    # plt.xlabel('Concurrent MME (Up to 200)')
-    # plt.ylabel('Proportion of Long-Term Users')
-    # plt.tight_layout()
-    # plt.show()
-    # plt.savefig(f"{exportdir}MME_true_bubble_truncated.pdf", format='pdf', dpi=300)
-    # plt.clf()
-
-    # plt.figure(figsize=(10, 6))
-    # plt.scatter(mme_values, avg_risks, s=bubble_size, alpha=0.5, color='b', edgecolors='w')
-    # plt.xlim(0, 200)
-    # plt.xlabel('Concurrent MME (Up to 200)')
-    # plt.ylabel('Average Predicted Risk')
-    # plt.tight_layout()
-    # plt.show()
-    # plt.savefig(f"{exportdir}MME_true_bubble_truncated(risk).pdf", format='pdf', dpi=300)
-    # plt.clf()
-
-    # for all possible unique values of concurrent_MME in FULL, plot the proportion of longterm users
-
-    # - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
-    # - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
-    # - Condition: concurrent_MME, Cutoff: 40, Score: 1
-    # - Condition: age, Cutoff: 30, Score: 1
-    # - Condition: Medicaid, Cutoff: 1, Score: 1
-    # - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
-
-    fig, axes = plt.subplots(3, 2, figsize=(12, 18))
-    axes = axes.flatten()
-
-    for i in range(len(conditions)):
-        feature = conditions[i]
-        cutoff = cutoffs[i]
-        print(f"Feature: {feature}, Cutoff: {cutoff}")
-
-        if isinstance(cutoff, str):
-            print("Evaluate using equal, should only be for Medicaid")
-            no_condition = FULL[FULL[feature] != int(cutoff)]
-            yes_condition = FULL[FULL[feature] == int(cutoff)]
-        else:
-            no_condition = FULL[FULL[feature] < cutoff]
-            yes_condition = FULL[FULL[feature] >= cutoff]
-
-        true_no, true_proportion_no = no_condition[no_condition['long_term_180'] == 1].shape[0], no_condition[no_condition['long_term_180'] == 1].shape[0] / no_condition.shape[0]
-        true_yes, true_proportion_yes = yes_condition[yes_condition['long_term_180'] == 1].shape[0], yes_condition[yes_condition['long_term_180'] == 1].shape[0] / yes_condition.shape[0]
-
-        predicted_no, predicted_proportion_no = no_condition[no_condition['Pred'] == 1].shape[0], no_condition[no_condition['Pred'] == 1].shape[0] / no_condition.shape[0]
-        predicted_yes, predicted_proportion_yes = yes_condition[yes_condition['Pred'] == 1].shape[0], yes_condition[yes_condition['Pred'] == 1].shape[0] / yes_condition.shape[0]
-
-        labels = [f'No (n={no_condition.shape[0]})', f'Yes (n={yes_condition.shape[0]})']
-
-        true_proportions = [true_proportion_no, true_proportion_yes]
-        true_count = [true_no, true_yes]
-        predicted_proportions = [predicted_proportion_no, predicted_proportion_yes]
-        predicted_count = [predicted_no, predicted_yes]
-
-        # bar_width = 0.35
-        # index = np.arange(len(labels))
-        # plt.bar(index, true_proportions, bar_width, label='True', color='b')
-        # plt.bar(index + bar_width, predicted_proportions, bar_width, label='Predicted', color='g')
-        # plt.ylabel('Proportion')
-        # if feature == 'prescriber_yr_avg_days_quartile' or feature == 'pharmacy_yr_avg_days_quartile':
-        #     feature.replace('_quartile', '')
-        #     plt.title(f'{feature} above median')
-        # else:
-        #     plt.title(f'{feature} >= {cutoff}')
-        # plt.xticks(index + bar_width / 2, labels)
-        # plt.legend()
-        # plt.tight_layout()
-        # plt.show()
-        # plt.savefig(f"{exportdir}{feature}_yesno.pdf", format='pdf', dpi=300)
-        # plt.clf()
-
-        bar_width = 0.35
-        index = np.arange(len(labels))    
-        bars1 = axes[i].bar(index, true_proportions, bar_width, label='True', color='b')
-        bars2 = axes[i].bar(index + bar_width, predicted_proportions, bar_width, label='Predicted', color='g')
-        axes[i].set_ylabel('Proportion')
-
-        for j, bar in enumerate(bars1):
-            height = bar.get_height()
-            axes[i].text(bar.get_x() + bar.get_width() / 2, height, f'{true_count[j]}', ha='center', va='bottom')
-
-        for j, bar in enumerate(bars2):
-            height = bar.get_height()
-            axes[i].text(bar.get_x() + bar.get_width() / 2, height, f'{predicted_count[j]}', ha='center', va='bottom')
-
-        if feature == 'prescriber_yr_avg_days_quartile' or feature == 'pharmacy_yr_avg_days_quartile':
-            feature_label = feature.replace('_quartile', '')
-            axes[i].set_title(f'{feature_label} above median')
-        else:
-            axes[i].set_title(f'{feature} >= {cutoff}')
-        
-        axes[i].set_xticks(index + bar_width / 2)
-        axes[i].set_xticklabels(labels)
-
-
-    plt.tight_layout()
-    plt.savefig(f"{exportdir}yesno_combined.pdf", format='pdf', dpi=300)
-    plt.clf()
-
-
-
-    # =================================================================================================
-    # compute the averge probability among no and yes condition
-    
-    fig, axes = plt.subplots(3, 2, figsize=(12, 18))
-    axes = axes.flatten()
-
-    for i in range(len(conditions)):
-        feature = conditions[i]
-        cutoff = cutoffs[i]
-        print(f"Feature: {feature}, Cutoff: {cutoff}")
-
-        if isinstance(cutoff, str):
-            no_condition = FULL[FULL[feature] != int(cutoff)]
-            yes_condition = FULL[FULL[feature] == int(cutoff)]
-        else:
-            no_condition = FULL[FULL[feature] < cutoff]
-            yes_condition = FULL[FULL[feature] >= cutoff]
-
-        true_no, true_proportion_no = no_condition[no_condition['long_term_180'] == 1].shape[0], no_condition[no_condition['long_term_180'] == 1].shape[0] / no_condition.shape[0]
-        true_yes, true_proportion_yes = yes_condition[yes_condition['long_term_180'] == 1].shape[0], yes_condition[yes_condition['long_term_180'] == 1].shape[0] / yes_condition.shape[0]
-
-        predicted_no, predicted_proportion_no = no_condition[no_condition['Pred'] == 1].shape[0], no_condition[no_condition['Pred'] == 1].shape[0] / no_condition.shape[0]
-        predicted_yes, predicted_proportion_yes = yes_condition[yes_condition['Pred'] == 1].shape[0], yes_condition[yes_condition['Pred'] == 1].shape[0] / yes_condition.shape[0]
-
-        avg_prob_no = no_condition['Prob'].mean()
-        avg_prob_yes = yes_condition['Prob'].mean()
-
-        labels = [f'No (n={no_condition.shape[0]})', f'Yes (n={yes_condition.shape[0]})']
-
-        true_proportions = [true_proportion_no, true_proportion_yes]
-        predicted_probs = [avg_prob_no, avg_prob_yes]
-
-        bar_width = 0.35
-        index = np.arange(len(labels))    
-        bars1 = axes[i].bar(index, true_proportions, bar_width, label='True', color='b')
-        bars2 = axes[i].bar(index + bar_width, predicted_probs, bar_width, label='Predicted', color='g')
-        axes[i].set_ylabel('Proportion')
-
-        # for j, bar in enumerate(bars1):
-        #     height = bar.get_height()
-        #     axes[i].text(bar.get_x() + bar.get_width() / 2, height, f'{true_count[j]}', ha='center', va='bottom')
-
-        # for j, bar in enumerate(bars2):
-        #     height = bar.get_height()
-        #     axes[i].text(bar.get_x() + bar.get_width() / 2, height, f'{predicted_count[j]}', ha='center', va='bottom')
-
-        if feature == 'prescriber_yr_avg_days_quartile' or feature == 'pharmacy_yr_avg_days_quartile':
-            feature_label = feature.replace('_quartile', '')
-            axes[i].set_title(f'{feature_label} above median')
-        else:
-            axes[i].set_title(f'{feature} >= {cutoff}')
-        
-        axes[i].set_xticks(index + bar_width / 2)
-        axes[i].set_xticklabels(labels)
-
-    plt.tight_layout()
-    plt.savefig(f"{exportdir}yesno_prob_combined.pdf", format='pdf', dpi=300)
-    plt.clf()
-
-
-    return 
-
-
-
-# def compute_roc(y, y_prob, y_pred, table, resultdir, year=2019, export_file=False):
-
-#     print("********************* HERE *********************")
-
-#     FPR_list = []
-#     TPR_list = []
-#     TN_list, FP_list, FN_list, TP_list = [],[],[],[]
-#     thresholds = np.arange(0, 1.0, 0.05)
-
-#     for threshold in thresholds:
-
-#         y_pred = (y_prob > threshold)   
-#         y_pred = y_pred.astype(int)
-
-#         TN, FP, FN, TP = confusion_matrix(y, y_pred).ravel()   
-            
-#         TN_list.append(TN)
-#         FP_list.append(FP)
-#         FN_list.append(FN)
-#         TP_list.append(TP)
-            
-#         FPR = FP/(FP+TN)
-#         TPR = TP/(TP+FN)
-#         FPR_list.append(FPR)
-#         TPR_list.append(TPR)                
-            
-#     TN_list = np.array(TN_list)
-#     FP_list = np.array(FP_list)
-#     FN_list = np.array(FN_list)
-#     TP_list = np.array(TP_list)
-#     FPR_list = np.array(FPR_list)
-#     TPR_list = np.array(TPR_list)
-
-
-#     if export_file:
-#         np.savetxt(f'{resultdir}{table}_tn.csv', TN_list, delimiter = ",")
-#         np.savetxt(f'{resultdir}{table}_fp.csv', FP_list, delimiter = ",")
-#         np.savetxt(f'{resultdir}{table}_fn.csv', FN_list, delimiter = ",")
-#         np.savetxt(f'{resultdir}{table}_tp.csv', TP_list, delimiter = ",")
-            
-#         np.savetxt(f'{resultdir}{table}_fpr.csv', FPR_list, delimiter = ",")
-#         np.savetxt(f'{resultdir}{table}_tpr.csv', TPR_list, delimiter = ",")
-#         np.savetxt(f'{resultdir}{table}_thresholds.csv', thresholds, delimiter = ",")
-
-#     return TPR_list, FPR_list

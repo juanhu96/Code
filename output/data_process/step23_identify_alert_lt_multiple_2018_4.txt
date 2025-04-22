@@ -1,0 +1,46 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_multiple.py:25: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_{case}.csv")
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_multiple.py:29: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  BENZO = pd.read_csv(f"{datadir}FULL_BENZO_{year}.csv")
+Keep up to first long term use. Number of prescriptions left: 1286012
+         patient_id date_filled  days_supply  consecutive_days  \
+149248     68399532  2018-01-25           30                30   
+149249     68399532  2018-02-20           30                56   
+149250     68399532  2018-03-08            8                50   
+149251     68399532  2018-03-25           15                15   
+149252     68399532  2018-04-25           22                22   
+149253     68399532  2018-05-17           30                52   
+149254     68399532  2018-06-15           30                81   
+1048859    69906486  2018-08-07           30                30   
+1048860    69906486  2018-09-06           30                60   
+1048861    69906486  2018-10-04           30                88   
+1048862    69906486  2018-10-05           30                89   
+1048863    69906486  2018-11-05           30               120   
+1188145    70226829  2018-09-21           12                12   
+1188146    70226829  2018-10-04           12                25   
+1188147    70226829  2018-10-18           12                12   
+1188148    70226829  2018-11-01           12                12   
+1188149    70226829  2018-11-16           12                12   
+1188150    70226829  2018-11-27            8                19   
+1188151    70226829  2018-12-14           30                30   
+
+         days_to_long_term  long_term_180  
+149248               142.0              1  
+149249               116.0              1  
+149250               100.0              1  
+149251                83.0              1  
+149252                52.0              1  
+149253                30.0              1  
+149254                 1.0              1  
+1048859              120.0              1  
+1048860               90.0              1  
+1048861               62.0              1  
+1048862               61.0              1  
+1048863               30.0              1  
+1188145              114.0              1  
+1188146              101.0              1  
+1188147               87.0              1  
+1188148               73.0              1  
+1188149               58.0              1  
+1188150               47.0              1  
+1188151               30.0              1  

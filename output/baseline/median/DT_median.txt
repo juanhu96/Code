@@ -24,7 +24,7 @@
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -104,49 +104,77 @@
 Baseline train with model DecisionTree
 
 WARNING: Working on median stumps
-GridSearchCV for DT: 917.6s
+GridSearchCV for DT: 818.1s
 
 
-Fitting for DT: 24.6s
+Fitting for DT: 24.2s
 
 5 features selected: ['concurrent_MME75', 'num_prior_prescriptions1', 'diff_days1', 'prescriber_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_0.0']
-{'training_accuracy': 0.906, 'training_roc_auc': 0.841, 'training_calibration_error': 0.0}
-Finished training and fitting DecisionTree: 0.26 hours
+{'training_accuracy': 0.907, 'training_roc_auc': 0.84, 'training_calibration_error': 0.0}
+Finished training and fitting DecisionTree: 0.24 hours
 ============================================================ 
 Baseline test with model DecisionTree
 
 The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
 WARNING: Working on median stumps
-Optimal threshold for binary classification: 0.18731431702466048
+Optimal threshold for binary classification: 0.1842661341914972
 test_accuracy
-0.789
+0.786
 test_roc_auc
-0.845
+0.844
 test_pr_auc
-0.338
+0.334
 test_calibration_error
 0.004
 
 
-0: Accuracy = 0.7853, ROC AUC = 0.8420, Calibration = 0.0055
-1: Accuracy = 0.7920, ROC AUC = 0.8466, Calibration = 0.0032
+0: Accuracy = 0.7823, ROC AUC = 0.8420, Calibration = 0.0071
+1: Accuracy = 0.7890, ROC AUC = 0.8461, Calibration = 0.0038
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (575854, 122)
+ (578353, 129)
 ----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 54.1; two months: 85.5, three months: 93.8
+Proportion of LT users detected within a month: 54.6; two months: 85.6, three months: 93.8
 1
-{'test_accuracy': 0.975, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.803, 'test_pr_auc': 0.068, 'test_calibration_error': 0.009}
+{'test_accuracy': 0.975, 'test_recall': 0.0, 'test_precision': 0.0, 'test_roc_auc': 0.804, 'test_pr_auc': 0.067, 'test_calibration_error': 0.009}
 2
-{'test_accuracy': 0.527, 'test_recall': 0.945, 'test_precision': 0.159, 'test_roc_auc': 0.793, 'test_pr_auc': 0.24, 'test_calibration_error': 0.064}
+{'test_accuracy': 0.536, 'test_recall': 0.945, 'test_precision': 0.155, 'test_roc_auc': 0.796, 'test_pr_auc': 0.233, 'test_calibration_error': 0.065}
 3
-{'test_accuracy': 0.491, 'test_recall': 0.952, 'test_precision': 0.277, 'test_roc_auc': 0.766, 'test_pr_auc': 0.39, 'test_calibration_error': 0.031}
+{'test_accuracy': 0.493, 'test_recall': 0.952, 'test_precision': 0.271, 'test_roc_auc': 0.769, 'test_pr_auc': 0.383, 'test_calibration_error': 0.031}
 
 
-ROC information for DecisionTree saved to output/baseline/DecisionTree_roc_test_info_median.pkl
-Calibration information for DecisionTree saved to output/baseline/DecisionTree_calibration_test_info_median.pkl
-Proportions information for DecisionTree saved to output/baseline/DecisionTree_proportions_test_info_median.pkl
+[0, 10)
+{'test_accuracy': 0.6949693350194809, 'test_recall': 0.7463790533509577, 'test_roc_auc': 0.7676607866743219, 'test_pr_auc': 0.2921148202913863, 'test_calibration_error': 0.004095049306800995, 'correctly_predicted_positives_ratio': 0.09699855995204713}
+[10, 20)
+{'test_accuracy': 0.8027769847556998, 'test_recall': 0.7441274971310804, 'test_roc_auc': 0.8454865283807125, 'test_pr_auc': 0.2793661661762694, 'test_calibration_error': 0.007728765071464593, 'correctly_predicted_positives_ratio': 0.06007252528269924}
+[20, 30)
+{'test_accuracy': 0.8596056117529627, 'test_recall': 0.7401035322777101, 'test_roc_auc': 0.8705957948766602, 'test_pr_auc': 0.238063256846767, 'test_calibration_error': 0.01750414270912126, 'correctly_predicted_positives_ratio': 0.036332886456926936}
+[30, 40)
+{'test_accuracy': 0.8358638236919038, 'test_recall': 0.7406173154705116, 'test_roc_auc': 0.8631960913710733, 'test_pr_auc': 0.278709155752051, 'test_calibration_error': 0.009446183455200588, 'correctly_predicted_positives_ratio': 0.048256907884080456}
+[40, 50)
+{'test_accuracy': 0.7563604206781116, 'test_recall': 0.7612935565209467, 'test_roc_auc': 0.8256536846933422, 'test_pr_auc': 0.33017763344096684, 'test_calibration_error': 0.010575524716039739, 'correctly_predicted_positives_ratio': 0.08639553464767949}
+[50, 60)
+{'test_accuracy': 0.8235335845983974, 'test_recall': 0.7585492227979275, 'test_roc_auc': 0.8295028335958985, 'test_pr_auc': 0.2045050177588994, 'test_calibration_error': 0.024153329548528123, 'correctly_predicted_positives_ratio': 0.03838063572939863}
+[60, 70)
+{'test_accuracy': 0.6978494393759374, 'test_recall': 0.8072787938704894, 'test_roc_auc': 0.8031873300485302, 'test_pr_auc': 0.3672828952796966, 'test_calibration_error': 0.01972586549323363, 'correctly_predicted_positives_ratio': 0.1197148468401328}
+[70, 80)
+{'test_accuracy': 0.7498650876929995, 'test_recall': 0.8145720313441832, 'test_roc_auc': 0.8149676846842682, 'test_pr_auc': 0.2908368069985427, 'test_calibration_error': 0.0270141399657196, 'correctly_predicted_positives_ratio': 0.08102983061010344}
+[80, 90)
+{'test_accuracy': 0.6600515028286785, 'test_recall': 0.8746199811300975, 'test_roc_auc': 0.8045700621263854, 'test_pr_auc': 0.4446078371665042, 'test_calibration_error': 0.022420653828885757, 'correctly_predicted_positives_ratio': 0.16590274118337195}
+[90, 100)
+{'test_accuracy': 0.6305084104368887, 'test_recall': 0.8173749457334427, 'test_roc_auc': 0.762934417856226, 'test_pr_auc': 0.39766921805292804, 'test_calibration_error': 0.03211644682815753, 'correctly_predicted_positives_ratio': 0.16030917106582657}
+above 100
+{'test_accuracy': 0.6019961596516988, 'test_recall': 0.8602339341728625, 'test_roc_auc': 0.7584886314668133, 'test_pr_auc': 0.44694873057683565, 'test_calibration_error': 0.032233060300314344, 'correctly_predicted_positives_ratio': 0.19317568053230924}
 
-Finished computing and exporting results: 0.03hours
 
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
+    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
+    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
+    with open(filename, 'wb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/DecisionTree_roc_test_info_median.pkl'

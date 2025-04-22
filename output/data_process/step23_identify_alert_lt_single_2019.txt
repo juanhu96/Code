@@ -1,0 +1,27 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_single.py:23: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_SINGLE = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ONE.csv")
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_single.py:24: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  BENZO_TABLE = pd.read_csv(f"{datadir}FULL_BENZO_{year}.csv")
+   prescription_id date_filled  ...  consecutive_days  concurrent_benzo
+0                1  2019-05-06  ...                12                 0
+1                2  2019-11-21  ...                 7                 0
+2                3  2019-09-09  ...                 3                 0
+3                4  2019-08-21  ...                 3                 0
+4                5  2019-09-04  ...                 4                 0
+
+[5 rows x 7 columns]
+   prescription_id date_filled  days_supply  consecutive_days  num_alert
+0                1  2019-05-06           12                12          0
+1                2  2019-11-21            7                 7          0
+2                3  2019-09-09            3                 3          0
+3                4  2019-08-21            3                 3          0
+4                5  2019-09-04            4                 4          0
+   patient_id  ... first_longterm_presc_id
+0          32  ...                     NaN
+1          71  ...                     NaN
+2          91  ...                     NaN
+3         142  ...                     NaN
+4         205  ...                     NaN
+
+[5 rows x 6 columns]
+Keep up to first long term use. Number of prescriptions left: 2627283

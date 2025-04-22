@@ -1,0 +1,32 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_multiple.py:25: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_{case}.csv")
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_multiple.py:29: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  BENZO = pd.read_csv(f"{datadir}FULL_BENZO_{year}.csv")
+Keep up to first long term use. Number of prescriptions left: 918374
+        patient_id date_filled  days_supply  consecutive_days  \
+289764    64854134  2019-01-11           30                30   
+289765    64854134  2019-03-08            2                 2   
+289766    64854134  2019-03-20           30                30   
+289767    64854134  2019-04-26           30                30   
+784806    71094785  2019-02-05           30                30   
+784807    71094785  2019-03-04           30                57   
+784808    71094785  2019-04-04           30                88   
+784809    71094785  2019-05-05           30               119   
+884945    71206410  2019-01-18           30                30   
+884946    71206410  2019-02-16           30                59   
+884947    71206410  2019-03-17           30                88   
+884948    71206410  2019-04-22           30                30   
+
+        days_to_long_term  long_term_180  
+289764              135.0              1  
+289765               79.0              1  
+289766               67.0              1  
+289767               30.0              1  
+784806              119.0              1  
+784807               92.0              1  
+784808               61.0              1  
+784809               30.0              1  
+884945              124.0              1  
+884946               95.0              1  
+884947               66.0              1  
+884948               30.0              1  

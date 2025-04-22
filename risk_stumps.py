@@ -178,6 +178,8 @@ def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list,
     FULL_splited = np.array_split(FULL, N)
     args = [(FULL_splited[i], i, stumps_feature_list, cutoffs, datadir, year, case, first, upto180, median) for i in range(N)]
 
+    if not os.path.exists(f'{datadir}/Stumps/'): os.makedirs(f'{datadir}/Stumps/')
+
     with Pool(N) as pool:
         pool.map(process_fold, args) # requires process_fold be global and single argument
 

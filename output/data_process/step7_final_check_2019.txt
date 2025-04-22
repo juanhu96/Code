@@ -1,0 +1,10 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step7_final_check.py:15: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv")
+Summary Statistics from 2019:
+Min age: 18
+Max age: 99
+Max quantity: 990.0
+Max concurrent MME: 999.375
+Max prescribers past 180 days: 10
+Max pharmacies past 180 days: 10
+Max prior prescriptions: 97

@@ -1,0 +1,6 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step4_compute_features.py:125: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_{case}_TEMP.csv")
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step4_compute_features.py:130: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  BENZO_TABLE = pd.read_csv(f"{datadir}FULL_BENZO_{year}.csv")
+FULL_OPIOID_2018_ATLEASTTWO_4_TEMP.csv loaded. Prescriptions: 1286012
+Outlier patients removed. Prescriptions remaining: 1270539

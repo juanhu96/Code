@@ -34,6 +34,7 @@ def risk_train(scenario:str,
                feature_set,
                essential_num,
                nodrug:bool,
+               county_name:str,
                setting_tag:str,
                case:str='Explore',
                outcome:str='long_term_180', 
@@ -66,7 +67,6 @@ def risk_train(scenario:str,
         file_suffix = "_INPUT"
 
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
-    print(file_path)
 
     FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
                                                         'concurrent_methadone_MME': float,
@@ -74,7 +74,8 @@ def risk_train(scenario:str,
                                                         'num_pharmacies_past180': int,
                                                         'concurrent_benzo': int,
                                                         'consecutive_days': int})
-    
+    print(f'{file_path} imported with shape {FULL.shape}')
+
     quartile_list = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
                              'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
                              'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
@@ -94,6 +95,14 @@ def risk_train(scenario:str,
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0]= -1
 
+    if county_name is not None: 
+        zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
+        FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
+        indices = FULL.index[FULL['county'] == county_name].tolist()
+        x = x.iloc[indices]
+        y = y[indices]
+        print(f"Subsetting to county {county_name} with {len(y)} prescriptions.")
+        return
 
     if scenario == 'single':
         

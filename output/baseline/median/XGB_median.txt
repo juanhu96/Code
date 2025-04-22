@@ -4,7 +4,7 @@
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in true_divide
   ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -22,49 +22,77 @@
 Baseline train with model XGB
 
 WARNING: Working on median stumps
-GridSearchCV for XGB: 3858.9s
+GridSearchCV for XGB: 5052.8s
 
 
-Fitting for XGB: 77.4s
+Fitting for XGB: 160.0s
 
 57 features selected: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_days_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_days_quartile_0.0', 'zip_pop_density_quartile_0.0', 'median_household_income_quartile_0.0', 'family_poverty_pct_quartile_0.0', 'unemployment_pct_quartile_0.0']
-{'training_accuracy': 0.915, 'training_roc_auc': 0.904, 'training_calibration_error': 0.003}
-Finished training and fitting XGB: 1.09 hours
+{'training_accuracy': 0.915, 'training_roc_auc': 0.904, 'training_calibration_error': 0.004}
+Finished training and fitting XGB: 1.45 hours
 ============================================================ 
 Baseline test with model XGB
 
 The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
 WARNING: Working on median stumps
-Optimal threshold for binary classification: 0.11405487358570099
+Optimal threshold for binary classification: 0.11524193733930588
 test_accuracy
-0.799
+0.8
 test_roc_auc
-0.897
+0.895
 test_pr_auc
-0.48
+0.472
 test_calibration_error
-0.001
+0.002
 
 
-0: Accuracy = 0.7968, ROC AUC = 0.8935, Calibration = 0.0020
-1: Accuracy = 0.8010, ROC AUC = 0.8993, Calibration = 0.0020
+0: Accuracy = 0.7960, ROC AUC = 0.8916, Calibration = 0.0033
+1: Accuracy = 0.8035, ROC AUC = 0.8983, Calibration = 0.0023
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (581092, 122)
+ (583005, 129)
 ----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 70.8; two months: 88.7, three months: 94.6
+Proportion of LT users detected within a month: 70.6; two months: 88.5, three months: 94.5
 1
-{'test_accuracy': 0.936, 'test_recall': 0.454, 'test_precision': 0.188, 'test_roc_auc': 0.894, 'test_pr_auc': 0.2, 'test_calibration_error': 0.001}
+{'test_accuracy': 0.938, 'test_recall': 0.448, 'test_precision': 0.191, 'test_roc_auc': 0.896, 'test_pr_auc': 0.204, 'test_calibration_error': 0.001}
 2
-{'test_accuracy': 0.669, 'test_recall': 0.884, 'test_precision': 0.205, 'test_roc_auc': 0.853, 'test_pr_auc': 0.382, 'test_calibration_error': 0.043}
+{'test_accuracy': 0.681, 'test_recall': 0.877, 'test_precision': 0.203, 'test_roc_auc': 0.853, 'test_pr_auc': 0.367, 'test_calibration_error': 0.045}
 3
-{'test_accuracy': 0.557, 'test_recall': 0.928, 'test_precision': 0.303, 'test_roc_auc': 0.813, 'test_pr_auc': 0.517, 'test_calibration_error': 0.015}
+{'test_accuracy': 0.567, 'test_recall': 0.922, 'test_precision': 0.3, 'test_roc_auc': 0.816, 'test_pr_auc': 0.511, 'test_calibration_error': 0.014}
 
 
-ROC information for XGB saved to output/baseline/XGB_roc_test_info_median.pkl
-Calibration information for XGB saved to output/baseline/XGB_calibration_test_info_median.pkl
-Proportions information for XGB saved to output/baseline/XGB_proportions_test_info_median.pkl
+[0, 10)
+{'test_accuracy': 0.6796002953194786, 'test_recall': 0.812863852405996, 'test_roc_auc': 0.8121274445363804, 'test_pr_auc': 0.37030442326456225, 'test_calibration_error': 0.007258335634192966, 'correctly_predicted_positives_ratio': 0.10563884766924218}
+[10, 20)
+{'test_accuracy': 0.8111629568988824, 'test_recall': 0.7947024520480573, 'test_roc_auc': 0.8880557729805304, 'test_pr_auc': 0.3878001346695687, 'test_calibration_error': 0.003253793608372599, 'correctly_predicted_positives_ratio': 0.0641553810696912}
+[20, 30)
+{'test_accuracy': 0.88395641222344, 'test_recall': 0.7351483778097664, 'test_roc_auc': 0.9131046285240132, 'test_pr_auc': 0.3585499387896673, 'test_calibration_error': 0.002452992933401996, 'correctly_predicted_positives_ratio': 0.03608962986266874}
+[30, 40)
+{'test_accuracy': 0.8484393728598233, 'test_recall': 0.800481059944369, 'test_roc_auc': 0.9097794574723713, 'test_pr_auc': 0.4111972049703448, 'test_calibration_error': 0.0022502897896859576, 'correctly_predicted_positives_ratio': 0.05215749073885182}
+[40, 50)
+{'test_accuracy': 0.7452056589170004, 'test_recall': 0.8598444572713188, 'test_roc_auc': 0.8726620307632335, 'test_pr_auc': 0.44635661509910624, 'test_calibration_error': 0.005961559831131708, 'correctly_predicted_positives_ratio': 0.09757960114529805}
+[50, 60)
+{'test_accuracy': 0.8402595720269195, 'test_recall': 0.784882657726303, 'test_roc_auc': 0.8955391998960562, 'test_pr_auc': 0.32141738542549747, 'test_calibration_error': 0.016271682234965817, 'correctly_predicted_positives_ratio': 0.03971303966985991}
+[60, 70)
+{'test_accuracy': 0.7130264536366496, 'test_recall': 0.8599851705388037, 'test_roc_auc': 0.8566626669410643, 'test_pr_auc': 0.502913544450239, 'test_calibration_error': 0.005616090218343509, 'correctly_predicted_positives_ratio': 0.1275309022825081}
+[70, 80)
+{'test_accuracy': 0.7672612801678909, 'test_recall': 0.8445599758890898, 'test_roc_auc': 0.876156672881726, 'test_pr_auc': 0.4204266543219679, 'test_calibration_error': 0.008987823521332785, 'correctly_predicted_positives_ratio': 0.08401289162044671}
+[80, 90)
+{'test_accuracy': 0.6895612316931307, 'test_recall': 0.9097389663486739, 'test_roc_auc': 0.8681525571898162, 'test_pr_auc': 0.5982293793802951, 'test_calibration_error': 0.008084265496929408, 'correctly_predicted_positives_ratio': 0.17256430396611552}
+[90, 100)
+{'test_accuracy': 0.6469414012979887, 'test_recall': 0.8877044040326082, 'test_roc_auc': 0.8305284926519556, 'test_pr_auc': 0.5353340635546351, 'test_calibration_error': 0.012862731092898545, 'correctly_predicted_positives_ratio': 0.17410266598550642}
+above 100
+{'test_accuracy': 0.6416831815334696, 'test_recall': 0.9253203105709348, 'test_roc_auc': 0.8518783087416895, 'test_pr_auc': 0.6181807869377812, 'test_calibration_error': 0.0054946742068162115, 'correctly_predicted_positives_ratio': 0.20779159436064362}
 
-Finished computing and exporting results: 0.03hours
 
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
+    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
+    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
+    with open(filename, 'wb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/XGB_roc_test_info_median.pkl'

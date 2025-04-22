@@ -1,70 +1,45 @@
 /mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
-  return _methods._mean(a, axis=axis, dtype=dtype,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
-  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
-  return _methods._mean(a, axis=axis, dtype=dtype,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
-  return _methods._mean(a, axis=axis, dtype=dtype,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
-  return _methods._mean(a, axis=axis, dtype=dtype,
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
-  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/statsmodels/base/l1_solvers_common.py:71: ConvergenceWarning: QC check did not pass for 75 out of 75 parameters
+Try increasing solver accuracy or number of iterations, decreasing alpha, or switch solvers
+  warnings.warn(message, ConvergenceWarning)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/statsmodels/base/l1_solvers_common.py:144: ConvergenceWarning: Could not trim params automatically due to failed QC check. Trimming using trim_mode == 'size' will still work.
+  warnings.warn(msg, ConvergenceWarning)
 ============================================================ 
 Baseline train with model L1
 
 WARNING: Working on median stumps
-GridSearchCV for Lasso: 824.7s
+GridSearchCV for Lasso: 831.1s
 
 
-Fitting for Lasso: 85.3s
+Fitting for Lasso: 86.6s
 
-53 features selected: ['(Intercept)', 'concurrent_MME15', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'num_prescribers_past1802', 'num_prescribers_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'Codeine', 'HMFO', 'Medicare', 'CashCredit', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
-{'training_accuracy': 0.907, 'training_roc_auc': 0.876, 'training_calibration_error': 0.01}
-Finished training and fitting L1: 0.25 hours
-============================================================ 
-Baseline test with model L1
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 0.2216517744150865
+            Iterations: 198
+            Function evaluations: 198
+            Gradient evaluations: 198
+                                                                   Feature  ...       CI Upper
+(Intercept)                                                    (Intercept)  ...  106969.946131
+concurrent_MME10                                          concurrent_MME10  ...      -0.084959
+concurrent_MME15                                          concurrent_MME15  ...      -0.413208
+concurrent_MME20                                          concurrent_MME20  ...       0.014067
+concurrent_MME25                                          concurrent_MME25  ...      -0.541284
+...                                                                    ...  ...            ...
+median_household_income_quartile_1.0  median_household_income_quartile_1.0  ...   55561.647957
+family_poverty_pct_quartile_0.0            family_poverty_pct_quartile_0.0  ...  148739.695030
+family_poverty_pct_quartile_1.0            family_poverty_pct_quartile_1.0  ...  148634.685050
+unemployment_pct_quartile_0.0                unemployment_pct_quartile_0.0  ...  154914.084435
+unemployment_pct_quartile_1.0                unemployment_pct_quartile_1.0  ...  154914.157795
 
-The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
-
-WARNING: Working on median stumps
-Optimal threshold for binary classification: 0.10160605429835466
-test_accuracy
-0.775
-test_roc_auc
-0.877
-test_pr_auc
-0.426
-test_calibration_error
-0.012
-
-
-0: Accuracy = 0.7685, ROC AUC = 0.8743, Calibration = 0.0116
-1: Accuracy = 0.7794, ROC AUC = 0.8798, Calibration = 0.0119
-----------------------------------------------------------------------------------------------------
-Total prescriptions from true positive patients: 
- (577363, 122)
-----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 65.5; two months: 88.0, three months: 94.7
-1
-{'test_accuracy': 0.946, 'test_recall': 0.303, 'test_precision': 0.175, 'test_roc_auc': 0.869, 'test_pr_auc': 0.15, 'test_calibration_error': 0.008}
-2
-{'test_accuracy': 0.54, 'test_recall': 0.941, 'test_precision': 0.162, 'test_roc_auc': 0.825, 'test_pr_auc': 0.333, 'test_calibration_error': 0.063}
-3
-{'test_accuracy': 0.496, 'test_recall': 0.952, 'test_precision': 0.279, 'test_roc_auc': 0.785, 'test_pr_auc': 0.459, 'test_calibration_error': 0.029}
-
-
-ROC information for L1 saved to output/baseline/L1_roc_test_info_median.pkl
-Calibration information for L1 saved to output/baseline/L1_calibration_test_info_median.pkl
-Proportions information for L1 saved to output/baseline/L1_proportions_test_info_median.pkl
-
-Finished computing and exporting results: 0.03hours
-
+[75 rows x 5 columns]
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 43, in baseline_main
+    best_model, filtered_columns = baseline_train(year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 191, in baseline_train
+    best_model, prob, pred = base.Lasso(X=x, 
+  File "/mnt/phd/jihu/opioid/Code/utils/baseline_functions.py", line 135, in Lasso
+    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
+TypeError: cannot unpack non-iterable NoneType object

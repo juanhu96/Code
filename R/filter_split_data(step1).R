@@ -14,7 +14,7 @@ library(parallel)
 
 setwd("/export/storage_cures/CURES/")
 export_dir = "Processed/"
-year = 2017
+year = 2018
 previous_year = year - 1
 
 # Number of prescriptions 2017: 36182453, 2018: 33108449, 2019: 37175510
@@ -27,7 +27,7 @@ FULL_PREVIOUS <- read.csv(paste("RX_", previous_year, ".csv", sep=""))
 
 # Drop chronic users: 
 # - those who filled an opioid prescription in the last 60 days of the prior year
-# - 2019: 18204081 -> 8586712
+# - 2019: 18204081 -> 8486712
 chronic_patient_ids <- FULL_PREVIOUS %>%
   filter(class == 'Opioid') %>%
   mutate(prescription_month = month(as.POSIXlt(date_filled, format="%m/%d/%Y"))) %>%
@@ -45,7 +45,7 @@ FULL_OPIOID <- FULL_OPIOID[!patient_id %in% chronic_patient_ids]
 # Drop outliers:
 # - prescriptions that exceed 1,000 daily MME
 # - patients with more than 100 prior prescriptions)
-# - 2019: 8586712 -> 8387944
+# - 2019: 8486712 -> 8387944
 OUTLIERS_PATIENT <- FULL_OPIOID[, .(num_presc = .N, max_dose = max(daily_dose)), by = patient_id][, outliers := as.integer(max_dose >= 1000 | num_presc >= 100)]
 FULL_OPIOID <- merge(FULL_OPIOID, OUTLIERS_PATIENT, by = "patient_id", all.x = TRUE)
 FULL_OPIOID[, outliers := ifelse(is.na(outliers), 0, outliers)]
@@ -76,7 +76,7 @@ FULL_OPIOID <- FULL_OPIOID[!patient_id %in% ILLICIT_PATIENT]
 FULL_OPIOID <- FULL_OPIOID[patient_birth_year <= year - 18]
 
 
-# Duplicated rows
+# Duplicated rows, keep one each
 # - 2019: 8197802 -> 6760290
 duplicated_rows <- FULL_OPIOID[duplicated(FULL_OPIOID, by = setdiff(names(FULL_OPIOID), "X")) | 
                                  duplicated(FULL_OPIOID, by = setdiff(names(FULL_OPIOID), "X"), fromLast = TRUE)]

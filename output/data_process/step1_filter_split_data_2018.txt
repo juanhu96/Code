@@ -1,0 +1,14 @@
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step1_filter_split_data.py:20: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_CURRENT = pd.read_csv(f"{basedir}RX_{year}.csv")
+/mnt/phd/jihu/opioid/Code/sh script/../src/process/step1_filter_split_data.py:21: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_PREVIOUS = pd.read_csv(f"{basedir}RX_{previous_year}.csv")
+Number of prescriptions in 2018: 33108449, Number of prescriptions in 2017: 36182453
+['Unnamed: 0', 'patient_id', 'patient_birth_year', 'patient_gender', 'patient_zip', 'prescriber_id', 'prescriber_zip', 'pharmacy_id', 'pharmacy_zip', 'strength', 'quantity', 'days_supply', 'date_filled', 'PRODUCTNDC', 'PROPRIETARYNAME', 'LABELERNAME', 'ROUTENAME', 'DEASCHEDULE', 'MAINDOSE', 'drx_refill_number', 'drx_refill_authorized_number', 'quantity_per_day', 'conversion', 'class', 'drug', 'daily_dose', 'total_dose', 'payment']
+Number of chronic patients removed: 1787792, Number of prescriptions left: 7577392
+Outliers removed. Number of prescriptions left: 7475634
+Illicit users removed. Number of prescriptions left: 7474286
+Underage patients removed. Number of prescriptions left: 7293542
+Duplicate rows removed. Number of prescriptions left: 7287095
+ONE: 2854661, part1: 1074419, part2: 875033, part3: 1051658, part4: 1431324
+Number of prescriptions in Benzodiazepine: 10489261
+Duplicate rows removed from Benzodiazepine. Number of prescriptions left: 10482234

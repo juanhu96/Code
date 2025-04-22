@@ -194,15 +194,15 @@ def compute_patient(FULL, setting_tag, exportdir='/export/storage_cures/CURES/Re
     ).reset_index()    
 
     # NOTE: we don't have first_long_term_date as we focus up to first presciption
-    # PATIENT_TP['day_to_long_term'] = (pd.to_datetime(PATIENT_TP['first_long_term_date'], format='%m/%d/%Y')
-    #                                    - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+    # PATIENT_TP['day_to_long_term'] = (pd.to_datetime(PATIENT_TP['first_long_term_date'], errors='coerce')
+    #                                    - pd.to_datetime(PATIENT_TP['first_pred_date'], errors='coerce')).dt.days
 
-    # PATIENT_TP['day_to_long_term_180'] = (pd.to_datetime(PATIENT_TP['first_long_term_180_date'], format='%m/%d/%Y')
-    #                                         - pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')).dt.days
+    # PATIENT_TP['day_to_long_term_180'] = (pd.to_datetime(PATIENT_TP['first_long_term_180_date'], errors='coerce')
+    #                                         - pd.to_datetime(PATIENT_TP['first_pred_date'], errors='coerce')).dt.days
     
     # main metric how long it takes the model to predict long term
-    PATIENT_TP['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_TP['first_pred_date'], format='%m/%d/%Y')
-                                                - pd.to_datetime(PATIENT_TP['first_presc_date'], format='%m/%d/%Y')).dt.days
+    PATIENT_TP['firstpred_from_firstpresc'] = (pd.to_datetime(PATIENT_TP['first_pred_date'], errors='coerce')
+                                                - pd.to_datetime(PATIENT_TP['first_presc_date'], errors='coerce')).dt.days
     
     proportions = {}
     for months in [1, 2, 3]:

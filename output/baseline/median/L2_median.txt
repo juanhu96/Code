@@ -4,7 +4,7 @@
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:278: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -22,13 +22,13 @@
 Baseline train with model L2
 
 WARNING: Working on median stumps
-GridSearchCV for Logistic: 208.2s
+GridSearchCV for Logistic: 208.7s
 
 
-Fitting for Logistic: 18.1s
+Fitting for Logistic: 18.2s
 
 75 features selected: ['(Intercept)', 'concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
-{'training_accuracy': 0.908, 'training_roc_auc': 0.881, 'training_calibration_error': 0.006}
+{'training_accuracy': 0.908, 'training_roc_auc': 0.88, 'training_calibration_error': 0.006}
 Finished training and fitting L2: 0.06 hours
 ============================================================ 
 Baseline test with model L2
@@ -36,35 +36,63 @@ Baseline test with model L2
 The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
 WARNING: Working on median stumps
-Optimal threshold for binary classification: 0.11175786441775794
+Optimal threshold for binary classification: 0.11179885613062693
 test_accuracy
-0.787
+0.786
 test_roc_auc
 0.881
 test_pr_auc
-0.428
+0.424
 test_calibration_error
 0.007
 
 
-0: Accuracy = 0.7829, ROC AUC = 0.8784, Calibration = 0.0058
-1: Accuracy = 0.7907, ROC AUC = 0.8838, Calibration = 0.0080
+0: Accuracy = 0.7804, ROC AUC = 0.8776, Calibration = 0.0065
+1: Accuracy = 0.7895, ROC AUC = 0.8831, Calibration = 0.0075
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (577421, 122)
+ (579563, 129)
 ----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 66.7; two months: 87.8, three months: 94.3
+Proportion of LT users detected within a month: 67.1; two months: 88.0, three months: 94.4
 1
-{'test_accuracy': 0.941, 'test_recall': 0.357, 'test_precision': 0.175, 'test_roc_auc': 0.875, 'test_pr_auc': 0.163, 'test_calibration_error': 0.007}
+{'test_accuracy': 0.942, 'test_recall': 0.359, 'test_precision': 0.178, 'test_roc_auc': 0.876, 'test_pr_auc': 0.166, 'test_calibration_error': 0.008}
 2
-{'test_accuracy': 0.603, 'test_recall': 0.909, 'test_precision': 0.179, 'test_roc_auc': 0.83, 'test_pr_auc': 0.343, 'test_calibration_error': 0.049}
+{'test_accuracy': 0.61, 'test_recall': 0.909, 'test_precision': 0.175, 'test_roc_auc': 0.833, 'test_pr_auc': 0.337, 'test_calibration_error': 0.052}
 3
-{'test_accuracy': 0.53, 'test_recall': 0.933, 'test_precision': 0.291, 'test_roc_auc': 0.784, 'test_pr_auc': 0.453, 'test_calibration_error': 0.013}
+{'test_accuracy': 0.534, 'test_recall': 0.932, 'test_precision': 0.286, 'test_roc_auc': 0.79, 'test_pr_auc': 0.452, 'test_calibration_error': 0.015}
 
 
-ROC information for L2 saved to output/baseline/L2_roc_test_info_median.pkl
-Calibration information for L2 saved to output/baseline/L2_calibration_test_info_median.pkl
-Proportions information for L2 saved to output/baseline/L2_proportions_test_info_median.pkl
+[0, 10)
+{'test_accuracy': 0.6725060489323909, 'test_recall': 0.7970863683662851, 'test_roc_auc': 0.7931708986383172, 'test_pr_auc': 0.34107046230669874, 'test_calibration_error': 0.007868517590505157, 'correctly_predicted_positives_ratio': 0.10358842406122762}
+[10, 20)
+{'test_accuracy': 0.8090596102616847, 'test_recall': 0.7747136935291224, 'test_roc_auc': 0.8770266528378863, 'test_pr_auc': 0.3583105142369614, 'test_calibration_error': 0.008229904634413948, 'correctly_predicted_positives_ratio': 0.06254171243611971}
+[20, 30)
+{'test_accuracy': 0.8809000765782631, 'test_recall': 0.7144972871221349, 'test_roc_auc': 0.9026697208887553, 'test_pr_auc': 0.3210597998235305, 'test_calibration_error': 0.007320286424442066, 'correctly_predicted_positives_ratio': 0.03507583422402845}
+[30, 40)
+{'test_accuracy': 0.8461130319742728, 'test_recall': 0.7721146481409318, 'test_roc_auc': 0.8979956575307786, 'test_pr_auc': 0.3666501269033998, 'test_calibration_error': 0.009477014284046636, 'correctly_predicted_positives_ratio': 0.0503092010853339}
+[40, 50)
+{'test_accuracy': 0.7363504570676991, 'test_recall': 0.846249658231309, 'test_roc_auc': 0.859672378361792, 'test_pr_auc': 0.41203135389012147, 'test_calibration_error': 0.00899081898270993, 'correctly_predicted_positives_ratio': 0.09603679295858895}
+[50, 60)
+{'test_accuracy': 0.8229815005582526, 'test_recall': 0.7911002743066138, 'test_roc_auc': 0.8812268768663702, 'test_pr_auc': 0.291314776771729, 'test_calibration_error': 0.023150658481739486, 'correctly_predicted_positives_ratio': 0.04002763504469105}
+[60, 70)
+{'test_accuracy': 0.6826907511537769, 'test_recall': 0.8663906739166255, 'test_roc_auc': 0.841021773431878, 'test_pr_auc': 0.4657309249206294, 'test_calibration_error': 0.013179944972252921, 'correctly_predicted_positives_ratio': 0.12848080194744704}
+[70, 80)
+{'test_accuracy': 0.7369659721181232, 'test_recall': 0.8522453285111513, 'test_roc_auc': 0.8571093952354283, 'test_pr_auc': 0.37752040222495353, 'test_calibration_error': 0.014348861339808526, 'correctly_predicted_positives_ratio': 0.08477739469344926}
+[80, 90)
+{'test_accuracy': 0.6326297264782207, 'test_recall': 0.9151902715169304, 'test_roc_auc': 0.8487525782124575, 'test_pr_auc': 0.5544042170160401, 'test_calibration_error': 0.03005510755256696, 'correctly_predicted_positives_ratio': 0.17359833759209362}
+[90, 100)
+{'test_accuracy': 0.6007644131615296, 'test_recall': 0.8965800009647388, 'test_roc_auc': 0.8098125890006693, 'test_pr_auc': 0.49358156677078907, 'test_calibration_error': 0.013435330369202901, 'correctly_predicted_positives_ratio': 0.1758434088285936}
+above 100
+{'test_accuracy': 0.5564356638976454, 'test_recall': 0.9253294557692484, 'test_roc_auc': 0.8103750928766424, 'test_pr_auc': 0.5450237144998599, 'test_calibration_error': 0.026749307397878144, 'correctly_predicted_positives_ratio': 0.20779364802283673}
 
-Finished computing and exporting results: 0.03hours
 
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
+    baseline_main(model, setting_tag, first, upto180, sample, median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
+    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
+    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
+  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
+    with open(filename, 'wb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/L2_roc_test_info_median.pkl'
