@@ -22,14 +22,14 @@
 Baseline train with model L2
 
 WARNING: Working on median stumps
-GridSearchCV for Logistic: 208.7s
+GridSearchCV for Logistic: 253.2s
 
 
-Fitting for Logistic: 18.2s
+Fitting for Logistic: 19.8s
 
 75 features selected: ['(Intercept)', 'concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
 {'training_accuracy': 0.908, 'training_roc_auc': 0.88, 'training_calibration_error': 0.006}
-Finished training and fitting L2: 0.06 hours
+Finished training and fitting L2: 0.08 hours
 ============================================================ 
 Baseline test with model L2
 
@@ -86,13 +86,10 @@ above 100
 {'test_accuracy': 0.5564356638976454, 'test_recall': 0.9253294557692484, 'test_roc_auc': 0.8103750928766424, 'test_pr_auc': 0.5450237144998599, 'test_calibration_error': 0.026749307397878144, 'correctly_predicted_positives_ratio': 0.20779364802283673}
 
 
-Traceback (most recent call last):
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
-    baseline_main(model, setting_tag, first, upto180, sample, median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
-    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
-    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
-    with open(filename, 'wb') as f:
-FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/L2_roc_test_info_median.pkl'
+ROC information for L2 saved to ../output/baseline/L2_roc_test_info_median.pkl
+Calibration information for L2 saved to ../output/baseline/L2_calibration_test_info_median.pkl
+Proportions information for L2 saved to ../output/baseline/L2_proportions_test_info_median.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/L2_recallMME_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

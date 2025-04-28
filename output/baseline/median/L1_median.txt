@@ -5,41 +5,115 @@ Try increasing solver accuracy or number of iterations, decreasing alpha, or swi
   warnings.warn(message, ConvergenceWarning)
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/statsmodels/base/l1_solvers_common.py:144: ConvergenceWarning: Could not trim params automatically due to failed QC check. Trimming using trim_mode == 'size' will still work.
   warnings.warn(msg, ConvergenceWarning)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
 ============================================================ 
 Baseline train with model L1
 
 WARNING: Working on median stumps
-GridSearchCV for Lasso: 831.1s
+GridSearchCV for Lasso: 918.2s
 
 
-Fitting for Lasso: 86.6s
+Fitting for Lasso: 104.0s
 
 Optimization terminated successfully    (Exit mode 0)
             Current function value: 0.2216517744150865
             Iterations: 198
             Function evaluations: 198
             Gradient evaluations: 198
-                                                                   Feature  ...       CI Upper
-(Intercept)                                                    (Intercept)  ...  106969.946131
-concurrent_MME10                                          concurrent_MME10  ...      -0.084959
-concurrent_MME15                                          concurrent_MME15  ...      -0.413208
-concurrent_MME20                                          concurrent_MME20  ...       0.014067
-concurrent_MME25                                          concurrent_MME25  ...      -0.541284
-...                                                                    ...  ...            ...
-median_household_income_quartile_1.0  median_household_income_quartile_1.0  ...   55561.647957
-family_poverty_pct_quartile_0.0            family_poverty_pct_quartile_0.0  ...  148739.695030
-family_poverty_pct_quartile_1.0            family_poverty_pct_quartile_1.0  ...  148634.685050
-unemployment_pct_quartile_0.0                unemployment_pct_quartile_0.0  ...  154914.084435
-unemployment_pct_quartile_1.0                unemployment_pct_quartile_1.0  ...  154914.157795
+                                                                   Feature  ...      CI Upper
+(Intercept)                                                    (Intercept)  ...  54169.752250
+concurrent_MME10                                          concurrent_MME10  ...     -0.084959
+concurrent_MME15                                          concurrent_MME15  ...     -0.413208
+concurrent_MME20                                          concurrent_MME20  ...      0.014067
+concurrent_MME25                                          concurrent_MME25  ...     -0.541284
+...                                                                    ...  ...           ...
+median_household_income_quartile_1.0  median_household_income_quartile_1.0  ...           NaN
+family_poverty_pct_quartile_0.0            family_poverty_pct_quartile_0.0  ...  62156.151844
+family_poverty_pct_quartile_1.0            family_poverty_pct_quartile_1.0  ...  62156.221333
+unemployment_pct_quartile_0.0                unemployment_pct_quartile_0.0  ...  70909.869858
+unemployment_pct_quartile_1.0                unemployment_pct_quartile_1.0  ...  70909.943219
 
 [75 rows x 5 columns]
-Traceback (most recent call last):
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
-    baseline_main(model, setting_tag, first, upto180, sample, median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 43, in baseline_main
-    best_model, filtered_columns = baseline_train(year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 191, in baseline_train
-    best_model, prob, pred = base.Lasso(X=x, 
-  File "/mnt/phd/jihu/opioid/Code/utils/baseline_functions.py", line 135, in Lasso
-    _, best_model, prob, pred = cross_validate(X=X,Y=Y,estimator=lasso,c_grid=c_grid,seed=seed,model='Lasso')
-TypeError: cannot unpack non-iterable NoneType object
+51 features selected: ['(Intercept)', 'concurrent_MME10', 'concurrent_MME15', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'num_prescribers_past1803', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'Codeine', 'HMFO', 'Medicare', 'CashCredit', 'ever_switch_drug', 'ever_switch_payment', 'patient_HPIQuartile_0.0', 'patient_HPIQuartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+{'training_accuracy': 0.907, 'training_roc_auc': 0.875, 'training_calibration_error': 0.011}
+Finished training and fitting L1: 0.31 hours
+============================================================ 
+Baseline test with model L1
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+Optimal threshold for binary classification: 0.10192625618746715
+test_accuracy
+0.772
+test_roc_auc
+0.876
+test_pr_auc
+0.421
+test_calibration_error
+0.012
+
+
+0: Accuracy = 0.7660, ROC AUC = 0.8733, Calibration = 0.0127
+1: Accuracy = 0.7770, ROC AUC = 0.8787, Calibration = 0.0128
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (579837, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 65.8; two months: 88.2, three months: 94.7
+1
+{'test_accuracy': 0.947, 'test_recall': 0.303, 'test_precision': 0.176, 'test_roc_auc': 0.87, 'test_pr_auc': 0.152, 'test_calibration_error': 0.009}
+2
+{'test_accuracy': 0.549, 'test_recall': 0.941, 'test_precision': 0.159, 'test_roc_auc': 0.827, 'test_pr_auc': 0.325, 'test_calibration_error': 0.066}
+3
+{'test_accuracy': 0.498, 'test_recall': 0.952, 'test_precision': 0.273, 'test_roc_auc': 0.789, 'test_pr_auc': 0.456, 'test_calibration_error': 0.032}
+
+
+[0, 10)
+{'test_accuracy': 0.6855286145569112, 'test_recall': 0.7772590488511404, 'test_roc_auc': 0.7923073192326361, 'test_pr_auc': 0.34561380606742187, 'test_calibration_error': 0.014298706741252915, 'correctly_predicted_positives_ratio': 0.1010116885110489}
+[10, 20)
+{'test_accuracy': 0.7986704958604247, 'test_recall': 0.77956158223846, 'test_roc_auc': 0.8736482380818797, 'test_pr_auc': 0.35438343672391265, 'test_calibration_error': 0.009299984634572161, 'correctly_predicted_positives_ratio': 0.06293307670928819}
+[20, 30)
+{'test_accuracy': 0.860545343233016, 'test_recall': 0.7524637360203743, 'test_roc_auc': 0.8983267307460143, 'test_pr_auc': 0.3040279914049763, 'test_calibration_error': 0.010539082175486582, 'correctly_predicted_positives_ratio': 0.0369396689671855}
+[30, 40)
+{'test_accuracy': 0.8347615040927665, 'test_recall': 0.7784839893038068, 'test_roc_auc': 0.8945757438523068, 'test_pr_auc': 0.35928955834400855, 'test_calibration_error': 0.012094017775013276, 'correctly_predicted_positives_ratio': 0.05072421259446108}
+[40, 50)
+{'test_accuracy': 0.716204312622929, 'test_recall': 0.8586596591426923, 'test_roc_auc': 0.8554584588547752, 'test_pr_auc': 0.4088344210347147, 'test_calibration_error': 0.01587521243457536, 'correctly_predicted_positives_ratio': 0.09744514411897033}
+[50, 60)
+{'test_accuracy': 0.8039083848920198, 'test_recall': 0.8120694910088387, 'test_roc_auc': 0.876514349839044, 'test_pr_auc': 0.27956111913236753, 'test_calibration_error': 0.026577167161757457, 'correctly_predicted_positives_ratio': 0.04108862336765096}
+[60, 70)
+{'test_accuracy': 0.6592150957688231, 'test_recall': 0.8764211566979733, 'test_roc_auc': 0.8361324632393488, 'test_pr_auc': 0.4605472185087959, 'test_calibration_error': 0.02006164367517808, 'correctly_predicted_positives_ratio': 0.12996826540990766}
+[70, 80)
+{'test_accuracy': 0.7204766901514016, 'test_recall': 0.8612115732368897, 'test_roc_auc': 0.8517920514693521, 'test_pr_auc': 0.36696187720285484, 'test_calibration_error': 0.017846302556955566, 'correctly_predicted_positives_ratio': 0.08566931494528557}
+[80, 90)
+{'test_accuracy': 0.6104775445678435, 'test_recall': 0.9178635077052102, 'test_roc_auc': 0.8441784307084839, 'test_pr_auc': 0.5602411329098489, 'test_calibration_error': 0.03742082074005884, 'correctly_predicted_positives_ratio': 0.17410541177406366}
+[90, 100)
+{'test_accuracy': 0.5870939055079374, 'test_recall': 0.8995224542954995, 'test_roc_auc': 0.8027627095189642, 'test_pr_auc': 0.4907017165673786, 'test_calibration_error': 0.02604500413710881, 'correctly_predicted_positives_ratio': 0.1764205029233127}
+above 100
+{'test_accuracy': 0.5600911826013739, 'test_recall': 0.914547266957484, 'test_roc_auc': 0.8010575084176628, 'test_pr_auc': 0.5455295065338102, 'test_calibration_error': 0.03868785506602619, 'correctly_predicted_positives_ratio': 0.20537238029716492}
+
+
+ROC information for L1 saved to ../output/baseline/L1_roc_test_info_median.pkl
+Calibration information for L1 saved to ../output/baseline/L1_calibration_test_info_median.pkl
+Proportions information for L1 saved to ../output/baseline/L1_proportions_test_info_median.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/L1_recallMME_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

@@ -38,14 +38,14 @@
 Baseline train with model RandomForest
 
 WARNING: Working on median stumps
-GridSearchCV for RF: 3612.9s
+GridSearchCV for RF: 3808.6s
 
 
-Fitting for RF: 57.5s
+Fitting for RF: 44.3s
 
 27 features selected: ['concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_pharmacies_past1802', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age40', 'age50', 'age70', 'Codeine', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
 {'training_accuracy': 0.904, 'training_roc_auc': 0.858, 'training_calibration_error': 0.053}
-Finished training and fitting RandomForest: 1.02 hours
+Finished training and fitting RandomForest: 1.07 hours
 ============================================================ 
 Baseline test with model RandomForest
 
@@ -102,13 +102,10 @@ above 100
 {'test_accuracy': 0.44861634509739495, 'test_recall': 0.9577217481961097, 'test_roc_auc': 0.7897174372835906, 'test_pr_auc': 0.49286437658146626, 'test_calibration_error': 0.09337853339792684, 'correctly_predicted_positives_ratio': 0.21506771951081766}
 
 
-Traceback (most recent call last):
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 429, in <module>
-    baseline_main(model, setting_tag, first, upto180, sample, median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 44, in baseline_main
-    baseline_test(best_model, filtered_columns, year, first, upto180, model, setting_tag=setting_tag, sample=sample, median=median)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 371, in baseline_test
-    if export_files: export_results(model, y_test, prob, ece, median, proportions, test_results_by_MME)
-  File "/mnt/phd/jihu/opioid/Code/baseline_main.py", line 385, in export_results
-    with open(filename, 'wb') as f:
-FileNotFoundError: [Errno 2] No such file or directory: 'output/baseline/RandomForest_roc_test_info_median.pkl'
+ROC information for RandomForest saved to ../output/baseline/RandomForest_roc_test_info_median.pkl
+Calibration information for RandomForest saved to ../output/baseline/RandomForest_calibration_test_info_median.pkl
+Proportions information for RandomForest saved to ../output/baseline/RandomForest_proportions_test_info_median.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/RandomForest_recallMME_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

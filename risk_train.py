@@ -27,14 +27,19 @@ def risk_train(scenario:str,
                max_points:int,
                max_features:int,
                c:float, 
+               interceptub:int,
+               interceptlb:int,
                weight:str, 
                first:bool,
                upto180:bool,
                median:bool,
                feature_set,
+               cutoff_set,
                essential_num,
                nodrug:bool,
+               noinsurance:bool,
                county_name:str,
+               stretch:bool,
                setting_tag:str,
                case:str='Explore',
                outcome:str='long_term_180', 
@@ -91,18 +96,18 @@ def risk_train(scenario:str,
                              'family_poverty_pct_quartile', 'unemployment_pct_quartile']
     FULL = FULL.dropna(subset=quartile_list) # drop NA rows
 
-    x, constraints = import_stumps(year, case, first, upto180, median, feature_set, essential_num, nodrug)
+    x, constraints = import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance)
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0]= -1
 
-    if county_name is not None: 
-        zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
-        FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
-        indices = FULL.index[FULL['county'] == county_name].tolist()
-        x = x.iloc[indices]
-        y = y[indices]
-        print(f"Subsetting to county {county_name} with {len(y)} prescriptions.")
-        return
+    # if county_name is not None: 
+    #     zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
+    #     FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
+    #     indices = FULL.index[FULL['county'] == county_name].tolist()
+    #     x = x.iloc[indices]
+    #     y = y[indices]
+    #     print(f"Subsetting to county {county_name} with {len(y)} prescriptions.")
+    #     return
 
     if scenario == 'single':
         
@@ -122,6 +127,8 @@ def risk_train(scenario:str,
                                                                    max_coefficient=max_points, 
                                                                    max_L0_value=max_features,
                                                                    c0_value=c, 
+                                                                   max_offset=interceptub,
+                                                                   min_offset=interceptlb,
                                                                    class_weight=weight,
                                                                    single_cutoff=constraints['single_cutoff'],
                                                                    two_cutoffs=constraints['two_cutoffs'],
@@ -160,7 +167,7 @@ def risk_train(scenario:str,
 
 
 
-def import_stumps(year, case, first, upto180, median, feature_set, essential_num, nodrug, datadir='/export/storage_cures/CURES/Processed/'):
+def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, datadir='/export/storage_cures/CURES/Processed/'):
 
     N = 20
     data_frames = []
@@ -205,44 +212,42 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
         drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit']]
         feature_drug_payment = ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit']
 
+    if noinsurance:
+        base_feature_list = [feature for feature in base_feature_list if feature not in ['Medicare_Medicaid']]
+        drug_payment = [['Medicaid', 'Medicare', 'CashCredit']]
+        feature_drug_payment = ['Medicaid', 'Medicare', 'CashCredit']
+
     # ============================================================================================
     
-    # (2) Spatial demographics
-    # features_set_2 = ['patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile']
-    
-    # (3) Spatial intensity of opioid use in the patient zip code (pt_zip)
-    # features_set_3 = ['patient_zip_avg_days', 'patient_zip_avg_MME', 
-    #                   # 'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
-    #                   'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
-    
+    # (2) Spatial demographics, intensity of opioid use in the patient zip code (pt_zip)
     features_set_2 = ['patient_zip_avg_days', 'patient_zip_avg_MME',
-                      'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
+                    'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
 
-    # (4) Provider prescription history
-    features_set_4 = ['prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 'prescriber_yr_num_pharmacies_quartile', 
+    # (3) Provider prescription history
+    features_set_3 = ['prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 'prescriber_yr_num_pharmacies_quartile', 
                       'prescriber_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile']
     
-    # (5) Pharmacy prescription history
-    features_set_5 = ['pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 'pharmacy_yr_num_prescribers_quartile',
+    # (4) Pharmacy prescription history
+    features_set_4 = ['pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 'pharmacy_yr_num_prescribers_quartile',
                       'pharmacy_yr_avg_MME_quartile', 'pharmacy_yr_avg_days_quartile']
     
-    # (6) Other spatial demographics measured at pt_zip level
-    features_set_6 = ['patient_HPIQuartile', 'zip_pop_density_quartile', 'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile']
+    # (5) Other spatial demographics measured at pt_zip level
+    features_set_5 = ['patient_HPIQuartile', 'zip_pop_density_quartile', 'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile']
 
-    # (7) final set of features
-    feature_set_7 = ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile_1.0', 'concurrent_MME40', 'age30', 'pharmacy_yr_avg_days_quartile_1.0', 'ever_switch_payment']
+    # (6) final set of features
+    features_set_6 = ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile_1.0', 'concurrent_MME40', 'age30', 'pharmacy_yr_avg_days_quartile_1.0', 'ever_switch_payment']
+
 
     # FEATURES TO KEEP
     if feature_set == '1': features_to_keep = base_feature_list
     elif feature_set == '2': features_to_keep = base_feature_list + features_set_2
-    # elif feature_set == '3': features_to_keep = base_feature_list + features_set_3
-    elif feature_set == '4': features_to_keep = base_feature_list + features_set_4
-    elif feature_set == '5': features_to_keep = base_feature_list + features_set_5 
-    elif feature_set == '6': features_to_keep = base_feature_list + features_set_6
-    elif feature_set == '7': features_to_keep = feature_set_7
+    elif feature_set == '3': features_to_keep = base_feature_list + features_set_3
+    elif feature_set == '4': features_to_keep = base_feature_list + features_set_4 
+    elif feature_set == '5': features_to_keep = base_feature_list + features_set_5
+    elif feature_set == '6': features_to_keep = feature_set_6
+    elif feature_set == 'nodemo': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4
     else: 
-        # features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6
-        features_to_keep = base_feature_list + features_set_2 + features_set_4 + features_set_5 + features_set_6
+        features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5
 
     # ============================================================================================
     
@@ -257,7 +262,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
     STUMPS = STUMPS[filtered_columns]
 
     # NOTE: create a new column called 'Medicare_medicaid' which is the sum of 'Medicare' and 'Medicaid'
-    STUMPS['Medicare_Medicaid'] = STUMPS['Medicare'] + STUMPS['Medicaid']
+    if not noinsurance: STUMPS['Medicare_Medicaid'] = STUMPS['Medicare'] + STUMPS['Medicaid']
 
     STUMPS['(Intercept)'] = 1
     intercept = STUMPS.pop('(Intercept)')
@@ -268,7 +273,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
     
     # CUTOFF CONDITIONS  
      
-    if feature_set == 'atmostonecutoff_feature':
+    if cutoff_set == 'atmostone_feature':
 
         ### ONE CUTOFF PER FEATURE
 
@@ -277,7 +282,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
 
         two_cutoff = None
 
-    if feature_set == 'atmostonecutoff_group':
+    if cutoff_set == 'atmostone_group':
         
         ### ONE CUTOFF PER FEATURE
         ### AT MOST ONE CUTOFF PER GROUP
@@ -288,13 +293,13 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
 
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
 
-        features_sets = [features_set_2, features_set_4, features_set_5, features_set_6]
+        features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
         for features_set in features_sets:
             single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
 
         two_cutoff = None
 
-    elif feature_set == 'exactlyonecutoff_group':
+    elif cutoff_set == 'exactlyone_group':
 
         ### ONE CUTOFF PER FEATURE
         ### EXACTLY ONE CUTOFF PER GROUP
@@ -305,7 +310,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
 
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
 
-        features_sets = [features_set_2, features_set_4, features_set_5, features_set_6]
+        features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
         for features_set in features_sets:
             single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
             essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at least one cutoff per group
@@ -316,7 +321,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
         two_cutoff = None
 
 
-    elif feature_set == 'atmosttwocutoff_group':
+    elif cutoff_set == 'atmosttwo_group':
         
         ### ONE CUTOFF PER FEATURE
         ### AT MOST TWO CUTOFFS PER GROUP
@@ -328,14 +333,14 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
 
         two_cutoff = []
-        features_sets = [features_set_2, features_set_4, features_set_5, features_set_6]
+        features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
         for features_set in features_sets:
             two_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most two cutoffs per group
         
         two_cutoff.extend(updated_drug_payment) # at most two cutoffs in drug & payment
 
 
-    elif feature_set == 'exactlytwocutoff_group':
+    elif cutoff_set == 'exactlytwo_group':
         
         ### ONE CUTOFF PER FEATURE
         ### EXACTLY TWO CUTOFFS PER GROUP
@@ -348,7 +353,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
 
         two_cutoff = []
-        features_sets = [features_set_2, features_set_4, features_set_5, features_set_6]
+        features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
         for features_set in features_sets:
             two_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most two cutoffs per group
             essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at least essential_num cutoff per group (essential_num = 2)
@@ -357,7 +362,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, essential_num
         essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in feature_drug_payment)]] # at least one cutoff in drug/payment
 
 
-    elif feature_set == 'atleast_total':
+    elif cutoff_set == 'atleast_total':
         
         ### ONE CUTOFF PER FEATURE
         ### FOUR CONDITIONS IN ADDITION TO CORE

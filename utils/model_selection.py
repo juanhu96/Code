@@ -110,7 +110,6 @@ def cross_validate(model, X, Y, estimator, c_grid, seed, cv=5, partial=False, ex
                 print(results)
                 results.to_csv(f'{exportdir}LogisticRegression_L1.csv', index=False)
 
-                return
         print(f'{len(selected_features)} features selected: {selected_features}')
 
     results = {'training_accuracy': round(accuracy_score(Y, pred), 3),

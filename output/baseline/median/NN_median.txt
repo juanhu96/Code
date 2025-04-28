@@ -1,2 +1,96 @@
 /mnt/phd/jihu/opioid/Code/baseline_main.py:75: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:279: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model NN
+
+WARNING: Working on median stumps
+GridSearchCV for NN: 7832.9s
+
+
+Fitting for NN: 917.7s
+
+All 75 features are selected as input for neural network
+
+{'training_accuracy': 0.912, 'training_roc_auc': 0.896, 'training_calibration_error': 0.003}
+Finished training and fitting NN: 2.43 hours
+============================================================ 
+Baseline test with model NN
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+Optimal threshold for binary classification: 0.11202304816146391
+test_accuracy
+0.798
+test_roc_auc
+0.894
+test_pr_auc
+0.468
+test_calibration_error
+0.003
+
+
+0: Accuracy = 0.7934, ROC AUC = 0.8905, Calibration = 0.0046
+1: Accuracy = 0.8008, ROC AUC = 0.8968, Calibration = 0.0027
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (584338, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 69.1; two months: 88.0, three months: 94.3
+1
+{'test_accuracy': 0.939, 'test_recall': 0.43, 'test_precision': 0.19, 'test_roc_auc': 0.893, 'test_pr_auc': 0.197, 'test_calibration_error': 0.002}
+2
+{'test_accuracy': 0.679, 'test_recall': 0.871, 'test_precision': 0.201, 'test_roc_auc': 0.849, 'test_pr_auc': 0.362, 'test_calibration_error': 0.045}
+3
+{'test_accuracy': 0.555, 'test_recall': 0.923, 'test_precision': 0.295, 'test_roc_auc': 0.81, 'test_pr_auc': 0.504, 'test_calibration_error': 0.017}
+
+
+[0, 10)
+{'test_accuracy': 0.6885147038398842, 'test_recall': 0.7894929268498467, 'test_roc_auc': 0.8072507470350535, 'test_pr_auc': 0.3668970229550825, 'test_calibration_error': 0.006657154617713561, 'correctly_predicted_positives_ratio': 0.10260158916966981}
+[10, 20)
+{'test_accuracy': 0.8060988544559753, 'test_recall': 0.8005690999789222, 'test_roc_auc': 0.8863782833388865, 'test_pr_auc': 0.38499175213413384, 'test_calibration_error': 0.003507926218042617, 'correctly_predicted_positives_ratio': 0.06462898855968494}
+[20, 30)
+{'test_accuracy': 0.8844476818258106, 'test_recall': 0.7298056693610896, 'test_roc_auc': 0.911659560314397, 'test_pr_auc': 0.3535822780396457, 'test_calibration_error': 0.0018388046903787118, 'correctly_predicted_positives_ratio': 0.03582734761299371}
+[30, 40)
+{'test_accuracy': 0.8465569366897316, 'test_recall': 0.7963557693599753, 'test_roc_auc': 0.9082674933065854, 'test_pr_auc': 0.40564727280644963, 'test_calibration_error': 0.00290716647722361, 'correctly_predicted_positives_ratio': 0.051888696364796864}
+[40, 50)
+{'test_accuracy': 0.7517578532384319, 'test_recall': 0.8461129507549291, 'test_roc_auc': 0.8710335017505849, 'test_pr_auc': 0.4456042647612853, 'test_calibration_error': 0.004944419060416165, 'correctly_predicted_positives_ratio': 0.09602127868632038}
+[50, 60)
+{'test_accuracy': 0.8397259935970588, 'test_recall': 0.783419689119171, 'test_roc_auc': 0.8934379628896074, 'test_pr_auc': 0.3127560732933071, 'test_calibration_error': 0.016530269425789456, 'correctly_predicted_positives_ratio': 0.03963901722872318}
+[60, 70)
+{'test_accuracy': 0.7153569148724966, 'test_recall': 0.8568545065084857, 'test_roc_auc': 0.8570775340186068, 'test_pr_auc': 0.5048424851842956, 'test_calibration_error': 0.005684682172241671, 'correctly_predicted_positives_ratio': 0.1270666426391939}
+[70, 80)
+{'test_accuracy': 0.7590766002098636, 'test_recall': 0.8501356238698011, 'test_roc_auc': 0.8736374277556174, 'test_pr_auc': 0.4164700243509491, 'test_calibration_error': 0.010051092196787485, 'correctly_predicted_positives_ratio': 0.08456753110478189}
+[80, 90)
+{'test_accuracy': 0.6802449864283087, 'test_recall': 0.9159241010588112, 'test_roc_auc': 0.8674153781026701, 'test_pr_auc': 0.5950973333164731, 'test_calibration_error': 0.01046982469117249, 'correctly_predicted_positives_ratio': 0.1737375344263599}
+[90, 100)
+{'test_accuracy': 0.6360901402054834, 'test_recall': 0.8938304953933722, 'test_roc_auc': 0.8288259965100722, 'test_pr_auc': 0.5326905147936412, 'test_calibration_error': 0.008394998930622701, 'correctly_predicted_positives_ratio': 0.17530415696959376}
+above 100
+{'test_accuracy': 0.6146918993294793, 'test_recall': 0.941671925155697, 'test_roc_auc': 0.8508610450094174, 'test_pr_auc': 0.6138805138014175, 'test_calibration_error': 0.017862373918543797, 'correctly_predicted_positives_ratio': 0.2114635423619169}
+
+
+ROC information for NN saved to ../output/baseline/NN_roc_test_info_median.pkl
+Calibration information for NN saved to ../output/baseline/NN_calibration_test_info_median.pkl
+Proportions information for NN saved to ../output/baseline/NN_proportions_test_info_median.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/NN_recallMME_test_info_median.pkl
+
+Finished computing and exporting results: 0.03hours
+

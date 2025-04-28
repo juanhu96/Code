@@ -42,7 +42,7 @@ def print_summary(filename,
 # print_summary("FULL_OPIOID_2018_ATLEASTTWO_1_TEMP.csv")
 # print_summary("FULL_OPIOID_2019_ONE.csv")
 # print_summary("FULL_OPIOID_2019_ONE_TEMP.csv")
-print_summary("FULL_OPIOID_2019_INPUT.csv")
+# print_summary("FULL_OPIOID_2019_INPUT.csv")
 
 
 def compare_cols(year,
@@ -64,3 +64,26 @@ def compare_cols(year,
     return
 
 # compare_cols(2018)
+
+
+def compute_county(year,
+                   datadir = "/export/storage_cures/CURES/Processed/",
+                   resultdir="/export/storage_cures/CURES/Results/"):
+
+    FULL = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_FEATURE.csv")
+
+    CA = pd.read_csv(f"{resultdir}../CA/California_DemographicsByZip2020.csv")
+    CA = CA.rename(columns={'      name': 'zip'}) 
+    CA = CA[['zip', 'county_name']]
+    CA['county'] = CA['county_name'].str.replace(r";.*", "", regex=True)
+    CA = CA[['zip', 'county']]
+    print(CA.head())
+
+    MERGED = pd.merge(CA, FULL, left_on='zip', right_on='patient_zip', how='inner')
+    COUNTY_SUMMARY = MERGED.groupby('county').size().reset_index(name='n')
+
+    print(COUNTY_SUMMARY)
+    
+
+compute_county(2018)
+compute_county(2019)

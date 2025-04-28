@@ -17,7 +17,6 @@ import pandas as pd
 
 from risk_train import risk_train
 from risk_test import risk_test
-from risk_stumps import create_stumps
 from baseline_main import baseline_main
 import matplotlib.pyplot as plt
 
@@ -45,6 +44,18 @@ if c0:
     c0 = float(c0_arg.replace('c0', ''))
 else: c0 = None
 
+interceptub = any(['interceptub' in arg for arg in sys.argv])
+if interceptub:
+    interceptub_arg = [arg for arg in sys.argv if 'interceptub' in arg][0]
+    interceptub = int(interceptub_arg.replace('interceptub', ''))
+else: interceptub = None
+
+interceptlb = any(['interceptlb' in arg for arg in sys.argv])
+if interceptlb:
+    interceptlb_arg = [arg for arg in sys.argv if 'interceptlb' in arg][0]
+    interceptlb = int(interceptlb_arg.replace('interceptlb', ''))
+else: interceptlb = None
+
 single = any(['single' in arg for arg in sys.argv])
 scenario = 'single' if single else 'CV'
 
@@ -60,6 +71,12 @@ if feature:
     feature_set = feature_arg.replace('feature_', '')
 else: feature_set = None
 
+cutoff = any(['cutoff_' in arg for arg in sys.argv])
+if cutoff:
+    cutoff_arg = [arg for arg in sys.argv if 'cutoff_' in arg][0]
+    cutoff_set = cutoff_arg.replace('cutoff_', '')
+else: cutoff_set = None
+
 essential = any(['essential' in arg for arg in sys.argv])
 if essential:
     essential_arg = [arg for arg in sys.argv if 'essential' in arg][0]
@@ -67,6 +84,7 @@ if essential:
 else: essential_num = None
 
 nodrug =  any(['nodrug' in arg for arg in sys.argv])
+noinsurance = any(['noinsurance' in arg for arg in sys.argv])
 
 county_arg = next((arg for arg in sys.argv if arg.startswith('county')), None)
 if county_arg:
@@ -74,40 +92,51 @@ if county_arg:
 else:
     county_name = None
 
+stretch = any(['stretch' in arg for arg in sys.argv])
+
 # =================================== Train ====================================
 
-setting_tag = f"{stage}"
+setting_tag = f"_{stage}"
 setting_tag += f"_{scenario}" if scenario else ""
 setting_tag += f"_p{max_points}" if maxpoint else ""
 setting_tag += f"_f{max_features}" if maxfeatures else ""
 setting_tag += f"_c0{c0}" if c0 else ""
+setting_tag += f"_interceptub{interceptub}" if interceptub else ""
+setting_tag += f"_interceptlb{interceptlb}" if interceptlb else ""
 setting_tag += f"_single" if single else ""
 setting_tag += f"_balanced" if balanced else ""
 setting_tag += f"_first" if first else ""
 setting_tag += f"_upto180" if upto180 else ""
 setting_tag += f"_median" if median else ""
 setting_tag += f"_feature{feature_set}" if feature else ""
+setting_tag += f"_cutoff{cutoff_set}" if cutoff else ""
 setting_tag += f"_essential{essential_num}" if essential else ""
 setting_tag += f"_nodrug" if nodrug else ""
+setting_tag += f"_noinsurance" if noinsurance else ""
 setting_tag += f"_county{county_name}" if county_name is not None else ""
+setting_tag += f"_stretch" if stretch else ""
 print(f"Setting tag: {setting_tag}")
 
 
-def main(stage, scenario, max_points, max_features, c0, balanced, first, upto180, median, feature_set, essential_num, nodrug, county_name, setting_tag):
+def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, setting_tag):
+
+    print(f"Stage: {stage}, Scenario: {scenario}, Max Points: {max_points}, Max Features: {max_features}, C0: {c0},\
+        Intercept Upper Bound: {interceptub}, Intercept Lower Bound: {interceptlb}, Balanced: {balanced},\
+            First: {first}, Upto180: {upto180}, Median: {median}, Feature Set: {feature_set}, Cutoff Set: {cutoff_set}, Essential Num: {essential_num}, No Drug: {nodrug},\
+                No Insurance: {noinsurance}, County Name: {county_name}, Setting Tag: {setting_tag}")
 
     # =================================== Train ======================================
     if stage == 'train':
         
         if scenario == 'single':
             print(f'Start single training, file saved with setting tag {setting_tag}\n')
-            raise SystemExit("..")
             weight = 'balanced' if balanced else 'original'
-            table = risk_train(scenario, 2019, max_points, max_features, c0, weight, first, upto180, median, feature_set, essential_num, nodrug, county_name, setting_tag)
-        
+            table = risk_train(scenario, 2018, max_points, max_features, c0, interceptub, interceptlb, weight, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, setting_tag)
         else: 
             print(f'Start CV training, points {max_points}, features {max_features}, file saved with name {name}\n')
-            raise Exception("CV training not implemented.")
             c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]
+            max_points = [2, 3, 4, 5]
+            raise SystemExit("CV training is not implemented yet.")
             best_c = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
             print(f'Single training with the best c = {best_c}\n')
             risk_train(year=2018, features='LTOUR', scenario='single', c=best_c, max_points=max_points, max_features=max_features, weight=weight, name=name)
@@ -125,24 +154,38 @@ def main(stage, scenario, max_points, max_features, c0, balanced, first, upto180
         'scores': [2, 2, 1, 1, 1, 1]}
 
         LTOUR_table = {'intercept': -7, 
-        'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 
-        'concurrent_MME', 'age', 'Medicaid', 'pharmacy_yr_avg_days_quartile'], 
+        'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 
+        'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 
         'cutoffs': [1, '1', 40, 30, 1, '1'], 
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        table = CURES_table
+        TableNew1 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+        TableNew2 = {'intercept': -8, 'conditions': ['num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 30, '1', 40, 1, '1'], 'scores': [2, 2, 2, 1, 1, 1]}
+        TableNew3 = {'intercept': -9, 'conditions': ['concurrent_MME', 'num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [10, 1, 30, '1', 1, '1'], 'scores': [2, 2, 2, 2, 1, 1]}
+        TableNew4 = {'intercept': -9, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prior_prescriptions', 'age', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 1, 30, 30, 1, '1'], 'scores': [3, 2, 2, 1, 1, 1]}
+
+        # iterate through tables
+        tables = {'TableNew1': TableNew1, 'TableNew2': TableNew2, 'TableNew3': TableNew3, 'TableNew4': TableNew4}
+        for table_name, table in tables.items():
+            setting_tag = f"_{table_name}"
+            print(f"Start testing with {table_name}:")
+            print(f"Intercept: {table['intercept']}\n")
+            for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
+                print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
+            
+            risk_test(2019, table, first, upto180, median, setting_tag)
         
-        print("Start testing with table:")
-        print(f"Intercept: {table['intercept']}\n")
-        for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
-            print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
+        # print("Start testing with table:")
+        # print(f"Intercept: {table['intercept']}\n")
+        # for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
+        #     print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
         
-        risk_test(2019, table, first, upto180, median, setting_tag)
+        # risk_test(2019, table, first, upto180, median, setting_tag)
 
     return
 
 
 
 if __name__ == "__main__":
-    main(stage, scenario, max_points, max_features, c0, balanced, first, upto180, median, feature_set, essential_num, nodrug, county_name, setting_tag)
+    main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, setting_tag)
     

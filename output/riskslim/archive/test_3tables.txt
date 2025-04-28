@@ -1,0 +1,176 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:530: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:530: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:530: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: test_CV_median
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None, Balanced: False,    First: False, Upto180: False, Median: True, Feature Set: None, Essential Num: None, No Drug: False,     County Name: None, Setting Tag: test_CV_median
+Start testing...
+Start testing with table:
+Intercept: -7
+
+ - Condition: long_acting, Cutoff: 1, Score: 3
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 3
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: age, Cutoff: 40, Score: 1
+ - Condition: family_poverty_pct_quartile, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+608176 2267608
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: age, Cutoff: 40
+Feature: family_poverty_pct_quartile, Cutoff: 1
+Should only be for Drug payment
+Test done!
+
+                   Value
+Accuracy           0.715
+Recall             0.861
+Precision          0.231
+ROC AUC            0.845
+PR AUC             0.315
+Calibration error  0.109
+        Prob  Num_presc      TN  ...  Observed Risk  Num_patients  Num_longterm
+0   0.000911     326500  326201  ...       0.000916        326496           413
+1   0.002473     927841  925450  ...       0.002577        927824          3335
+2   0.006693     626282  622770  ...       0.005608        602833          3607
+3   0.017986     874811  858774  ...       0.018332        738384          9688
+4   0.047426     888684  859499  ...       0.032841        790675         24737
+5   0.119203     497439  464446  ...       0.066326        426173         24275
+6   0.268941     849575       0  ...       0.144121        538823         51274
+7   0.500000     656841       0  ...       0.186181        399166         53638
+8   0.731059     337285       0  ...       0.323711        159292         32465
+9   0.880797     363737       0  ...       0.380847        165822         42930
+10  0.952574      28666       0  ...       0.371450         13995          3936
+11  0.982014      17038       0  ...       0.648961          8031          3870
+12  0.993307      14466       0  ...       0.664316          6857          3504
+
+[13 rows x 10 columns]
+Start testing with table:
+Intercept: -8
+
+ - Condition: long_acting, Cutoff: 1, Score: 5
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 3
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: age, Cutoff: 30, Score: 2
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_MME, Cutoff: 75, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+608176 2203847
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: age, Cutoff: 30
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 75
+Test done!
+
+                   Value
+Accuracy           0.725
+Recall             0.863
+Precision          0.238
+ROC AUC            0.849
+PR AUC              0.32
+Calibration error   0.09
+        Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
+0   0.000335     298898   298748  ...       0.000502        298897           210
+1   0.000911      14138    14111  ...       0.001910         14137            32
+2   0.002473    1497019  1492483  ...       0.003030       1481882          5936
+3   0.006693     135241   133810  ...       0.010581        133059          1464
+4   0.017986    1186193  1165510  ...       0.017436       1010437         13409
+5   0.047426     724264   686844  ...       0.051666        668210         34181
+6   0.119203     349565   330493  ...       0.054559        276353         12739
+7   0.268941    1133064        0  ...       0.157920        771679         89684
+8   0.500000     276687        0  ...       0.211936        146583         20946
+9   0.731059     554261        0  ...       0.320908        275640         61533
+10  0.880797     135609        0  ...       0.471429         69005         23214
+11  0.952574       6871        0  ...       0.173337          6451           968
+12  0.982014      24053        0  ...       0.370972         16254          5021
+13  0.993307      41120        0  ...       0.345963         21921          5713
+14  0.997527       9946        0  ...       0.607983          6353          3207
+15  0.999089      22236        0  ...       0.679034         10792          5729
+
+[16 rows x 10 columns]
+Start testing with table:
+Intercept: -16
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 5
+ - Condition: age, Cutoff: 30, Score: 5
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 5
+ - Condition: long_acting, Cutoff: 1, Score: 4
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 4
+ - Condition: family_poverty_pct_quartile, Cutoff: 1, Score: 2
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+608176 2063418
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: age, Cutoff: 30
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: family_poverty_pct_quartile, Cutoff: 1
+Should only be for Drug payment
+Test done!
+
+                   Value
+Accuracy           0.741
+Recall              0.83
+Precision          0.245
+ROC AUC            0.846
+PR AUC             0.322
+Calibration error  0.148
+            Prob  Num_presc      TN  ...  Observed Risk  Num_patients  Num_longterm
+0   1.125352e-07     157118  157037  ...       0.000516        157116           106
+1   8.315280e-07     155918  155822  ...       0.000616        155918           136
+2   6.144175e-06      68919   68872  ...       0.000682         68918            66
+3   1.670142e-05     831661  828729  ...       0.003525        822955          3571
+4   4.539787e-05     104176  104045  ...       0.001257        104175           170
+5   1.233946e-04     630694  627754  ...       0.004662        621229          3561
+6   3.353501e-04         51      50  ...       0.019608            51             1
+7   9.110512e-04     367590  364620  ...       0.008080        363398          3520
+8   2.472623e-03     672141  644477  ...       0.041158        520340         19886
+9   6.692851e-03     424222  420360  ...       0.009104        417362          4646
+10  1.798621e-02     542743  514649  ...       0.051763        421589         19689
+11  4.742587e-02       1287    1138  ...       0.115773          1276           153
+12  1.192029e-01     389227  354777  ...       0.088509        320751         28317
+13  2.689414e-01     453931       0  ...       0.191289        203281         21416
+14  5.000000e-01     431609       0  ...       0.110053        356188         40507
+15  7.310586e-01     411597       0  ...       0.212883        172402         21454
+16  8.807971e-01       7597       0  ...       0.347637          6674          2067
+17  9.525741e-01     332117       0  ...       0.325057        151707         31128
+18  9.820138e-01       5539       0  ...       0.375880          4983          1786
+19  9.933071e-01     388846       0  ...       0.383131        173179         44154
+20  9.990889e-01      16696       0  ...       0.650156          7853          3789
+21  9.998766e-01      15486       0  ...       0.664536          7329          3747
+
+[22 rows x 10 columns]

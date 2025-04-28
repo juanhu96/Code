@@ -7,9 +7,9 @@ library(gridExtra)
 setwd("/export/storage_cures/CURES/Results/")
 export_path <- "../Plots/"
 
-FULL_LTOUR = read.csv("FULL_LTOUR_table.csv", header = TRUE) 
-# LTOUR <- FULL_LTOUR %>% rename(top_prescriber_binary = prescriber_yr_avg_days_median_binary, 
-#                                top_pharmacy_binary = pharmacy_yr_avg_days_median_binary)
+FULL_LTOUR = read.csv("FULL_LTOUR_TableNew1.csv", header = TRUE) 
+LTOUR <- FULL_LTOUR %>% rename(top_prescriber_binary = prescriber_yr_avg_days_median_binary,
+                               top_pharmacy_binary = pharmacy_yr_avg_days_median_binary)
 
 # ============================================================================
 
@@ -88,12 +88,10 @@ CA$county <- sub(";.*", "", CA$county)
 CA <- CA %>% select(zip, county)
 # write.csv(CA, "../CA/zip_county.csv", row.names = FALSE)
 
-MERGED <- merge(CA, LTOUR, by.x = "zip", by.y = "patient_zip", all = FALSE)
+MERGED <- merge(CA, FULL_LTOUR, by.x = "zip", by.y = "patient_zip", all = FALSE)
 
 COUNTY_SUMMARY <- MERGED %>% group_by(county) %>%
   summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
-  # mutate(county = factor(county, levels = rev(sort(unique(county)))))
-  # mutate(county = reorder(county, n))
   mutate(county = reorder(county, PropPos))
 
 ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = county)) +

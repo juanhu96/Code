@@ -41,6 +41,7 @@ def risk_test(year, table, first, upto180, median, setting_tag, output_columns=F
                                                         'consecutive_days': int})# .fillna(0)
     print(f'{file_path} imported with shape {FULL.shape}')
 
+    FULL['Medicare_Medicaid'] = FULL['Medicare'] + FULL['Medicaid']
     if output_columns: print(FULL.columns.values.tolist())
 
     if median:
@@ -78,7 +79,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
                patient_results=False,
                nth_presc_results=False,
                MME_results=False,
-               export_files=False,
+               export_files=True,
                barplot=True,
                exportdir='/export/storage_cures/CURES/Results/'):
     
@@ -98,7 +99,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
     x['Pred'] = (x['Prob'] >= optimal_threshold)
     y_pred = x['Pred'].to_numpy().astype(int)
 
-    calibration_table, calibration_error = compute_calibration(x, y, y_prob, y_pred, setting_tag)
+    calibration_table, calibration_error, prob_pred, prob_true = compute_calibration(x, y, y_prob, y_pred, setting_tag)
     results = {"Accuracy": str(round(accuracy_score(y, y_pred), 3)),
                "Recall": str(round(recall_score(y, y_pred), 3)),
                "Precision": str(round(precision_score(y, y_pred), 3)),
@@ -111,7 +112,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
     if nth_presc_results: compute_nth_presc(FULL, x)
     if MME_results: test_results_by_MME = compute_MME_presc(FULL, x)
 
-    if barplot: barplot_by_condition(FULL, x, conditions, cutoffs)
+    if barplot: barplot_by_condition(FULL, x, conditions, cutoffs, setting_tag)
 
     if export_files: 
 
@@ -122,40 +123,43 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
 
         ### ROC
         roc_info = {"fpr": fpr, "tpr": tpr, "auc": roc_auc}
-        filename = f'output/baseline/riskSLIM_roc_test_info{"_median" if median else ""}.pkl'
+        filename = f'output/baseline/riskSLIM_roc_test_info{"_median" if median else ""}{setting_tag}.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(roc_info, f)
         print(f"ROC information for riskSLIM saved to {filename}, threshodls: {thresholds} with optimal threshold: {optimal_threshold}")
 
         ### Calibration
-        prob_true, prob_pred = calibration_curve(y, y_prob, n_bins=20)
+        # n_unique = len(np.unique(y_prob))
+        # prob_true, prob_pred = calibration_curve(y, y_prob, n_bins=n_unique, strategy='uniform')
         calibration_info = {"prob_true": prob_true, "prob_pred": prob_pred, "ece": calibration_error}
-        filename = f'output/baseline/riskSLIM_calibration_test_info{"_median" if median else ""}.pkl'
+        filename = f'output/baseline/riskSLIM_calibration_test_info{"_median" if median else ""}{setting_tag}.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(calibration_info, f)
         print(f"Calibration information for riskSLIM saved to {filename}")
         
         ### Proportion
-        proportion_info = {"month": [], "proportion": []}
-        for month, proportion in proportions.items():
-            proportion_info["month"].append(month)
-            proportion_info["proportion"].append(proportion)
-        filename = f'output/baseline/riskSLIM_proportions_test_info{"_median" if median else ""}.pkl'
-        with open(filename, 'wb') as f:
-            pickle.dump(proportion_info, f)
-        print(f"Proportions information for riskSLIM saved to {filename}")
+        if patient_results: 
+            proportion_info = {"month": [], "proportion": []}
+            for month, proportion in proportions.items():
+                proportion_info["month"].append(month)
+                proportion_info["proportion"].append(proportion)
+            filename = f'output/baseline/riskSLIM_proportions_test_info{"_median" if median else ""}.pkl'
+            with open(filename, 'wb') as f:
+                pickle.dump(proportion_info, f)
+            print(f"Proportions information for riskSLIM saved to {filename}")
 
         ### Recall by MME bins
-        recall_by_MME_info = {"MME": [], "recall": [], "pos_ratio": [], "true_pos_ratio": []}
-        for MME_bin, results in test_results_by_MME.items():
-            recall_by_MME_info["MME"].append(MME_bin)
-            recall_by_MME_info["recall"].append(results['test_recall'])
-            recall_by_MME_info["pos_ratio"].append(results['correctly_predicted_positives_ratio'])
-            recall_by_MME_info["true_pos_ratio"].append(results['true_positives_ratio'])
-        filename = f'output/baseline/riskSLIM_recallMME_test_info{"_median" if median else ""}.pkl'
-        with open(filename, 'wb') as f:
-            pickle.dump(recall_by_MME_info, f)
-        print(f"Recall by MME information for riskSLIM saved to {filename}")
+        if MME_results: 
+            recall_by_MME_info = {"MME": [], "recall": [], "pos_ratio": [], "true_pos_ratio": []}
+            for MME_bin, results in test_results_by_MME.items():
+                recall_by_MME_info["MME"].append(MME_bin)
+                recall_by_MME_info["recall"].append(results['test_recall'])
+                recall_by_MME_info["pos_ratio"].append(results['correctly_predicted_positives_ratio'])
+                recall_by_MME_info["true_pos_ratio"].append(results['true_positives_ratio'])
+            filename = f'output/baseline/riskSLIM_recallMME_test_info{"_median" if median else ""}.pkl'
+            with open(filename, 'wb') as f:
+                pickle.dump(recall_by_MME_info, f)
+            print(f"Recall by MME information for riskSLIM saved to {filename}")
 
 
     print('Test done!\n')
@@ -351,7 +355,9 @@ def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, exportdir
         calibration_error += abs(prob - observed_risk) * num_presc/num_total_presc
 
     table = pd.DataFrame(table)
-
+    prob = table['Prob'].values
+    observed_risk = table['Observed Risk'].values
+    
     # Plot calibration curve
     if plot:
         # only for simple models
@@ -365,7 +371,7 @@ def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, exportdir
         fig.savefig(f'{exportdir}/Figures/Calibration{setting_tag}.pdf', dpi=300)
         print(f"Calibration curve saved as Calibration{setting_tag}.pdf\n")
     
-    return table, calibration_error
+    return table, calibration_error, prob, observed_risk
 
 
 
@@ -427,7 +433,7 @@ def compute_fairness(x, y, y_prob, y_pred, optimal_threshold, setting_tag, plot=
         accuracy_by_gender[gender] = accuracy
         
         # calibration
-        _, calibration_error = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender, f'{setting_tag}_gender')
+        _, calibration_error, _, _ = compute_calibration(X_gender, y_true_gender, y_prob_gender, y_pred_gender, f'{setting_tag}_gender')
         calibration_by_gender[gender] = calibration_error
 
         ax.plot(fpr, tpr, label=f'{gender} (AUC = {roc_auc:.3f})')
@@ -502,7 +508,7 @@ def print_results(results):
 
 
 
-def barplot_by_condition(FULL, x, conditions, cutoffs, exportdir='/export/storage_cures/CURES/Results/'):
+def barplot_by_condition(FULL, x, conditions, cutoffs, setting_tag, exportdir='/export/storage_cures/CURES/Results/'):
 
     FULL['Pred'] = x['Pred'].astype(int)
     true_longterm_condition = (FULL['long_term_180'] == 1)
@@ -529,8 +535,9 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, exportdir='/export/storag
     FULL_filtered = FULL[conditions]
     FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
         'pharmacy_yr_avg_days_quartile_binary': 'pharmacy_yr_avg_days_median_binary',\
+            'family_poverty_pct_quartile_binary': 'family_poverty_pct_median_binary',\
             'long_term_180': 'True'}, inplace=True)
 
-    FULL_filtered.to_csv(f'{exportdir}FULL_LTOUR_table.csv', index=False)
+    FULL_filtered.to_csv(f'{exportdir}FULL_LTOUR{setting_tag}.csv', index=False)
 
     return

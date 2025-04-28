@@ -1,0 +1,62 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:536: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_median
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None, Balanced: False,    First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,     County Name: None, Setting Tag: _test_CV_median
+Start testing...
+Start testing with Table4:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 3
+ - Condition: long_acting, Cutoff: 1, Score: 3
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 3
+ - Condition: age, Cutoff: 40, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+ - Condition: Medicare_Medicaid, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+608176 1863191
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: age, Cutoff: 40
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: Medicare_Medicaid, Cutoff: 1
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median.pkl, threshodls: [           inf 9.93307149e-01 9.82013790e-01 9.52574127e-01
+ 8.80797078e-01 7.31058579e-01 5.00000000e-01 2.68941421e-01
+ 1.19202922e-01 4.74258732e-02 1.79862100e-02 6.69285092e-03
+ 2.47262316e-03 9.11051194e-04] with optimal threshold: 0.2689414213699951
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median.pkl
+Test done!
+
+                   Value
+Accuracy           0.767
+Recall             0.802
+Precision          0.262
+ROC AUC            0.851
+PR AUC             0.313
+Calibration error  0.107
+        Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
+0   0.000911     532868   532374  ...       0.000927        532862           690
+1   0.002473    1161383  1158044  ...       0.002875       1161351          4655
+2   0.006693     749618   744945  ...       0.006234        749610          6452
+3   0.017986     332723   327538  ...       0.015584        295197          4437
+4   0.047426     974363   933487  ...       0.041952        767474         30339
+5   0.119203     795019   728965  ...       0.083085        659834         58055
+6   0.268941     225496        0  ...       0.130508        171526         19418
+7   0.500000     704813        0  ...       0.197078        311318         34944
+8   0.731059     680545        0  ...       0.323473        317112         66266
+9   0.880797     167954        0  ...       0.353781         79743         19849
+10  0.952574      45720        0  ...       0.333136         19872          4399
+11  0.982014      31800        0  ...       0.617264         15499          7120
+12  0.993307       6863        0  ...       0.700277          3361          1907
+
+[13 rows x 10 columns]

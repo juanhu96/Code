@@ -1,6 +1,6 @@
 import numpy as np
 
-stretch_constant = 1.5
+stretch_constant = 1
 
 def log_loss_value(Z, rho):
     """

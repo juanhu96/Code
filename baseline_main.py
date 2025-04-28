@@ -381,7 +381,7 @@ def export_results(model, y_test, prob, ece, median, proportions, test_results_b
     fpr, tpr, _ = roc_curve(y_test, prob)
     roc_auc = auc(fpr, tpr)
     roc_info = {"fpr": fpr, "tpr": tpr, "auc": roc_auc}   
-    filename = f'output/baseline/{model}_roc_test_info{"_median" if median else ""}.pkl'
+    filename = f'../output/baseline/{model}_roc_test_info{"_median" if median else ""}.pkl'
     with open(filename, 'wb') as f:
         pickle.dump(roc_info, f)
     print(f"ROC information for {model} saved to {filename}")
@@ -389,7 +389,7 @@ def export_results(model, y_test, prob, ece, median, proportions, test_results_b
     ### Calibration
     prob_true, prob_pred = calibration_curve(y_test, prob, n_bins=20)
     calibration_info = {"prob_true": prob_true, "prob_pred": prob_pred, "ece": ece}
-    filename = f'output/baseline/{model}_calibration_test_info{"_median" if median else ""}.pkl'
+    filename = f'../output/baseline/{model}_calibration_test_info{"_median" if median else ""}.pkl'
     with open(filename, 'wb') as f:
         pickle.dump(calibration_info, f)
     print(f"Calibration information for {model} saved to {filename}")
@@ -399,7 +399,7 @@ def export_results(model, y_test, prob, ece, median, proportions, test_results_b
     for month, proportion in proportions.items():
         proportion_info["month"].append(month)
         proportion_info["proportion"].append(proportion)
-    filename = f'output/baseline/{model}_proportions_test_info{"_median" if median else ""}.pkl'
+    filename = f'../output/baseline/{model}_proportions_test_info{"_median" if median else ""}.pkl'
     with open(filename, 'wb') as f:
         pickle.dump(proportion_info, f)
     print(f"Proportions information for {model} saved to {filename}")
@@ -410,7 +410,7 @@ def export_results(model, y_test, prob, ece, median, proportions, test_results_b
         recall_by_MME_info["MME"].append(MME_bin)
         recall_by_MME_info["recall"].append(results['test_recall'])
         recall_by_MME_info["pos_ratio"].append(results['correctly_predicted_positives_ratio'])
-    filename = f'output/baseline/{model}_recallMME_test_info{"_median" if median else ""}.pkl'
+    filename = f'../output/baseline/{model}_recallMME_test_info{"_median" if median else ""}.pkl'
     with open(filename, 'wb') as f:
         pickle.dump(recall_by_MME_info, f)
     print(f"Recall by MME information for riskSLIM saved to {filename}")
