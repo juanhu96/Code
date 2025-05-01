@@ -8,13 +8,11 @@ library(parallel)
 library(data.table)
 
 setwd("/export/storage_cures/CURES/Processed/")
-year = 2019
+# year = 2018
 
 # 2018: 6766011 prescriptions from 4054269 patients
 # 2019: 4893213 prescriptions from 2908154 patients
-FULL_INPUT <- read.csv(paste("FULL_OPIOID_", year ,"_INPUT.csv", sep=""))
-# TEST <- FULL_INPUT[0:20,]
-
+# FULL_INPUT <- read.csv(paste("FULL_OPIOID_", year ,"_INPUT.csv", sep=""))
 
 FULL_INPUT_2018 <- read.csv("FULL_OPIOID_2018_INPUT.csv")
 FULL_INPUT_2019 <- read.csv("FULL_OPIOID_2019_INPUT.csv")
@@ -113,6 +111,15 @@ round(c(mean(FULL_INPUT$daily_dose, na.rm = TRUE), sd(FULL_INPUT$daily_dose, na.
         mean(FULL_INPUT$quantity, na.rm = TRUE), sd(FULL_INPUT$quantity, na.rm = TRUE),
         mean(FULL_INPUT$days_supply, na.rm = TRUE), sd(FULL_INPUT$days_supply, na.rm = TRUE)), 1)
 
+
+round(c(mean(LT$daily_dose, na.rm = TRUE), sd(LT$daily_dose, na.rm = TRUE),
+        mean(LT$quantity, na.rm = TRUE), sd(LT$quantity, na.rm = TRUE),
+        mean(LT$days_supply, na.rm = TRUE), sd(LT$days_supply, na.rm = TRUE)), 1)
+
+
+round(c(mean(NLT$daily_dose, na.rm = TRUE), sd(NLT$daily_dose, na.rm = TRUE),
+        mean(NLT$quantity, na.rm = TRUE), sd(NLT$quantity, na.rm = TRUE),
+        mean(NLT$days_supply, na.rm = TRUE), sd(NLT$days_supply, na.rm = TRUE)), 1)
 
 ################################################################################
 ######################### NUM OF PRESCRIPTIONS #################################

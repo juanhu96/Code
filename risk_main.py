@@ -147,40 +147,40 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         
         print(f'Start testing...')
 
-        CURES_table = {'intercept': -7, 
+        CURES = {'intercept': -7, 
         'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 
         'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'],
         'cutoffs': [1, '1', 40, 30, 1, '1'],
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        LTOUR_table = {'intercept': -7, 
+        LTOUR = {'intercept': -7, 
         'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 
         'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 
         'cutoffs': [1, '1', 40, 30, 1, '1'], 
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        TableNew1 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
-        TableNew2 = {'intercept': -8, 'conditions': ['num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 30, '1', 40, 1, '1'], 'scores': [2, 2, 2, 1, 1, 1]}
-        TableNew3 = {'intercept': -9, 'conditions': ['concurrent_MME', 'num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [10, 1, 30, '1', 1, '1'], 'scores': [2, 2, 2, 2, 1, 1]}
-        TableNew4 = {'intercept': -9, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prior_prescriptions', 'age', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 1, 30, 30, 1, '1'], 'scores': [3, 2, 2, 1, 1, 1]}
+        # TableNew1 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+        # TableNew2 = {'intercept': -8, 'conditions': ['num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 30, '1', 40, 1, '1'], 'scores': [2, 2, 2, 1, 1, 1]}
+        # TableNew3 = {'intercept': -9, 'conditions': ['concurrent_MME', 'num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [10, 1, 30, '1', 1, '1'], 'scores': [2, 2, 2, 2, 1, 1]}
+        # TableNew4 = {'intercept': -9, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prior_prescriptions', 'age', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 1, 30, 30, 1, '1'], 'scores': [3, 2, 2, 1, 1, 1]}
+
+        TableSF = {'intercept': -5, 'conditions': ['prescriber_yr_avg_days_quartile', 'concurrent_MME', 'num_prescribers_past180', 'num_prior_prescriptions', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 100, 3, 1, 1, '1'], 'scores': [2, 1, 1, 1, 1, 1]}
+        TableKern = {'intercept': -5, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prescribers_past180', 'concurrent_benzo', 'num_prior_prescriptions', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 3, 1, 1, 1, '1'], 'scores': [2, 1, 1, 1, 1, 1]}
 
         # iterate through tables
-        tables = {'TableNew1': TableNew1, 'TableNew2': TableNew2, 'TableNew3': TableNew3, 'TableNew4': TableNew4}
+        # tables = {'TableNew1': TableNew1, 'TableNew2': TableNew2, 'TableNew3': TableNew3, 'TableNew4': TableNew4}
+        tables = {'LTOUR': LTOUR, 'TableSF': TableSF, 'TableKern': TableKern}
         for table_name, table in tables.items():
             setting_tag = f"_{table_name}"
+            if county_name is not None: setting_tag += f"_county{county_name}"
             print(f"Start testing with {table_name}:")
             print(f"Intercept: {table['intercept']}\n")
             for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
                 print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
-            
-            risk_test(2019, table, first, upto180, median, setting_tag)
+                
+            risk_test(2018, table, first, upto180, median, county_name, f'{setting_tag}_2018')
+            risk_test(2019, table, first, upto180, median, county_name, f'{setting_tag}_2019')
         
-        # print("Start testing with table:")
-        # print(f"Intercept: {table['intercept']}\n")
-        # for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
-        #     print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
-        
-        # risk_test(2019, table, first, upto180, median, setting_tag)
 
     return
 

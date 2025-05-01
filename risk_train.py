@@ -100,14 +100,15 @@ def risk_train(scenario:str,
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0]= -1
 
-    # if county_name is not None: 
-    #     zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
-    #     FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
-    #     indices = FULL.index[FULL['county'] == county_name].tolist()
-    #     x = x.iloc[indices]
-    #     y = y[indices]
-    #     print(f"Subsetting to county {county_name} with {len(y)} prescriptions.")
-    #     return
+    if county_name is not None: 
+        zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
+        FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
+        indices = FULL.index[FULL['county'] == county_name].tolist()
+        FULL = FULL.iloc[indices]
+        x = x.iloc[indices]
+        y = y[indices]
+        print(f"Subsetting to county {county_name} with {len(y)} prescriptions.")
+
 
     if scenario == 'single':
         

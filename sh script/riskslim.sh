@@ -23,6 +23,9 @@ mkdir -p ../output/riskslim
 #   done
 # done
 
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single maxpoint3 maxfeatures6 c01e-15 interceptub10 interceptlb5 median feature_all cutoff_atmostone_group essential1 nodrug > ../output/riskslim/LTOUR_final.txt &
+
 
 # TEST
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/Test_TableNew.txt & 
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/LTOUR_test.txt & 
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/LTOUR_test_county.txt & 

@@ -27,16 +27,16 @@ PRIOR = LTOUR %>%
   mutate(Group = ifelse(Group == 1, "Yes", "No"), Feature = "Prior opioid prescription")
 
 PRESCRIBER = LTOUR %>% 
-  group_by(prescriber_yr_avg_days_median_binary) %>% 
+  group_by(top_prescriber_binary) %>% 
   summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
-  rename(Group = prescriber_yr_avg_days_median_binary) %>%
+  rename(Group = top_prescriber_binary) %>%
   mutate(Group = ifelse(Group == 1, "Yes", "No"), Feature = "Top opioid prescriber")
 
 
 PHARMACY = LTOUR %>% 
-  group_by(pharmacy_yr_avg_days_median_binary) %>% 
+  group_by(top_pharmacy_binary) %>% 
   summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
-  rename(Group = pharmacy_yr_avg_days_median_binary) %>%
+  rename(Group = top_pharmacy_binary) %>%
   mutate(Group = ifelse(Group == 1, "Yes", "No"), Feature = "Top opioid dispenser")
 
 
@@ -75,7 +75,8 @@ ggplot(data=SUMMARY) + facet_wrap(~Feature, nrow=3) +
   scale_x_discrete("Rule outcome") +
   scale_y_continuous("Proportion that become long-term opioid users", labels=scales::percent, limits=c(-0.01,0.45)) +
   theme_bw() + theme(legend.position = "bottom")
-ggsave(paste(export_path, "FeatureBars_horizontal.pdf", sep = ""),  width = 10, height = 6, dpi=300)
+ggsave(paste(export_path, "FeatureBars.pdf", sep = ""),  width = 6, height = 10, dpi=300)
+# ggsave(paste(export_path, "FeatureBars_horizontal.pdf", sep = ""),  width = 10, height = 6, dpi=300)
 
 
 # ============================================================================
@@ -94,11 +95,11 @@ COUNTY_SUMMARY <- MERGED %>% group_by(county) %>%
   summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
   mutate(county = reorder(county, PropPos))
 
-ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = county)) +
-  geom_col(aes(x=PropPos, y=county), width=0.5) +
-  geom_point(aes(x=LTOUR, y=county, color=""), size=3) +
-  geom_text(aes(x=-0.01, y=county, label=paste("n =", scales::comma(n))), size=3, color="black") +
-  geom_text(aes(x = max(PropPos, LTOUR) + 0.02, y=county, label=scales::percent(LTOUR)), size=3, color="blue") +
+ggplot(COUNTY_SUMMARY, aes(x = PropPos * 100, y = county)) +
+  geom_col(aes(x=PropPos * 100, y=county), width=0.5, alpha = 0.5) +
+  geom_point(aes(x=LTOUR * 100, y=county, color=""), size=3) +
+  geom_text(aes(x=-2, y=county, label=paste("n =", scales::comma(n))), size=3, color="black") +
+  geom_text(aes(x = max(PropPos * 100, LTOUR) + 2, y=county, label=scales::percent(LTOUR)), size=3, color="blue") +
   scale_color_manual("Mean predicted probability (LTOUR)", values = "blue") +
   scale_y_discrete("County") +
   labs(x = "Proportion Positive", y = "County") +
@@ -110,7 +111,7 @@ ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = county)) +
     plot.title = element_text(size = 14, face = "bold"),
     legend.position = "bottom"
   )
-ggsave(paste(export_path, "CountyBars_Sorted.pdf", sep = ""),  width = 14, height = 9, dpi=300)
+ggsave(paste(export_path, "CountyBars_Sorted.pdf", sep = ""),  width = 11, height = 14, dpi=300)
 
 
 ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = LTOUR, size = n, label = county)) +
@@ -129,8 +130,57 @@ ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = LTOUR, size = n, label = county)) +
 ggsave(paste(export_path, "CountyScatter.pdf", sep = ""),  width = 8, height = 7, dpi=300)
 
 
+# ============================================================================
+### OTHER TABLES
+CA = read.csv("../CA/zip_county.csv", header = TRUE)
+
+TABLE_KERN = read.csv("FULL_LTOUR_TableKern.csv", header = TRUE) 
+TABLE_SF = read.csv("FULL_LTOUR_TableSF.csv", header = TRUE) 
+
+MERGED_KERN <- merge(CA, TABLE_KERN, by.x = "zip", by.y = "patient_zip", all = FALSE)
+MERGED_SF <- merge(CA, TABLE_SF, by.x = "zip", by.y = "patient_zip", all = FALSE)
+
+COUNTY_SUMMARY_KERN <- MERGED_KERN %>% group_by(county) %>%
+  summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
+  mutate(county = reorder(county, PropPos))
+COUNTY_SUMMARY_SF <- MERGED_SF %>% group_by(county) %>%
+  summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
+  mutate(county = reorder(county, PropPos))
+
+ggplot(COUNTY_SUMMARY_KERN, aes(x = PropPos * 100, y = county)) +
+  geom_col(aes(x=PropPos * 100, y=county), width=0.5, alpha = 0.5) +
+  geom_point(aes(x=LTOUR * 100, y=county, color=""), size=3) +
+  geom_text(aes(x=-2, y=county, label=paste("n =", scales::comma(n))), size=3, color="black") +
+  geom_text(aes(x = max(PropPos * 100, LTOUR) + 2, y=county, label=scales::percent(LTOUR)), size=3, color="blue") +
+  scale_color_manual("Mean predicted probability (LTOUR)", values = "blue") +
+  scale_y_discrete("County") +
+  labs(x = "Proportion Positive", y = "County") +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 14, face = "bold"),
+    legend.position = "bottom"
+  )
+ggsave(paste(export_path, "CountyBars_Kern.pdf", sep = ""),  width = 11, height = 14, dpi=300)
 
 
-
-
+ggplot(COUNTY_SUMMARY_SF, aes(x = PropPos * 100, y = county)) +
+  geom_col(aes(x=PropPos * 100, y=county), width=0.5, alpha = 0.5) +
+  geom_point(aes(x=LTOUR * 100, y=county, color=""), size=3) +
+  geom_text(aes(x=-2, y=county, label=paste("n =", scales::comma(n))), size=3, color="black") +
+  geom_text(aes(x = max(PropPos * 100, LTOUR) + 2, y=county, label=scales::percent(LTOUR)), size=3, color="blue") +
+  scale_color_manual("Mean predicted probability (LTOUR)", values = "blue") +
+  scale_y_discrete("County") +
+  labs(x = "Proportion Positive", y = "County") +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 14, face = "bold"),
+    legend.position = "bottom"
+  )
+ggsave(paste(export_path, "CountyBars_SF.pdf", sep = ""),  width = 11, height = 14, dpi=300)
 

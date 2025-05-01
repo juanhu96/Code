@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import utils.model_selection as model_selection
 
 
-def risk_test(year, table, first, upto180, median, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
+def risk_test(year, table, first, upto180, median, county_name, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
 
     if first:
         file_suffix = "_FIRST_INPUT"
@@ -63,6 +63,14 @@ def risk_test(year, table, first, upto180, median, setting_tag, output_columns=F
         for col in quartile_list:
             FULL[col] = FULL[col].replace({1: 0, 2: 0, 3: 1, 4: 1})
 
+    if county_name is not None: 
+        zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
+        FULL = FULL.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
+        indices = FULL.index[FULL['county'] == county_name].tolist()
+        FULL = FULL.iloc[indices]
+        print(f"Subsetting dataset to county {county_name} with {len(indices)} prescriptions.")
+
+    print(f"Test reults are saved with setting tag: {setting_tag}")
 
     results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag, median=median)
 
@@ -81,6 +89,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
                MME_results=False,
                export_files=True,
                barplot=True,
+               optimal_thresh=False,
                exportdir='/export/storage_cures/CURES/Results/'):
     
     x = FULL
@@ -92,10 +101,14 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
 
     fpr, tpr, thresholds = roc_curve(y, y_prob)
     roc_auc = auc(fpr, tpr)
-    distances = np.sqrt((fpr - 0)**2 + (tpr - 1)**2)
-    optimal_idx = np.argmin(distances)
-    optimal_threshold = thresholds[optimal_idx]
 
+    if optimal_thresh:
+        distances = np.sqrt((fpr - 0)**2 + (tpr - 1)**2)
+        optimal_idx = np.argmin(distances)
+        optimal_threshold = thresholds[optimal_idx]
+    else:
+        optimal_threshold = 0.5
+        
     x['Pred'] = (x['Prob'] >= optimal_threshold)
     y_pred = x['Pred'].to_numpy().astype(int)
 
