@@ -10,8 +10,11 @@ mkdir -p ../output/riskslim/county
 # done
 
 
-counties=("San Francisco" "Kern")
-for county in "${counties[@]}"; do
-  nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median county"$county" > "../output/riskslim/county/Test_$county.txt" &
-done
+# counties=("San Francisco" "Kern")
+# for county in "${counties[@]}"; do
+#   nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median county"$county" > "../output/riskslim/county/Test_$county.txt" &
+# done
 
+
+python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2018 &
+python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2019 &

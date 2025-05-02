@@ -357,7 +357,7 @@ if True:
 
             marker = marker_styles[i % len(marker_styles)]
             model_name = 'LTOUR' if 'LTOUR' in calib_file else table
-            plt.plot(calib_info['prob_pred'], calib_info['prob_true'], marker=marker, label=f'{model_name} (AUC = {calib_info["ece"]:.3f})', markersize=5, alpha=0.7)
+            plt.plot(calib_info['prob_pred'], calib_info['prob_true'], marker=marker, label=f'{model_name} (ECE = {calib_info["ece"]:.3f})', markersize=5, alpha=0.7)
 
         plt.plot([0, 1], [0, 1], color='black', linestyle='--', alpha=0.7)
 
