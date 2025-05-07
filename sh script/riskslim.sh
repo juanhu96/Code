@@ -28,4 +28,4 @@ mkdir -p ../output/riskslim
 
 # TEST
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/LTOUR_test.txt & 
-nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/LTOUR_test_county.txt & 
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median > ../output/riskslim/LTOUR_test_county.txt & 

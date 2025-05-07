@@ -53,3 +53,8 @@ export OMP_NUM_THREADS=10
 
 # nohup python3 ../src/process/step7_final_check.py 2018 > ../output/data_process/step7_final_check_2018.txt & # done
 # nohup python3 ../src/process/step7_final_check.py 2019 > ../output/data_process/step7_final_check_2019.txt & # done
+
+
+# SUMMARY
+nohup python3 /mnt/phd/jihu/opioid/Code/src/summary_stats.py 2018 > ../output/data_process/summary_stats_2018.txt &
+nohup python3 /mnt/phd/jihu/opioid/Code/src/summary_stats.py 2019 > ../output/data_process/summary_stats_2019.txt &

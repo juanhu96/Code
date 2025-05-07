@@ -95,6 +95,14 @@ COUNTY_SUMMARY <- MERGED %>% group_by(county) %>%
   summarize(TruePos = sum(True), n = n(), PropPos = TruePos/n, LTOUR = round(mean(Prob), digits=3)) %>%
   mutate(county = reorder(county, PropPos))
 
+county_list = c("Modoc", "Lasson", "Butte", "Kern", "Shasta", 
+                "San Bernardino", "Stanislaus", "Riverside",
+                "San Joaquin", "Sacremento", "Placer", "Fresno", "San Diego", 
+                "Orange", "Los Angeles", "San Francisco", "Alameda",
+                "San Mateo", "Santa Clara")
+
+COUNTY_SUMMARY <- COUNTY_SUMMARY %>% filter(county %in% county_list)
+
 ggplot(COUNTY_SUMMARY, aes(x = PropPos * 100, y = county)) +
   geom_col(aes(x=PropPos * 100, y=county), width=0.5, alpha = 0.5) +
   geom_point(aes(x=LTOUR * 100, y=county, color=""), size=3) +
@@ -111,7 +119,8 @@ ggplot(COUNTY_SUMMARY, aes(x = PropPos * 100, y = county)) +
     plot.title = element_text(size = 14, face = "bold"),
     legend.position = "bottom"
   )
-ggsave(paste(export_path, "CountyBars_Sorted.pdf", sep = ""),  width = 11, height = 14, dpi=300)
+# ggsave(paste(export_path, "CountyBars_Sorted.pdf", sep = ""),  width = 11, height = 14, dpi=300)
+ggsave(paste(export_path, "CountyBars_Sorted_Selected.pdf", sep = ""),  width = 10, height = 8, dpi=300)
 
 
 ggplot(COUNTY_SUMMARY, aes(x = PropPos, y = LTOUR, size = n, label = county)) +

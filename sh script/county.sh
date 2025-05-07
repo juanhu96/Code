@@ -1,6 +1,7 @@
 export OMP_NUM_THREADS=10
 mkdir -p ../output/riskslim/county
 
+### CREATE COUNTY TABLE
 # - Underestimate: Kern, San Bernardino, Riverside, Fresno
 # - Overestimate: Los Angeles, San Francisco, San Mateo
 
@@ -10,11 +11,22 @@ mkdir -p ../output/riskslim/county
 # done
 
 
+### LTOUR VS. COUNTY TABLE
 # counties=("San Francisco" "Kern")
 # for county in "${counties[@]}"; do
 #   nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median county"$county" > "../output/riskslim/county/Test_$county.txt" &
 # done
 
+### COUNTY SUMMARY
+# python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2018 &
+# python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2019 &
+# counties=("Los Angeles" "San Francisco" "San Mateo" "Kern" "San Bernardino" "Riverside" "Fresno")
+# for county in "${counties[@]}"; do
+#   nohup python3 /mnt/phd/jihu/opioid/Code/src/summary_stats.py county"$county" > "../output/riskslim/county/summary_stats_$county.txt" &
+# done
 
-python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2018 &
-python3 /mnt/phd/jihu/opioid/Code/src/county_summary.py 2019 &
+### LTOUR BY COUNTY
+# counties=("Los Angeles" "San Francisco" "San Mateo" "Kern" "San Bernardino" "Riverside" "Fresno")
+# for county in "${counties[@]}"; do
+#   nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test median county"$county" > "../output/riskslim/county/Test_LTOUR_$county.txt" &
+# done

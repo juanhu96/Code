@@ -1,0 +1,2 @@
+/mnt/phd/jihu/opioid/Code/src/summary_stats.py:15: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv")

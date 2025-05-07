@@ -221,7 +221,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
     # ============================================================================================
     
     # (2) Spatial demographics, intensity of opioid use in the patient zip code (pt_zip)
-    features_set_2 = ['patient_zip_avg_days', 'patient_zip_avg_MME',
+    features_set_2 = ['patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME',
                     'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
 
     # (3) Provider prescription history

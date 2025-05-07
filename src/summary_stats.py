@@ -1,18 +1,29 @@
-'''
-STEP 8
-
-INPUT: FULL_OPIOID_2018_INPUT.csv, FULL_OPIOID_2019_INPUT.csv
-OUTPUT: SUMMARY TABLE IN LATEX FORM
-'''
-
+import os
+import sys
 import pandas as pd
 import numpy as np
 datadir = "/export/storage_cures/CURES/Processed/"
 resultdir = "/export/storage_cures/CURES/Results/"
 
-FULL_INPUT_2018 = pd.read_csv(f"{datadir}FULL_OPIOID_2018_INPUT.csv")
-FULL_INPUT_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
-FULL_INPUT = pd.concat([FULL_INPUT_2018, FULL_INPUT_2019], ignore_index=True)
+year = sys.argv[1]
+
+if year == 'total':
+    FULL_INPUT_2018 = pd.read_csv(f"{datadir}FULL_OPIOID_2018_INPUT.csv")
+    FULL_INPUT_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+    FULL_INPUT = pd.concat([FULL_INPUT_2018, FULL_INPUT_2019], ignore_index=True)
+else:
+    FULL_INPUT = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv")
+
+county_arg = next((arg for arg in sys.argv if arg.startswith('county')), None)
+if county_arg: county_name = county_arg.replace('county', '').strip()
+else: county_name = None
+
+if county_name is not None:
+    zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
+    FULL_INPUT = FULL_INPUT.merge(zip_county, left_on='patient_zip', right_on='zip', how='inner')
+    indices = FULL_INPUT.index[FULL_INPUT['county'] == county_name].tolist()
+    FULL_INPUT = FULL_INPUT.iloc[indices]
+    print(f"Subsetting to county {county_name} with {len(indices)} prescriptions.")
 
 # -------------------------------
 # PATIENT-LEVEL STATS
@@ -40,13 +51,13 @@ def fmt_num(n):
     return f"{n:,}"
 
 def fmt_pct(count, total):
-    return f"{fmt_num(count)} ({count / total:.1%})"
+    return f"{fmt_num(count)} ({count / total:.1%})".replace('%', r'\%')
 
 def fmt_mean_sd(series):
     return f"{round(series.mean(skipna=True),1)} ({round(series.std(skipna=True),1)})"
 
 def fmt_pct_safe(count, total):
-    return f"{fmt_num(count)} ($<0.1\%$)" if count / total < 0.001 else fmt_pct(count, total)
+    return f"{fmt_num(count)} ($<$0.1\%)" if count / total < 0.001 else fmt_pct(count, total)
 
 # Total patients
 total_patients = len(PATIENTS)
@@ -136,13 +147,8 @@ latex_lines = [
     r"\end{table}"
 ]
 
-
 # Export LaTeX table
-with open(f"{resultdir}summary_stats.tex", "w") as f:
-    f.write("\n".join(latex_lines + [
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}"
-    ]))
-
-print("LaTeX summary table saved to summary_stats_table.tex")
+if county_name is None: county_name = "CA"
+with open(f"{resultdir}summary_stats_{county_name}_{year}.tex", "w") as f:
+    f.write("\n".join(latex_lines))
+print(f"LaTeX summary table saved to summary_stats_{county_name}_{year}.tex")

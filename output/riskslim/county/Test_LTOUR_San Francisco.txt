@@ -1,0 +1,104 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_median_countySan Francisco
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: San Francisco, Setting Tag: _test_CV_median_countySan Francisco
+Start testing...
+Start testing with LTOUR:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_MME, Cutoff: 40, Score: 1
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv imported with shape (6816028, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county San Francisco with 105912 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countySan Francisco_2018
+6318 4002
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 40
+Feature: age, Cutoff: 30
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countySan Francisco_2018.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countySan Francisco_2018.pkl
+Test done!
+
+                   Value
+Accuracy           0.933
+Recall             0.259
+Precision          0.409
+ROC AUC            0.872
+PR AUC              0.27
+Calibration error  0.012
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000911       4815   4814  ...       0.000208          4815             1
+1  0.002473      25207  25170  ...       0.001468         25205            57
+2  0.006693      16921  16855  ...       0.003900         16733            76
+3  0.017986      18355  17968  ...       0.021084         15340           390
+4  0.047426      14146  13505  ...       0.045313         11497           534
+5  0.119203      12247  10792  ...       0.118805          6791           635
+6  0.268941      10219   8125  ...       0.204912          5186           677
+7  0.500000       3580      0  ...       0.382682          1663           436
+8  0.731059        422      0  ...       0.632701           198            95
+
+[9 rows x 10 columns]
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county San Francisco with 99945 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countySan Francisco_2019
+6270 3234
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 40
+Feature: age, Cutoff: 30
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countySan Francisco_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countySan Francisco_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.933
+Recall             0.221
+Precision          0.429
+ROC AUC            0.876
+PR AUC             0.281
+Calibration error  0.008
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000911       4539   4537  ...       0.000441          4539             2
+1  0.002473      24530  24495  ...       0.001427         24530            49
+2  0.006693      13685  13631  ...       0.003946         13555            65
+3  0.017986      20009  19634  ...       0.018742         15673           379
+4  0.047426      12588  11949  ...       0.050763         10214           527
+5  0.119203      11492  10057  ...       0.124869          6605           599
+6  0.268941       9868   7524  ...       0.237535          4799           667
+7  0.500000       2913      0  ...       0.401991          1351           346
+8  0.731059        321      0  ...       0.669782           133            66
+
+[9 rows x 10 columns]

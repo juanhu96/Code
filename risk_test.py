@@ -132,7 +132,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
         current_directory = os.getcwd()
         print(f"Current working directory: {current_directory}")
 
-        calibration_table.to_csv(f'{exportdir}calibration{setting_tag}.csv', index=False)
+        # calibration_table.to_csv(f'{exportdir}calibration{setting_tag}.csv', index=False)
 
         ### ROC
         roc_info = {"fpr": fpr, "tpr": tpr, "auc": roc_auc}
@@ -551,6 +551,6 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, setting_tag, exportdir='/
             'family_poverty_pct_quartile_binary': 'family_poverty_pct_median_binary',\
             'long_term_180': 'True'}, inplace=True)
 
-    FULL_filtered.to_csv(f'{exportdir}FULL_LTOUR{setting_tag}.csv', index=False)
+    FULL_filtered.to_csv(f'{exportdir}FULL_{setting_tag}.csv', index=False)
 
     return

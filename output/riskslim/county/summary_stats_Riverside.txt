@@ -1,0 +1,6 @@
+/mnt/phd/jihu/opioid/Code/src/summary_stats.py:14: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT_2018 = pd.read_csv(f"{datadir}FULL_OPIOID_2018_INPUT.csv")
+/mnt/phd/jihu/opioid/Code/src/summary_stats.py:15: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+Subsetting to county Riverside with 884063 prescriptions.
+LaTeX summary table saved to summary_stats_Riverside.tex

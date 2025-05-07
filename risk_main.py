@@ -169,7 +169,8 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
 
         # iterate through tables
         # tables = {'TableNew1': TableNew1, 'TableNew2': TableNew2, 'TableNew3': TableNew3, 'TableNew4': TableNew4}
-        tables = {'LTOUR': LTOUR, 'TableSF': TableSF, 'TableKern': TableKern}
+        # tables = {'LTOUR': LTOUR, 'TableSF': TableSF, 'TableKern': TableKern}
+        tables = {'LTOUR': LTOUR}
         for table_name, table in tables.items():
             setting_tag = f"_{table_name}"
             if county_name is not None: setting_tag += f"_county{county_name}"
