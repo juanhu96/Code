@@ -1,0 +1,196 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:80: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:290: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model DecisionTree
+
+WARNING: Working on median stumps
+Filtered columns: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'days_supply14', 'days_supply21', 'days_supply30', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+GridSearchCV for DT: 1281.7s
+
+
+Fitting for DT: 45.3s
+
+5 features selected: ['num_prior_prescriptions1', 'diff_days1', 'days_supply_30_inf', 'days_supply_14_21', 'days_supply_21_30']
+{'training_accuracy': 0.924, 'training_roc_auc': 0.9, 'training_calibration_error': 0.0}
+Finished training and fitting DecisionTree: 0.37 hours
+============================================================ 
+Baseline test with model DecisionTree
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+Optimal threshold for binary classification: 0.17682822033170062
+test_accuracy
+0.891
+test_roc_auc
+0.9
+test_pr_auc
+0.53
+test_calibration_error
+0.005
+
+
+0: Accuracy = 0.8887, ROC AUC = 0.8957, Calibration = 0.0029
+1: Accuracy = 0.8925, ROC AUC = 0.9031, Calibration = 0.0063
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (567130, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 82.9; two months: 90.6, three months: 94.2
+1
+{'test_accuracy': 0.95, 'test_recall': 0.683, 'test_precision': 0.289, 'test_roc_auc': 0.858, 'test_pr_auc': 0.244, 'test_calibration_error': 0.003}
+2
+{'test_accuracy': 0.845, 'test_recall': 0.837, 'test_precision': 0.347, 'test_roc_auc': 0.872, 'test_pr_auc': 0.46, 'test_calibration_error': 0.068}
+3
+{'test_accuracy': 0.803, 'test_recall': 0.856, 'test_precision': 0.496, 'test_roc_auc': 0.871, 'test_pr_auc': 0.631, 'test_calibration_error': 0.032}
+
+
+[0, 10)
+{'test_accuracy': 0.6255354453882254, 'test_recall': 0.8786174311668589, 'test_roc_auc': 0.8319666014288091, 'test_pr_auc': 0.41601107358453693, 'test_calibration_error': 0.07484384925965774, 'correctly_predicted_positives_ratio': 0.11418327217438341}
+[10, 20)
+{'test_accuracy': 0.8729903643364173, 'test_recall': 0.811728611911286, 'test_roc_auc': 0.9021538171939127, 'test_pr_auc': 0.4720218719501055, 'test_calibration_error': 0.014688018727523303, 'correctly_predicted_positives_ratio': 0.06552969680698706}
+[20, 30)
+{'test_accuracy': 0.9384360316775441, 'test_recall': 0.7563149662971114, 'test_roc_auc': 0.9159744543786548, 'test_pr_auc': 0.49186692954826255, 'test_calibration_error': 0.010309698340348528, 'correctly_predicted_positives_ratio': 0.03712904420383161}
+[30, 40)
+{'test_accuracy': 0.9324593023103102, 'test_recall': 0.752244020424617, 'test_roc_auc': 0.9162999309252449, 'test_pr_auc': 0.5337178578818713, 'test_calibration_error': 0.011860477657838778, 'correctly_predicted_positives_ratio': 0.04901496400181764}
+[40, 50)
+{'test_accuracy': 0.8891097267088882, 'test_recall': 0.7736579882735365, 'test_roc_auc': 0.8999298141059975, 'test_pr_auc': 0.5798480565528982, 'test_calibration_error': 0.015562745466677312, 'correctly_predicted_positives_ratio': 0.08779826034193279}
+[50, 60)
+{'test_accuracy': 0.9515590784319773, 'test_recall': 0.5783859563574302, 'test_roc_auc': 0.8819768050328342, 'test_pr_auc': 0.44565485069763167, 'test_calibration_error': 0.011588815277351243, 'correctly_predicted_positives_ratio': 0.02926626160441662}
+[60, 70)
+{'test_accuracy': 0.8755157953250847, 'test_recall': 0.7472452783556114, 'test_roc_auc': 0.8820413854576289, 'test_pr_auc': 0.6082528259206414, 'test_calibration_error': 0.02838189277685545, 'correctly_predicted_positives_ratio': 0.11081314693943624}
+[70, 80)
+{'test_accuracy': 0.9134087842902113, 'test_recall': 0.641500904159132, 'test_roc_auc': 0.873517187890912, 'test_pr_auc': 0.5219378905848799, 'test_calibration_error': 0.015253255073034284, 'correctly_predicted_positives_ratio': 0.06381352121121271}
+[80, 90)
+{'test_accuracy': 0.8629322515858339, 'test_recall': 0.7638240997955867, 'test_roc_auc': 0.8864922692350886, 'test_pr_auc': 0.6729109296175777, 'test_calibration_error': 0.03972332227620641, 'correctly_predicted_positives_ratio': 0.14489252122730617}
+[90, 100)
+{'test_accuracy': 0.8453293220563471, 'test_recall': 0.6969273069316483, 'test_roc_auc': 0.8479306861168769, 'test_pr_auc': 0.6016034975107082, 'test_calibration_error': 0.05615411797263385, 'correctly_predicted_positives_ratio': 0.1366861554180621}
+above 100
+{'test_accuracy': 0.8192500410711352, 'test_recall': 0.6922274959532497, 'test_roc_auc': 0.837548043612554, 'test_pr_auc': 0.616799260503383, 'test_calibration_error': 0.06721993160147599, 'correctly_predicted_positives_ratio': 0.15543987185805816}
+
+
+ROC information for DecisionTree saved to ../output/baseline/DecisionTree_roc_test_info_median_bracket.pkl
+Calibration information for DecisionTree saved to ../output/baseline/DecisionTree_calibration_test_info_median_bracket.pkl
+Proportions information for DecisionTree saved to ../output/baseline/DecisionTree_proportions_test_info_median_bracket.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/DecisionTree_recallMME_test_info_median_bracket.pkl
+
+Finished computing and exporting results: 0.03hours
+

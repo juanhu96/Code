@@ -10,6 +10,8 @@ mkdir -p ../output/riskslim/county
 #   nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single maxpoint3 maxfeatures6 c01e-15 interceptub10 interceptlb5 median feature_all cutoff_atmostone_group essential1 nodrug county"$county" > "../output/riskslim/county/LTOUR_$county.txt" &
 # done
 
+county="Modoc"
+nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py train single maxpoint3 maxfeatures6 c01e-15 interceptub10 interceptlb5 median feature_all cutoff_atmostone_group essential1 nodrug county"$county" > "../output/riskslim/county/LTOUR_$county.txt" &
 
 ### LTOUR VS. COUNTY TABLE
 # counties=("San Francisco" "Kern")

@@ -1,0 +1,116 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:80: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:290: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model RandomForest
+
+WARNING: Working on median stumps
+Filtered columns: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'days_supply14', 'days_supply21', 'days_supply30', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+GridSearchCV for RF: 4254.7s
+
+
+Fitting for RF: 93.7s
+
+28 features selected: ['concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'HMFO', 'long_acting', 'Medicare', 'switch_drug', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_100_200', 'age_0_30', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+{'training_accuracy': 0.904, 'training_roc_auc': 0.914, 'training_calibration_error': 0.065}
+Finished training and fitting RandomForest: 1.21 hours
+============================================================ 
+Baseline test with model RandomForest
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+Optimal threshold for binary classification: 0.11936594911469538
+test_accuracy
+0.835
+test_roc_auc
+0.919
+test_pr_auc
+0.568
+test_calibration_error
+0.067
+
+
+0: Accuracy = 0.8300, ROC AUC = 0.9155, Calibration = 0.0657
+1: Accuracy = 0.8381, ROC AUC = 0.9209, Calibration = 0.0686
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (579265, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 85.0; two months: 92.5, three months: 95.7
+1
+{'test_accuracy': 0.952, 'test_recall': 0.68, 'test_precision': 0.301, 'test_roc_auc': 0.917, 'test_pr_auc': 0.335, 'test_calibration_error': 0.046}
+2
+{'test_accuracy': 0.724, 'test_recall': 0.892, 'test_precision': 0.23, 'test_roc_auc': 0.894, 'test_pr_auc': 0.473, 'test_calibration_error': 0.086}
+3
+{'test_accuracy': 0.64, 'test_recall': 0.918, 'test_precision': 0.341, 'test_roc_auc': 0.875, 'test_pr_auc': 0.616, 'test_calibration_error': 0.116}
+
+
+[0, 10)
+{'test_accuracy': 0.629055130772942, 'test_recall': 0.8903732035886042, 'test_roc_auc': 0.8351199134090334, 'test_pr_auc': 0.4049292598860249, 'test_calibration_error': 0.05836012869110159, 'correctly_predicted_positives_ratio': 0.11571102761655531}
+[10, 20)
+{'test_accuracy': 0.832234712021939, 'test_recall': 0.8550668633925853, 'test_roc_auc': 0.9130714120133366, 'test_pr_auc': 0.4811756346055826, 'test_calibration_error': 0.05781802805780965, 'correctly_predicted_positives_ratio': 0.06902833223518469}
+[20, 30)
+{'test_accuracy': 0.9003523124539224, 'test_recall': 0.8206065135849631, 'test_roc_auc': 0.9342242555153584, 'test_pr_auc': 0.5115079449480181, 'test_calibration_error': 0.05721103513218936, 'correctly_predicted_positives_ratio': 0.04028524738313725}
+[30, 40)
+{'test_accuracy': 0.8873370275648979, 'test_recall': 0.8337409298575652, 'test_roc_auc': 0.9354775026468536, 'test_pr_auc': 0.5558420846832923, 'test_calibration_error': 0.06302570008327603, 'correctly_predicted_positives_ratio': 0.05432516650746274}
+[40, 50)
+{'test_accuracy': 0.8129005678194285, 'test_recall': 0.8628064525928851, 'test_roc_auc': 0.9138235600479577, 'test_pr_auc': 0.6048937914760261, 'test_calibration_error': 0.07824429598791792, 'correctly_predicted_positives_ratio': 0.0979152373499002}
+[50, 60)
+{'test_accuracy': 0.8990408043672702, 'test_recall': 0.7358283554797026, 'test_roc_auc': 0.9165221976951076, 'test_pr_auc': 0.49740169506597576, 'test_calibration_error': 0.05705378381342354, 'correctly_predicted_positives_ratio': 0.03723282854763594}
+[60, 70)
+{'test_accuracy': 0.7836240520208793, 'test_recall': 0.8554981154614545, 'test_roc_auc': 0.899128158102749, 'test_pr_auc': 0.6327480760261306, 'test_calibration_error': 0.08915411238379393, 'correctly_predicted_positives_ratio': 0.1268665605805618}
+[70, 80)
+{'test_accuracy': 0.839109578773797, 'test_recall': 0.7985985533453888, 'test_roc_auc': 0.9066622029008305, 'test_pr_auc': 0.5698192792822344, 'test_calibration_error': 0.06999193431570912, 'correctly_predicted_positives_ratio': 0.0794408634387648}
+[80, 90)
+{'test_accuracy': 0.7494780170613852, 'test_recall': 0.8798679176057446, 'test_roc_auc': 0.8980597963088919, 'test_pr_auc': 0.6912521954423885, 'test_calibration_error': 0.11023906842134264, 'correctly_predicted_positives_ratio': 0.16690528743860486}
+[90, 100)
+{'test_accuracy': 0.7294753174017521, 'test_recall': 0.8504172495296899, 'test_roc_auc': 0.8695872626062655, 'test_pr_auc': 0.6350588343186859, 'test_calibration_error': 0.10154861529827029, 'correctly_predicted_positives_ratio': 0.16678965393275436}
+above 100
+{'test_accuracy': 0.6900156070313783, 'test_recall': 0.8789815907157946, 'test_roc_auc': 0.8662930733237938, 'test_pr_auc': 0.6676387702121938, 'test_calibration_error': 0.11688644485946224, 'correctly_predicted_positives_ratio': 0.1973755544603253}
+
+
+ROC information for RandomForest saved to ../output/baseline/RandomForest_roc_test_info_median_bracket.pkl
+Calibration information for RandomForest saved to ../output/baseline/RandomForest_calibration_test_info_median_bracket.pkl
+Proportions information for RandomForest saved to ../output/baseline/RandomForest_proportions_test_info_median_bracket.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/RandomForest_recallMME_test_info_median_bracket.pkl
+
+Finished computing and exporting results: 0.03hours
+

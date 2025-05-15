@@ -1,0 +1,84 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:80: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/baseline_main.py:290: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+============================================================ 
+Baseline train with model LinearSVM
+
+WARNING: Working on median stumps
+Filtered columns: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'days_supply14', 'days_supply21', 'days_supply30', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+GridSearchCV for LinearSVM: 373.6s
+
+76 features selected: ['(Intercept)', 'num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+
+Fitting for LinearSVM: 110.3s
+
+{'training_accuracy': 0.928, 'training_roc_auc': 0.927, 'training_calibration_error': 0.01}
+Finished training and fitting LinearSVM: 0.14 hours
+============================================================ 
+Baseline test with model LinearSVM
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_30_inf', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_0_10', 'concurrent_MME_10_15', 'concurrent_MME_15_20', 'concurrent_MME_20_25', 'concurrent_MME_25_30', 'concurrent_MME_30_35', 'concurrent_MME_35_40', 'concurrent_MME_40_45', 'concurrent_MME_45_50', 'concurrent_MME_50_75', 'concurrent_MME_75_100', 'concurrent_MME_100_200', 'concurrent_MME_200_300', 'concurrent_MME_300_inf', 'age_0_30', 'age_30_40', 'age_40_50', 'age_50_60', 'age_60_70', 'age_70_80', 'age_80_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_prescribers_past180_eq_1', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'num_pharmacies_past180_eq_1', 'days_supply_0_3', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10', 'days_supply_10_14', 'days_supply_14_21', 'days_supply_21_30']
+Optimal threshold for binary classification: 0.08192931192111338
+test_accuracy
+0.858
+test_roc_auc
+0.928
+test_pr_auc
+0.632
+test_calibration_error
+0.009
+
+
+0: Accuracy = 0.8547, ROC AUC = 0.9255, Calibration = 0.0090
+1: Accuracy = 0.8605, ROC AUC = 0.9305, Calibration = 0.0095
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (585677, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 84.5; two months: 92.0, three months: 95.3
+1
+{'test_accuracy': 0.953, 'test_recall': 0.704, 'test_precision': 0.309, 'test_roc_auc': 0.915, 'test_pr_auc': 0.372, 'test_calibration_error': 0.005}
+2
+{'test_accuracy': 0.807, 'test_recall': 0.861, 'test_precision': 0.299, 'test_roc_auc': 0.901, 'test_pr_auc': 0.551, 'test_calibration_error': 0.033}
+3
+{'test_accuracy': 0.708, 'test_recall': 0.906, 'test_precision': 0.391, 'test_roc_auc': 0.894, 'test_pr_auc': 0.694, 'test_calibration_error': 0.012}
+
+
+[0, 10)
+{'test_accuracy': 0.7298029268577945, 'test_recall': 0.8384284388446719, 'test_roc_auc': 0.8495146260598424, 'test_pr_auc': 0.47226051109684236, 'test_calibration_error': 0.022340454958981334, 'correctly_predicted_positives_ratio': 0.10896039531585795}
+[10, 20)
+{'test_accuracy': 0.8761051991745451, 'test_recall': 0.8181456240192979, 'test_roc_auc': 0.9228225384091545, 'test_pr_auc': 0.5457625583150024, 'test_calibration_error': 0.007851936037945687, 'correctly_predicted_positives_ratio': 0.06604773307141622}
+[20, 30)
+{'test_accuracy': 0.9288573457316514, 'test_recall': 0.7946407562734432, 'test_roc_auc': 0.9403730459653985, 'test_pr_auc': 0.5702153847279541, 'test_calibration_error': 0.0067845983940045115, 'correctly_predicted_positives_ratio': 0.039010535399417685}
+[30, 40)
+{'test_accuracy': 0.9063276775809642, 'test_recall': 0.8348024724536415, 'test_roc_auc': 0.9423898258465242, 'test_pr_auc': 0.6171626096767918, 'test_calibration_error': 0.009148756102195463, 'correctly_predicted_positives_ratio': 0.05439433485007543}
+[40, 50)
+{'test_accuracy': 0.83349134825224, 'test_recall': 0.8699760002430356, 'test_roc_auc': 0.9248918153660508, 'test_pr_auc': 0.6584586352539252, 'test_calibration_error': 0.01054606081702611, 'correctly_predicted_positives_ratio': 0.09872887053234364}
+[50, 60)
+{'test_accuracy': 0.9015266940135089, 'test_recall': 0.7692917225405339, 'test_roc_auc': 0.9234134330720397, 'test_pr_auc': 0.557208326236572, 'test_calibration_error': 0.011526799398407258, 'correctly_predicted_positives_ratio': 0.0389260709989822}
+[60, 70)
+{'test_accuracy': 0.7834224680596322, 'test_recall': 0.8871336477663584, 'test_roc_auc': 0.9137944244249816, 'test_pr_auc': 0.693668178474944, 'test_calibration_error': 0.013000126529636898, 'correctly_predicted_positives_ratio': 0.13155796913321952}
+[70, 80)
+{'test_accuracy': 0.837917853395293, 'test_recall': 0.8334086799276673, 'test_roc_auc': 0.9144696547831113, 'test_pr_auc': 0.6216000217173895, 'test_calibration_error': 0.014863459687956175, 'correctly_predicted_positives_ratio': 0.08290361265177634}
+[80, 90)
+{'test_accuracy': 0.7330231263298137, 'test_recall': 0.9205933225011793, 'test_roc_auc': 0.9150477840098955, 'test_pr_auc': 0.7467051808075261, 'test_calibration_error': 0.012149649943444514, 'correctly_predicted_positives_ratio': 0.174630634930104}
+[90, 100)
+{'test_accuracy': 0.7274980605854194, 'test_recall': 0.8947469972504944, 'test_roc_auc': 0.8898677445815302, 'test_pr_auc': 0.6881129854311159, 'test_calibration_error': 0.024866372514848495, 'correctly_predicted_positives_ratio': 0.17548390758926039}
+above 100
+{'test_accuracy': 0.6733448332511911, 'test_recall': 0.9204276294731452, 'test_roc_auc': 0.8830826066136559, 'test_pr_auc': 0.702389981164833, 'test_calibration_error': 0.02522485862340368, 'correctly_predicted_positives_ratio': 0.206682273698045}
+
+
+ROC information for LinearSVM saved to ../output/baseline/LinearSVM_roc_test_info_median_bracket.pkl
+Calibration information for LinearSVM saved to ../output/baseline/LinearSVM_calibration_test_info_median_bracket.pkl
+Proportions information for LinearSVM saved to ../output/baseline/LinearSVM_proportions_test_info_median_bracket.pkl
+Recall by MME information for riskSLIM saved to ../output/baseline/LinearSVM_recallMME_test_info_median_bracket.pkl
+
+Finished computing and exporting results: 0.04hours
+

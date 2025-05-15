@@ -43,7 +43,7 @@ bold_font = FontProperties(weight='bold')
 # =============================================================================
 # =============================================================================
 
-if True:
+if False:
     pattern = '_roc_test_info_median.pkl' if median else '_roc_test_info.pkl'
     roc_files = glob.glob(f'output/baseline/*{pattern}')
     roc_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
@@ -72,7 +72,7 @@ if True:
     plt.xlabel('False Positive Rate', fontsize=14)
     plt.ylabel('True Positive Rate', fontsize=14)
     plt.grid(True, linestyle='--', alpha=0.5)
-    if full: plt.legend(loc="lower right", fontsize=9)
+    if full: plt.legend(loc="lower right", fontsize=11)
     else: plt.legend(loc="lower right", fontsize=10)
 
     # Save the figure as a PDF
@@ -85,7 +85,7 @@ if True:
 # =============================================================================
 # =============================================================================
 
-if True:
+if False:
     pattern = '_calibration_test_info_median.pkl' if median else '_calibration_test_info.pkl'
     calibration_files = glob.glob(f'output/baseline/*{pattern}')
     calibration_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
@@ -108,7 +108,7 @@ if True:
     plt.xlabel('Mean Predicted Risk', fontsize=14)
     plt.ylabel('Observed Risk (Fraction of Positives)', fontsize=14)
     plt.grid(True, linestyle='--', alpha=0.5)
-    if full: plt.legend(loc="lower right", fontsize=9)
+    if full: plt.legend(loc="lower right", fontsize=11)
     else: plt.legend(loc="lower right", fontsize=10)
 
     output_pdf = f'{exportdir}baseline_calibration_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
@@ -120,54 +120,57 @@ if True:
 # =============================================================================
 # =============================================================================
 
+if False: 
+    pattern = '_proportions_test_info_median.pkl' if median else '_proportions_test_info.pkl'
+    proportions_files = glob.glob(f'output/baseline/*{pattern}')
+    proportions_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
+    if not full: proportions_files = [f for f in proportions_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
+    print(proportions_files)
 
-# pattern = '_proportions_test_info_median.pkl' if median else '_proportions_test_info.pkl'
-# proportions_files = glob.glob(f'../output/baseline/*{pattern}')
-# proportions_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
-# if not full: proportions_files = [f for f in proportions_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
-# print(proportions_files)
+    plt.figure()
+    for prop_file in proportions_files:
+        model_name = os.path.basename(prop_file).replace(pattern, '')
 
-# plt.figure()
-# for prop_file in proportions_files:
-#     model_name = os.path.basename(prop_file).replace(pattern, '')
+        with open(prop_file, 'rb') as f:
+            prop_info = pickle.load(f)
+        
+        plt.plot(prop_info['month'], prop_info['proportion'], marker='o', label=f'{model_name_dict[model_name]}', markersize=5, alpha=0.7)
 
-#     with open(prop_file, 'rb') as f:
-#         prop_info = pickle.load(f)
-    
-#     plt.plot(prop_info['month'], prop_info['proportion'], marker='o', label=f'{model_name_dict[model_name]}', markersize=5, alpha=0.7)
+    plt.xticks([1, 2, 3])
+    plt.xlabel('Month', fontsize=14)
+    plt.ylabel('Proportion (%)', fontsize=14)
+    plt.legend(loc="lower right", fontsize=9)
 
-# plt.xticks([1, 2, 3])
-# plt.xlabel('Month', fontsize=14)
-# plt.ylabel('Proportion (%)', fontsize=14)
-# plt.legend(loc="lower right", fontsize=9)
+    plt.figure()
 
-# plt.figure()
+    months = [1, 2, 3]
+    num_months = len(months)
+    bar_width = 0.1  # Width of each bar
 
-# months = [1, 2, 3]
-# num_months = len(months)
-# bar_width = 0.1  # Width of each bar
+    for idx, prop_file in enumerate(proportions_files):
+        model_name = os.path.basename(prop_file).replace(pattern, '')
 
-# for idx, prop_file in enumerate(proportions_files):
-#     model_name = os.path.basename(prop_file).replace(pattern, '')
+        with open(prop_file, 'rb') as f:
+            prop_info = pickle.load(f)
+        
+        positions = np.array(months) + idx * bar_width
 
-#     with open(prop_file, 'rb') as f:
-#         prop_info = pickle.load(f)
-    
-#     positions = np.array(months) + idx * bar_width
+        plt.bar(positions, prop_info['proportion'], width=bar_width, label=f'{model_name_dict[model_name]}', alpha=0.7)
 
-#     plt.bar(positions, prop_info['proportion'], width=bar_width, label=f'{model_name_dict[model_name]}', alpha=0.7)
+    plt.xticks(np.array(months) + bar_width * (len(proportions_files) - 1) / 2, months)
+    plt.yticks(np.arange(0, 101, 10))
+    plt.xlabel('Month', fontsize=14)
+    plt.ylabel('Proportion (%)', fontsize=14)
+    # if full: plt.legend(loc="upper left", fontsize=9)
+    # else: plt.legend(loc="upper left", fontsize=10, prop=bold_font)
+    plt.legend(loc="center left", bbox_to_anchor=(1, 0.5), fontsize=9 if full else 10, prop=bold_font if not full else None)
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.75) # Add space on the right side for the legend
+    plt.show()
 
-# plt.xticks(np.array(months) + bar_width * (len(proportions_files) - 1) / 2, months)
-# plt.yticks(np.arange(0, 101, 10))
-# plt.xlabel('Month', fontsize=14)
-# plt.ylabel('Proportion (%)', fontsize=14)
-# if full: plt.legend(loc="upper left", fontsize=9)
-# else: plt.legend(loc="upper left", fontsize=10, prop=bold_font)
-# plt.show()
-
-# output_pdf = f'{exportdir}baseline_proportions_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
-# plt.savefig(output_pdf, format='pdf', dpi=300)
-# print(f"proportions curves saved to {output_pdf}")
+    output_pdf = f'{exportdir}baseline_proportions_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
+    plt.savefig(output_pdf, format='pdf', dpi=300)
+    print(f"proportions curves saved to {output_pdf}")
 
 
 # =============================================================================
@@ -450,5 +453,46 @@ if False:
     plt.tight_layout()
     
     output_pdf = f'{exportdir}LTOUR_calibration_counties_{year}.pdf'
+    plt.savefig(output_pdf, format='pdf', dpi=600, bbox_inches='tight')
+    print(f"Calibration curves saved to {output_pdf}")
+
+
+
+if True:
+    import matplotlib as mpl
+    mpl.rcParams['pdf.fonttype'] = 42
+    mpl.rcParams['ps.fonttype'] = 42
+
+    year = '2019'
+    filepath = 'output/baseline/'
+    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOURDays_{year}.pkl']
+
+    # Calibration
+    plt.figure(figsize=(10, 6))
+    marker_styles = ['o', 's', '^', 'D', 'v', 'P', 'X', '*']
+    
+    for i, calib_file in enumerate(calibration_files):
+        try:
+            with open(calib_file, 'rb') as f:
+                calib_info = pickle.load(f)
+        except FileNotFoundError:
+            print(f"Calibration file not found: {calib_file}")
+            continue
+
+        marker = marker_styles[i % len(marker_styles)]
+        basename = os.path.basename(calib_file)
+        match = re.search(r'county(.*?)_\d{4}', basename)
+        plt.plot(calib_info['prob_pred'], calib_info['prob_true'], marker=marker, label=f'LTOUR (ECE = {calib_info["ece"]:.3f})', markersize=5, alpha=0.7, linewidth=2)
+
+    plt.plot([0, 1], [0, 1], color='black', linestyle='--', alpha=0.7)
+
+    plt.xlabel('Mean Predicted Risk', fontsize=14)
+    plt.ylabel('Observed Risk (Fraction of Positives)', fontsize=14)
+    plt.grid(True, linestyle='--', alpha=0.5)
+    if full: plt.legend(loc="lower right", fontsize=9)
+    else: plt.legend(loc="lower right", fontsize=10)
+    plt.tight_layout()
+    
+    output_pdf = f'{exportdir}LTOUR_calibration_LTOURDays_{year}.pdf'
     plt.savefig(output_pdf, format='pdf', dpi=600, bbox_inches='tight')
     print(f"Calibration curves saved to {output_pdf}")

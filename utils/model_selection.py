@@ -99,15 +99,19 @@ def cross_validate(model, X, Y, estimator, c_grid, seed, cv=5, partial=False, ex
                 odds_ratios = np.exp(coefficients)
                 conf['OR lower'] = conf[0]
                 conf['OR upper'] = conf[1]
+                
+                logit_standard = sm.Logit(Y, X).fit(disp=0)  # No regularization for p-values
+                p_values = logit_standard.pvalues
 
                 results = pd.DataFrame({
                     'Feature': X_sub.columns,  # Use existing column names of X_sub
                     'Coefficient': coefficients,
                     'Odds Ratio': odds_ratios,
-                    'CI Lower': conf['OR lower'],
-                    'CI Upper': conf['OR upper']
+                    'CI Lower': np.exp(conf['OR lower']),
+                    'CI Upper': np.exp(conf['OR upper']),
+                    'p-value': p_values.values
                 })
-                print(results)
+                
                 results.to_csv(f'{exportdir}LogisticRegression_L1.csv', index=False)
 
         print(f'{len(selected_features)} features selected: {selected_features}')

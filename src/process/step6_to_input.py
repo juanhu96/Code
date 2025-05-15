@@ -85,3 +85,13 @@ FULL_INPUT['patient_zip_yr_num_patients_per_pop_quartile'] = pd.qcut(FULL_INPUT[
 FULL_INPUT.to_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv", index=False)
 
 
+# ======================================
+# To input (first prescription only)
+# ======================================
+
+FULL_INPUT_FIRST = FULL_INPUT.groupby('patient_id', as_index=False).first()
+print(f'Number of patients before: {FULL_INPUT['patient_id'].nunique()}, number of patients now: {FULL_INPUT_FIRST['patient_id'].nunique()}')
+print(f'Number of prescriptions before: {FULL_INPUT.shape[0]}, number of prescriptions now: {FULL_INPUT_FIRST.shape[0]}')
+
+FULL_INPUT_FIRST.to_csv(f"{datadir}FULL_OPIOID_{year}_FIRST_INPUT.csv", index=False)
+
