@@ -1,0 +1,73 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:556: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_median
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: None, Setting Tag: _test_CV_median
+Start testing...
+Start testing with LTOUR_seven_50:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: days_supply, Cutoff: 7, Score: 2
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: daily_dose, Cutoff: 50, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+Test reults are saved with setting tag: _LTOUR_seven_50_2019
+Calibration curve is truncated to 0.5
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (627607, 130)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 57.3; two months: 85.9, three months: 93.8
+1
+{'test_accuracy': 0.9668184245084811, 'test_roc_auc': 0.8776346004795788, 'test_pr_auc': 0.13501284456449816, 'test_calibration_error': 0.004400825498016993}
+2
+{'test_accuracy': 0.6570957831602309, 'test_roc_auc': 0.8219313506433767, 'test_pr_auc': 0.24865036937991788, 'test_calibration_error': 0.11164936503280688}
+3
+{'test_accuracy': 0.611780215727851, 'test_roc_auc': 0.7816097908243599, 'test_pr_auc': 0.3858378994326191, 'test_calibration_error': 0.06406835624152835}
+
+
+608176 1412201
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: days_supply, Cutoff: 7
+Feature: age, Cutoff: 30
+Feature: daily_dose, Cutoff: 50
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_seven_50_2019.pkl, threshodls: [       inf 0.88079708 0.73105858 0.5        0.26894142 0.11920292
+ 0.04742587 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.2689414213699951
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_seven_50_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/riskSLIM_proportions_test_info_median_LTOUR_seven_50_2019.pkl
+Test done!
+
+                   Value
+Accuracy            0.83
+Recall             0.766
+Precision           0.33
+ROC AUC            0.878
+PR AUC             0.361
+Calibration error  0.017
+       Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000911     253214   253121  ...       0.000367        253213           146
+1  0.002473    1226026  1223490  ...       0.002068       1226002          3859
+2  0.006693    1026608  1021813  ...       0.004671       1015770          6878
+3  0.017986     835429   823227  ...       0.014606        702844          9946
+4  0.047426     934338   889118  ...       0.048398        747784         37441
+5  0.119203     721349   643587  ...       0.107801        574078         63625
+6  0.268941     648238        0  ...       0.240782        364780         57127
+7  0.500000     615831        0  ...       0.375644        298115         73942
+
+[8 rows x 10 columns]

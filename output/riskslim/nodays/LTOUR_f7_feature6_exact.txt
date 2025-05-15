@@ -67,3 +67,45 @@ Essential cutoffs with lower bound: 1.0
 ------------------------------------------------------------
 setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
 05/14/25 @ 05:39 PM | switching loss computation from lookup to normal
+05/14/25 @ 05:43 PM | ------------------------------------------------------------
+05/14/25 @ 05:43 PM | runnning initialization procedure
+05/14/25 @ 05:43 PM | ------------------------------------------------------------
+05/14/25 @ 05:48 PM | CPA produced 2 cuts
+05/14/25 @ 05:48 PM | running naive rounding on 1 solutions
+05/14/25 @ 05:48 PM | best objective value: 0.7863
+05/14/25 @ 05:48 PM | rounding produced 0 integer solutions
+05/14/25 @ 05:48 PM | running sequential rounding on 1 solutions
+05/14/25 @ 05:48 PM | best objective value: 0.7863
+05/14/25 @ 05:48 PM | sequential rounding produced 0 integer solutions
+05/14/25 @ 05:48 PM | initialization produced 0 feasible solutions
+05/14/25 @ 05:48 PM | ------------------------------------------------------------
+05/14/25 @ 05:48 PM | completed initialization procedure
+05/14/25 @ 05:48 PM | ------------------------------------------------------------
+05/14/25 @ 05:48 PM | switching loss computation from lookup to normal
+register_callback
+
+05/14/25 @ 05:48 PM | adding 329 initial cuts
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-6 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| num_prior_prescriptions1                      |         2 points |   + ..... |
+| prescriber_yr_avg_days_median_1.0             |         2 points |   + ..... |
+| concurrent_benzo1                             |         1 points |   + ..... |
+| HMFO                                          |         1 points |   + ..... |
+| long_acting                                   |         1 points |   + ..... |
+| Medicare                                      |         1 points |   + ..... |
+| pharmacy_yr_avg_days_median_1.0               |         1 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 7                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-6 ['num_prior_prescriptions1', 'prescriber_yr_avg_days_quartile_1.0', 'concurrent_benzo1', 'HMFO', 'long_acting', 'Medicare', 'pharmacy_yr_avg_days_quartile_1.0'] [2. 2. 1. 1. 1. 1. 1.]
+{'intercept': -6, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_benzo', 'HMFO', 'long_acting', 'Medicare', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 1, 1, 1, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+Finished riskSLIM in 4953.1 seconds
+
+                         Train
+Train accuracy           0.892
+Train Recall             0.267
+Train Precision          0.407
+Train ROC AUC            0.854
+Train PR AUC             0.318
+Train Calibration error  0.021

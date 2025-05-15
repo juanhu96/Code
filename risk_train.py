@@ -98,6 +98,7 @@ def risk_train(scenario:str,
     FULL = FULL.dropna(subset=quartile_list) # drop NA rows
 
     x, constraints = import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance)
+    return
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0]= -1
 
@@ -197,9 +198,9 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
     # ============================================================================================
 
     # LTOUR w/p avgDays
-    base_feature_list = [# 'concurrent_MME', 
+    base_feature_list = ['concurrent_MME', 
                          'daily_dose',
-                         # 'days_supply', 
+                         'days_supply', 
                          'num_prescribers_past180',
                          'num_pharmacies_past180', 
                          'concurrent_benzo',
@@ -245,6 +246,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
 
     # (6) temp features
     features_set_6 = ['num_prescribers_past180', 'num_pharmacies_past180', 'num_prior_prescriptions']
+    features_set_7 = ['concurrent_MME', 'daily_dose']
 
 
     # FEATURES TO KEEP
@@ -254,6 +256,8 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
     elif feature_set == '4': features_to_keep = base_feature_list + features_set_4 
     elif feature_set == '5': features_to_keep = base_feature_list + features_set_5
     elif feature_set == '6': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6
+    elif feature_set == 'nopatientzip': features_to_keep = base_feature_list + features_set_3 + features_set_4 + features_set_5 + features_set_6
+    elif feature_set == 'mme': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6 + features_set_7
     elif feature_set == 'nodemo': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4
     else: 
         features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5
@@ -266,10 +270,12 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
     columns_to_drop = ['CommercialIns', 'MilitaryIns', 'WorkersComp', 'IndianNation', 'age20'] # Other
     columns_to_drop += [f'num_pharmacies_past180{i}' for i in range(7, 11)]
     columns_to_drop += [f'num_prescribers_past180{i}' for i in range(7, 11)]
-    columns_to_drop += [f'days_supply{i}' for i in [10, 14, 21, 30]]
+    columns_to_drop += [f'days_supply{i}' for i in [21, 30]] # 10, 14
+    columns_to_drop += [f'daily_dose{i}' for i in [3, 5, 7, 200, 300]]
     filtered_columns = [feature for feature in filtered_columns if feature not in columns_to_drop]
 
     STUMPS = STUMPS[filtered_columns]
+    print(f'Filtered STUMPS with columns {STUMPS.columns.tolist()}')
 
     # NOTE: create a new column called 'Medicare_medicaid' which is the sum of 'Medicare' and 'Medicaid'
     # if not noinsurance: STUMPS['Medicare_Medicaid'] = STUMPS['Medicare'] + STUMPS['Medicaid']
@@ -303,7 +309,7 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
 
         two_cutoff = None
 
-    if cutoff_set == 'atmostone_group':
+    elif cutoff_set == 'atmostone_group':
         
         ### ONE CUTOFF PER FEATURE
         ### AT MOST ONE CUTOFF PER GROUP
@@ -313,6 +319,50 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
         single_cutoff.extend(updated_drug_payment)
 
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
+
+        if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
+        elif feature_set == 'nopatientzip': features_sets = [features_set_3, features_set_4, features_set_5, features_set_6]
+        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
+
+        for features_set in features_sets:
+            single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
+
+        two_cutoff = None
+
+    elif cutoff_set == 'atmostone_groupMME':
+        
+        ### ONE CUTOFF PER FEATURE
+        ### AT MOST ONE CUTOFF PER GROUP
+        ### FORCE MME
+
+        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff per feature
+        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
+        single_cutoff.extend(updated_drug_payment)
+
+        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
+        essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in features_set_7)]] # force MME
+
+        if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
+        elif feature_set == 'mme': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
+        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
+
+        for features_set in features_sets:
+            single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
+
+        two_cutoff = None
+
+    elif cutoff_set == 'atmostone_groupdose':
+        
+        ### ONE CUTOFF PER FEATURE
+        ### AT MOST ONE CUTOFF PER GROUP
+        ### FORCE DAILY DOSE
+
+        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff per feature
+        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
+        single_cutoff.extend(updated_drug_payment)
+
+        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
+        essential_cutoffs += [[col for col in x if col.startswith('daily_dose')]] # force daily dose
 
         if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
         else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]

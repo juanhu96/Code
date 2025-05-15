@@ -156,7 +156,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
             for month, proportion in proportions.items():
                 proportion_info["month"].append(month)
                 proportion_info["proportion"].append(proportion)
-            filename = f'output/baseline/riskSLIM_proportions_test_info{"_median" if median else ""}.pkl'
+            filename = f'output/baseline/riskSLIM_proportions_test_info{"_median" if median else ""}{setting_tag}.pkl'
             with open(filename, 'wb') as f:
                 pickle.dump(proportion_info, f)
             print(f"Proportions information for riskSLIM saved to {filename}")
@@ -338,13 +338,20 @@ def compute_patient(FULL, setting_tag, exportdir='/export/storage_cures/CURES/Re
 
 
 
-def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, exportdir='/export/storage_cures/CURES/Results/'):
+def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, truncate=True, exportdir='/export/storage_cures/CURES/Results/'):
 
     num_total_presc = len(y)
     table = []
     calibration_error = 0
     
-    for prob in np.unique(y_prob):
+    if truncate:
+        print("Calibration curve is truncated to 0.5")
+        buckets = np.where(y_prob >= 0.5, 0.5, y_prob)
+        unique_probs = np.unique(buckets)
+    else: 
+        unique_probs = np.unique(y_prob)
+
+    for prob in unique_probs:
         
         y_temp = y[y_prob == prob]
         y_pred_temp = y_pred[y_prob == prob]

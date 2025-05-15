@@ -152,9 +152,11 @@ def create_stumps(year, case, first, upto180, feature_list, stumps_feature_list,
 
     cutoffs = []
     for column_name in FULL.columns:
-        if column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME' or column_name == 'daily_dose' or \
+        if column_name == 'concurrent_MME' or column_name == 'concurrent_methadone_MME' or \
             column_name == 'patient_zip_yr_avg_MME' or column_name == 'patient_zip_yr_avg_quantity':
             cutoffs.append([10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100, 200, 300])
+        elif column_name == 'daily_dose':
+            cutoffs.append([3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100])
         elif column_name == 'num_prescribers_past180' or column_name == 'num_pharmacies_past180':
             cutoffs.append([n for n in range(2, 7)])
         elif column_name == 'concurrent_benzo':

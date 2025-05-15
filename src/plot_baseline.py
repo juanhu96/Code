@@ -465,7 +465,10 @@ if True:
 
     year = '2019'
     filepath = 'output/baseline/'
-    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOURDays_{year}.pkl']
+    # calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_six_{year}.pkl', f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_seven_{year}.pkl']
+    # calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_seven_{thresh}_{year}.pkl' for thresh in range(50, 101, 10)]
+    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_{name}_{year}.pkl' for name in ['naive_6', 'naive_7', 'seven_100']]
+    name_list = ['naive_6features', 'naive_7features', 'full']
 
     # Calibration
     plt.figure(figsize=(10, 6))
@@ -482,7 +485,17 @@ if True:
         marker = marker_styles[i % len(marker_styles)]
         basename = os.path.basename(calib_file)
         match = re.search(r'county(.*?)_\d{4}', basename)
-        plt.plot(calib_info['prob_pred'], calib_info['prob_true'], marker=marker, label=f'LTOUR (ECE = {calib_info["ece"]:.3f})', markersize=5, alpha=0.7, linewidth=2)
+        # model_name = calib_file.split('_')[-2]  # Extract the threshold value from filename
+        model_name = name_list[i]
+        plt.plot(
+            calib_info['prob_pred'],
+            calib_info['prob_true'],
+            marker=marker,
+            label=f'LTOUR {model_name} (ECE = {calib_info["ece"]:.3f})',
+            markersize=5,
+            alpha=0.7,
+            linewidth=2
+        )
 
     plt.plot([0, 1], [0, 1], color='black', linestyle='--', alpha=0.7)
 
@@ -493,6 +506,6 @@ if True:
     else: plt.legend(loc="lower right", fontsize=10)
     plt.tight_layout()
     
-    output_pdf = f'{exportdir}LTOUR_calibration_LTOURDays_{year}.pdf'
+    output_pdf = f'{exportdir}LTOUR_calibration_first_{year}.pdf'
     plt.savefig(output_pdf, format='pdf', dpi=600, bbox_inches='tight')
     print(f"Calibration curves saved to {output_pdf}")

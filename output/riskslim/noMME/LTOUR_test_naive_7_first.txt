@@ -1,0 +1,71 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:556: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_first_median
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: True, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: None, Setting Tag: _test_CV_first_median
+Start testing...
+Start testing with LTOUR_naive_7:
+Intercept: -8
+
+ - Condition: days_supply, Cutoff: 7, Score: 2
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_benzo, Cutoff: 1, Score: 1
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv imported with shape (3777671, 127)
+WARNING: Encoding quartile values to binary
+
+Test reults are saved with setting tag: _LTOUR_naive_7_2019
+Calibration curve is truncated to 0.5
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (83584, 130)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+{'test_accuracy': 0.8183743369922897, 'test_roc_auc': 0.8858273468140283, 'test_pr_auc': 0.14414232214336628, 'test_calibration_error': 0.0037650023706304876}
+
+
+96587 756703
+Feature: days_supply, Cutoff: 7
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_benzo, Cutoff: 1
+Feature: age, Cutoff: 30
+Feature: HMFO, Cutoff: 1
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_naive_7_2019.pkl, threshodls: [           inf 7.31058579e-01 5.00000000e-01 2.68941421e-01
+ 1.19202922e-01 4.74258732e-02 1.79862100e-02 6.69285092e-03
+ 2.47262316e-03 9.11051194e-04 3.35350130e-04] with optimal threshold: 0.04742587317756678
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_naive_7_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/riskSLIM_proportions_test_info_median_LTOUR_naive_7_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.818
+Recall             0.865
+Precision           0.11
+ROC AUC            0.886
+PR AUC             0.144
+Calibration error  0.004
+       Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000335     275954   275852  ...       0.000370        275954           152
+1  0.000911    1294712  1292108  ...       0.002011       1294712          3981
+2  0.002473     722702   720022  ...       0.003708        722702          4148
+3  0.006693     421612   418386  ...       0.007652        421612          4360
+4  0.017986     305988   301597  ...       0.014350        305988          5677
+5  0.047426     342041        0  ...       0.063808        342041         25426
+6  0.119203     357389        0  ...       0.133152        357389         53960
+7  0.268941      54023        0  ...       0.239398         54023         14152
+8  0.500000       3104        0  ...       0.380155          3104          1234
+
+[9 rows x 10 columns]

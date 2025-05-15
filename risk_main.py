@@ -92,6 +92,12 @@ if county_arg:
 else:
     county_name = None
 
+table_name = next((arg for arg in sys.argv if arg.startswith('table')), None)
+if table_name:
+    table_name = table_name.replace('table', '').strip()
+else:
+    table_name = None
+
 stretch = any(['stretch' in arg for arg in sys.argv])
 exact = any(['exact' in arg for arg in sys.argv])
 
@@ -121,7 +127,7 @@ setting_tag += f"_exact" if exact else ""
 print(f"Setting tag: {setting_tag}")
 
 
-def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, exact, setting_tag):
+def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, table_name, stretch, exact, setting_tag):
 
     print(f"Stage: {stage}, Scenario: {scenario}, Max Points: {max_points}, Max Features: {max_features}, C0: {c0},\
         Intercept Upper Bound: {interceptub}, Intercept Lower Bound: {interceptlb}, Balanced: {balanced},\
@@ -162,29 +168,51 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         'cutoffs': [1, '1', 40, 30, 1, '1'], 
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        # TableNew1 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'age', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, '1', 40, 30, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
-        # TableNew2 = {'intercept': -8, 'conditions': ['num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 30, '1', 40, 1, '1'], 'scores': [2, 2, 2, 1, 1, 1]}
-        # TableNew3 = {'intercept': -9, 'conditions': ['concurrent_MME', 'num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [10, 1, 30, '1', 1, '1'], 'scores': [2, 2, 2, 2, 1, 1]}
-        # TableNew4 = {'intercept': -9, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prior_prescriptions', 'age', 'concurrent_MME', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 1, 30, 30, 1, '1'], 'scores': [3, 2, 2, 1, 1, 1]}
-
         TableSF = {'intercept': -5, 'conditions': ['prescriber_yr_avg_days_quartile', 'concurrent_MME', 'num_prescribers_past180', 'num_prior_prescriptions', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 100, 3, 1, 1, '1'], 'scores': [2, 1, 1, 1, 1, 1]}
         TableKern = {'intercept': -5, 'conditions': ['prescriber_yr_avg_days_quartile', 'num_prescribers_past180', 'concurrent_benzo', 'num_prior_prescriptions', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': ['1', 3, 1, 1, 1, '1'], 'scores': [2, 1, 1, 1, 1, 1]}
 
         LTOURDays = {'intercept': -6, 'conditions': ['days_supply', 'concurrent_MME', 'num_prescribers_past180', 'num_prior_prescriptions', 'age', 'prescriber_yr_avg_days_quartile'], 'cutoffs': [21, 40, 3, 1, 30, '1'], 'scores': [3, 1, 1, 1, 1, 1]}
+        LTOUR_six = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+
+        LTOUR_seven_50 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 50, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        LTOUR_seven_60 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 60, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        LTOUR_seven_70 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 70, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        LTOUR_seven_80 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 80, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        LTOUR_seven_90 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 90, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        LTOUR_seven_100 = {'intercept': -7, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 100, 1, '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+        
+        LTOUR_naive_6 = {'intercept': -7, 'conditions': ['days_supply', 'prescriber_yr_avg_days_quartile', 'concurrent_benzo', 'HMFO', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [7, '1', 1, 1, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1]}
+        LTOUR_naive_7 = {'intercept': -8, 'conditions': ['days_supply', 'prescriber_yr_avg_days_quartile', 'concurrent_benzo', 'age', 'HMFO', 'long_acting', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [7, '1', 1, 30, 1, 1, '1'], 'scores': [2, 2, 1, 1, 1, 1, 1]}
+
         # iterate through tables
-        # tables = {'TableNew1': TableNew1, 'TableNew2': TableNew2, 'TableNew3': TableNew3, 'TableNew4': TableNew4}
-        # tables = {'LTOUR': LTOUR, 'TableSF': TableSF, 'TableKern': TableKern}
-        tables = {'LTOURDays': LTOURDays}
-        for table_name, table in tables.items():
-            setting_tag = f"_{table_name}"
-            if county_name is not None: setting_tag += f"_county{county_name}"
-            print(f"Start testing with {table_name}:")
-            print(f"Intercept: {table['intercept']}\n")
-            for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
-                print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
+        tables = {
+            'CURES': CURES,
+            'LTOUR': LTOUR,
+            'TableSF': TableSF,
+            'TableKern': TableKern,
+            'LTOURDays': LTOURDays,
+            'LTOUR_six': LTOUR_six,
+            'LTOUR_seven_50': LTOUR_seven_50,
+            'LTOUR_seven_60': LTOUR_seven_60,
+            'LTOUR_seven_70': LTOUR_seven_70,
+            'LTOUR_seven_80': LTOUR_seven_80,
+            'LTOUR_seven_90': LTOUR_seven_90,
+            'LTOUR_seven_100': LTOUR_seven_100,
+            'LTOUR_naive_6': LTOUR_naive_6,
+            'LTOUR_naive_7': LTOUR_naive_7
+        }
                 
-            risk_test(2018, table, first, upto180, median, county_name, f'{setting_tag}_2018')
-            risk_test(2019, table, first, upto180, median, county_name, f'{setting_tag}_2019')
+        table = tables[table_name]
+        setting_tag = f"_{table_name}"
+        if county_name is not None: setting_tag += f"_county{county_name}"
+        print(f"Start testing with {table_name}:")
+        print(f"Intercept: {table['intercept']}\n")
+
+        for condition, cutoff, score in zip(table['conditions'], table['cutoffs'], table['scores']):
+            print(f" - Condition: {condition}, Cutoff: {cutoff}, Score: {score}")
+        
+        # risk_test(2018, table, first, upto180, median, county_name, f'{setting_tag}_2018')
+        risk_test(2019, table, first, upto180, median, county_name, f'{setting_tag}_2019')
         
 
     return
@@ -192,5 +220,5 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
 
 
 if __name__ == "__main__":
-    main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, exact, setting_tag)
+    main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb, balanced, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, table_name, stretch, exact, setting_tag)
     

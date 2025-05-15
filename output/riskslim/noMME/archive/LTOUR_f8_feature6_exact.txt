@@ -1,0 +1,111 @@
+/mnt/phd/jihu/opioid/Code/risk_train.py:77: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Setting tag: _train_single_p3_f8_c01e-15_interceptub15_interceptlb5_single_median_feature6_cutoffatmostone_group_essential1.0_nodrug_exact
+Stage: train, Scenario: single, Max Points: 3, Max Features: 8, C0: 1e-15,        Intercept Upper Bound: 15, Intercept Lower Bound: 5, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: 6, Cutoff Set: atmostone_group, Essential Num: 1.0, No Drug: True,                No Insurance: False, County Name: None, Setting Tag: _train_single_p3_f8_c01e-15_interceptub15_interceptlb5_single_median_feature6_cutoffatmostone_group_essential1.0_nodrug_exact
+Start single training, file saved with setting tag _train_single_p3_f8_c01e-15_interceptub15_interceptlb5_single_median_feature6_cutoffatmostone_group_essential1.0_nodrug_exact
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv imported with shape (6816028, 127)
+FULL_2018_Explore_STUMPS_median_
+Finished importing STUMPS, with shape (6309500, 157) and columns ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'concurrent_MME200', 'concurrent_MME300', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_quantity1', 'diff_days1', 'age20', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'days_supply14', 'days_supply21', 'days_supply30', 'daily_dose10', 'daily_dose15', 'daily_dose20', 'daily_dose25', 'daily_dose30', 'daily_dose35', 'daily_dose40', 'daily_dose45', 'daily_dose50', 'daily_dose75', 'daily_dose100', 'daily_dose200', 'daily_dose300', 'patient_zip_yr_avg_days3', 'patient_zip_yr_avg_days5', 'patient_zip_yr_avg_days7', 'patient_zip_yr_avg_days10', 'patient_zip_yr_avg_days14', 'patient_zip_yr_avg_days21', 'patient_zip_yr_avg_days25', 'patient_zip_yr_avg_days30', 'patient_zip_yr_avg_days60', 'patient_zip_yr_avg_quantity10', 'patient_zip_yr_avg_quantity15', 'patient_zip_yr_avg_quantity20', 'patient_zip_yr_avg_quantity25', 'patient_zip_yr_avg_quantity30', 'patient_zip_yr_avg_quantity35', 'patient_zip_yr_avg_quantity40', 'patient_zip_yr_avg_quantity45', 'patient_zip_yr_avg_quantity50', 'patient_zip_yr_avg_quantity75', 'patient_zip_yr_avg_quantity100', 'patient_zip_yr_avg_quantity200', 'patient_zip_yr_avg_quantity300', 'patient_zip_yr_avg_MME10', 'patient_zip_yr_avg_MME15', 'patient_zip_yr_avg_MME20', 'patient_zip_yr_avg_MME25', 'patient_zip_yr_avg_MME30', 'patient_zip_yr_avg_MME35', 'patient_zip_yr_avg_MME40', 'patient_zip_yr_avg_MME45', 'patient_zip_yr_avg_MME50', 'patient_zip_yr_avg_MME75', 'patient_zip_yr_avg_MME100', 'patient_zip_yr_avg_MME200', 'patient_zip_yr_avg_MME300', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'MilitaryIns', 'WorkersComp', 'Other', 'IndianNation', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_num_prescriptions_quartile_0.0', 'patient_zip_yr_num_prescriptions_quartile_1.0', 'patient_zip_yr_num_patients_quartile_0.0', 'patient_zip_yr_num_patients_quartile_1.0', 'patient_zip_yr_num_pharmacies_quartile_0.0', 'patient_zip_yr_num_pharmacies_quartile_1.0', 'patient_zip_yr_avg_MME_quartile_0.0', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_0.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_avg_quantity_quartile_0.0', 'patient_zip_yr_avg_quantity_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'prescriber_yr_avg_quantity_quartile_0.0', 'prescriber_yr_avg_quantity_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_quantity_quartile_0.0', 'pharmacy_yr_avg_quantity_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+Single cutoffs:
+['daily_dose10', 'daily_dose15', 'daily_dose20', 'daily_dose25', 'daily_dose30', 'daily_dose35', 'daily_dose40', 'daily_dose45', 'daily_dose50', 'daily_dose75', 'daily_dose100', 'daily_dose200', 'daily_dose300']
+['days_supply3', 'days_supply5', 'days_supply7']
+['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806']
+['num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806']
+['concurrent_benzo1']
+['long_acting']
+['Medicaid']
+[]
+['Medicare', 'Medicare_Medicaid']
+['CashCredit']
+[]
+[]
+[]
+[]
+['Medicare_Medicaid']
+['num_prior_prescriptions1']
+['diff_MME1']
+['diff_days1']
+['switch_drug']
+['switch_payment']
+['ever_switch_drug']
+['ever_switch_payment']
+['age30', 'age40', 'age50', 'age60', 'age70', 'age80']
+['patient_gender']
+['patient_zip_yr_avg_days_quartile_0.0', 'patient_zip_yr_avg_days_quartile_1.0']
+['patient_zip_yr_avg_MME_quartile_0.0', 'patient_zip_yr_avg_MME_quartile_1.0']
+['patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0']
+['patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0']
+['prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0']
+['prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0']
+['prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0']
+['prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0']
+['pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0']
+['pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0']
+['pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0']
+['pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0']
+['median_household_income_quartile_0.0', 'median_household_income_quartile_1.0']
+['family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0']
+['unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806']
+['num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806']
+['num_prior_prescriptions1']
+['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']
+['patient_zip_yr_avg_MME_quartile_0.0', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_0.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0']
+['prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0']
+['pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0']
+['zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'num_prior_prescriptions1']
+------------------------------------------------------------
+Two cutoffs
+Essential cutoffs with lower bound: 1.0
+['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'age30', 'age40', 'age50', 'age60', 'age70', 'age80', 'days_supply3', 'days_supply5', 'days_supply7', 'daily_dose10', 'daily_dose15', 'daily_dose20', 'daily_dose25', 'daily_dose30', 'daily_dose35', 'daily_dose40', 'daily_dose45', 'daily_dose50', 'daily_dose75', 'daily_dose100', 'daily_dose200', 'daily_dose300', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_avg_MME_quartile_0.0', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_0.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0', 'Medicare_Medicaid']
+------------------------------------------------------------
+setting c0_value = 0.0 for (Intercept) to ensure that intercept is not penalized
+05/14/25 @ 02:46 PM | switching loss computation from lookup to normal
+05/14/25 @ 02:52 PM | ------------------------------------------------------------
+05/14/25 @ 02:52 PM | runnning initialization procedure
+05/14/25 @ 02:52 PM | ------------------------------------------------------------
+05/14/25 @ 02:57 PM | CPA produced 2 cuts
+05/14/25 @ 02:57 PM | running naive rounding on 1 solutions
+05/14/25 @ 02:57 PM | best objective value: 1.1843
+05/14/25 @ 02:57 PM | rounding produced 0 integer solutions
+05/14/25 @ 02:57 PM | running sequential rounding on 1 solutions
+05/14/25 @ 02:57 PM | best objective value: 1.1843
+05/14/25 @ 02:57 PM | sequential rounding produced 0 integer solutions
+05/14/25 @ 02:57 PM | initialization produced 0 feasible solutions
+05/14/25 @ 02:57 PM | ------------------------------------------------------------
+05/14/25 @ 02:57 PM | completed initialization procedure
+05/14/25 @ 02:57 PM | ------------------------------------------------------------
+05/14/25 @ 02:57 PM | switching loss computation from lookup to normal
+register_callback
+
+05/14/25 @ 02:57 PM | adding 281 initial cuts
++-----------------------------------------------+------------------+-----------+
+| Pr(Y = +1) = 1.0/(1.0 + exp(-(-8 + score)))   |                  |           |
+| ============================================= | ================ | ========= |
+| num_prior_prescriptions1                      |         2 points |   + ..... |
+| days_supply7                                  |         2 points |   + ..... |
+| age30                                         |         1 points |   + ..... |
+| daily_dose200                                 |         1 points |   + ..... |
+| long_acting                                   |         1 points |   + ..... |
+| patient_zip_yr_avg_MME_median_1.0             |         1 points |   + ..... |
+| prescriber_yr_avg_days_median_1.0             |         1 points |   + ..... |
+| pharmacy_yr_avg_days_median_1.0               |         1 points |   + ..... |
+| ============================================= | ================ | ========= |
+| ADD POINTS FROM ROWS 1 to 8                   |            SCORE |   = ..... |
++-----------------------------------------------+------------------+-----------+
+-8 ['num_prior_prescriptions1', 'days_supply7', 'age30', 'daily_dose200', 'long_acting', 'patient_zip_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0'] [2. 2. 1. 1. 1. 1. 1. 1.]
+{'intercept': -8, 'conditions': ['num_prior_prescriptions', 'days_supply', 'age', 'daily_dose', 'long_acting', 'patient_zip_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 'cutoffs': [1, 7, 30, 200, 1, '1', '1', '1'], 'scores': [2, 2, 1, 1, 1, 1, 1, 1]}
+Finished riskSLIM in 7923.0 seconds
+
+                         Train
+Train accuracy           0.887
+Train Recall             0.453
+Train Precision           0.42
+Train ROC AUC            0.873
+Train PR AUC             0.355
+Train Calibration error  0.014

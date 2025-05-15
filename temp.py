@@ -59,8 +59,14 @@ if True:
     def summary_stats(df, feature):
         return {
             '10%': df[feature].quantile(0.1),
+            '20%': df[feature].quantile(0.2),
+            '30%': df[feature].quantile(0.3),
+            '40%': df[feature].quantile(0.4),
             'Mean': df[feature].mean(),
-            'Median': df[feature].median(),
+            'Median (50%)': df[feature].median(),
+            '60%': df[feature].quantile(0.6),
+            '70%': df[feature].quantile(0.7),
+            '80%': df[feature].quantile(0.8),
             '90%': df[feature].quantile(0.9)
         }
 
