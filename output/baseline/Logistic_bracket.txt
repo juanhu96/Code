@@ -62,3 +62,80 @@ Proportion of LT users detected within a month: 81.9; two months: 91.5, three mo
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
   ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+{'test_accuracy': 0.7779103531388961, 'test_recall': 0.864282576574418, 'test_roc_auc': 0.8898411281232725, 'test_pr_auc': 0.576864620716135, 'test_calibration_error': 0.01893121668894555, 'correctly_predicted_positives_ratio': 0.12944040239114118}
+[70, 80)
+{'test_accuracy': 0.8474965683791739, 'test_recall': 0.7768126610231874, 'test_roc_auc': 0.8922895237270309, 'test_pr_auc': 0.5208710054174384, 'test_calibration_error': 0.01709658176072887, 'correctly_predicted_positives_ratio': 0.07746287610197236}
+[80, 90)
+{'test_accuracy': 0.7772779610077868, 'test_recall': 0.8628042544487625, 'test_roc_auc': 0.88971540383771, 'test_pr_auc': 0.6338723198905847, 'test_calibration_error': 0.04368892803090817, 'correctly_predicted_positives_ratio': 0.1646435471595012}
+[90, 100)
+{'test_accuracy': 0.7270427243095504, 'test_recall': 0.868043549366852, 'test_roc_auc': 0.8627217220876393, 'test_pr_auc': 0.5876328585730866, 'test_calibration_error': 0.031333317193450894, 'correctly_predicted_positives_ratio': 0.1715343631981828}
+above 100
+{'test_accuracy': 0.6990693947240197, 'test_recall': 0.8716179713584795, 'test_roc_auc': 0.8555583837213611, 'test_pr_auc': 0.6236103098558716, 'test_calibration_error': 0.035770916305048125, 'correctly_predicted_positives_ratio': 0.1981552995373148}
+
+
+ROC information for Logistic saved to ../output/baseline/files/Logistic_roc_test_info_bracket.pkl
+Calibration information for Logistic saved to ../output/baseline/files/Logistic_calibration_test_info_bracket.pkl
+Proportions information for Logistic saved to ../output/baseline/files/Logistic_proportions_test_info_bracket.pkl
+
+Finished computing and exporting results: 0.04hours
+
+Testing on naive data for Logistic with setting _Logistic_bracket_naive
+============================================================ 
+Baseline test with model Logistic
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'days_supply_10_inf', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75', 'daily_dose_25_50', 'daily_dose_50_75', 'daily_dose_75_90', 'daily_dose_90_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Optimal threshold for binary classification: 0.03471842919053531
+test_accuracy
+0.853
+test_roc_auc
+0.899
+test_pr_auc
+0.224
+test_calibration_error
+0.008
+
+
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (77743, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+{'test_accuracy': 0.853, 'test_recall': 0.834, 'test_precision': 0.131, 'test_roc_auc': 0.899, 'test_pr_auc': 0.224, 'test_calibration_error': 0.008}
+
+
+[0, 10)
+{'test_accuracy': 0.525083368139117, 'test_recall': 0.8631677600749765, 'test_roc_auc': 0.7484987058367052, 'test_pr_auc': 0.11830677002981131, 'test_calibration_error': 0.02432690283190823, 'correctly_predicted_positives_ratio': 0.04884743133316096}
+[10, 20)
+{'test_accuracy': 0.8250372821916573, 'test_recall': 0.8512314756835734, 'test_roc_auc': 0.8939383081061109, 'test_pr_auc': 0.1728110479963609, 'test_calibration_error': 0.006299132999070497, 'correctly_predicted_positives_ratio': 0.022993738847057032}
+[20, 30)
+{'test_accuracy': 0.9042966032542276, 'test_recall': 0.7704568921011874, 'test_roc_auc': 0.8860531894286598, 'test_pr_auc': 0.18666398409352428, 'test_calibration_error': 0.007325352351566646, 'correctly_predicted_positives_ratio': 0.011223776092294618}
+[30, 40)
+{'test_accuracy': 0.8935274189693335, 'test_recall': 0.8347419644000512, 'test_roc_auc': 0.9131347250264362, 'test_pr_auc': 0.25020106909695483, 'test_calibration_error': 0.009413436488155907, 'correctly_predicted_positives_ratio': 0.016934863710523853}
+[40, 50)
+{'test_accuracy': 0.8328243592627631, 'test_recall': 0.8714674970805761, 'test_roc_auc': 0.9064111786822915, 'test_pr_auc': 0.29583830577979897, 'test_calibration_error': 0.013336877047588498, 'correctly_predicted_positives_ratio': 0.03449519119654617}
+[50, 60)
+{'test_accuracy': 0.9309211683306619, 'test_recall': 0.6552693208430913, 'test_roc_auc': 0.8408065827179969, 'test_pr_auc': 0.2231403504550966, 'test_calibration_error': 0.009269850909787774, 'correctly_predicted_positives_ratio': 0.007029479597425371}
+[60, 70)
+{'test_accuracy': 0.7983070216857246, 'test_recall': 0.8697863682604272, 'test_roc_auc': 0.8899820639685483, 'test_pr_auc': 0.3095563754694225, 'test_calibration_error': 0.01304234798885643, 'correctly_predicted_positives_ratio': 0.04095584159635401}
+[70, 80)
+{'test_accuracy': 0.9151906978221848, 'test_recall': 0.7132987910189983, 'test_roc_auc': 0.8619443418478923, 'test_pr_auc': 0.26636918542904076, 'test_calibration_error': 0.007874386926110947, 'correctly_predicted_positives_ratio': 0.013120899718837863}
+[80, 90)
+{'test_accuracy': 0.8092943779937813, 'test_recall': 0.8137988362427265, 'test_roc_auc': 0.8692052505370773, 'test_pr_auc': 0.19147143162724367, 'test_calibration_error': 0.011369187284414663, 'correctly_predicted_positives_ratio': 0.027423737359589903}
+[90, 100)
+{'test_accuracy': 0.762163477132663, 'test_recall': 0.877431906614786, 'test_roc_auc': 0.8801137543992742, 'test_pr_auc': 0.3646885002730833, 'test_calibration_error': 0.018091428166581096, 'correctly_predicted_positives_ratio': 0.060952535409233434}
+above 100
+{'test_accuracy': 0.7409535847614568, 'test_recall': 0.8475289169295478, 'test_roc_auc': 0.8746249521211991, 'test_pr_auc': 0.36431792703922394, 'test_calibration_error': 0.0161367007449735, 'correctly_predicted_positives_ratio': 0.047385284693847556}
+
+
+ROC information for Logistic saved to ../output/baseline/files/Logistic_roc_test_info_bracket_naive.pkl
+Calibration information for Logistic saved to ../output/baseline/files/Logistic_calibration_test_info_bracket_naive.pkl
+Proportions information for Logistic saved to ../output/baseline/files/Logistic_proportions_test_info_bracket_naive.pkl
+
+Finished computing and exporting results: 0.02hours
+
