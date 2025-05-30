@@ -1,13 +1,6 @@
 /mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
-/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
-  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+/mnt/phd/jihu/opioid/Code/risk_test.py:556: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -15,90 +8,68 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 Setting tag: _test_CV_median_countyKern
 Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Kern, Setting Tag: _test_CV_median_countyKern
 Start testing...
-Start testing with LTOUR:
-Intercept: -7
+Start testing with LTOUR_final:
+Intercept: -6
 
  - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
- - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
- - Condition: concurrent_MME, Cutoff: 40, Score: 1
- - Condition: age, Cutoff: 30, Score: 1
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: daily_dose, Cutoff: 100, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
  - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 1
  - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
-/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv imported with shape (6816028, 127)
-WARNING: Encoding quartile values to binary
-
-Subsetting dataset to county Kern with 163145 prescriptions.
-Test reults are saved with setting tag: _LTOUR_countyKern_2018
-22873 13719
-Feature: num_prior_prescriptions, Cutoff: 1
-Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
-Should only be for Drug payment
-Feature: concurrent_MME, Cutoff: 40
-Feature: age, Cutoff: 30
-Feature: long_acting, Cutoff: 1
-Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
-Should only be for Drug payment
-Current working directory: /mnt/phd/jihu/opioid/Code
-ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyKern_2018.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
- 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
-Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyKern_2018.pkl
-Test done!
-
-                   Value
-Accuracy           0.856
-Recall             0.287
-Precision          0.479
-ROC AUC             0.83
-PR AUC             0.375
-Calibration error  0.041
-       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.000911       5207   5199  ...       0.001536          5207            10
-1  0.002473      21629  21537  ...       0.004254         21628           160
-2  0.006693      26463  26227  ...       0.008918         26144           321
-3  0.017986      24617  23204  ...       0.057399         19243           982
-4  0.047426      30869  27721  ...       0.101979         25215          2575
-5  0.119203      18169  14329  ...       0.211349         13016          2210
-6  0.268941      22472  14904  ...       0.336775         12244          3007
-7  0.500000      11958      0  ...       0.465713          5553          1927
-8  0.731059       1761      0  ...       0.567291           819           360
-
-[9 rows x 10 columns]
 /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
 WARNING: Encoding quartile values to binary
 
 Subsetting dataset to county Kern with 150023 prescriptions.
-Test reults are saved with setting tag: _LTOUR_countyKern_2019
-22271 11171
+Test reults are saved with setting tag: _LTOUR_final_countyKern_2019
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (23374, 132)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 82.2; two months: 92.3, three months: 95.9
+1
+{'test_accuracy': 0.8942449581898672, 'test_roc_auc': 0.8769613405555007, 'test_pr_auc': 0.22668798910422489, 'test_calibration_error': 0.02176658937710435}
+2
+{'test_accuracy': 0.5954071129410095, 'test_roc_auc': 0.8314200515326472, 'test_pr_auc': 0.3754706710932616, 'test_calibration_error': 0.058307422891144906}
+3
+{'test_accuracy': 0.5965093818984547, 'test_roc_auc': 0.8039435561543393, 'test_pr_auc': 0.5411621930215373, 'test_calibration_error': 0.04845008954908924}
+
+
+22271 52404
 Feature: num_prior_prescriptions, Cutoff: 1
+Feature: days_supply, Cutoff: 10
+Feature: daily_dose, Cutoff: 100
+Feature: HMFO, Cutoff: 1
+Feature: long_acting, Cutoff: 1
 Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
 Should only be for Drug payment
-Feature: concurrent_MME, Cutoff: 40
-Feature: age, Cutoff: 30
-Feature: long_acting, Cutoff: 1
 Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
 Should only be for Drug payment
 Current working directory: /mnt/phd/jihu/opioid/Code
-ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyKern_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
- 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
-Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyKern_2019.pkl
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_final_countyKern_2019.pkl, threshodls: [       inf 0.95257413 0.88079708 0.73105858 0.5        0.26894142
+ 0.11920292 0.04742587 0.01798621 0.00669285 0.00247262] with optimal threshold: 0.11920292202211755
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_final_countyKern_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/riskSLIM_proportions_test_info_median_LTOUR_final_countyKern_2019.pkl
 Test done!
 
                    Value
-Accuracy           0.857
-Recall             0.269
-Precision          0.537
-ROC AUC            0.837
-PR AUC             0.402
-Calibration error  0.037
+Accuracy           0.764
+Recall             0.882
+Precision          0.375
+ROC AUC            0.881
+PR AUC             0.485
+Calibration error  0.026
        Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.000911       4662   4659  ...       0.000644          4662             6
-1  0.002473      20663  20582  ...       0.003920         20657           125
-2  0.006693      24268  24080  ...       0.007747         24069           288
-3  0.017986      18069  17231  ...       0.046378         16288           877
-4  0.047426      27151  24560  ...       0.095429         23740          2567
-5  0.119203      18240  14161  ...       0.223629         10883          2002
-6  0.268941      25799  17303  ...       0.329315         12497          3079
-7  0.500000      10092      0  ...       0.518232          4689          1826
-8  0.731059       1079      0  ...       0.708990           503           286
+0  0.002473      21604  21516  ...       0.004073         21604           141
+1  0.006693      36036  35758  ...       0.007715         36029           435
+2  0.017986      17568  17101  ...       0.026582         15831           535
+3  0.047426      22411  20618  ...       0.080005         14856          1192
+4  0.119203      18470      0  ...       0.175311         14428          2857
+5  0.268941      11431      0  ...       0.363660          5879          1541
+6  0.500000      19867      0  ...       0.527307          9205          3529
+7  0.731059       2188      0  ...       0.670475           971           496
+8  0.880797        390      0  ...       0.692308           188           107
+9  0.952574         58      0  ...       0.637931            36            23
 
-[9 rows x 10 columns]
+[10 rows x 10 columns]

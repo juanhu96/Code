@@ -11,6 +11,7 @@ import pandas as pd
 from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_split
 from sklearn.metrics import auc, roc_auc_score, roc_curve, accuracy_score, confusion_matrix, recall_score, precision_score, average_precision_score
 from sklearn.calibration import CalibratedClassifierCV
+from sklearn.linear_model import LogisticRegression
 from sklearn import tree
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -113,6 +114,32 @@ def cross_validate(model, X, Y, estimator, c_grid, seed, cv=5, partial=False, ex
                 })
                 
                 results.to_csv(f'{exportdir}LogisticRegression_L1.csv', index=False)
+
+            if model == 'Logistic':
+                # 1. Fit L2-regularized model to get coefficients (no p-values)
+                best_C = clf.best_params_['C']
+                clf = LogisticRegression(penalty='l2', C=best_C, solver='liblinear')
+                clf.fit(X, Y)
+                coef = clf.coef_.flatten()
+
+                # 2. Refit unregularized model with statsmodels for p-values/CI
+                logit_model = sm.Logit(Y, X).fit(disp=0)
+                conf = logit_model.conf_int()
+                conf['OR lower'] = np.exp(conf[0])
+                conf['OR upper'] = np.exp(conf[1])
+                odds_ratios = np.exp(coef)
+                p_values = logit_model.pvalues
+
+                # 3. Output combined results
+                results = pd.DataFrame({
+                    'Feature': X.columns,
+                    'Coefficient': coef,
+                    'Odds Ratio': odds_ratios,
+                    'CI Lower': conf['OR lower'],
+                    'CI Upper': conf['OR upper'],
+                    'p-value': p_values.values
+                })
+                results.to_csv(f'{exportdir}LogisticRegression_L2.csv', index=False)
 
         print(f'{len(selected_features)} features selected: {selected_features}')
 

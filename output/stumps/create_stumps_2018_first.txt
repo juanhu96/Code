@@ -1,0 +1,20 @@
+/mnt/phd/jihu/opioid/Code/risk_stumps.py:80: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:59: FutureWarning: 'DataFrame.swapaxes' is deprecated and will be removed in a future version. Please use 'DataFrame.transpose' instead.
+  return bound(*args, **kwds)
+Start creating stumps for year 2018 with features ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo', 'patient_gender', 'days_supply', 'daily_dose', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'CommercialIns', 'MilitaryIns', 'WorkersComp', 'IndianNation', 'num_prior_prescriptions', 'diff_MME', 'diff_days', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment'] and percentiles for ['patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop', 'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity', 'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity', 'zip_pop_density', 'median_household_income', 'family_poverty_pct', 'unemployment_pct']
+Columns with NaNs: ['patient_zip_yr_num_prescriptions_above50', 'patient_zip_yr_num_prescriptions_above75', 'patient_zip_yr_num_patients_above50', 'patient_zip_yr_num_patients_above75', 'patient_zip_yr_num_pharmacies_above50', 'patient_zip_yr_num_pharmacies_above75', 'patient_zip_yr_avg_MME_above50', 'patient_zip_yr_avg_MME_above75', 'patient_zip_yr_avg_days_above50', 'patient_zip_yr_avg_days_above75', 'patient_zip_yr_avg_quantity_above50', 'patient_zip_yr_avg_quantity_above75', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'prescriber_yr_avg_quantity_above50', 'prescriber_yr_avg_quantity_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'pharmacy_yr_avg_quantity_above50', 'pharmacy_yr_avg_quantity_above75']
+Processed fold 0 and saved.
+Processed fold 1 and saved.
+Processed fold 2 and saved.
+Processed fold 3 and saved.
+Processed fold 7 and saved.
+Processed fold 6 and saved.
+Processed fold 5 and saved.
+Processed fold 4 and saved.
+Processed fold 9 and saved.
+Processed fold 10 and saved.
+Processed fold 8 and saved.
+Processed fold 12 and saved.
+Stumps done!
+

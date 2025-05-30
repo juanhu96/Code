@@ -1,6 +1,10 @@
-/mnt/phd/jihu/opioid/Code/src/summary_stats.py:14: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
+  from pandas.core.computation.check import NUMEXPR_INSTALLED
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
+  from pandas.core import (
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py:11: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_INPUT_2018 = pd.read_csv(f"{datadir}FULL_OPIOID_2018_INPUT.csv")
-/mnt/phd/jihu/opioid/Code/src/summary_stats.py:15: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py:12: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_INPUT_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
 Subsetting to county Riverside with 884063 prescriptions.
-LaTeX summary table saved to summary_stats_Riverside.tex
+LaTeX summary table saved to summary_stats_Riverside_total.tex

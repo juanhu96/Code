@@ -24,4 +24,13 @@
 4         396  ...                     NaN
 
 [5 rows x 6 columns]
-Keep up to first long term use. Number of prescriptions left: 2854661
+Traceback (most recent call last):
+  File "/mnt/phd/jihu/opioid/Code/sh script/../src/process/step23_identify_alert_lt_single.py", line 126, in <module>
+    print(FULL_SINGLE[['prescription_id', 'date_filled', 'days_supply', 'long_term', 'longterm_presc_date', 'days_to_long_term']].head())
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/frame.py", line 3511, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 5782, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 5845, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['days_to_long_term'] not in index"

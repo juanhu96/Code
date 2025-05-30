@@ -1,0 +1,148 @@
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
+  from pandas.core.computation.check import NUMEXPR_INSTALLED
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
+  from pandas.core import (
+/mnt/phd/jihu/opioid/Code/baseline_main.py:98: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/baseline_main.py:351: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+============================================================ 
+Baseline train with model Logistic
+
+WARNING: Working on median stumps
+Filtered columns: ['concurrent_MME10', 'concurrent_MME15', 'concurrent_MME20', 'concurrent_MME25', 'concurrent_MME30', 'concurrent_MME35', 'concurrent_MME40', 'concurrent_MME45', 'concurrent_MME50', 'concurrent_MME75', 'concurrent_MME100', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose10', 'daily_dose15', 'daily_dose20', 'daily_dose25', 'daily_dose30', 'daily_dose35', 'daily_dose40', 'daily_dose45', 'daily_dose50', 'daily_dose75', 'daily_dose100', 'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_avg_MME_quartile_0.0', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_0.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_0.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_0.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_0.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_0.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_0.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_0.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_0.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_0.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_0.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_0.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_0.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_0.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_0.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_0.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_0.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_0.0', 'unemployment_pct_quartile_1.0']
+WARNING: Working on bracketed stumps:
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_10_inf', 'Codeine', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_10_15', 'daily_dose_10_15', 'concurrent_MME_15_20', 'daily_dose_15_20', 'concurrent_MME_20_25', 'daily_dose_20_25', 'concurrent_MME_25_30', 'daily_dose_25_30', 'concurrent_MME_30_35', 'daily_dose_30_35', 'concurrent_MME_35_40', 'daily_dose_35_40', 'concurrent_MME_40_45', 'daily_dose_40_45', 'concurrent_MME_45_50', 'daily_dose_45_50', 'concurrent_MME_50_75', 'daily_dose_50_75', 'concurrent_MME_75_100', 'daily_dose_75_100', 'concurrent_MME_100_inf', 'daily_dose_100_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Finished training and fitting Logistic: 0.01 hours
+Testing on all data for Logistic with setting _Logistic_median_bracket
+============================================================ 
+Baseline test with model Logistic
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on median stumps
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_10_inf', 'Codeine', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_10_15', 'daily_dose_10_15', 'concurrent_MME_15_20', 'daily_dose_15_20', 'concurrent_MME_20_25', 'daily_dose_20_25', 'concurrent_MME_25_30', 'daily_dose_25_30', 'concurrent_MME_30_35', 'daily_dose_30_35', 'concurrent_MME_35_40', 'daily_dose_35_40', 'concurrent_MME_40_45', 'daily_dose_40_45', 'concurrent_MME_45_50', 'daily_dose_45_50', 'concurrent_MME_50_75', 'daily_dose_50_75', 'concurrent_MME_75_100', 'daily_dose_75_100', 'concurrent_MME_100_inf', 'daily_dose_100_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Optimal threshold for binary classification: 0.09643921013678056
+test_accuracy
+0.823
+test_roc_auc
+0.909
+test_pr_auc
+0.499
+test_calibration_error
+0.008
+
+
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (586366, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 81.3; two months: 91.5, three months: 95.4
+1
+{'test_accuracy': 0.928, 'test_recall': 0.642, 'test_precision': 0.203, 'test_roc_auc': 0.9, 'test_pr_auc': 0.191, 'test_calibration_error': 0.008}
+2
+{'test_accuracy': 0.735, 'test_recall': 0.888, 'test_precision': 0.237, 'test_roc_auc': 0.878, 'test_pr_auc': 0.401, 'test_calibration_error': 0.033}
+3
+{'test_accuracy': 0.659, 'test_recall': 0.918, 'test_precision': 0.354, 'test_roc_auc': 0.854, 'test_pr_auc': 0.534, 'test_calibration_error': 0.024}
+
+
+[0, 10)
+{'test_accuracy': 0.5449445183549948, 'test_recall': 0.919987625502714, 'test_roc_auc': 0.8093380453109347, 'test_pr_auc': 0.36459354318013676, 'test_calibration_error': 0.060384579605636035, 'correctly_predicted_positives_ratio': 0.11955965556059121}
+[10, 20)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:351: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+{'test_accuracy': 0.8371825255402277, 'test_recall': 0.8124546242300756, 'test_roc_auc': 0.9034720041790245, 'test_pr_auc': 0.42296788509821637, 'test_calibration_error': 0.014317668184489587, 'correctly_predicted_positives_ratio': 0.06558830674931299}
+[20, 30)
+{'test_accuracy': 0.9093609113239406, 'test_recall': 0.7739484283519495, 'test_roc_auc': 0.9275979043844469, 'test_pr_auc': 0.4387207173931671, 'test_calibration_error': 0.009082118094288943, 'correctly_predicted_positives_ratio': 0.037994706819641164}
+[30, 40)
+{'test_accuracy': 0.8787654063727683, 'test_recall': 0.830999731255039, 'test_roc_auc': 0.9254832025884359, 'test_pr_auc': 0.47031278766467005, 'test_calibration_error': 0.011850291802873725, 'correctly_predicted_positives_ratio': 0.05414655458476668}
+[40, 50)
+{'test_accuracy': 0.7875589970247228, 'test_recall': 0.8777987058358903, 'test_roc_auc': 0.8987673482736218, 'test_pr_auc': 0.50672867466872, 'test_calibration_error': 0.013439618138167684, 'correctly_predicted_positives_ratio': 0.09961662707674698}
+[50, 60)
+{'test_accuracy': 0.8941060358387565, 'test_recall': 0.7567962940387664, 'test_roc_auc': 0.9107420875885722, 'test_pr_auc': 0.4341033046759104, 'test_calibration_error': 0.007742793668585361, 'correctly_predicted_positives_ratio': 0.038293803781266386}
+[60, 70)
+{'test_accuracy': 0.7510163191379536, 'test_recall': 0.8787098634481907, 'test_roc_auc': 0.8846387585309444, 'test_pr_auc': 0.5598598143190727, 'test_calibration_error': 0.013566589766644476, 'correctly_predicted_positives_ratio': 0.13030875943397668}
+[70, 80)
+{'test_accuracy': 0.8164143306850548, 'test_recall': 0.8264014466546112, 'test_roc_auc': 0.8958030154661772, 'test_pr_auc': 0.5044572133002182, 'test_calibration_error': 0.008790611750874889, 'correctly_predicted_positives_ratio': 0.08220656573227403}
+[80, 90)
+{'test_accuracy': 0.7071427151066834, 'test_recall': 0.9129933434666387, 'test_roc_auc': 0.8873361724510866, 'test_pr_auc': 0.6217136789801246, 'test_calibration_error': 0.016694297375224192, 'correctly_predicted_positives_ratio': 0.17318896776631074}
+[90, 100)
+{'test_accuracy': 0.7041020983519707, 'test_recall': 0.8777675944238098, 'test_roc_auc': 0.8572928348821391, 'test_pr_auc': 0.5720431417602013, 'test_calibration_error': 0.026671646576897558, 'correctly_predicted_positives_ratio': 0.1721537908459632}
+above 100
+{'test_accuracy': 0.6508152620338427, 'test_recall': 0.9097186022478897, 'test_roc_auc': 0.8507357731095004, 'test_pr_auc': 0.5887578889734325, 'test_calibration_error': 0.016449519038224576, 'correctly_predicted_positives_ratio': 0.20427755873172335}
+
+
+ROC information for Logistic saved to ../output/baseline/files/Logistic_roc_test_info_median_bracket.pkl
+Calibration information for Logistic saved to ../output/baseline/files/Logistic_calibration_test_info_median_bracket.pkl
+Proportions information for Logistic saved to ../output/baseline/files/Logistic_proportions_test_info_median_bracket.pkl
+
+Finished computing and exporting results: 0.03hours
+
+Testing on naive data for Logistic with setting _Logistic_median_bracket_naive
+============================================================ 
+Baseline test with model Logistic
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+
+WARNING: Working on median stumps
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'days_supply_10_inf', 'Codeine', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting', 'Medicaid', 'Medicare', 'CashCredit', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'patient_gender', 'patient_zip_yr_avg_MME_quartile_1.0', 'patient_zip_yr_avg_days_quartile_1.0', 'patient_zip_yr_num_prescriptions_per_pop_quartile_1.0', 'patient_zip_yr_num_patients_per_pop_quartile_1.0', 'prescriber_yr_num_prescriptions_quartile_1.0', 'prescriber_yr_num_patients_quartile_1.0', 'prescriber_yr_num_pharmacies_quartile_1.0', 'prescriber_yr_avg_MME_quartile_1.0', 'prescriber_yr_avg_days_quartile_1.0', 'pharmacy_yr_num_prescriptions_quartile_1.0', 'pharmacy_yr_num_patients_quartile_1.0', 'pharmacy_yr_num_prescribers_quartile_1.0', 'pharmacy_yr_avg_MME_quartile_1.0', 'pharmacy_yr_avg_days_quartile_1.0', 'zip_pop_density_quartile_1.0', 'median_household_income_quartile_1.0', 'family_poverty_pct_quartile_1.0', 'unemployment_pct_quartile_1.0', 'concurrent_MME_10_15', 'daily_dose_10_15', 'concurrent_MME_15_20', 'daily_dose_15_20', 'concurrent_MME_20_25', 'daily_dose_20_25', 'concurrent_MME_25_30', 'daily_dose_25_30', 'concurrent_MME_30_35', 'daily_dose_30_35', 'concurrent_MME_35_40', 'daily_dose_35_40', 'concurrent_MME_40_45', 'daily_dose_40_45', 'concurrent_MME_45_50', 'daily_dose_45_50', 'concurrent_MME_50_75', 'daily_dose_50_75', 'concurrent_MME_75_100', 'daily_dose_75_100', 'concurrent_MME_100_inf', 'daily_dose_100_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Optimal threshold for binary classification: 0.02976633189034257
+test_accuracy
+0.851
+test_roc_auc
+0.9
+test_pr_auc
+0.191
+test_calibration_error
+0.008
+
+
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (75483, 129)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+{'test_accuracy': 0.851, 'test_recall': 0.835, 'test_precision': 0.128, 'test_roc_auc': 0.9, 'test_pr_auc': 0.191, 'test_calibration_error': 0.008}
+
+
+[0, 10)
+{'test_accuracy': 0.33869014189340063, 'test_recall': 0.9420932741877472, 'test_roc_auc': 0.7397849703069872, 'test_pr_auc': 0.1139915118463401, 'test_calibration_error': 0.049890718781388795, 'correctly_predicted_positives_ratio': 0.05317111789264279}
+[10, 20)
+{'test_accuracy': 0.8366567805085832, 'test_recall': 0.8332530893917509, 'test_roc_auc': 0.8943116207761754, 'test_pr_auc': 0.16515158479141473, 'test_calibration_error': 0.007748224009259756, 'correctly_predicted_positives_ratio': 0.02241438112218687}
+[20, 30)
+{'test_accuracy': 0.9304457419962353, 'test_recall': 0.7352198751162482, 'test_roc_auc': 0.8950792063458873, 'test_pr_auc': 0.16930261683026443, 'test_calibration_error': 0.005973512838131714, 'correctly_predicted_positives_ratio': 0.010624011917937475}
+[30, 40)
+{'test_accuracy': 0.9018302143441621, 'test_recall': 0.8250709617796554, 'test_roc_auc': 0.9162882277662114, 'test_pr_auc': 0.2236281213833629, 'test_calibration_error': 0.009717819969067924, 'correctly_predicted_positives_ratio': 0.016603171060881394}
+[40, 50)
+{'test_accuracy': 0.8136544432429698, 'test_recall': 0.8818189121876757, 'test_roc_auc': 0.9014126836843149, 'test_pr_auc': 0.25051728224391895, 'test_calibration_error': 0.01551574179437068, 'correctly_predicted_positives_ratio': 0.0347036467917465}
+[50, 60)
+{'test_accuracy': 0.9348344398084394, 'test_recall': 0.665380906460945, 'test_roc_auc': 0.863416179148365, 'test_pr_auc': 0.21387137511929463, 'test_calibration_error': 0.007956209706384651, 'correctly_predicted_positives_ratio': 0.00709103241321193}
+[60, 70)
+{'test_accuracy': 0.7878441573010075, 'test_recall': 0.867212369258754, 'test_roc_auc': 0.8824898597952586, 'test_pr_auc': 0.25493616740200564, 'test_calibration_error': 0.014884682154428803, 'correctly_predicted_positives_ratio': 0.04011049491344799}
+[70, 80)
+{'test_accuracy': 0.8951254094753825, 'test_recall': 0.7443744374437443, 'test_roc_auc': 0.8753373320667613, 'test_pr_auc': 0.22138048209268105, 'test_calibration_error': 0.009414736890639023, 'correctly_predicted_positives_ratio': 0.013478055378999005}
+[80, 90)
+{'test_accuracy': 0.7254604736300194, 'test_recall': 0.8598290598290599, 'test_roc_auc': 0.861762341871237, 'test_pr_auc': 0.14914018920545186, 'test_calibration_error': 0.01798079074386666, 'correctly_predicted_positives_ratio': 0.028772451664569272}
+[90, 100)
+{'test_accuracy': 0.7525034169200301, 'test_recall': 0.8718367346938776, 'test_roc_auc': 0.8713122789309131, 'test_pr_auc': 0.32382257299657763, 'test_calibration_error': 0.022790152577480155, 'correctly_predicted_positives_ratio': 0.05957992803548018}
+above 100
+{'test_accuracy': 0.6717078845648666, 'test_recall': 0.8835804503020318, 'test_roc_auc': 0.879018766792806, 'test_pr_auc': 0.3473360073493752, 'test_calibration_error': 0.019203288040342353, 'correctly_predicted_positives_ratio': 0.048305625398731566}
+
+
+ROC information for Logistic saved to ../output/baseline/files/Logistic_roc_test_info_median_bracket_naive.pkl
+Calibration information for Logistic saved to ../output/baseline/files/Logistic_calibration_test_info_median_bracket_naive.pkl
+Proportions information for Logistic saved to ../output/baseline/files/Logistic_proportions_test_info_median_bracket_naive.pkl
+
+Finished computing and exporting results: 0.02hours
+

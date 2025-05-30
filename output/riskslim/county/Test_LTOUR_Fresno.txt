@@ -1,13 +1,10 @@
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
+  from pandas.core.computation.check import NUMEXPR_INSTALLED
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
+  from pandas.core import (
 /mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
-/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
-  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+/mnt/phd/jihu/opioid/Code/risk_test.py:558: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -16,89 +13,69 @@ Setting tag: _test_CV_median_countyFresno
 Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Fresno, Setting Tag: _test_CV_median_countyFresno
 Start testing...
 Start testing with LTOUR:
-Intercept: -7
+Intercept: -6
 
  - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
- - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
- - Condition: concurrent_MME, Cutoff: 40, Score: 1
- - Condition: age, Cutoff: 30, Score: 1
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: daily_dose, Cutoff: 100, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
  - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 1
  - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
-/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv imported with shape (6816028, 127)
-WARNING: Encoding quartile values to binary
+Setting tag: _LTOUR_countyFresno
 
-Subsetting dataset to county Fresno with 196677 prescriptions.
-Test reults are saved with setting tag: _LTOUR_countyFresno_2018
-21109 10195
-Feature: num_prior_prescriptions, Cutoff: 1
-Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
-Should only be for Drug payment
-Feature: concurrent_MME, Cutoff: 40
-Feature: age, Cutoff: 30
-Feature: long_acting, Cutoff: 1
-Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
-Should only be for Drug payment
-Current working directory: /mnt/phd/jihu/opioid/Code
-ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyFresno_2018.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
- 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
-Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyFresno_2018.pkl
-Test done!
-
-                   Value
-Accuracy           0.888
-Recall              0.22
-Precision          0.456
-ROC AUC            0.833
-PR AUC             0.325
-Calibration error  0.029
-       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.000911       8152   8144  ...       0.000981          8152            13
-1  0.002473      30329  30172  ...       0.005177         30328           213
-2  0.006693      32232  31991  ...       0.007477         31616           307
-3  0.017986      36485  34710  ...       0.048650         25009          1219
-4  0.047426      33636  30499  ...       0.093263         26151          2332
-5  0.119203      23171  18858  ...       0.186138         14062          2098
-6  0.268941      22477  15648  ...       0.303822         11607          2618
-7  0.500000       9368      0  ...       0.436806          4595          1489
-8  0.731059        827      0  ...       0.673519           404           207
-
-[9 rows x 10 columns]
 /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
 WARNING: Encoding quartile values to binary
 
 Subsetting dataset to county Fresno with 176165 prescriptions.
 Test reults are saved with setting tag: _LTOUR_countyFresno_2019
-18488 8444
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (19222, 132)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 77.4; two months: 92.3, three months: 96.1
+1
+{'test_accuracy': 0.9310608065468314, 'test_roc_auc': 0.8863326790862713, 'test_pr_auc': 0.2191817798463148, 'test_calibration_error': 0.014610175497664846}
+2
+{'test_accuracy': 0.6675051092595504, 'test_roc_auc': 0.8534971473071327, 'test_pr_auc': 0.34553972724823173, 'test_calibration_error': 0.048970966335811744}
+3
+{'test_accuracy': 0.6368191579358365, 'test_roc_auc': 0.831436635253358, 'test_pr_auc': 0.5067940820087162, 'test_calibration_error': 0.03867597222050481}
+
+
+18488 44473
 Feature: num_prior_prescriptions, Cutoff: 1
+Feature: days_supply, Cutoff: 10
+Feature: daily_dose, Cutoff: 100
+Feature: HMFO, Cutoff: 1
+Feature: long_acting, Cutoff: 1
 Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
 Should only be for Drug payment
-Feature: concurrent_MME, Cutoff: 40
-Feature: age, Cutoff: 30
-Feature: long_acting, Cutoff: 1
 Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
 Should only be for Drug payment
 Current working directory: /mnt/phd/jihu/opioid/Code
-ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyFresno_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
- 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
-Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyFresno_2019.pkl
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_median_LTOUR_countyFresno_2019.pkl, threshodls: [       inf 0.95257413 0.88079708 0.73105858 0.5        0.26894142
+ 0.11920292 0.04742587 0.01798621 0.00669285 0.00247262] with optimal threshold: 0.11920292202211755
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_median_LTOUR_countyFresno_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/files/riskSLIM_proportions_test_info_median_LTOUR_countyFresno_2019.pkl
 Test done!
 
                    Value
-Accuracy           0.892
-Recall             0.214
-Precision           0.47
-ROC AUC            0.843
-PR AUC             0.332
-Calibration error  0.028
+Accuracy           0.818
+Recall             0.834
+Precision          0.347
+ROC AUC            0.891
+PR AUC             0.439
+Calibration error  0.018
        Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.000911       7548   7542  ...       0.000795          7548             7
-1  0.002473      31126  30978  ...       0.004755         31126           214
-2  0.006693      28676  28482  ...       0.006765         28108           251
-3  0.017986      31921  30430  ...       0.046709         21390           971
-4  0.047426      28891  26252  ...       0.091343         22581          2048
-5  0.119203      19332  15465  ...       0.200031         11659          1747
-6  0.268941      20227  14049  ...       0.305433         10156          2295
-7  0.500000       7801      0  ...       0.451865          3790          1280
-8  0.731059        643      0  ...       0.684292           312           164
+0  0.002473      37724  37573  ...       0.004003         37724           230
+1  0.006693      38004  37769  ...       0.006184         38004           348
+2  0.017986      30865  29982  ...       0.028608         19299           523
+3  0.047426      25099  23307  ...       0.071397         16976          1228
+4  0.119203      16901      0  ...       0.159458         12396          2163
+5  0.268941      11208      0  ...       0.384011          5914          1570
+6  0.500000      14597      0  ...       0.496677          6904          2445
+7  0.731059       1383      0  ...       0.650036           633           316
+8  0.880797        358      0  ...       0.723464           162            93
+9  0.952574         26      0  ...       0.769231            15            10
 
-[9 rows x 10 columns]
+[10 rows x 10 columns]

@@ -32,3 +32,10 @@ print(f"Max concurrent MME: {concurrent_MME_max}")
 print(f"Max prescribers past 180 days: {num_prescribers_past180_max}")
 print(f"Max pharmacies past 180 days: {num_pharmacies_past180_max}")
 print(f"Max prior prescriptions: {num_prior_prescriptions_max}")
+
+
+# get the percentile of concurrent MME
+concurrent_MME_percentiles = FULL_INPUT['concurrent_MME'].quantile([i / 100 for i in range(10, 100, 10)])
+dailydose_percentiles = FULL_INPUT['daily_dose'].quantile([i / 100 for i in range(10, 100, 10)])
+print(f"Percentiles of concurrent MME: {concurrent_MME_percentiles} \n")
+print(f"Percentiles of daily dose: {dailydose_percentiles} \n")

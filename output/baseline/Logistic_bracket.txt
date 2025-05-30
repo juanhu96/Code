@@ -1,0 +1,64 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:93: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+============================================================ 
+Baseline train with model Logistic
+
+Filtered columns: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
+WARNING: Working on bracketed stumps:
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'days_supply_10_inf', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75', 'daily_dose_25_50', 'daily_dose_50_75', 'daily_dose_75_90', 'daily_dose_90_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Finished training and fitting Logistic: 0.01 hours
+Testing on all data for Logistic with setting _Logistic_bracket
+============================================================ 
+Baseline test with model Logistic
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+WARNING: Working on bracketed stumps
+Final Columns: ['num_prescribers_past180_6_inf', 'num_pharmacies_past180_6_inf', 'concurrent_benzo1', 'days_supply_10_inf', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75', 'daily_dose_25_50', 'daily_dose_50_75', 'daily_dose_75_90', 'daily_dose_90_inf', 'num_prescribers_past180_eq_2', 'num_prescribers_past180_eq_3', 'num_prescribers_past180_eq_4', 'num_prescribers_past180_eq_5', 'num_pharmacies_past180_eq_2', 'num_pharmacies_past180_eq_3', 'num_pharmacies_past180_eq_4', 'num_pharmacies_past180_eq_5', 'days_supply_3_5', 'days_supply_5_7', 'days_supply_7_10']
+Optimal threshold for binary classification: 0.09677984584630762
+test_accuracy
+0.831
+test_roc_auc
+0.909
+test_pr_auc
+0.511
+test_calibration_error
+0.008
+
+
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (598974, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 81.9; two months: 91.5, three months: 95.3
+1
+{'test_accuracy': 0.933, 'test_recall': 0.661, 'test_precision': 0.224, 'test_roc_auc': 0.899, 'test_pr_auc': 0.223, 'test_calibration_error': 0.008}
+2
+{'test_accuracy': 0.748, 'test_recall': 0.879, 'test_precision': 0.247, 'test_roc_auc': 0.88, 'test_pr_auc': 0.422, 'test_calibration_error': 0.035}
+3
+{'test_accuracy': 0.67, 'test_recall': 0.909, 'test_precision': 0.364, 'test_roc_auc': 0.859, 'test_pr_auc': 0.567, 'test_calibration_error': 0.021}
+
+
+[0, 10)
+{'test_accuracy': 0.6433742558320849, 'test_recall': 0.8322397441552712, 'test_roc_auc': 0.7993605513223851, 'test_pr_auc': 0.34537750935284667, 'test_calibration_error': 0.02203654088934088, 'correctly_predicted_positives_ratio': 0.10845719664715753}
+[10, 20)
+{'test_accuracy': 0.8166346433067776, 'test_recall': 0.8459492001605412, 'test_roc_auc': 0.9019241831693553, 'test_pr_auc': 0.4187637496031818, 'test_calibration_error': 0.008528388545355904, 'correctly_predicted_positives_ratio': 0.06844216172987376}
+[20, 30)
+{'test_accuracy': 0.8928013510379373, 'test_recall': 0.8158133120614361, 'test_roc_auc': 0.9237487321596097, 'test_pr_auc': 0.43661370886497813, 'test_calibration_error': 0.007828070749074146, 'correctly_predicted_positives_ratio': 0.040213905454002594}
+[30, 40)
+{'test_accuracy': 0.879254612774047, 'test_recall': 0.8294634658271022, 'test_roc_auc': 0.9243377929004551, 'test_pr_auc': 0.48273258665659563, 'test_calibration_error': 0.00882235780468208, 'correctly_predicted_positives_ratio': 0.05424320308559154}
+[40, 50)
+{'test_accuracy': 0.819180271759015, 'test_recall': 0.8537462271409126, 'test_roc_auc': 0.903060701981565, 'test_pr_auc': 0.5330003675899598, 'test_calibration_error': 0.015851339400127125, 'correctly_predicted_positives_ratio': 0.09729067154050167}
+[50, 60)
+{'test_accuracy': 0.8965651787280635, 'test_recall': 0.7275765351793281, 'test_roc_auc': 0.8987415595423369, 'test_pr_auc': 0.43137043117628227, 'test_calibration_error': 0.007460737863956567, 'correctly_predicted_positives_ratio': 0.03687684127108955}
+[60, 70)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

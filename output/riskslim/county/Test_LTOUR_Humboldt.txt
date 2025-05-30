@@ -1,0 +1,81 @@
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
+  from pandas.core.computation.check import NUMEXPR_INSTALLED
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
+  from pandas.core import (
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:558: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_median_countyHumboldt
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Humboldt, Setting Tag: _test_CV_median_countyHumboldt
+Start testing...
+Start testing with LTOUR:
+Intercept: -6
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: daily_dose, Cutoff: 100, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_countyHumboldt
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county Humboldt with 23636 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countyHumboldt_2019
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (3570, 132)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 54.2; two months: 82.2, three months: 92.2
+1
+{'test_accuracy': 0.9478978388998035, 'test_roc_auc': 0.8807009191662164, 'test_pr_auc': 0.22204250027484188, 'test_calibration_error': 0.01686626946153251}
+2
+{'test_accuracy': 0.6958199356913183, 'test_roc_auc': 0.817162587545093, 'test_pr_auc': 0.31827241425493613, 'test_calibration_error': 0.1017350193832233}
+3
+{'test_accuracy': 0.6585570469798657, 'test_roc_auc': 0.7783824417280235, 'test_pr_auc': 0.4636354636268036, 'test_calibration_error': 0.04524268523052071}
+
+
+3458 5987
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: days_supply, Cutoff: 10
+Feature: daily_dose, Cutoff: 100
+Feature: HMFO, Cutoff: 1
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_median_LTOUR_countyHumboldt_2019.pkl, threshodls: [       inf 0.95257413 0.88079708 0.73105858 0.5        0.26894142
+ 0.11920292 0.04742587 0.01798621 0.00669285 0.00247262] with optimal threshold: 0.2689414213699951
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_median_LTOUR_countyHumboldt_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/files/riskSLIM_proportions_test_info_median_LTOUR_countyHumboldt_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.823
+Recall             0.761
+Precision          0.439
+ROC AUC            0.871
+PR AUC              0.45
+Calibration error  0.022
+       Prob  Num_presc    TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.002473       1863  1855  ...       0.004294          1863            11
+1  0.006693       6407  6377  ...       0.004682          6407            52
+2  0.017986       2579  2511  ...       0.026367          2388            62
+3  0.047426       3301  3118  ...       0.055438          2424           125
+4  0.119203       3499  2961  ...       0.153758          2643           490
+5  0.268941       1344     0  ...       0.275298           886           187
+6  0.500000       3614     0  ...       0.471776          1696           562
+7  0.731059        832     0  ...       0.513221           336           111
+8  0.880797        189     0  ...       0.650794            86            45
+9  0.952574          8     0  ...       0.750000             5             4
+
+[10 rows x 10 columns]

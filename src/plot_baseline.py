@@ -13,71 +13,92 @@ full = any(['full' in arg for arg in sys.argv])
 
 model_name_dict = {
     "DecisionTree": "Decision Tree",
-    "RandomForest": "Random Forest", 
-    "L1": "L1 Logistic", 
-    "L2": "L2 Logistic", 
-    "LinearSVM": "Linear SVM", 
-    "XGB": "XGBoost", 
+    "RandomForest": "Random Forest",
+    "L1": "L1 Logistic",
+    "L2": "L2 Logistic",
+    "LinearSVM": "Linear SVM",
+    "XGB": "XGBoost",
     "NN": "Neural Network",
     "riskSLIM": "LTOUR"
 }
 
-feature_dict = {"DecisionTree": 5, "RandomForest": 27, "L1": 51, "L2": 75, "LinearSVM": 75, "XGB": 57, "NN": 75, "riskSLIM": 6}
-
-color_map = {
-    'DecisionTree': 'blue',
-    'RandomForest': 'gray',
-    'L1': 'green',
-    'L2': 'orange',
-    'LinearSVM': 'purple',
-    'XGB': 'brown',
-    'NN': 'pink',
-    'riskSLIM': 'red',
+feature_dict = {
+    "DecisionTree": 4,
+    "RandomForest": 33,
+    "L1": 42,
+    "L2": 82,
+    "LinearSVM": 82,
+    "XGB": 68,
+    "NN": 82,
+    "riskSLIM": 7
 }
 
-model_order = ['riskSLIM', 'L1', 'DecisionTree', 'XGB', 'L2', 'LinearSVM', 'RandomForest', 'NN']
+color_map = {
+    "DecisionTree": "blue",
+    "RandomForest": "gray",
+    "L1": "green",
+    "L2": "orange",
+    "LinearSVM": "purple",
+    "XGB": "brown",
+    "NN": "pink",
+    "riskSLIM": "red"
+}
 
-bold_font = FontProperties(weight='bold')
+model_order = [
+    "riskSLIM",
+    "L1",
+    "DecisionTree",
+    "XGB",
+    "L2",
+    "LinearSVM",
+    "RandomForest",
+    "NN"
+]
+
+bold_font = FontProperties(weight="bold")
 
 # =============================================================================
 # =============================================================================
 # =============================================================================
 
-if False:
+def plot_ROC(full, median, exportdir):
     pattern = '_roc_test_info_median.pkl' if median else '_roc_test_info.pkl'
     roc_files = glob.glob(f'output/baseline/*{pattern}')
     roc_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
-    if not full: roc_files = [f for f in roc_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
+    if not full:
+        roc_files = [f for f in roc_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
     print(roc_files)
 
-    # Create a figure for the ROC plot
     plt.figure(figsize=(10, 6))
 
-    # Loop through each file, load the data, and plot the ROC curve
     for roc_file in roc_files:
-        # Extract the model name from the file path
         model_name = os.path.basename(roc_file).replace(pattern, '')
 
-        # Load the ROC data
         with open(roc_file, 'rb') as f:
             roc_info = pickle.load(f)
         
-        # Plot the ROC curve
-        plt.plot(roc_info['fpr'], roc_info['tpr'], label=f'{model_name_dict[model_name]} (AUC = {roc_info["auc"]:.3f}, #Features = {feature_dict[model_name]})', markersize=5, alpha=0.7, linewidth=2)
+        plt.plot(
+            roc_info['fpr'],
+            roc_info['tpr'],
+            label=f'{model_name_dict[model_name]} (AUC = {roc_info["auc"]:.3f}, #Features = {feature_dict[model_name]})',
+            markersize=5,
+            alpha=0.7,
+            linewidth=2
+        )
 
-    # Plot the diagonal line
     plt.plot([0, 1], [0, 1], color='black', linestyle='--', alpha=0.7)
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate', fontsize=14)
     plt.ylabel('True Positive Rate', fontsize=14)
     plt.grid(True, linestyle='--', alpha=0.5)
-    if full: plt.legend(loc="lower right", fontsize=11)
-    else: plt.legend(loc="lower right", fontsize=10)
+    if full:
+        plt.legend(loc="lower right", fontsize=11)
+    else:
+        plt.legend(loc="lower right", fontsize=14)  # prop=bold_font
 
-    # Save the figure as a PDF
     output_pdf = f'{exportdir}baseline_roc_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
-    plt.savefig(output_pdf, format='pdf', dpi=600, bbox_inches='tight')
+    plt.savefig(output_pdf, format='pdf', dpi=800, bbox_inches='tight')
     print(f"ROC curves saved to {output_pdf}")
 
 
@@ -85,11 +106,12 @@ if False:
 # =============================================================================
 # =============================================================================
 
-if False:
+def plot_calibration():
     pattern = '_calibration_test_info_median.pkl' if median else '_calibration_test_info.pkl'
     calibration_files = glob.glob(f'output/baseline/*{pattern}')
     calibration_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
-    if not full: calibration_files = [f for f in calibration_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
+    if not full:
+        calibration_files = [f for f in calibration_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
     print(calibration_files)
 
     plt.figure(figsize=(10, 6))
@@ -99,20 +121,31 @@ if False:
         with open(calib_file, 'rb') as f:
             calib_info = pickle.load(f)
         
-        if model_name == 'riskSLIM': print(calib_info)
+        if model_name == 'riskSLIM':
+            print(calib_info)
 
-        plt.plot(calib_info['prob_pred'], calib_info['prob_true'], marker='o', label=f'{model_name_dict[model_name]} (ECE = {calib_info["ece"]:.3f})', markersize=5, alpha=0.7, linewidth=2)
+        plt.plot(
+            calib_info['prob_pred'],
+            calib_info['prob_true'],
+            marker='o',
+            label=f'{model_name_dict[model_name]} (ECE = {calib_info["ece"]:.3f})',
+            markersize=5,
+            alpha=0.7,
+            linewidth=2
+        )
 
     plt.plot([0, 1], [0, 1], color='black', linestyle='--', alpha=0.7)
 
     plt.xlabel('Mean Predicted Risk', fontsize=14)
     plt.ylabel('Observed Risk (Fraction of Positives)', fontsize=14)
     plt.grid(True, linestyle='--', alpha=0.5)
-    if full: plt.legend(loc="lower right", fontsize=11)
-    else: plt.legend(loc="lower right", fontsize=10)
+    if full:
+        plt.legend(loc="lower right", fontsize=11)
+    else:
+        plt.legend(loc="lower right", fontsize=14)  # prop=bold_font
 
     output_pdf = f'{exportdir}baseline_calibration_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
-    plt.savefig(output_pdf, format='pdf', dpi=600, bbox_inches='tight')
+    plt.savefig(output_pdf, format='pdf', dpi=800, bbox_inches='tight')
     print(f"Calibration curves saved to {output_pdf}")
 
 
@@ -120,11 +153,12 @@ if False:
 # =============================================================================
 # =============================================================================
 
-if False: 
+def plot_proportion():
     pattern = '_proportions_test_info_median.pkl' if median else '_proportions_test_info.pkl'
     proportions_files = glob.glob(f'output/baseline/*{pattern}')
     proportions_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
-    if not full: proportions_files = [f for f in proportions_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
+    if not full:
+        proportions_files = [f for f in proportions_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
     print(proportions_files)
 
     plt.figure()
@@ -161,68 +195,14 @@ if False:
     plt.yticks(np.arange(0, 101, 10))
     plt.xlabel('Month', fontsize=14)
     plt.ylabel('Proportion (%)', fontsize=14)
-    # if full: plt.legend(loc="upper left", fontsize=9)
-    # else: plt.legend(loc="upper left", fontsize=10, prop=bold_font)
     plt.legend(loc="center left", bbox_to_anchor=(1, 0.5), fontsize=9 if full else 10, prop=bold_font if not full else None)
     plt.tight_layout()
     plt.subplots_adjust(right=0.75) # Add space on the right side for the legend
     plt.show()
 
     output_pdf = f'{exportdir}baseline_proportions_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
-    plt.savefig(output_pdf, format='pdf', dpi=300)
+    plt.savefig(output_pdf, format='pdf', dpi=800)
     print(f"proportions curves saved to {output_pdf}")
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-'''
-pattern = '_recallMME_test_info_median.pkl' if median else '_recallMME_test_info.pkl'
-recallMME_files = glob.glob(f'output/baseline/*{pattern}')
-recallMME_files.sort(key=lambda f: model_order.index(os.path.basename(f).replace(pattern, '')))
-if not full: recallMME_files = [f for f in recallMME_files if 'DecisionTree' in f or 'riskSLIM' in f or 'XGB' in f or 'L1' in f]
-print(recallMME_files)
-
-plt.figure(figsize=(10, 6))
-
-bar_width = 0.3  # Width of each bar
-num_models = len(recallMME_files)
-total_bar_width = bar_width * num_models
-
-# for recall_file in recallMME_files:
-for idx, recall_file in enumerate(recallMME_files):
-    model_name = os.path.basename(recall_file).replace(pattern, '')
-
-    with open(recall_file, 'rb') as f:
-        recall_info = pickle.load(f)
-    
-    print(recall_info)
-    pos_ratio_percent = np.array(recall_info['pos_ratio']) * 100
-    # plt.bar(x_positions, recall_info['recall'], width=0.8, label=f'{model_name_dict[model_name]}', alpha=0.7)
-    x_positions = np.arange(len(recall_info['MME'])) + (idx - (num_models - 1) / 2) * bar_width
-
-    if model_name == 'DecisionTree':
-        plt.bar(x_positions, pos_ratio_percent, width=bar_width, label=f'{model_name_dict[model_name]}', alpha=0.7, color='green')
-    else:
-        plt.bar(x_positions, pos_ratio_percent, width=bar_width, label=f'{model_name_dict[model_name]}', alpha=0.7)
-
-
-    if model_name =='riskSLIM':
-        true_pos_ratio_percent = np.array(recall_info['true_pos_ratio']) * 100
-        plt.plot(np.arange(len(recall_info['MME'])), true_pos_ratio_percent, color='black', marker='o', linestyle='--', label='Total', alpha=0.7)
-
-plt.xticks(np.arange(len(recall_info['MME'])), recall_info['MME'], fontsize=9)
-plt.xlabel('MME', fontsize=14)
-# plt.ylabel('Recall', fontsize=14)
-plt.ylabel('% predict positive', fontsize=14)
-if full: plt.legend(loc="upper left", fontsize=9)
-else: plt.legend(loc="upper left", fontsize=12, prop=bold_font)
-
-output_pdf = f'{exportdir}baseline_recallMME_curves{"_median" if median else ""}{"_full" if full else ""}.pdf'
-plt.savefig(output_pdf, format='pdf', dpi=300)
-print(f"RecallMME curves saved to {output_pdf}")
-'''
 
 
 # =============================================================================
@@ -390,8 +370,8 @@ if False:
     county_list = ['Kern', 'San Francisco', 'San Mateo', 'Los Angeles', 'San Bernardino', 'Riverside', 'Fresno']
 
     filepath = '../output/baseline/'
-    roc_files = [f'{filepath}riskSLIM_roc_test_info_median_LTOUR_county{county}_{year}.pkl' for county in county_list]
-    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_county{county}_{year}.pkl' for county in county_list]
+    roc_files = [f'{filepath}riskSLIM_roc_test_info_median_LTOUR_final_county{county}_{year}.pkl' for county in county_list]
+    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_final_county{county}_{year}.pkl' for county in county_list]
 
 
     # ROC
@@ -458,7 +438,7 @@ if False:
 
 
 
-if True:
+if False:
     import matplotlib as mpl
     mpl.rcParams['pdf.fonttype'] = 42
     mpl.rcParams['ps.fonttype'] = 42
@@ -467,8 +447,8 @@ if True:
     filepath = 'output/baseline/'
     # calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_six_{year}.pkl', f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_seven_{year}.pkl']
     # calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_seven_{thresh}_{year}.pkl' for thresh in range(50, 101, 10)]
-    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_{name}_{year}.pkl' for name in ['naive_6', 'naive_7', 'seven_100']]
-    name_list = ['naive_6features', 'naive_7features', 'full']
+    calibration_files = [f'{filepath}riskSLIM_calibration_test_info_median_LTOUR_{name}_{year}.pkl' for name in ['final_naive_first', 'final_first']]
+    name_list = ['LTOUR naive', 'LTOUR']
 
     # Calibration
     plt.figure(figsize=(10, 6))
@@ -485,8 +465,11 @@ if True:
         marker = marker_styles[i % len(marker_styles)]
         basename = os.path.basename(calib_file)
         match = re.search(r'county(.*?)_\d{4}', basename)
-        # model_name = calib_file.split('_')[-2]  # Extract the threshold value from filename
         model_name = name_list[i]
+        if model_name == 'LTOUR': # TEMP: drop the last one for presentation
+            calib_info['prob_pred'] = calib_info['prob_pred'][:-1]
+            calib_info['prob_true'] = calib_info['prob_true'][:-1]
+
         plt.plot(
             calib_info['prob_pred'],
             calib_info['prob_true'],

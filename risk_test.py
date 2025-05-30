@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import utils.model_selection as model_selection
 
 
-def risk_test(year, table, first, upto180, median, county_name, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
+def risk_test(year, table, first, upto180, county_name, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
 
     if first:
         file_suffix = "_FIRST_INPUT"
@@ -41,27 +41,8 @@ def risk_test(year, table, first, upto180, median, county_name, setting_tag, out
                                                         'consecutive_days': int})# .fillna(0)
     print(f'{file_path} imported with shape {FULL.shape}')
 
-    FULL['Medicare_Medicaid'] = FULL['Medicare'] + FULL['Medicaid']
+    FULL = drop_na_rows(FULL)
     if output_columns: print(FULL.columns.values.tolist())
-
-    if median:
-        quartile_list = ['patient_HPIQuartile', 
-        'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
-        'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
-        'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
-        'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile',
-        'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
-        'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 
-        'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile',
-        'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
-        'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 
-        'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile',
-        'zip_pop_density_quartile', 'median_household_income_quartile', 
-        'family_poverty_pct_quartile', 'unemployment_pct_quartile']
-        
-        print('WARNING: Encoding quartile values to binary\n')
-        for col in quartile_list:
-            FULL[col] = FULL[col].replace({1: 0, 2: 0, 3: 1, 4: 1})
 
     if county_name is not None: 
         zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
@@ -72,7 +53,7 @@ def risk_test(year, table, first, upto180, median, county_name, setting_tag, out
 
     print(f"Test reults are saved with setting tag: {setting_tag}")
 
-    results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag, median=median)
+    results, calibration_table = test_table(FULL, intercept=table['intercept'], conditions=table['conditions'], cutoffs=table['cutoffs'], scores=table['scores'], setting_tag=setting_tag)
 
     df = pd.DataFrame.from_dict(results, orient='index', columns=['Value'])
     print(df)
@@ -82,7 +63,7 @@ def risk_test(year, table, first, upto180, median, county_name, setting_tag, out
 
 
 
-def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median, 
+def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, 
                fairness_results=False,
                patient_results=True,
                nth_presc_results=True,
@@ -136,7 +117,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
 
         ### ROC
         roc_info = {"fpr": fpr, "tpr": tpr, "auc": roc_auc}
-        filename = f'output/baseline/riskSLIM_roc_test_info{"_median" if median else ""}{setting_tag}.pkl'
+        filename = f'output/baseline/files/riskSLIM_roc_test_info{setting_tag}.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(roc_info, f)
         print(f"ROC information for riskSLIM saved to {filename}, threshodls: {thresholds} with optimal threshold: {optimal_threshold}")
@@ -144,8 +125,10 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
         ### Calibration
         # n_unique = len(np.unique(y_prob))
         # prob_true, prob_pred = calibration_curve(y, y_prob, n_bins=n_unique, strategy='uniform')
-        calibration_info = {"prob_true": prob_true, "prob_pred": prob_pred, "ece": calibration_error}
-        filename = f'output/baseline/riskSLIM_calibration_test_info{"_median" if median else ""}{setting_tag}.pkl'
+        
+        calibration_info = {"prob_true": prob_true, "prob_pred": prob_pred, 
+                            "observations": calibration_table['Num_presc'].values, "ece": calibration_error}
+        filename = f'output/baseline/files/riskSLIM_calibration_test_info{setting_tag}.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(calibration_info, f)
         print(f"Calibration information for riskSLIM saved to {filename}")
@@ -156,7 +139,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
             for month, proportion in proportions.items():
                 proportion_info["month"].append(month)
                 proportion_info["proportion"].append(proportion)
-            filename = f'output/baseline/riskSLIM_proportions_test_info{"_median" if median else ""}{setting_tag}.pkl'
+            filename = f'output/baseline/files/riskSLIM_proportions_test_info{setting_tag}.pkl'
             with open(filename, 'wb') as f:
                 pickle.dump(proportion_info, f)
             print(f"Proportions information for riskSLIM saved to {filename}")
@@ -169,7 +152,7 @@ def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, median
                 recall_by_MME_info["recall"].append(results['test_recall'])
                 recall_by_MME_info["pos_ratio"].append(results['correctly_predicted_positives_ratio'])
                 recall_by_MME_info["true_pos_ratio"].append(results['true_positives_ratio'])
-            filename = f'output/baseline/riskSLIM_recallMME_test_info{"_median" if median else ""}.pkl'
+            filename = f'output/baseline/files/riskSLIM_recallMME_test_info{setting_tag}.pkl'
             with open(filename, 'wb') as f:
                 pickle.dump(recall_by_MME_info, f)
             print(f"Recall by MME information for riskSLIM saved to {filename}")
@@ -338,7 +321,7 @@ def compute_patient(FULL, setting_tag, exportdir='/export/storage_cures/CURES/Re
 
 
 
-def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, truncate=True, exportdir='/export/storage_cures/CURES/Results/'):
+def compute_calibration(x, y, y_prob, y_pred, setting_tag, plot=False, truncate=False, exportdir='/export/storage_cures/CURES/Results/'):
 
     num_total_presc = len(y)
     table = []
@@ -558,6 +541,36 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, setting_tag, exportdir='/
             'family_poverty_pct_quartile_binary': 'family_poverty_pct_median_binary',\
             'long_term_180': 'True'}, inplace=True)
 
-    FULL_filtered.to_csv(f'{exportdir}FULL_{setting_tag}.csv', index=False)
+    FULL_filtered.to_csv(f'{exportdir}FULL{setting_tag}.csv', index=False)
 
     return
+
+
+
+def drop_na_rows(FULL):
+
+    FULL.rename(columns={'quantity_diff': 'diff_quantity', 'dose_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
+
+    feature_list = ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo', 
+                    'patient_gender', 'days_supply', 'daily_dose',
+                    'num_prior_prescriptions', 'diff_MME', 'diff_days',
+                    'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
+                    'patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME']
+
+    percentile_list = ['patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 
+                        'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 
+                        'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 
+                        'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop',
+                        'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 
+                        'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 
+                        'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity',
+                        'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 
+                        'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 
+                        'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity',
+                        'zip_pop_density', 'median_household_income', 
+                        'family_poverty_pct', 'unemployment_pct']
+    percentile_features = [col for col in FULL.columns if any(col.startswith(f"{prefix}_above") for prefix in percentile_list)]
+    feature_list_extended = feature_list + percentile_features
+    FULL = FULL.dropna(subset=feature_list_extended) # drop NA rows to match the stumps
+
+    return FULL

@@ -1,0 +1,75 @@
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
+  from pandas.core.computation.check import NUMEXPR_INSTALLED
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
+  from pandas.core import (
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:558: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_first_median_countySan Bernardino
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: True, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: San Bernardino, Setting Tag: _test_CV_first_median_countySan Bernardino
+Start testing...
+Start testing with LTOUR:
+Intercept: -6
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: daily_dose, Cutoff: 100, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_countySan Bernardino_first
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv imported with shape (3777671, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county San Bernardino with 168245 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countySan Bernardino_first_2019
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (5696, 132)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+{'test_accuracy': 0.862278225207287, 'test_roc_auc': 0.8829605583328239, 'test_pr_auc': 0.22239053317311946, 'test_calibration_error': 0.018057207570459477}
+
+
+6907 27656
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: days_supply, Cutoff: 10
+Feature: daily_dose, Cutoff: 100
+Feature: HMFO, Cutoff: 1
+Feature: long_acting, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_median_LTOUR_countySan Bernardino_first_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285 0.00247262] with optimal threshold: 0.04742587317756678
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_median_LTOUR_countySan Bernardino_first_2019.pkl
+Proportions information for riskSLIM saved to output/baseline/files/riskSLIM_proportions_test_info_median_LTOUR_countySan Bernardino_first_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.862
+Recall             0.825
+Precision          0.206
+ROC AUC            0.883
+PR AUC             0.222
+Calibration error  0.018
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.002473      45492  45348  ...       0.003165         45492           220
+1  0.006693      71727  71197  ...       0.007389         71727           756
+2  0.017986      23370  22833  ...       0.022978         23370           725
+3  0.047426       8691      0  ...       0.112185          8691          1084
+4  0.119203      17869      0  ...       0.241032         17869          4751
+5  0.268941        960      0  ...       0.362500           960           370
+6  0.500000        113      0  ...       0.513274           113            61
+7  0.731059         23      0  ...       0.347826            23             8
+
+[8 rows x 10 columns]

@@ -4,10 +4,8 @@
   FULL_ATLEASTTWO_3 = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_3_FEATURE.csv")
 /mnt/phd/jihu/opioid/Code/sh script/../src/process/step5_compute_features_patient_prescriber.py:23: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_ATLEASTTWO_4 = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_4_FEATURE.csv")
-/mnt/phd/jihu/opioid/Code/sh script/../src/process/step5_compute_features_patient_prescriber.py:56: FutureWarning: The default value of regex will change from True to False in a future version. In addition, single character regular expressions will *not* be treated as literal strings when regex=True.
-  ZIP_DEMO['median_household_income'] = ZIP_DEMO['median_household_income'].replace("($1)", "0").str.replace("(", "-").str.replace(")", "")
 /mnt/phd/jihu/opioid/Code/sh script/../src/process/step5_compute_features_patient_prescriber.py:79: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_PREVIOUS = pd.read_csv(f"{datadir}../RX_{previous_year}.csv")
 ONE: 2624418, 1: 959158, 2: 936757, 3: 910718, 4: 977902
 Combined prescriptions: 6408953
-Combined prescriptions with patient/prescriber/pharmacy features, and NDC features: (6409165, 134)
+Combined prescriptions with patient/prescriber/pharmacy features, and NDC features: (6409165, 152)

@@ -36,6 +36,7 @@ BENZO_TABLE = pd.read_csv(f"{datadir}FULL_BENZO_{year}.csv")
 FULL_SINGLE['prescription_id'] = range(1, len(FULL_SINGLE) + 1)
 FULL_SINGLE['age'] = pd.to_datetime(FULL_SINGLE['date_filled'], errors='coerce').dt.year - FULL_SINGLE['patient_birth_year']
 FULL_SINGLE['concurrent_MME'] = FULL_SINGLE['daily_dose']
+FULL_SINGLE['adjusted_MME'] = FULL_SINGLE['daily_dose']
 FULL_SINGLE['concurrent_methadone_MME'] = np.where(FULL_SINGLE['drug'] == 'Methadone', FULL_SINGLE['daily_dose'], 0)
 FULL_SINGLE['num_prescribers'] = 1
 FULL_SINGLE['num_pharmacies'] = 1

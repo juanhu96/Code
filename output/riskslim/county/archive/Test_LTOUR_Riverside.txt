@@ -1,0 +1,104 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/risk_test.py:549: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
+Setting tag: _test_CV_median_countyRiverside
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Median: True, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Riverside, Setting Tag: _test_CV_median_countyRiverside
+Start testing...
+Start testing with LTOUR:
+Intercept: -7
+
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: prescriber_yr_avg_days_quartile, Cutoff: 1, Score: 2
+ - Condition: concurrent_MME, Cutoff: 40, Score: 1
+ - Condition: age, Cutoff: 30, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: pharmacy_yr_avg_days_quartile, Cutoff: 1, Score: 1
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2018_INPUT.csv imported with shape (6816028, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county Riverside with 458817 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countyRiverside_2018
+57239 35034
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 40
+Feature: age, Cutoff: 30
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyRiverside_2018.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyRiverside_2018.pkl
+Test done!
+
+                   Value
+Accuracy           0.872
+Recall             0.295
+Precision          0.482
+ROC AUC            0.838
+PR AUC             0.364
+Calibration error  0.025
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000911      11784  11778  ...       0.000509         11784             9
+1  0.002473      62625  62384  ...       0.003848         62624           331
+2  0.006693      81684  81104  ...       0.007101         81115           829
+3  0.017986      60108  57800  ...       0.038398         52388          2003
+4  0.047426      89006  80987  ...       0.090095         70980          6597
+5  0.119203      50163  40978  ...       0.183103         35290          5223
+6  0.268941      68413  48393  ...       0.292634         34733          7612
+7  0.500000      32138      0  ...       0.461136         15849          5311
+8  0.731059       2896      0  ...       0.711326          1390           805
+
+[9 rows x 10 columns]
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 127)
+WARNING: Encoding quartile values to binary
+
+Subsetting dataset to county Riverside with 425246 prescriptions.
+Test reults are saved with setting tag: _LTOUR_countyRiverside_2019
+51893 33011
+Feature: num_prior_prescriptions, Cutoff: 1
+Feature: prescriber_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Feature: concurrent_MME, Cutoff: 40
+Feature: age, Cutoff: 30
+Feature: long_acting, Cutoff: 1
+Feature: pharmacy_yr_avg_days_quartile, Cutoff: 1
+Should only be for Drug payment
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/riskSLIM_roc_test_info_median_LTOUR_countyRiverside_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.5
+Calibration information for riskSLIM saved to output/baseline/riskSLIM_calibration_test_info_median_LTOUR_countyRiverside_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.872
+Recall             0.295
+Precision          0.464
+ROC AUC            0.834
+PR AUC              0.35
+Calibration error  0.021
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.000911      10344  10339  ...       0.000483         10344             8
+1  0.002473      59080  58889  ...       0.003233         59079           267
+2  0.006693      76518  76031  ...       0.006365         76087           679
+3  0.017986      51784  49664  ...       0.040939         45215          1807
+4  0.047426      79427  72851  ...       0.082793         65002          5692
+5  0.119203      46155  37941  ...       0.177966         32177          4442
+6  0.268941      68927  49948  ...       0.275349         33821          6748
+7  0.500000      30375      0  ...       0.445432         14739          4744
+8  0.731059       2636      0  ...       0.679439          1250           670
+
+[9 rows x 10 columns]

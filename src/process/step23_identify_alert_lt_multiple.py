@@ -44,13 +44,27 @@ def compute_mme(args):
     patient = FULL[FULL['patient_id'] == pid]
     presc = patient[patient['prescription_id'] == pres_id].iloc[0]
     active = patient[(patient['date_filled'] <= presc['date_filled']) & (patient['presc_until'] > presc['date_filled'])]
-    meth = active[active['drug'] == 'Methadone']
-    return active['daily_dose'].sum(), meth['daily_dose'].sum()
+
+    # Concurrent MME
+    concurrent_mme = active['daily_dose'].sum()
+
+    # Concurrent Methadone MME
+    concurrent_methadone_mme = active[active['drug'] == 'Methadone']['daily_dose'].sum()
+
+    # Adjusted MME Calculation
+    # Total MME = sum of remaining MME (daily_dose * remaining days)
+    remaining_days = (active['presc_until'] - presc['date_filled']).dt.days.clip(lower=0)
+    total_mme = (active['daily_dose'] * remaining_days).sum()
+    max_remaining_days = max(remaining_days.max(), 1)
+    adjusted_mme = total_mme / max_remaining_days
+
+    return concurrent_mme, concurrent_methadone_mme, adjusted_mme
 
 with Pool(cores) as pool:
     mme_vals = pool.map(compute_mme, zip(FULL['patient_id'], FULL['prescription_id']))
-FULL['concurrent_MME'], FULL['concurrent_methadone_MME'] = zip(*mme_vals)
-
+FULL['concurrent_MME'], FULL['concurrent_methadone_MME'], FULL['adjusted_MME'] = zip(*mme_vals)
+# print(FULL_sample[['patient_id', 'daily_dose', 'concurrent_MME', 'adjusted_MME', 'date_filled', 'days_supply']].head(20))
+# raise SystemExit("Check concurrent MME and adjusted MME values.")
 
 # 2. Prescribers / Pharmacies last 180 days
 def compute_presc_pharm(args):
@@ -215,7 +229,7 @@ FULL_LT = FULL[FULL['long_term_180'] == 1]
 sample_ids = FULL_LT['patient_id'].drop_duplicates().sample(3, random_state=0)
 FULL_sample = FULL[FULL['patient_id'].isin(sample_ids)]
 pd.set_option('display.max_columns', None)
-print(FULL_sample[['patient_id', 'date_filled', 'days_supply', 'consecutive_days', 'days_to_long_term', 'long_term_180']].head(20))
+print(FULL_sample[['patient_id', 'daily_dose', 'concurrent_MME', 'adjusted_MME', 'date_filled', 'days_supply', 'consecutive_days', 'days_to_long_term', 'long_term_180']].head(20))
 
 
 FULL.to_csv(f"{datadir}FULL_OPIOID_{year}_ATLEASTTWO_{case}_TEMP.csv", index=False)

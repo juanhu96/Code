@@ -98,7 +98,12 @@ for col in [
     'patient_zip_yr_avg_MME',
     'patient_zip_yr_avg_days',
     'patient_zip_yr_avg_quantity']:
-    PATIENT_ZIP[f'{col}_quartile'] = pd.qcut(PATIENT_ZIP[col], 4, labels=False, duplicates='drop') + 1
+
+    percentiles = [50, 75]
+    cutoffs = np.percentile(PATIENT_ZIP[col].dropna(), percentiles)
+    for p, cutoff in zip(percentiles, cutoffs):
+        PATIENT_ZIP[f'{col}_above{p}'] = (PATIENT_ZIP[col] >= cutoff).astype(int)
+    # PATIENT_ZIP[f'{col}_quartile'] = pd.qcut(PATIENT_ZIP[col], 4, labels=False, duplicates='drop') + 1
 
 FULL = FULL.merge(PATIENT_ZIP, how='left', on='patient_zip')
 
@@ -122,7 +127,12 @@ for col in [
     'prescriber_yr_avg_MME',
     'prescriber_yr_avg_days',
     'prescriber_yr_avg_quantity']:
-    PRESCRIBER[f'{col}_quartile'] = pd.qcut(PRESCRIBER[col], 4, labels=False, duplicates='drop') + 1
+
+    percentiles = [50, 75]
+    cutoffs = np.percentile(PRESCRIBER[col].dropna(), percentiles)
+    for p, cutoff in zip(percentiles, cutoffs):
+        PRESCRIBER[f'{col}_above{p}'] = (PRESCRIBER[col] >= cutoff).astype(int)
+    # PRESCRIBER[f'{col}_quartile'] = pd.qcut(PRESCRIBER[col], 4, labels=False, duplicates='drop') + 1
 
 FULL = FULL.merge(PRESCRIBER, how='left', on='prescriber_id')
 
@@ -146,7 +156,12 @@ for col in [
     'pharmacy_yr_avg_MME',
     'pharmacy_yr_avg_days',
     'pharmacy_yr_avg_quantity']:
-    PHARMACY[f'{col}_quartile'] = pd.qcut(PHARMACY[col], 4, labels=False, duplicates='drop') + 1
+
+    percentiles = [50, 75]
+    cutoffs = np.percentile(PHARMACY[col].dropna(), percentiles)
+    for p, cutoff in zip(percentiles, cutoffs):
+        PHARMACY[f'{col}_above{p}'] = (PHARMACY[col] >= cutoff).astype(int)
+    # PHARMACY[f'{col}_quartile'] = pd.qcut(PHARMACY[col], 4, labels=False, duplicates='drop') + 1
 
 FULL = FULL.merge(PHARMACY, how='left', on='pharmacy_id')
 

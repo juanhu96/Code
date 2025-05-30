@@ -70,16 +70,28 @@ FULL_INPUT = FULL.drop(columns=DROP_COLS, errors='ignore')
 # Enrich ZIP-level demographics
 FULL_INPUT['zip_pop'] = FULL_INPUT['zip_pop'].replace({',': ''}, regex=True).astype(float)
 FULL_INPUT['zip_pop_density'] = (FULL_INPUT['zip_pop_density'].replace({',': ''}, regex=True).astype(float))
-FULL_INPUT['zip_pop_density_quartile'] = pd.qcut(FULL_INPUT['zip_pop_density'], 4, labels=False, duplicates='drop') + 1
-
-FULL_INPUT['median_household_income_quartile'] = pd.qcut(FULL_INPUT['median_household_income'], 4, labels=False, duplicates='drop') + 1
-FULL_INPUT['family_poverty_pct_quartile'] = pd.qcut(FULL_INPUT['family_poverty_pct'], 4, labels=False, duplicates='drop') + 1
-FULL_INPUT['unemployment_pct_quartile'] = pd.qcut(FULL_INPUT['unemployment_pct'], 4, labels=False, duplicates='drop') + 1
-
 FULL_INPUT['patient_zip_yr_num_prescriptions_per_pop'] = FULL_INPUT['patient_zip_yr_num_prescriptions'] / FULL_INPUT['zip_pop']
 FULL_INPUT['patient_zip_yr_num_patients_per_pop'] = FULL_INPUT['patient_zip_yr_num_patients'] / FULL_INPUT['zip_pop']
-FULL_INPUT['patient_zip_yr_num_prescriptions_per_pop_quartile'] = pd.qcut(FULL_INPUT['patient_zip_yr_num_prescriptions_per_pop'], 4, labels=False, duplicates='drop') + 1
-FULL_INPUT['patient_zip_yr_num_patients_per_pop_quartile'] = pd.qcut(FULL_INPUT['patient_zip_yr_num_patients_per_pop'], 4, labels=False, duplicates='drop') + 1
+
+percentiles = [50, 75]
+cols = [
+    'zip_pop_density',
+    'median_household_income',
+    'family_poverty_pct',
+    'unemployment_pct',
+    'patient_zip_yr_num_prescriptions_per_pop',
+    'patient_zip_yr_num_patients_per_pop'
+]
+for col in cols:
+    for p in percentiles:
+        cutoff = np.percentile(FULL_INPUT[col].dropna(), p)
+        FULL_INPUT[f'{col}_above{p}'] = (FULL_INPUT[col] >= cutoff).astype(int)
+# FULL_INPUT['zip_pop_density_quartile'] = pd.qcut(FULL_INPUT['zip_pop_density'], 4, labels=False, duplicates='drop') + 1
+# FULL_INPUT['median_household_income_quartile'] = pd.qcut(FULL_INPUT['median_household_income'], 4, labels=False, duplicates='drop') + 1
+# FULL_INPUT['family_poverty_pct_quartile'] = pd.qcut(FULL_INPUT['family_poverty_pct'], 4, labels=False, duplicates='drop') + 1
+# FULL_INPUT['unemployment_pct_quartile'] = pd.qcut(FULL_INPUT['unemployment_pct'], 4, labels=False, duplicates='drop') + 1
+# FULL_INPUT['patient_zip_yr_num_prescriptions_per_pop_quartile'] = pd.qcut(FULL_INPUT['patient_zip_yr_num_prescriptions_per_pop'], 4, labels=False, duplicates='drop') + 1
+# FULL_INPUT['patient_zip_yr_num_patients_per_pop_quartile'] = pd.qcut(FULL_INPUT['patient_zip_yr_num_patients_per_pop'], 4, labels=False, duplicates='drop') + 1
 
 # Export final result
 FULL_INPUT.to_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv", index=False)
@@ -90,8 +102,8 @@ FULL_INPUT.to_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv", index=False)
 # ======================================
 
 FULL_INPUT_FIRST = FULL_INPUT.groupby('patient_id', as_index=False).first()
-print(f'Number of patients before: {FULL_INPUT['patient_id'].nunique()}, number of patients now: {FULL_INPUT_FIRST['patient_id'].nunique()}')
-print(f'Number of prescriptions before: {FULL_INPUT.shape[0]}, number of prescriptions now: {FULL_INPUT_FIRST.shape[0]}')
+print(f"Number of patients before: {FULL_INPUT['patient_id'].nunique()}, number of patients now: {FULL_INPUT_FIRST['patient_id'].nunique()}")
+print(f"Number of prescriptions before: {FULL_INPUT.shape[0]}, number of prescriptions now: {FULL_INPUT_FIRST.shape[0]}")
 
 FULL_INPUT_FIRST.to_csv(f"{datadir}FULL_OPIOID_{year}_FIRST_INPUT.csv", index=False)
-
+print("Done")

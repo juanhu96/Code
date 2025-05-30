@@ -48,9 +48,6 @@ export OMP_NUM_THREADS=10
 # nohup python3 ../src/process/step6_to_input.py 2018 > ../output/data_process/step6_to_input_2018.txt & # done
 # nohup python3 ../src/process/step6_to_input.py 2019 > ../output/data_process/step6_to_input_2019.txt & # done
 
-nohup python3 ../src/process/step6_to_input.py 2018 > ../output/data_process/step6_to_input_first_2018.txt & # running
-nohup python3 ../src/process/step6_to_input.py 2019 > ../output/data_process/step6_to_input_first_2019.txt & # running
-
 
 # STEP 7: Final check
 

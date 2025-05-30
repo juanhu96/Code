@@ -32,7 +32,6 @@ def risk_train(scenario:str,
                weight:str, 
                first:bool,
                upto180:bool,
-               median:bool,
                feature_set,
                cutoff_set,
                essential_num,
@@ -42,7 +41,6 @@ def risk_train(scenario:str,
                stretch:bool,
                exact:bool,
                setting_tag:str,
-               case:str='Explore',
                outcome:str='long_term_180', 
                datadir:str='/export/storage_cures/CURES/Processed/',
                exportdir:str='/export/storage_cures/CURES/Results/'):
@@ -54,7 +52,6 @@ def risk_train(scenario:str,
     Parameters
     ----------
     year: year of the training dataset
-    case: name of the training case (e.g., LTOUR)
     scenario: single/CV
     c: has to be a list when doing CV
     feature_set: set of features
@@ -82,25 +79,10 @@ def risk_train(scenario:str,
                                                         'consecutive_days': int})
     print(f'{file_path} imported with shape {FULL.shape}')
 
-    quartile_list = [#'patient_HPIQuartile', 'prescriber_HPIQuartile', 'pharmacy_HPIQuartile',
-                             'patient_zip_yr_num_prescriptions_quartile', 'patient_zip_yr_num_patients_quartile', 
-                             'patient_zip_yr_num_pharmacies_quartile', 'patient_zip_yr_avg_MME_quartile', 
-                             'patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_quantity_quartile', 
-                             'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile',
-                             'prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 
-                             'prescriber_yr_num_pharmacies_quartile', 'prescriber_yr_avg_MME_quartile', 
-                             'prescriber_yr_avg_days_quartile', 'prescriber_yr_avg_quantity_quartile',
-                             'pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 
-                             'pharmacy_yr_num_prescribers_quartile', 'pharmacy_yr_avg_MME_quartile', 
-                             'pharmacy_yr_avg_days_quartile', 'pharmacy_yr_avg_quantity_quartile',
-                             'zip_pop_density_quartile', 'median_household_income_quartile', 
-                             'family_poverty_pct_quartile', 'unemployment_pct_quartile']
-    FULL = FULL.dropna(subset=quartile_list) # drop NA rows
-
-    x, constraints = import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance)
-    return
+    FULL = drop_na_rows(FULL)
+    x, constraints = import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance)
     y = FULL[[outcome]].to_numpy().astype('int')    
-    y[y==0]= -1
+    y[y==0] = -1
 
     if county_name is not None: 
         zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")
@@ -171,7 +153,7 @@ def risk_train(scenario:str,
 
 
 
-def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, essential_num, nodrug, noinsurance, datadir='/export/storage_cures/CURES/Processed/'):
+def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, datadir='/export/storage_cures/CURES/Processed/'):
 
     N = 20
     data_frames = []
@@ -182,114 +164,94 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
         file_suffix = "_UPTOFIRST_STUMPS_"
     else:
         file_suffix = "_STUMPS_"
-    
-    if median: file_suffix += 'median_'
 
-    print(f'FULL_{year}_{case}{file_suffix}')
+    print(f'FULL_{year}{file_suffix}')
     
     for i in range(N):
-        file_path = f'{datadir}/Stumps/FULL_{year}_{case}{file_suffix}{i}.csv'
+        file_path = f'{datadir}/Stumps/FULL_{year}{file_suffix}{i}.csv'
         df = pd.read_csv(file_path, delimiter=",")
         data_frames.append(df)
 
     STUMPS = pd.concat(data_frames, ignore_index=True)
     print(f'Finished importing STUMPS, with shape {STUMPS.shape} and columns {STUMPS.columns.tolist()}')
-
+    
     # ============================================================================================
 
     # LTOUR w/p avgDays
-    base_feature_list = ['concurrent_MME', 
-                         'daily_dose',
-                         'days_supply', 
-                         'num_prescribers_past180',
-                         'num_pharmacies_past180', 
+    base_feature_list = ['concurrent_MME', 'daily_dose', 'days_supply', 
+                         'num_prescribers_past180', 'num_pharmacies_past180', 
                          'concurrent_benzo',
                          'Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'long_acting',
-                         'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'Other', # 'MilitaryIns', 'WorkersComp',  'IndianNation', 'Medicare_Medicaid',
+                         'Medicaid', 'CommercialIns', 'Medicare', 'CashCredit', 'Other',
                          'num_prior_prescriptions', 
-                         'diff_MME',
-                         'diff_days',
+                         'diff_MME', 'diff_days',
                          'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
-                         'age', 'patient_gender']
+                         'patient_gender']
     
     if nodrug:
         base_feature_list = [feature for feature in base_feature_list if feature not in ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO']]
         drug_payment = [['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']]
         feature_drug_payment = ['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']
-    else:
-        drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit', 'Other']]
-        feature_drug_payment = ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'Other']
-
-    if noinsurance:
+    elif noinsurance: # TODO: need to check if this is correct
         base_feature_list = [feature for feature in base_feature_list if feature not in ['Medicare_Medicaid']]
         drug_payment = [['Medicaid', 'Medicare', 'CashCredit']]
         feature_drug_payment = ['Medicaid', 'Medicare', 'CashCredit']
+    else:
+        drug_payment = [['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO'], ['Medicaid', 'Medicare', 'CashCredit', 'Other']]
+        feature_drug_payment = ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'Other']        
 
     # ============================================================================================
     
-    # (2) Spatial demographics, intensity of opioid use in the patient zip code (pt_zip)
-    features_set_2 = ['patient_zip_yr_avg_days_quartile', 'patient_zip_yr_avg_MME_quartile',
-                    'patient_zip_yr_num_prescriptions_per_pop_quartile', 'patient_zip_yr_num_patients_per_pop_quartile']
+    # Patient zip
+    features_set_2 = ['patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME',
+                      'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop']
 
-    # (3) Provider prescription history
-    features_set_3 = ['prescriber_yr_num_prescriptions_quartile', 'prescriber_yr_num_patients_quartile', 'prescriber_yr_num_pharmacies_quartile', 
-                      'prescriber_yr_avg_MME_quartile', 'prescriber_yr_avg_days_quartile']
-    # features_set_3 += ['num_prescribers_past180']
+    # Provider 
+    features_set_3 = ['prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 'prescriber_yr_num_pharmacies', 
+                      'prescriber_yr_avg_MME', 'prescriber_yr_avg_days']
     
-    # (4) Pharmacy prescription history
-    features_set_4 = ['pharmacy_yr_num_prescriptions_quartile', 'pharmacy_yr_num_patients_quartile', 'pharmacy_yr_num_prescribers_quartile',
-                      'pharmacy_yr_avg_MME_quartile', 'pharmacy_yr_avg_days_quartile']
-    # features_set_4 += ['num_pharmacies_past180']
+    # Pharmacy
+    features_set_4 = ['pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 'pharmacy_yr_num_prescribers',
+                      'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days']
 
-    # (5) Other spatial demographics measured at pt_zip level
-    features_set_5 = ['zip_pop_density_quartile', 'median_household_income_quartile', 'family_poverty_pct_quartile', 'unemployment_pct_quartile'] # 'patient_HPIQuartile', 
+    # Demographics 
+    features_set_5 = ['zip_pop_density', 'median_household_income', 'family_poverty_pct', 'unemployment_pct']
 
-    # (6) temp features
+    # Patient history
     features_set_6 = ['num_prescribers_past180', 'num_pharmacies_past180', 'num_prior_prescriptions']
+
+    # Dosage based
     features_set_7 = ['concurrent_MME', 'daily_dose']
 
 
     # FEATURES TO KEEP
-    if feature_set == '1': features_to_keep = base_feature_list
-    elif feature_set == '2': features_to_keep = base_feature_list + features_set_2
-    elif feature_set == '3': features_to_keep = base_feature_list + features_set_3
-    elif feature_set == '4': features_to_keep = base_feature_list + features_set_4 
-    elif feature_set == '5': features_to_keep = base_feature_list + features_set_5
-    elif feature_set == '6': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6
-    elif feature_set == 'nopatientzip': features_to_keep = base_feature_list + features_set_3 + features_set_4 + features_set_5 + features_set_6
-    elif feature_set == 'mme': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6 + features_set_7
-    elif feature_set == 'nodemo': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4
-    else: 
-        features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5
+    if feature_set == 'nopatientzip': features_to_keep = base_feature_list + features_set_3 + features_set_4 + features_set_5 + features_set_6 + features_set_7
+    elif feature_set == 'nodemo': features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_6 + features_set_7
+    else: features_to_keep = base_feature_list + features_set_2 + features_set_3 + features_set_4 + features_set_5 + features_set_6 + features_set_7
 
     # ============================================================================================
     
     # EXCLUDE SOME FEATURES
     filtered_columns = [col for col in STUMPS.columns if any(col.startswith(feature) for feature in features_to_keep)]
+
+    columns_to_drop = ['CommercialIns', 'MilitaryIns', 'WorkersComp', 'IndianNation']
+    columns_to_drop += [f'days_supply{i}' for i in [14, 21]]
+    columns_to_drop += [col for col in filtered_columns if 'above55' in col or 'above60' in col or 'above65' in col or 'above70' in col or 'above80' in col]
+    columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
+
+    if first:
+        print("Temp solution for first presc to reset features...")
+        columns_to_drop += ['ever_switch_drug', 'ever_switch_payment', 'switch_drug', 'switch_payment', 
+                            'diff_days1', 'diff_MME1', 'num_prior_prescriptions1']
+        columns_to_drop += [f'num_prescribers_past180{i}' for i in range(1, 7)]
+        columns_to_drop += [f'num_pharmacies_past180{i}' for i in range(1, 7)]
+        columns_to_drop += [f'concurrent_MME{i}' for i in [10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 90, 100]]
+
     
-    columns_to_drop = ['CommercialIns', 'MilitaryIns', 'WorkersComp', 'IndianNation', 'age20'] # Other
-    columns_to_drop += [f'num_pharmacies_past180{i}' for i in range(7, 11)]
-    columns_to_drop += [f'num_prescribers_past180{i}' for i in range(7, 11)]
-    columns_to_drop += [f'days_supply{i}' for i in [21, 30]] # 10, 14
-    columns_to_drop += [f'daily_dose{i}' for i in [3, 5, 7, 200, 300]]
     filtered_columns = [feature for feature in filtered_columns if feature not in columns_to_drop]
 
     STUMPS = STUMPS[filtered_columns]
     print(f'Filtered STUMPS with columns {STUMPS.columns.tolist()}')
-
-    # NOTE: create a new column called 'Medicare_medicaid' which is the sum of 'Medicare' and 'Medicaid'
-    # if not noinsurance: STUMPS['Medicare_Medicaid'] = STUMPS['Medicare'] + STUMPS['Medicaid']
-
-    # NOTE: temp solution for first presc, need to fix this in feature engineering
-    # ever switch is based on 'date_filled' >= 'first_switch', 
-    # If you have 3 prescriptions on first day, then all three have num_prescribers_past180 = 3
-    if first:
-        print("Temp solution for first presc to reset ever_switch_drug and ever_switch_payment...")
-        STUMPS['ever_switch_drug'] = 0
-        STUMPS['ever_switch_payment'] = 0
-        for i in range(1, 7):
-            STUMPS[f'num_prescribers_past180{i}'] = 0
-            STUMPS[f'num_pharmacies_past180{i}'] = 0
 
     STUMPS['(Intercept)'] = 1
     intercept = STUMPS.pop('(Intercept)')
@@ -320,52 +282,8 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
 
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
 
-        if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
-        elif feature_set == 'nopatientzip': features_sets = [features_set_3, features_set_4, features_set_5, features_set_6]
-        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
-
-        for features_set in features_sets:
-            single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
-
-        two_cutoff = None
-
-    elif cutoff_set == 'atmostone_groupMME':
-        
-        ### ONE CUTOFF PER FEATURE
-        ### AT MOST ONE CUTOFF PER GROUP
-        ### FORCE MME
-
-        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff per feature
-        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
-        single_cutoff.extend(updated_drug_payment)
-
-        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
-        essential_cutoffs += [[col for col in x if any(col.startswith(feature) for feature in features_set_7)]] # force MME
-
-        if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
-        elif feature_set == 'mme': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
-        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
-
-        for features_set in features_sets:
-            single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
-
-        two_cutoff = None
-
-    elif cutoff_set == 'atmostone_groupdose':
-        
-        ### ONE CUTOFF PER FEATURE
-        ### AT MOST ONE CUTOFF PER GROUP
-        ### FORCE DAILY DOSE
-
-        single_cutoff = [[col for col in x if col.startswith(feature)] for feature in features_to_keep] # one cutoff per feature
-        updated_drug_payment = [[item for item in sublist if item in features_to_keep] for sublist in drug_payment] # filter drug/payments not in features_to_keep
-        single_cutoff.extend(updated_drug_payment)
-
-        essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
-        essential_cutoffs += [[col for col in x if col.startswith('daily_dose')]] # force daily dose
-
-        if feature_set == '6': features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6]
-        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5]
+        if feature_set == 'nopatientzip': features_sets = [features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
+        else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
 
         for features_set in features_sets:
             single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group
@@ -485,6 +403,34 @@ def import_stumps(year, case, first, upto180, median, feature_set, cutoff_set, e
 
     return x, constraints
 
+
+def drop_na_rows(FULL):
+
+    FULL.rename(columns={'quantity_diff': 'diff_quantity', 'dose_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
+
+    feature_list = ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo', 
+                    'patient_gender', 'days_supply', 'daily_dose',
+                    'num_prior_prescriptions', 'diff_MME', 'diff_days',
+                    'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
+                    'patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME']
+
+    percentile_list = ['patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 
+                        'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 
+                        'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 
+                        'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop',
+                        'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 
+                        'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 
+                        'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity',
+                        'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 
+                        'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 
+                        'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity',
+                        'zip_pop_density', 'median_household_income', 
+                        'family_poverty_pct', 'unemployment_pct']
+    percentile_features = [col for col in FULL.columns if any(col.startswith(f"{prefix}_above") for prefix in percentile_list)]
+    feature_list_extended = feature_list + percentile_features
+    FULL = FULL.dropna(subset=feature_list_extended) # drop NA rows to match the stumps
+
+    return FULL
 
 
 def compute_roc(outer_train_prob, outer_train_y, setting_tag, exportdir='/mnt/phd/jihu/opioid/roc/'):
