@@ -1,0 +1,143 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:93: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+============================================================ 
+Baseline train with model NN
+
+Filtered columns: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
+GridSearchCV for NN: 6733.1s
+
+
+Fitting for NN: 773.4s
+
+All 66 features are selected as input for neural network
+
+{'training_accuracy': 0.921, 'training_roc_auc': 0.923, 'training_calibration_error': 0.004}
+Finished training and fitting NN: 2.1 hours
+Testing on all data for NN with setting _NN
+============================================================ 
+Baseline test with model NN
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+Optimal threshold for binary classification: 0.12352766827940875
+test_accuracy
+0.85
+test_roc_auc
+0.928
+test_pr_auc
+0.591
+test_calibration_error
+0.005
+
+
+0: Accuracy = 0.8480, ROC AUC = 0.9241, Calibration = 0.0060
+1: Accuracy = 0.8520, ROC AUC = 0.9299, Calibration = 0.0051
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (600565, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 82.1; two months: 91.5, three months: 95.3
+1
+{'test_accuracy': 0.949, 'test_recall': 0.66, 'test_precision': 0.285, 'test_roc_auc': 0.925, 'test_pr_auc': 0.334, 'test_calibration_error': 0.001}
+2
+{'test_accuracy': 0.789, 'test_recall': 0.88, 'test_precision': 0.285, 'test_roc_auc': 0.904, 'test_pr_auc': 0.504, 'test_calibration_error': 0.043}
+3
+{'test_accuracy': 0.689, 'test_recall': 0.917, 'test_precision': 0.38, 'test_roc_auc': 0.883, 'test_pr_auc': 0.646, 'test_calibration_error': 0.03}
+
+
+[0, 10)
+{'test_accuracy': 0.7248563760414758, 'test_recall': 0.8213773709748566, 'test_roc_auc': 0.842745983758953, 'test_pr_auc': 0.4357608033307596, 'test_calibration_error': 0.013613041754183455, 'correctly_predicted_positives_ratio': 0.10704161591773824}
+[10, 20)
+{'test_accuracy': 0.8449184911941172, 'test_recall': 0.8453070351470673, 'test_roc_auc': 0.9170055827342296, 'test_pr_auc': 0.4862389243563963, 'test_calibration_error': 0.00846360021463163, 'correctly_predicted_positives_ratio': 0.06839020688234732}
+[20, 30)
+{'test_accuracy': 0.9129776151034739, 'test_recall': 0.818003596392791, 'test_roc_auc': 0.9396737884369155, 'test_pr_auc': 0.5044255365699105, 'test_calibration_error': 0.004690113564751313, 'correctly_predicted_positives_ratio': 0.040321871192874795}
+[30, 40)
+{'test_accuracy': 0.8920677786966533, 'test_recall': 0.8509641873278236, 'test_roc_auc': 0.9404360158762606, 'test_pr_auc': 0.5554992086446253, 'test_calibration_error': 0.008149894191738921, 'correctly_predicted_positives_ratio': 0.05564925416668096}
+[40, 50)
+{'test_accuracy': 0.8318054827271669, 'test_recall': 0.8720630881221518, 'test_roc_auc': 0.9197009049064, 'test_pr_auc': 0.5911452928624915, 'test_calibration_error': 0.005336498144733465, 'correctly_predicted_positives_ratio': 0.09937801277695629}
+[50, 60)
+{'test_accuracy': 0.9134610149600441, 'test_recall': 0.7625469952855523, 'test_roc_auc': 0.9300360889028729, 'test_pr_auc': 0.5317578578347255, 'test_calibration_error': 0.00664138653991746, 'correctly_predicted_positives_ratio': 0.03864930099753791}
+[60, 70)
+{'test_accuracy': 0.785422292397451, 'test_recall': 0.8936344395191885, 'test_roc_auc': 0.909420234382311, 'test_pr_auc': 0.6476856893681351, 'test_calibration_error': 0.010757052370283139, 'correctly_predicted_positives_ratio': 0.13383632225980185}
+[70, 80)
+{'test_accuracy': 0.8574501038661705, 'test_recall': 0.8242914979757086, 'test_roc_auc': 0.9206052710922445, 'test_pr_auc': 0.6085749709948184, 'test_calibration_error': 0.007565271843025236, 'correctly_predicted_positives_ratio': 0.08219741178715877}
+[80, 90)
+{'test_accuracy': 0.785845319178002, 'test_recall': 0.9002863571282471, 'test_roc_auc': 0.9164435928496544, 'test_pr_auc': 0.7190453969304694, 'test_calibration_error': 0.016667786567174495, 'correctly_predicted_positives_ratio': 0.1717960227161843}
+[90, 100)
+{'test_accuracy': 0.7080859472386634, 'test_recall': 0.9066398766412784, 'test_roc_auc': 0.8818491851815019, 'test_pr_auc': 0.6382838904540852, 'test_calibration_error': 0.015792553822032707, 'correctly_predicted_positives_ratio': 0.1791613957654272}
+above 100
+{'test_accuracy': 0.7108418937475084, 'test_recall': 0.9126584184283475, 'test_roc_auc': 0.8881787055903367, 'test_pr_auc': 0.700933021717261, 'test_calibration_error': 0.008652323469890977, 'correctly_predicted_positives_ratio': 0.2074855134033737}
+
+
+ROC information for NN saved to ../output/baseline/files/NN_roc_test_info.pkl
+Calibration information for NN saved to ../output/baseline/files/NN_calibration_test_info.pkl
+Proportions information for NN saved to ../output/baseline/files/NN_proportions_test_info.pkl
+
+Finished computing and exporting results: 0.04hours
+
+Testing on naive data for NN with setting _NN_naive
+============================================================ 
+Baseline test with model NN
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+
+Optimal threshold for binary classification: 0.08161089787112347
+test_accuracy
+0.862
+test_roc_auc
+0.917
+test_pr_auc
+0.307
+test_calibration_error
+0.055
+
+
+0: Accuracy = 0.8618, ROC AUC = 0.9099, Calibration = 0.0562
+1: Accuracy = 0.8615, ROC AUC = 0.9214, Calibration = 0.0542
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (79225, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+{'test_accuracy': 0.862, 'test_recall': 0.85, 'test_precision': 0.139, 'test_roc_auc': 0.917, 'test_pr_auc': 0.307, 'test_calibration_error': 0.055}
+
+
+[0, 10)
+{'test_accuracy': 0.42332451586812253, 'test_recall': 0.9138940955951266, 'test_roc_auc': 0.7865152338193167, 'test_pr_auc': 0.1754071626924364, 'test_calibration_error': 0.1913426754504008, 'correctly_predicted_positives_ratio': 0.05171807978148597}
+[10, 20)
+{'test_accuracy': 0.8239561691103299, 'test_recall': 0.8648507618451263, 'test_roc_auc': 0.9099207154741006, 'test_pr_auc': 0.2252902480212617, 'test_calibration_error': 0.06727727330784573, 'correctly_predicted_positives_ratio': 0.023361627392332697}
+[20, 30)
+{'test_accuracy': 0.9240517277038028, 'test_recall': 0.7736189984512132, 'test_roc_auc': 0.9105386903391731, 'test_pr_auc': 0.24253990027780875, 'test_calibration_error': 0.035560251596826395, 'correctly_predicted_positives_ratio': 0.011269840672956518}
+[30, 40)
+{'test_accuracy': 0.9077850751852352, 'test_recall': 0.8462030989883468, 'test_roc_auc': 0.9290724574770431, 'test_pr_auc': 0.3238317172928799, 'test_calibration_error': 0.042565316639204875, 'correctly_predicted_positives_ratio': 0.017167381974248927}
+[40, 50)
+{'test_accuracy': 0.8363065431159075, 'test_recall': 0.8928766056831452, 'test_roc_auc': 0.9220989895477061, 'test_pr_auc': 0.37040362128546545, 'test_calibration_error': 0.06385669750296115, 'correctly_predicted_positives_ratio': 0.03534262532009898}
+[50, 60)
+{'test_accuracy': 0.9415583436757294, 'test_recall': 0.6791569086651054, 'test_roc_auc': 0.8771494890392313, 'test_pr_auc': 0.3104650326113132, 'test_calibration_error': 0.030555887005761638, 'correctly_predicted_positives_ratio': 0.007285736537717504}
+[60, 70)
+{'test_accuracy': 0.8035351358009485, 'test_recall': 0.8795233250980962, 'test_roc_auc': 0.9050578658363249, 'test_pr_auc': 0.36309139072878915, 'test_calibration_error': 0.07188841404027302, 'correctly_predicted_positives_ratio': 0.04141432804363149}
+[70, 80)
+{'test_accuracy': 0.9305831334487633, 'test_recall': 0.7452504317789291, 'test_roc_auc': 0.8948963374218699, 'test_pr_auc': 0.3584195402472181, 'test_calibration_error': 0.032803353547297076, 'correctly_predicted_positives_ratio': 0.013708639778882658}
+[80, 90)
+{'test_accuracy': 0.8593518025715006, 'test_recall': 0.8329177057356608, 'test_roc_auc': 0.9012822887316341, 'test_pr_auc': 0.3825977590728539, 'test_calibration_error': 0.05322455061633212, 'correctly_predicted_positives_ratio': 0.028068013109610913}
+[90, 100)
+{'test_accuracy': 0.7148880960103795, 'test_recall': 0.8957198443579767, 'test_roc_auc': 0.880997531275, 'test_pr_auc': 0.38305691327551883, 'test_calibration_error': 0.09759065373665497, 'correctly_predicted_positives_ratio': 0.06222294302086712}
+above 100
+{'test_accuracy': 0.810003233487169, 'test_recall': 0.8554153522607781, 'test_roc_auc': 0.8928582883340541, 'test_pr_auc': 0.40439906622121924, 'test_calibration_error': 0.059603859390493175, 'correctly_predicted_positives_ratio': 0.04782621476233869}
+
+
+ROC information for NN saved to ../output/baseline/files/NN_roc_test_info_naive.pkl
+Calibration information for NN saved to ../output/baseline/files/NN_calibration_test_info_naive.pkl
+Proportions information for NN saved to ../output/baseline/files/NN_proportions_test_info_naive.pkl
+
+Finished computing and exporting results: 0.02hours
+

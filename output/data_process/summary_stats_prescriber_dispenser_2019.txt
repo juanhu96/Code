@@ -1,0 +1,20 @@
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats_prescriber_dispenser.py:11: DtypeWarning: Columns (4) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(f"{basedir}RX_{year}.csv")
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats_prescriber_dispenser.py:14: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  FULL_OPIOID.rename(columns={'Unnamed: 0': 'X'}, inplace=True)
+Number of opioid prescriptions in 2019: 18204081
+Duplicate rows removed. Number of prescriptions left: 15545153
+Number of opioid prescriptions with finite daily_dose in 2019: 15545153
+Yearly number of prescriptions, mean (SD) & 111.5 (399.9) \\
+Yearly number of unique patients, mean (SD) & 49.4 (107.0) \\
+Yearly number of unique dispensers, mean (SD) & 17.9 (30.3) \\
+Avg. daily MME per prescribed script, mean (SD) & 39.2 (79.0) \\
+Avg. days of supply per prescribed script, mean (SD) & 11.9 (10.0) \\
+Yearly number of prescriptions, mean (SD) & 1614.7 (3990.7) \\
+Yearly number of unique patients, mean (SD) & 594.1 (1306.4) \\
+Yearly number of unique prescribers, mean (SD) & 259.0 (374.5) \\
+Avg. daily MME per prescribed script, mean (SD) & 45.5 (116.3) \\
+Avg. days of supply per prescribed script, mean (SD) & 16.2 (7.2) \\

@@ -1,0 +1,21 @@
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats_CURES.py:9: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT_2018 = pd.read_csv(f"{datadir}FULL_OPIOID_2018_INPUT.csv")
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats_CURES.py:10: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+Total long_term_180 == 0: 11950258
+Total long_term_180 == 1: 1274935
+concurrentMME >= 90:
+  long_term_180 == 0: 1057311 (77.4%)
+  long_term_180 == 1: 308344 (22.6%)
+concurrentMME >= 40 & drug == "Methadone":
+  long_term_180 == 0: 58077 (57.0%)
+  long_term_180 == 1: 43793 (43.0%)
+num_prescriber >= 6:
+  long_term_180 == 0: 26011 (61.5%)
+  long_term_180 == 1: 16316 (38.5%)
+num_pharmacies >= 6:
+  long_term_180 == 0: 1311 (64.3%)
+  long_term_180 == 1: 727 (35.7%)
+concurrent_benzo >= 1:
+  long_term_180 == 0: 1308710 (82.7%)
+  long_term_180 == 1: 274628 (17.3%)

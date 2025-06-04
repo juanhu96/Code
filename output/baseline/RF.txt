@@ -1,0 +1,198 @@
+/mnt/phd/jihu/opioid/Code/baseline_main.py:93: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+============================================================ 
+Baseline train with model RandomForest
+
+Filtered columns: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
+GridSearchCV for RF: 4898.5s
+
+
+Fitting for RF: 46.9s
+
+27 features selected: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_pharmacies_past1802', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'num_prior_prescriptions1', 'diff_days1', 'Codeine', 'HMFO', 'long_acting', 'switch_drug', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75']
+{'training_accuracy': 0.903, 'training_roc_auc': 0.904, 'training_calibration_error': 0.051}
+Finished training and fitting RandomForest: 1.38 hours
+Testing on all data for RandomForest with setting _RandomForest
+============================================================ 
+Baseline test with model RandomForest
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
+
+Optimal threshold for binary classification: 0.14621560205274706
+test_accuracy
+0.842
+test_roc_auc
+0.912
+test_pr_auc
+0.542
+test_calibration_error
+0.054
+
+
+0: Accuracy = 0.8379, ROC AUC = 0.9083, Calibration = 0.0515
+1: Accuracy = 0.8450, ROC AUC = 0.9146, Calibration = 0.0553
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (598017, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 84.3; two months: 92.6, three months: 95.9
+1
+{'test_accuracy': 0.936, 'test_recall': 0.684, 'test_precision': 0.239, 'test_roc_auc': 0.912, 'test_pr_auc': 0.283, 'test_calibration_error': 0.036}
+2
+{'test_accuracy': 0.745, 'test_recall': 0.901, 'test_precision': 0.248, 'test_roc_auc': 0.888, 'test_pr_auc': 0.451, 'test_calibration_error': 0.072}
+3
+{'test_accuracy': 0.686, 'test_recall': 0.917, 'test_precision': 0.377, 'test_roc_auc': 0.866, 'test_pr_auc': 0.602, 'test_calibration_error': 0.096}
+
+
+[0, 10)
+{'test_accuracy': 0.6167297210874821, 'test_recall': 0.8913211292456992, 'test_roc_auc': 0.8137427067400673, 'test_pr_auc': 0.3786405863340304, 'test_calibration_error': 0.056741013580767906, 'correctly_predicted_positives_ratio': 0.11615666239118172}
+[10, 20)
+{'test_accuracy': 0.8095854838156011, 'test_recall': 0.8703400034401697, 'test_roc_auc': 0.9018638489630607, 'test_pr_auc': 0.4321422624798712, 'test_calibration_error': 0.048900936011083876, 'correctly_predicted_positives_ratio': 0.07041551817074404}
+[20, 30)
+{'test_accuracy': 0.9026975439793772, 'test_recall': 0.8229655368224653, 'test_roc_auc': 0.9303677864234678, 'test_pr_auc': 0.4608493159298358, 'test_calibration_error': 0.04276649952915408, 'correctly_predicted_positives_ratio': 0.040566460243282795}
+[30, 40)
+{'test_accuracy': 0.8887452431035725, 'test_recall': 0.8322314049586776, 'test_roc_auc': 0.9306104888502689, 'test_pr_auc': 0.5086153539913275, 'test_calibration_error': 0.046409717716442825, 'correctly_predicted_positives_ratio': 0.05442421393251641}
+[40, 50)
+{'test_accuracy': 0.8225372155407444, 'test_recall': 0.8549150736817186, 'test_roc_auc': 0.9036044456996309, 'test_pr_auc': 0.5449948697154277, 'test_calibration_error': 0.0658224788647926, 'correctly_predicted_positives_ratio': 0.09742387021391033}
+[50, 60)
+{'test_accuracy': 0.9205236317881276, 'test_recall': 0.7046010622426448, 'test_roc_auc': 0.9133722712170627, 'test_pr_auc': 0.4960889065515828, 'test_calibration_error': 0.0409924118580017, 'correctly_predicted_positives_ratio': 0.035712341280163575}
+[60, 70)
+{'test_accuracy': 0.7979431879689355, 'test_recall': 0.8486881514316521, 'test_roc_auc': 0.8917700333107339, 'test_pr_auc': 0.6015818814862963, 'test_calibration_error': 0.07315353806327458, 'correctly_predicted_positives_ratio': 0.12710488305956022}
+[70, 80)
+{'test_accuracy': 0.8728795519440957, 'test_recall': 0.7568641884431359, 'test_roc_auc': 0.9060457650654157, 'test_pr_auc': 0.5677856807217292, 'test_calibration_error': 0.04980486317674491, 'correctly_predicted_positives_ratio': 0.07547363707765373}
+[80, 90)
+{'test_accuracy': 0.7802931246462793, 'test_recall': 0.8554407854366947, 'test_roc_auc': 0.889040855880266, 'test_pr_auc': 0.6696226455051625, 'test_calibration_error': 0.0966942743178996, 'correctly_predicted_positives_ratio': 0.16323842235709685}
+[90, 100)
+{'test_accuracy': 0.767560180611086, 'test_recall': 0.8293070417270221, 'test_roc_auc': 0.8661707715933635, 'test_pr_auc': 0.6164286544825637, 'test_calibration_error': 0.08314982111052473, 'correctly_predicted_positives_ratio': 0.16387962954413246}
+above 100
+{'test_accuracy': 0.7661970016067136, 'test_recall': 0.8176649278648163, 'test_roc_auc': 0.8672848009454758, 'test_pr_auc': 0.6674323612938032, 'test_calibration_error': 0.10313129528639042, 'correctly_predicted_positives_ratio': 0.18588951126108894}
+
+
+ROC information for RandomForest saved to ../output/baseline/files/RandomForest_roc_test_info.pkl
+Calibration information for RandomForest saved to ../output/baseline/files/RandomForest_calibration_test_info.pkl
+Proportions information for RandomForest saved to ../output/baseline/files/RandomForest_proportions_test_info.pkl
+
+Finished computing and exporting results: 0.04hours
+
+Testing on naive data for RandomForest with setting _RandomForest_naive
+============================================================ 
+Baseline test with model RandomForest
+
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+
+Optimal threshold for binary classification: 0.09739834600039768
+test_accuracy
+0.866
+test_roc_auc
+0.911
+test_pr_auc
+0.284
+test_calibration_error
+0.036
+
+
+0: Accuracy = 0.8652, ROC AUC = 0.9059, Calibration = 0.0348
+1: Accuracy = 0.8673, ROC AUC = 0.9153, Calibration = 0.0362
+----------------------------------------------------------------------------------------------------
+Total prescriptions from true positive patients: 
+ (79194, 153)
+----------------------------------------------------------------------------------------------------
+Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
+1
+/mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
+{'test_accuracy': 0.866, 'test_recall': 0.85, 'test_precision': 0.144, 'test_roc_auc': 0.911, 'test_pr_auc': 0.284, 'test_calibration_error': 0.036}
+
+
+[0, 10)
+{'test_accuracy': 0.4056100293694518, 'test_recall': 0.9489222118088098, 'test_roc_auc': 0.778342645086958, 'test_pr_auc': 0.14957961738734527, 'test_calibration_error': 0.06335898560195129, 'correctly_predicted_positives_ratio': 0.05370035203564112}
+[10, 20)
+{'test_accuracy': 0.8122274312358518, 'test_recall': 0.8845230640784805, 'test_roc_auc': 0.8994618483259837, 'test_pr_auc': 0.19999226511167575, 'test_calibration_error': 0.0363014458950548, 'correctly_predicted_positives_ratio': 0.023893021957730874}
+[20, 30)
+{'test_accuracy': 0.9257485964404301, 'test_recall': 0.780846670108415, 'test_roc_auc': 0.9002442128610431, 'test_pr_auc': 0.22383592758220977, 'test_calibration_error': 0.03158194899614477, 'correctly_predicted_positives_ratio': 0.011375131143040864}
+[30, 40)
+{'test_accuracy': 0.9156140560537883, 'test_recall': 0.8442822384428224, 'test_roc_auc': 0.925185579852378, 'test_pr_auc': 0.30456709409293614, 'test_calibration_error': 0.03265867891735329, 'correctly_predicted_positives_ratio': 0.01712841243284249}
+[40, 50)
+{'test_accuracy': 0.8461367789491201, 'test_recall': 0.8829116387699494, 'test_roc_auc': 0.916543273333994, 'test_pr_auc': 0.3463627152451205, 'test_calibration_error': 0.045707091127345195, 'correctly_predicted_positives_ratio': 0.03494818325531803}
+[50, 60)
+{'test_accuracy': 0.9608178113647441, 'test_recall': 0.6449648711943794, 'test_roc_auc': 0.8618173817871668, 'test_pr_auc': 0.3083633785089349, 'test_calibration_error': 0.03117073163232615, 'correctly_predicted_positives_ratio': 0.006918937387887588}
+[60, 70)
+{'test_accuracy': 0.8258504239288867, 'test_recall': 0.8638279319866299, 'test_roc_auc': 0.903521039767299, 'test_pr_auc': 0.3626623282122121, 'test_calibration_error': 0.04462111671584325, 'correctly_predicted_positives_ratio': 0.0406752752629454}
+[70, 80)
+{'test_accuracy': 0.9533302622591457, 'test_recall': 0.7029360967184801, 'test_roc_auc': 0.8858348492235943, 'test_pr_auc': 0.3182998771057219, 'test_calibration_error': 0.029788450176130063, 'correctly_predicted_positives_ratio': 0.012930281320985497}
+[80, 90)
+{'test_accuracy': 0.8193786940810667, 'test_recall': 0.8254364089775561, 'test_roc_auc': 0.8815786658122782, 'test_pr_auc': 0.2430395002452028, 'test_calibration_error': 0.04749764521143014, 'correctly_predicted_positives_ratio': 0.02781590520742878}
+[90, 100)
+{'test_accuracy': 0.8226565034057736, 'test_recall': 0.8575875486381322, 'test_roc_auc': 0.8970703868060992, 'test_pr_auc': 0.4266612416231507, 'test_calibration_error': 0.04989279997105099, 'correctly_predicted_positives_ratio': 0.05957400800086496}
+above 100
+{'test_accuracy': 0.8550074958111643, 'test_recall': 0.8128286014721346, 'test_roc_auc': 0.8969005463421773, 'test_pr_auc': 0.42613398114039946, 'test_calibration_error': 0.04682191084134984, 'correctly_predicted_positives_ratio': 0.04544519239248655}
+
+
+ROC information for RandomForest saved to ../output/baseline/files/RandomForest_roc_test_info_naive.pkl
+Calibration information for RandomForest saved to ../output/baseline/files/RandomForest_calibration_test_info_naive.pkl
+Proportions information for RandomForest saved to ../output/baseline/files/RandomForest_proportions_test_info_naive.pkl
+
+Finished computing and exporting results: 0.02hours
+

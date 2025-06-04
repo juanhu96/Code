@@ -1,6 +1,2 @@
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/computation/expressions.py:21: UserWarning: Pandas requires version '2.8.4' or newer of 'numexpr' (version '2.8.1' currently installed).
-  from pandas.core.computation.check import NUMEXPR_INSTALLED
-/users/phd/jihu/anaconda3/lib/python3.9/site-packages/pandas/core/arrays/masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.4' currently installed).
-  from pandas.core import (
 /mnt/phd/jihu/opioid/Code/src/utils/county_summary.py:22: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_INPUT = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv")

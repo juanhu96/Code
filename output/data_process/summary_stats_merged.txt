@@ -1,0 +1,61 @@
+\begin{table}[p] \centering \sffamily
+\caption{Summary statistics across time periods} \label{tab:summary_stats_multi}
+\vspace*{0.1cm}
+\begin{tabular}{lcc}
+\toprule
+Variable & CA 2018 & CA 2019 \\
+\midrule
+Total patients, no. & 4,063,897 & 3,777,671 \\
+\hspace{0.25cm} Male & 1,746,224 (43.0\%) & 1,618,371 (42.8\%) \\
+\hspace{0.25cm} Female & 2,317,673 (57.0\%) & 2,159,300 (57.2\%) \\
+Age, mean (SD) & 51.3 (19.0) & 52.0 (19.1) \\
+Opioid Rx per patient, mean (SD) & 1.7 (1.7) & 1.7 (1.7) \\
+Concurrent Benzodiazepine, \% & 441,609 (10.9\%) & 381,681 (10.1\%) \\
+\hspace{0.25cm} Bottom 25\% & 934,679 (23.0\%) & 850,671 (22.5\%) \\
+\hspace{0.25cm} 25\% - 50\% & 1,045,959 (25.7\%) & 969,373 (25.7\%) \\
+\hspace{0.25cm} 50\% - 75\% & 1,022,788 (25.2\%) & 961,585 (25.5\%) \\
+\hspace{0.25cm} Top 25\% & 931,295 (22.9\%) & 879,707 (23.3\%) \\
+Total prescriptions, no. & 6,816,028 & 6,409,165 \\
+Daily MME per Rx, mean (SD) & 40.8 (57.5) & 38.8 (53.5) \\
+Pills dispensed per Rx, mean (SD) & 38.5 (46.2) & 37.0 (45.8) \\
+Days supply per Rx, mean (SD) & 8.9 (9.3) & 8.3 (8.7) \\
+Long acting opioid, \% & 156,403 (2.3\%) & 130,382 (2.0\%) \\
+\hspace{0.25cm} Hydrocodone & 4,223,711 (62.0\%) & 3,813,170 (59.5\%) \\
+\hspace{0.25cm} Oxycodone & 1,083,923 (15.9\%) & 1,082,134 (16.9\%) \\
+\hspace{0.25cm} Codeine & 1,069,821 (15.7\%) & 1,090,038 (17.0\%) \\
+\hspace{0.25cm} Morphine & 260,910 (3.8\%) & 261,917 (4.1\%) \\
+\hspace{0.25cm} Hydromorphone & 92,679 (1.4\%) & 85,388 (1.3\%) \\
+\hspace{0.25cm} Methadone & 42,099 (0.6\%) & 38,136 (0.6\%) \\
+\hspace{0.25cm} Fentanyl & 41,834 (0.6\%) & 37,565 (0.6\%) \\
+\hspace{0.25cm} Oxymorphone & 1,051 ($<$0.1\%) & 817 ($<$0.1\%) \\
+\hspace{0.25cm} Commercial Insurance & 3,069,335 (45.0\%) & 2,779,530 (43.4\%) \\
+\hspace{0.25cm} Cash or Credit & 1,705,870 (25.0\%) & 1,705,147 (26.6\%) \\
+\hspace{0.25cm} Medicare & 1,078,471 (15.8\%) & 920,469 (14.4\%) \\
+\hspace{0.25cm} Medicaid & 625,815 (9.2\%) & 532,345 (8.3\%) \\
+\hspace{0.25cm} Military Insurance & 72,706 (1.1\%) & 60,939 (1.0\%) \\
+\hspace{0.25cm} Workers Compensation & 45,859 (0.7\%) & 35,153 (0.5\%) \\
+\hspace{0.25cm} Other & 217,972 (3.2\%) & 375,582 (5.9\%) \\
+Top 25\% prescriber based on prescriptions, no. (\%) & 5,124,947 (75.2\%) & 4,845,320 (75.6\%) \\
+Top 50\% prescriber based on prescriptions, no. (\%) & 6,323,318 (92.8\%) & 5,941,325 (92.7\%) \\
+Top 25\% prescriber based on patients, no. (\%) & 5,259,909 (77.2\%) & 4,976,395 (77.6\%) \\
+Top 50\% prescriber based on patients, no. (\%) & 6,337,001 (93.0\%) & 5,965,281 (93.1\%) \\
+Top 25\% prescriber based on pharmacies, no. (\%) & 4,545,639 (66.7\%) & 4,246,965 (66.3\%) \\
+Top 50\% prescriber based on pharmacies, no. (\%) & 6,117,566 (89.8\%) & 5,766,618 (90.0\%) \\
+Top 25\% prescriber based on avg. daily MME, no. (\%) & 2,327,011 (34.1\%) & 2,272,247 (35.5\%) \\
+Top 50\% prescriber based on avg. daily MME, no. (\%) & 4,281,120 (62.8\%) & 4,084,609 (63.7\%) \\
+Top 25\% prescriber based on avg. days supply, no. (\%) & 1,232,648 (18.1\%) & 1,108,460 (17.3\%) \\
+Top 50\% prescriber based on avg. days supply, no. (\%) & 2,995,091 (43.9\%) & 2,873,486 (44.8\%) \\
+Top 25\% dispenser based on prescriptions, no. (\%) & 4,710,931 (69.1\%) & 4,683,899 (73.1\%) \\
+Top 50\% dispenser based on prescriptions, no. (\%) & 6,146,837 (90.2\%) & 5,977,918 (93.3\%) \\
+Top 25\% dispenser based on patients, no. (\%) & 4,866,167 (71.4\%) & 4,851,310 (75.7\%) \\
+Top 50\% dispenser based on patients, no. (\%) & 6,252,532 (91.7\%) & 6,022,662 (94.0\%) \\
+Top 25\% dispenser based on prescriber, no. (\%) & 4,301,395 (63.1\%) & 4,352,199 (67.9\%) \\
+Top 50\% dispenser based on prescriber, no. (\%) & 6,059,104 (88.9\%) & 5,888,830 (91.9\%) \\
+Top 25\% dispenser based on avg. daily MME, no. (\%) & 2,038,080 (29.9\%) & 2,104,558 (32.8\%) \\
+Top 50\% dispenser based on avg. daily MME, no. (\%) & 4,662,169 (68.4\%) & 4,573,658 (71.4\%) \\
+Top 25\% dispenser based on avg. days supply, no. (\%) & 888,116 (13.0\%) & 677,626 (10.6\%) \\
+Top 50\% dispenser based on avg. days supply, no. (\%) & 2,753,062 (40.4\%) & 2,471,512 (38.6\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+Merged LaTeX table saved to: /export/storage_cures/CURES/Results/summary_stats_merged.tex
