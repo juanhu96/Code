@@ -8,5 +8,5 @@ mkdir -p ../output/baseline
 #     nohup python3 /mnt/phd/jihu/opioid/Code/baseline_main.py "$model" naive > "../output/baseline/${short_name}.txt" &
 # done
 
-nohup python3 /mnt/phd/jihu/opioid/Code/baseline_main.py Logistic bracket naive > ../output/baseline/Logistic_bracket.txt &
-nohup python3 /mnt/phd/jihu/opioid/Code/baseline_main.py DecisionTree naive > ../output/baseline/DT_test.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/baseline_main.py DecisionTree naive > ../output/baseline/DT_test.txt &
+nohup python3 /mnt/phd/jihu/opioid/Code/baseline_main.py Logistic bracket naive > ../output/baseline/Logistic_bracket_naive.txt &

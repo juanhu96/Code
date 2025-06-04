@@ -18,7 +18,10 @@ roc_data <- lapply(files, function(f) {
 
 # dplyr::count(roc_data, Model)
 
-roc_data <- roc_data %>% mutate(Presc = factor(Presc, levels = c("All", "Naive")), PrescLabel = paste0(Presc, " (AUC = ", sprintf("%.3f", auc), ")"))
+# roc_data <- roc_data %>% mutate(Presc = factor(Presc, levels = c("All", "Naive")), PrescLabel = paste0(Presc, " (AUC = ", sprintf("%.3f", auc), ")"))
+roc_data <- roc_data %>% mutate(Presc = recode(Presc, "All" = "All Rx", "Naive" = "1st Rx"), 
+                                Presc = factor(Presc, levels = c("All Rx", "1st Rx")), 
+                                PrescLabel = paste0(Presc, " (AUC = ", sprintf("%.3f", auc), ")"))
 roc_data$Model <- factor(roc_data$Model, levels = c("LTOUR", "DecisionTree", "RandomForest", "Logistic", "L1", "L2", "LinearSVM", "NN", "XGB"))
 roc_data <- roc_data %>%
   mutate(Model = recode(Model,
@@ -38,7 +41,7 @@ roc_labels <- roc_data %>%
   mutate(
     label = paste0(Presc, " (AUC = ", sprintf("%.3f", auc), ")"),
     x = 0.55,   # X/Y position for text
-    y = ifelse(Presc == "All", 0.15, 0.05)
+    y = ifelse(Presc == "All Rx", 0.15, 0.05)
   )
 
 # ALL
@@ -49,8 +52,8 @@ ggplot(roc_data,
   geom_text(data = roc_labels, aes(x = x, y = y, label = label, color = Presc),
             inherit.aes = FALSE, size = 3.5, hjust = 0) +
   facet_wrap(~Model, nrow = 3)+#, scales = "free") +
-  scale_color_manual(values = c(All = "firebrick3", Naive = "mediumblue")) +
-  scale_linetype_manual(values = c(All = "solid", Naive = "dashed")) +
+  scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+  scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
   scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   labs(x = "False Positive Rate", y = "True Positive Rate") +
@@ -61,7 +64,7 @@ ggplot(roc_data,
   theme_bw(base_size = 14) +
   theme(legend.position = "bottom", strip.text = element_text(size = 12))
 
-ggsave(paste(export_path, "ROC_full.pdf", sep = ""),  width = 11, height = 10.5, dpi=600)
+ggsave(paste(export_path, "ROC_full.pdf", sep = ""),  width = 11, height = 10.5, dpi=500)
 
 
 # SELECTED
@@ -72,7 +75,7 @@ roc_labels <- roc_data %>%
   mutate(
     label = paste0(Presc, " (AUC = ", sprintf("%.3f", auc), ")"),
     x = 0.45,   # X/Y position for text
-    y = ifelse(Presc == "All", 0.15, 0.05)
+    y = ifelse(Presc == "All Rx", 0.15, 0.05)
   )
 
 ggplot(roc_data %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logistic", "Neural Network")),
@@ -83,8 +86,8 @@ ggplot(roc_data %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logistic", "N
             aes(x = x, y = y, label = label, color = Presc),
             inherit.aes = FALSE, size = 3.5, hjust = 0) +
   facet_wrap(~Model, nrow = 1) +
-  scale_color_manual(values = c(All = "firebrick3", Naive = "mediumblue")) +
-  scale_linetype_manual(values = c(All = "solid", Naive = "dashed")) +
+  scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+  scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
   scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   labs(x = "False Positive Rate", y = "True Positive Rate") +
@@ -95,7 +98,7 @@ ggplot(roc_data %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logistic", "N
   theme_bw(base_size = 14) +
   theme(legend.position = "bottom", strip.text = element_text(size = 12))
 
-ggsave(paste(export_path, "ROC_selected.pdf", sep = ""),  width = 12, height = 3.5, dpi=600)
+ggsave(paste(export_path, "ROC_selected.pdf", sep = ""),  width = 12, height = 3.5, dpi=500)
 
 
 ################################################################################
@@ -118,7 +121,11 @@ calibration_data <- lapply(files, function(f) {
   df
 }) %>% bind_rows()
 
-calibration_data <- calibration_data %>% mutate(Presc = factor(Presc, levels = c("All", "Naive")), PrescLabel = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"))
+# calibration_data <- calibration_data %>% mutate(Presc = factor(Presc, levels = c("All", "Naive")), PrescLabel = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"))
+calibration_data <- calibration_data %>% mutate(Presc = recode(Presc, "All" = "All Rx", "Naive" = "1st Rx"), 
+                                                Presc = factor(Presc, levels = c("All Rx", "1st Rx")), 
+                                                PrescLabel = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"))
+
 calibration_data$Model <- factor(calibration_data$Model, levels = c("LTOUR", "DecisionTree", "RandomForest", "Logistic", "L1", "L2", "LinearSVM", "NN", "XGB"))
 calibration_data <- calibration_data %>%
   mutate(Model = recode(Model,
@@ -138,7 +145,7 @@ ece_labels <- calibration_data %>%
   mutate(
     label = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"),
     x = 0.02,   # X/Y position for text
-    y = ifelse(Presc == "All", 0.95, 0.87)
+    y = ifelse(Presc == "All Rx", 0.95, 0.87)
   )
 
 # ALL
@@ -150,13 +157,13 @@ ggplot(calibration_data,
   geom_text(data = ece_labels, aes(x = x, y = y, label = label, color = Presc),
             inherit.aes = FALSE, size = 3.5, hjust = 0) +
   facet_wrap(~Model, nrow = 3) +
-  scale_color_manual(values = c(All = "firebrick3", Naive = "mediumblue")) +
-  scale_linetype_manual(values = c(All = "solid", Naive = "dashed")) +
+  scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+  scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
   scale_size_continuous(
     name = "Number of prescriptions (million)",
-    range = c(1, 5),
-    breaks = c(0.1, 0.5, 1, 2),
-    labels = c("0.1", "0.5", "1", "2")
+    range = c(1, 8),
+    breaks = c(0.01, 0.1, 1, 2),
+    labels = c("0.01", "0.1", "1", "2")
   ) +
   scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
@@ -167,9 +174,9 @@ ggplot(calibration_data,
   ) +
   theme_bw(base_size = 14) +
   #theme_minimal(base_size = 14) +
-  theme( legend.position = "bottom",  strip.text = element_text(size = 12))
+  theme(legend.position = "bottom",  strip.text = element_text(size = 12))
 
-ggsave(paste(export_path, "Calibration_full.pdf", sep = ""),  width = 11, height = 11.2, dpi=600)
+ggsave(paste(export_path, "Calibration_full.pdf", sep = ""),  width = 11, height = 11.2, dpi=500)
 
 
 # SELECTED
@@ -181,13 +188,13 @@ ggplot(calibration_data %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logis
   geom_text(data = ece_labels %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logistic", "Neural Network")), aes(x = x, y = y, label = label, color = Presc),
             inherit.aes = FALSE, size = 3.5, hjust = 0) +
   facet_wrap(~Model, nrow = 1) +
-  scale_color_manual(values = c(All = "firebrick3", Naive = "mediumblue")) +
-  scale_linetype_manual(values = c(All = "solid", Naive = "dashed")) +
+  scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+  scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
   scale_size_continuous(
     name = "Number of prescriptions (million)",
-    range = c(1, 5),
-    breaks = c(0.1, 0.5, 1, 2),
-    labels = c("0.1", "0.5", "1", "2")
+    range = c(1, 8),
+    breaks = c(0.01, 0.1, 1, 2),
+    labels = c("0.01", "0.1", "1", "2")
   ) +
   scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
@@ -199,7 +206,7 @@ ggplot(calibration_data %>% filter(Model %in% c("LTOUR", "Decision Tree", "Logis
    theme_bw(base_size = 14) +
   theme(legend.position = "bottom",  strip.text = element_text(size = 12))
 
-ggsave(paste(export_path, "Calibration_selected.pdf", sep = ""),  width = 12, height = 4.2, dpi=600)
+ggsave(paste(export_path, "Calibration_selected.pdf", sep = ""),  width = 12, height = 4.2, dpi=500)
 
 
 ################################################################################
@@ -242,7 +249,7 @@ ggplot(proportion_data, aes(x = month, y = proportion, fill = Model)) +
   scale_fill_brewer(palette = "Paired") +
   theme(legend.position = "bottom", axis.text.x = element_text(hjust = 1))
 
-ggsave(paste(export_path, "Proportion_full.pdf", sep = ""),  width = 10, height = 7, dpi=600)
+ggsave(paste(export_path, "Proportion_full.pdf", sep = ""),  width = 10, height = 7, dpi=500)
 
 
 ################################################################################

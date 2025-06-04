@@ -8,13 +8,20 @@ Processed fold 0 and saved.
 Processed fold 1 and saved.
 Processed fold 2 and saved.
 Processed fold 3 and saved.
-Processed fold 7 and saved.
-Processed fold 6 and saved.
-Processed fold 5 and saved.
 Processed fold 4 and saved.
+Processed fold 5 and saved.
+Processed fold 6 and saved.
 Processed fold 9 and saved.
 Processed fold 10 and saved.
-Processed fold 8 and saved.
+Processed fold 11 and saved.
+Processed fold 14 and saved.
 Processed fold 12 and saved.
+Processed fold 15 and saved.
+Processed fold 8 and saved.
+Processed fold 7 and saved.
+Processed fold 13 and saved.
+Processed fold 17 and saved.
+Processed fold 18 and saved.
+Processed fold 16 and saved.
 Stumps done!
 

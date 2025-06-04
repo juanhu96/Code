@@ -48,6 +48,7 @@ NLT = FULL_INPUT[FULL_INPUT['patient_id'].isin(PATIENTS[PATIENTS['long_term_user
 # GENERATE LATEX TABLE CONTENT
 # -------------------------------
 def fmt_num(n):
+    n = int(n) if n == int(n) else n  # strip .0 if it's an integer
     return f"{n:,}"
 
 def fmt_pct(count, total):
@@ -142,6 +143,105 @@ latex_lines = [
     ] + [
         f"\hspace{{0.25cm}} Other & {fmt_pct(((FULL_INPUT['Other']==1)|(FULL_INPUT['IndianNation']==1)).sum(), total_rx)} & {fmt_pct(((NLT['Other']==1)|(NLT['IndianNation']==1)).sum(), nlt_rx)} & {fmt_pct(((LT['Other']==1)|(LT['IndianNation']==1)).sum(), lt_rx)} \\"
     ],
+    f"Top 25\\% prescriber based on prescriptions, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_prescriptions_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_prescriptions_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_prescriptions_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% prescriber based on prescriptions, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_prescriptions_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_prescriptions_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_prescriptions_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% prescriber based on patients, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_patients_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_patients_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_patients_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% prescriber based on patients, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_patients_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_patients_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_patients_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% prescriber based on pharmacies, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_pharmacies_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_pharmacies_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_pharmacies_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% prescriber based on pharmacies, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_num_pharmacies_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_num_pharmacies_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_num_pharmacies_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% prescriber based on avg. daily MME, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_MME_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_avg_MME_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_avg_MME_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% prescriber based on avg. daily MME, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_MME_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_avg_MME_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_avg_MME_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% prescriber based on avg. days supply, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_days_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_avg_days_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_avg_days_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% prescriber based on avg. days supply, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_days_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['prescriber_yr_avg_days_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['prescriber_yr_avg_days_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% dispenser based on prescriptions, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescriptions_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_prescriptions_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_prescriptions_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% dispenser based on prescriptions, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescriptions_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_prescriptions_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_prescriptions_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% dispenser based on patients, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_patients_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_patients_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_patients_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% dispenser based on patients, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_patients_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_patients_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_patients_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% dispenser based on prescriber, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescribers_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_prescribers_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_prescribers_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% dispenser based on prescriber, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescribers_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_num_prescribers_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_num_prescribers_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% dispenser based on avg. daily MME, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_MME_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_avg_MME_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_avg_MME_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% dispenser based on avg. daily MME, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_MME_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_avg_MME_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_avg_MME_above50'].sum(), len(LT))} \\\\",
+    f"Top 25\\% dispenser based on avg. days supply, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_days_above75'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_avg_days_above75'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_avg_days_above75'].sum(), len(LT))} \\\\",
+    f"Top 50\\% dispenser based on avg. days supply, no. (\\%) & "
+    f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_days_above50'].sum(), len(FULL_INPUT))} & "
+    f"{fmt_pct(NLT['pharmacy_yr_avg_days_above50'].sum(), len(NLT))} & "
+    f"{fmt_pct(LT['pharmacy_yr_avg_days_above50'].sum(), len(LT))} \\\\",
+    # f"Top 50\% prescriber based on prescriptions, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_num_prescriptions_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_num_prescriptions_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_num_prescriptions_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% prescriber based on patients, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_num_patients_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_num_patients_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_num_patients_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% prescriber based on patients, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_num_patients_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_num_patients_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_num_patients_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% prescriber based on pharmacies, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_num_pharmacies_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_num_pharmacies_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_num_pharmacies_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% prescriber based on pharmacies, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_num_pharmacies_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_num_pharmacies_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_num_pharmacies_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% prescriber based on avg. daily MME, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_MME_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_avg_MME_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_avg_MME_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% prescriber based on avg. daily MME, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_MME_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_avg_MME_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_avg_MME_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% prescriber based on avg. days supply, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_days_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_avg_days_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_avg_days_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% prescriber based on avg. days supply, no. (\%) & " + f"{fmt_pct(FULL_INPUT['prescriber_yr_avg_days_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['prescriber_yr_avg_days_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['prescriber_yr_avg_days_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% dispenser based on prescriptions, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescriptions_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_prescriptions_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_prescriptions_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% dispenser based on prescriptions, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescriptions_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_prescriptions_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_prescriptions_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% dispenser based on patients, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_patients_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_patients_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_patients_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% dispenser based on patients, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_patients_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_patients_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_patients_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% dispenser based on prescriber, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescribers_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_prescribers_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_prescribers_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% dispenser based on prescriber, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_num_prescribers_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_num_prescribers_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_num_prescribers_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% dispenser based on avg. daily MME, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_MME_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_avg_MME_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_avg_MME_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% dispenser based on avg. daily MME, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_MME_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_avg_MME_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_avg_MME_above50'].sum(), len(LT))} \\\\",
+    # f"Top 25\% dispenser based on avg. days supply, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_days_above75'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_avg_days_above75'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_avg_days_above75'].sum(), len(LT))} \\\\",
+    # f"Top 50\% dispenser based on avg. days supply, no. (\%) & " + f"{fmt_pct(FULL_INPUT['pharmacy_yr_avg_days_above50'].sum(), len(FULL_INPUT))} & " + f"{fmt_pct(NLT['pharmacy_yr_avg_days_above50'].sum(), len(NLT))} & " + f"{fmt_pct(LT['pharmacy_yr_avg_days_above50'].sum(), len(LT))} \\\\",
     r"\bottomrule",
     r"\end{tabular}",
     r"\end{table}"

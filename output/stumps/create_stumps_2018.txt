@@ -6,22 +6,21 @@ Start creating stumps for year 2018 with features ['concurrent_MME', 'num_prescr
 Columns with NaNs: ['patient_zip_yr_num_prescriptions_above50', 'patient_zip_yr_num_prescriptions_above75', 'patient_zip_yr_num_patients_above50', 'patient_zip_yr_num_patients_above75', 'patient_zip_yr_num_pharmacies_above50', 'patient_zip_yr_num_pharmacies_above75', 'patient_zip_yr_avg_MME_above50', 'patient_zip_yr_avg_MME_above75', 'patient_zip_yr_avg_days_above50', 'patient_zip_yr_avg_days_above75', 'patient_zip_yr_avg_quantity_above50', 'patient_zip_yr_avg_quantity_above75', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'prescriber_yr_avg_quantity_above50', 'prescriber_yr_avg_quantity_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'pharmacy_yr_avg_quantity_above50', 'pharmacy_yr_avg_quantity_above75']
 Processed fold 0 and saved.
 Processed fold 1 and saved.
+Processed fold 2 and saved.
+Processed fold 3 and saved.
 Processed fold 4 and saved.
 Processed fold 6 and saved.
 Processed fold 5 and saved.
-Processed fold 7 and saved.
-Processed fold 3 and saved.
-Processed fold 2 and saved.
 Processed fold 8 and saved.
-Processed fold 9 and saved.
 Processed fold 10 and saved.
-Processed fold 12 and saved.
+Processed fold 9 and saved.
+Processed fold 7 and saved.
 Processed fold 11 and saved.
-Processed fold 13 and saved.
 Processed fold 14 and saved.
-Processed fold 16 and saved.
+Processed fold 12 and saved.
 Processed fold 15 and saved.
-Processed fold 17 and saved.
+Processed fold 16 and saved.
+Processed fold 13 and saved.
 Processed fold 18 and saved.
 Stumps done!
 

@@ -56,5 +56,15 @@ export OMP_NUM_THREADS=10
 
 
 # SUMMARY
-# nohup python3 /mnt/phd/jihu/opioid/Code/src/summary_stats.py 2018 > ../output/data_process/summary_stats_2018.txt &
-# nohup python3 /mnt/phd/jihu/opioid/Code/src/summary_stats.py 2019 > ../output/data_process/summary_stats_2019.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py total > ../output/data_process/summary_stats_total.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py 2018 > ../output/data_process/summary_stats_2018.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py 2019 > ../output/data_process/summary_stats_2019.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/merge_tables.py year > ../output/data_process/summary_stats_merged.txt &
+
+
+# SUMMARY (PRESCRIBER/DISPENSER)
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats_prescriber_dispenser.py 2017 > ../output/data_process/summary_stats_prescriber_dispenser_2017.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats_prescriber_dispenser.py 2018 > ../output/data_process/summary_stats_prescriber_dispenser_2018.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats_prescriber_dispenser.py 2019 > ../output/data_process/summary_stats_prescriber_dispenser_2019.txt &
+
+# nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/summary_stats_CURES.py > ../output/data_process/summary_stats_CURES.txt &

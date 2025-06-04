@@ -65,11 +65,11 @@ def risk_test(year, table, first, upto180, county_name, setting_tag, output_colu
 
 def test_table(FULL, intercept, conditions, cutoffs, scores, setting_tag, 
                fairness_results=False,
-               patient_results=True,
-               nth_presc_results=True,
+               patient_results=False,
+               nth_presc_results=False,
                MME_results=False,
                export_files=True,
-               barplot=True,
+               barplot=False,
                optimal_thresh=True,
                exportdir='/export/storage_cures/CURES/Results/'):
     
@@ -464,13 +464,14 @@ def compute_nth_presc(FULL, x, exportdir='/export/storage_cures/CURES/Results/')
 
     FULL['num_prescriptions'] = FULL['num_prior_prescriptions'] + 1
     FULL['Prob'], FULL['Pred'] = x['Prob'], x['Pred']
-    test_results_by_prescriptions = FULL[FULL['num_prescriptions'] <= 3].groupby('num_prescriptions').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
-                                                                                                                        # 'test_recall': recall_score(x['long_term_180'], x['Pred']),
-                                                                                                                        # 'test_precision': precision_score(x['long_term_180'], x['Pred']),
-                                                                                                                        'test_roc_auc': roc_auc_score(x['long_term_180'], x['Prob']),
-                                                                                                                        'test_pr_auc': average_precision_score(x['long_term_180'], x['Prob']),
-                                                                                                                        # different from the calibration error in the calibration table
-                                                                                                                        'test_calibration_error': model_selection.compute_calibration(x['long_term_180'], x['Prob'], x['Pred'])}).to_dict()
+    test_results_by_prescriptions = FULL[FULL['num_prescriptions'] <= 3].groupby('num_prescriptions').apply(
+        lambda x: {
+            'test_accuracy': round(accuracy_score(x['long_term_180'], x['Pred']), 3),
+            'test_roc_auc': round(roc_auc_score(x['long_term_180'], x['Prob']), 3),
+            'test_pr_auc': round(average_precision_score(x['long_term_180'], x['Prob']), 3),
+            'test_calibration_error': round(model_selection.compute_calibration(x['long_term_180'], x['Prob'], x['Pred']), 3)
+        }
+    ).to_dict()
 
     print_results(test_results_by_prescriptions)
 
@@ -533,7 +534,7 @@ def barplot_by_condition(FULL, x, conditions, cutoffs, setting_tag, exportdir='/
 
     # conditions.extend([f"{feature}_binary" for feature in conditions])
     conditions = [f"{feature}_binary" for feature in conditions]
-    conditions.extend(['long_term_180', 'Pred', 'Prob', 'patient_zip'])
+    conditions.extend(['long_term_180', 'Pred', 'Prob', 'patient_zip', 'patient_gender'])
 
     FULL_filtered = FULL[conditions]
     FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\

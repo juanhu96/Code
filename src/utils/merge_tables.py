@@ -5,8 +5,11 @@ from collections import defaultdict
 datadir = "/export/storage_cures/CURES/Processed/"
 resultdir = "/export/storage_cures/CURES/Results/"
 
-All = False
-County = True
+case = sys.argv[1]
+All, County = False, False
+if case == 'year': All = True
+elif case == 'county': County = True
+else: raise ValueError("Invalid case argument. Use 'year' or 'county'.")
 
 if All:
     # ==== Settings ====
@@ -80,7 +83,8 @@ if All:
 if County:
 
     # ==== Settings ====
-    table_names = ['Fresno', 'San Bernardino', 'Los Angeles', 'Humboldt', 'San Benito', 'Riverside']  # counties
+    # table_names = ['Fresno', 'San Bernardino', 'Los Angeles', 'Humboldt', 'San Benito', 'Riverside']  # counties
+    table_names = ["Kern", "Los Angeles", "Modoc", "San Bernardino", "San Francisco", "Santa Clara"]
     column_indices_to_merge = [1]  # which columns to extract from each LaTeX table (0-based)
 
     # ==== Prepare ====

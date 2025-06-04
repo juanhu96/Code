@@ -80,7 +80,7 @@ def risk_train(scenario:str,
     print(f'{file_path} imported with shape {FULL.shape}')
 
     FULL = drop_na_rows(FULL)
-    x, constraints = import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance)
+    x, constraints = import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name)
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0] = -1
 
@@ -129,7 +129,7 @@ def risk_train(scenario:str,
         outer_train_y[outer_train_y == -1] = 0
         outer_train_prob = slim.riskslim_prediction(outer_train_x, np.array(cols), model_info).reshape(-1,1)
         outer_train_pred = (outer_train_prob >= 0.5)
-        export_results_single(FULL, outer_train_y, outer_train_pred, outer_train_prob, filename = f'{exportdir}/Results{setting_tag}.csv')
+        # export_results_single(FULL, outer_train_y, outer_train_pred, outer_train_prob, filename = f'{exportdir}/Results{setting_tag}.csv')
     
     elif scenario == 'CV':
         # risk_summary = slim.risk_cv_constrain(x, y, 
@@ -153,7 +153,7 @@ def risk_train(scenario:str,
 
 
 
-def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, datadir='/export/storage_cures/CURES/Processed/'):
+def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, datadir='/export/storage_cures/CURES/Processed/'):
 
     N = 20
     data_frames = []
@@ -237,7 +237,12 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
     columns_to_drop = ['CommercialIns', 'MilitaryIns', 'WorkersComp', 'IndianNation']
     columns_to_drop += [f'days_supply{i}' for i in [14, 21]]
     columns_to_drop += [col for col in filtered_columns if 'above55' in col or 'above60' in col or 'above65' in col or 'above70' in col or 'above80' in col]
-    columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
+    if county_name is None: 
+        columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
+    else:
+        # columns_to_drop += [f'concurrent_MME{i}' for i in [100, 120]]
+        # columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
+        features_set_temp = features_set_3 + features_set_4
 
     if first:
         print("Temp solution for first presc to reset features...")
@@ -284,6 +289,8 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
 
         if feature_set == 'nopatientzip': features_sets = [features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
         else: features_sets = [features_set_2, features_set_3, features_set_4, features_set_5, features_set_6, features_set_7]
+
+        if county_name is not None: features_sets.append(features_set_temp) # add features_set_temp to features_sets
 
         for features_set in features_sets:
             single_cutoff += [[col for col in x if any(col.startswith(feature) for feature in features_set)]] # at most one cutoff per group

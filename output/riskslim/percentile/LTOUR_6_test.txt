@@ -1,6 +1,6 @@
 /mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:539: SettingWithCopyWarning: 
+/mnt/phd/jihu/opioid/Code/risk_test.py:540: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -21,17 +21,19 @@ Setting tag: _LTOUR_6
 
 /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
 Test reults are saved with setting tag: _LTOUR_6_2019
+0: Accuracy = 0.812, ROC AUC = 0.895, Calibration = 0.010
+1: Accuracy = 0.819, ROC AUC = 0.901, Calibration = 0.009
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
  (599517, 153)
 ----------------------------------------------------------------------------------------------------
 Proportion of LT users detected within a month: 84.2; two months: 92.8, three months: 96.1
 1
-{'test_accuracy': 0.9387362543879864, 'test_roc_auc': 0.889016405434712, 'test_pr_auc': 0.21203025430897893, 'test_calibration_error': 0.0099725539154473}
+{'test_accuracy': 0.939, 'test_roc_auc': 0.889, 'test_pr_auc': 0.212, 'test_calibration_error': 0.01}
 2
-{'test_accuracy': 0.6692143941760693, 'test_roc_auc': 0.8651308590636919, 'test_pr_auc': 0.33979025987829325, 'test_calibration_error': 0.07580287752812452}
+{'test_accuracy': 0.669, 'test_roc_auc': 0.865, 'test_pr_auc': 0.34, 'test_calibration_error': 0.076}
 3
-{'test_accuracy': 0.6211835643158184, 'test_roc_auc': 0.8412637930410893, 'test_pr_auc': 0.4863202888486578, 'test_calibration_error': 0.03464048817060234}
+{'test_accuracy': 0.621, 'test_roc_auc': 0.841, 'test_pr_auc': 0.486, 'test_calibration_error': 0.035}
 
 
 575552 1542972

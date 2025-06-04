@@ -134,7 +134,10 @@ def baseline_train(year:int,
                             'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days',
                             'zip_pop_density', 'median_household_income', 'family_poverty_pct', 'unemployment_pct']
     
-    features_to_keep = base_feature_list + spatial_features_set
+    if model == 'Logistic':
+        features_to_keep = base_feature_list + spatial_features_set + ['patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME', 'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop']
+    else:
+        features_to_keep = base_feature_list + spatial_features_set
 
     filtered_columns = [col for col in FULL_STUMPS.columns if any(col.startswith(feature) for feature in features_to_keep)]
     
@@ -226,9 +229,10 @@ def baseline_train(year:int,
                         'daily_dose_25_50', 'daily_dose_50_75', 'daily_dose_75_90', 'daily_dose_90_inf',
                         'long_acting', 'Codeine', 'Oxycodone', 'Morphine', 'HMFO', 'Medicaid', 'Medicare', 'CashCredit', 'Other', 
                         'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',  
-                        'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75',
-                        'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75',
-                        'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
+                        'prescriber_yr_num_prescriptions_50_75', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_50_75', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_50_75', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_50_75', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_50_75', 'prescriber_yr_avg_days_above75',
+                        'pharmacy_yr_num_prescriptions_50_75', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_50_75', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_50_75', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_50_75', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_50_75', 'pharmacy_yr_avg_days_above75',
+                        'patient_zip_yr_num_patients_per_pop_50_75', 'patient_zip_yr_num_patients_per_pop_above75','patient_zip_yr_num_prescriptions_per_pop_50_75', 'patient_zip_yr_num_prescriptions_per_pop_above75', 'patient_zip_yr_avg_days_50_75', 'patient_zip_yr_avg_days_above75', 'patient_zip_yr_avg_MME_50_75', 'patient_zip_yr_avg_MME_above75', 
+                        'zip_pop_density_50_75', 'zip_pop_density_above75', 'median_household_income_50_75', 'median_household_income_above75', 'family_poverty_pct_50_75', 'family_poverty_pct_above75', 'unemployment_pct_50_75', 'unemployment_pct_above75']
 
         results = results.set_index('Feature').loc[custom_order].reset_index()
         results.to_csv(f'{exportdir}LogisticRegression_unregularized.csv', index=False)
@@ -291,7 +295,7 @@ def baseline_test(best_model,
                   sample:bool=False,
                   bracket:bool=False,
                   naive:bool=False,
-                  fairness:bool=False,
+                  fairness:bool=True,
                   patient:bool=True,
                   n_presc:bool=True,
                   MME_results:bool=True,
@@ -518,6 +522,19 @@ def reconstruct_stumps(FULL_STUMPS):
     FULL_RECONSTRUCTED.rename(columns={'days_supply10': 'days_supply_10_inf'}, inplace=True)
     FULL_RECONSTRUCTED.drop(columns=[col for col in cols_to_drop if col in FULL_RECONSTRUCTED.columns], inplace=True)
 
+    # Reconstruct percentiles for spatial features
+    spatial_features = ['prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 'prescriber_yr_avg_days',
+    'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 'pharmacy_yr_avg_days',
+    'patient_zip_yr_num_patients_per_pop', 'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_avg_days',  'patient_zip_yr_avg_MME', 
+    'zip_pop_density', 'median_household_income', 'family_poverty_pct', 'unemployment_pct']
+
+    for feature in spatial_features:
+        above50 = f"{feature}_above50"
+        above75 = f"{feature}_above75"
+        between = f"{feature}_50_75"
+        FULL_RECONSTRUCTED[between] = (FULL_RECONSTRUCTED[above50] == 1) & (FULL_RECONSTRUCTED[above75] == 0)
+        FULL_RECONSTRUCTED[between] = FULL_RECONSTRUCTED[between].astype(int)
+    FULL_RECONSTRUCTED = FULL_RECONSTRUCTED.drop(columns=[col for col in FULL_RECONSTRUCTED.columns if col.endswith('_above50')])
 
     # Categorical columns
     FULL_RECONSTRUCTED.drop(columns=['Hydrocodone'], inplace=True)

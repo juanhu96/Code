@@ -101,8 +101,10 @@ def create_stumps(year,
 
     cutoffs = []
     for column_name in FULL.columns:
-        if column_name == 'concurrent_MME' or column_name == 'daily_dose':
+        if column_name == 'daily_dose':
             cutoffs.append([25, 50, 75, 90])
+        elif column_name == 'concurrent_MME':
+            cutoffs.append([20, 40, 60, 80, 100, 120])
         elif column_name == 'num_prescribers_past180' or column_name == 'num_pharmacies_past180':
             cutoffs.append([n for n in range(2, 7)])
         elif column_name == 'days_supply':

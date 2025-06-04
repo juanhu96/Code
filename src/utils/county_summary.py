@@ -24,58 +24,85 @@ else:
 CA = pd.read_csv(f"{datadir}../CA/zip_county.csv")
 FULL_INPUT = pd.merge(CA, FULL_INPUT, left_on="zip", right_on="patient_zip", how="inner")
 
+# ========== LONG TERM PRESCRIPTIONS ==========
+
+# summary = (FULL_INPUT.groupby("county").agg(
+#     num_prescriptions=('county', 'size'),
+#     num_longterm=('long_term_180', 'sum'),
+#     num_longterm_prior=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'num_prior_prescriptions'] >= 1)).sum()),
+#     num_longterm_days=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'days_supply'] >= 10)).sum()),
+#     num_longterm_dailymme=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'daily_dose'] >= 90)).sum()),
+#     num_longterm_HMFO=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & 
+#     ((FULL_INPUT.loc[x.index, 'Hydromorphone'] == 1) | (FULL_INPUT.loc[x.index, 'Methadone'] == 1) | 
+#     (FULL_INPUT.loc[x.index, 'Fentanyl'] == 1) | (FULL_INPUT.loc[x.index, 'Oxymorphone'] == 1))).sum()),
+#     num_longterm_longacting=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'long_acting'] == 1)).sum()),
+#     num_longterm_topprescriber=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'prescriber_yr_avg_days_above75'] == 1)).sum())
+#     ).reset_index()
+#     )
+
+# total_row = pd.DataFrame([{
+#     'county': 'California',
+#     'num_prescriptions': len(FULL_INPUT),
+#     'num_longterm': FULL_INPUT['long_term_180'].sum(),
+#     'num_longterm_prior': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['num_prior_prescriptions'] >= 1)).sum(),
+#     'num_longterm_days': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['days_supply'] >= 10)).sum(),
+#     'num_longterm_dailymme': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['daily_dose'] >= 90)).sum(),
+#     'num_longterm_HMFO': ((FULL_INPUT['long_term_180'] == 1) & 
+#                           ((FULL_INPUT['Hydromorphone'] == 1) | (FULL_INPUT['Methadone'] == 1) | 
+#                            (FULL_INPUT['Fentanyl'] == 1) | (FULL_INPUT['Oxymorphone'] == 1))).sum(),
+#     'num_longterm_longacting': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['long_acting'] == 1)).sum(),
+#     'num_longterm_topprescriber': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['prescriber_yr_avg_days_above75'] == 1)).sum()
+# }])
+
+# summary = pd.concat([summary, total_row], ignore_index=True)
+# summary['presc_longterm_prior'] = (summary['num_longterm_prior'] / summary['num_longterm']).round(3)
+# summary['presc_longterm_days'] = (summary['num_longterm_days'] / summary['num_longterm']).round(3)
+# summary['presc_longterm_dailymme'] = (summary['num_longterm_dailymme'] / summary['num_longterm']).round(3)
+# summary['presc_longterm_HMFO'] = (summary['num_longterm_HMFO'] / summary['num_longterm']).round(3)
+# summary['presc_longterm_longacting'] = (summary['num_longterm_longacting'] / summary['num_longterm']).round(3)
+# summary['presc_longterm_topprescriber'] = (summary['num_longterm_topprescriber'] / summary['num_longterm']).round(3)
+# summary.to_csv(f"{resultdir}county_summary_{year}.csv", index=False)
+
+# ==========================================
+
 summary = (FULL_INPUT.groupby("county").agg(
     num_prescriptions=('county', 'size'),
     num_longterm=('long_term_180', 'sum'),
-    # num_benzo=('concurrent_benzo', 'sum'),
-    num_longterm_benzo=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'concurrent_benzo'] == 1)).sum()),
-    num_longterm_age30=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'age'] >= 30)).sum()),
-    num_longterm_mme30=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'concurrent_MME'] >= 30)).sum()),
-    num_longterm_mme75=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'concurrent_MME'] >= 75)).sum()),
-    num_longterm_mme100=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'concurrent_MME'] >= 100)).sum()),
-    num_longterm_dailymme100=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'daily_dose'] >= 100)).sum()),
-    num_longterm_HMFO=('long_term_180', lambda x: (((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & 
-    ((FULL_INPUT.loc[x.index, 'Hydromorphone'] == 1) | (FULL_INPUT.loc[x.index, 'Methadone'] == 1) | 
-    (FULL_INPUT.loc[x.index, 'Fentanyl'] == 1) | (FULL_INPUT.loc[x.index, 'Oxymorphone'] == 1))).sum())),
-    num_longterm_Hydrocodone=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'Hydrocodone'] == 1)).sum()),
-    num_longterm_medicaid=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'Medicaid'] == 1)).sum()),
-    num_longterm_prescribers3=('long_term_180', lambda x: ((FULL_INPUT.loc[x.index, 'long_term_180'] == 1) & (FULL_INPUT.loc[x.index, 'num_prescribers_past180'] >= 3)).sum()),
-    num_unique_patients=('patient_id', pd.Series.nunique),
-    num_patients_longterm=('patient_id', lambda x: FULL_INPUT.loc[x.index].groupby('patient_id')['long_term_180'].max().gt(0).sum()),
-    num_patients_longterm_benzo=('patient_id', lambda x: (FULL_INPUT.loc[x.index].groupby('patient_id')[['long_term_180', 'concurrent_benzo']].max().all(axis=1).sum()))
-    ).reset_index()
-)
+    num_prior=('long_term_180', lambda x: (FULL_INPUT.loc[x.index, 'num_prior_prescriptions'] >= 1).sum()),
+    num_days=('long_term_180', lambda x: (FULL_INPUT.loc[x.index, 'days_supply'] >= 10).sum()),
+    num_dailymme=('long_term_180', lambda x: (FULL_INPUT.loc[x.index, 'daily_dose'] >= 90).sum()),
+    num_HMFO=('long_term_180', lambda x: (
+        (FULL_INPUT.loc[x.index, 'Hydromorphone'] == 1) | 
+        (FULL_INPUT.loc[x.index, 'Methadone'] == 1) | 
+        (FULL_INPUT.loc[x.index, 'Fentanyl'] == 1) | 
+        (FULL_INPUT.loc[x.index, 'Oxymorphone'] == 1)
+    ).sum()),
+    num_longacting=('long_term_180', lambda x: (FULL_INPUT.loc[x.index, 'long_acting'] == 1).sum()),
+    num_topprescriber=('long_term_180', lambda x: (FULL_INPUT.loc[x.index, 'prescriber_yr_avg_days_above75'] == 1).sum())
+).reset_index())
 
 total_row = pd.DataFrame([{
-    'county': 'TOTAL',
+    'county': 'California',
     'num_prescriptions': len(FULL_INPUT),
-    'num_longterm': FULL_INPUT['long_term_180'].sum(),
-    # 'num_benzo': FULL_INPUT['concurrent_benzo'].sum(),
-    'num_longterm_benzo': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['concurrent_benzo'] == 1)).sum(),
-    'num_longterm_age30': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['age'] >= 30)).sum(),
-    'num_longterm_mme30': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['concurrent_MME'] >= 30)).sum(),
-    'num_longterm_mme75': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['concurrent_MME'] >= 75)).sum(),
-    'num_longterm_mme100': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['concurrent_MME'] >= 100)).sum(),
-    'num_longterm_dailymme100': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['daily_dose'] >= 100)).sum(),
-    'num_longterm_HMFO': ((FULL_INPUT['long_term_180'] == 1) & ((FULL_INPUT['Hydromorphone'] == 1) | (FULL_INPUT['Methadone'] == 1) | (FULL_INPUT['Fentanyl'] == 1) | (FULL_INPUT['Oxymorphone'] == 1))).sum(),
-    'num_longterm_Hydrocodone': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['Hydrocodone'] == 1)).sum(),
-    'num_longterm_medicaid': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['Medicaid'] == 1)).sum(),
-    'num_longterm_prescribers3': ((FULL_INPUT['long_term_180'] == 1) & (FULL_INPUT['num_prescribers_past180'] >= 3)).sum(),
-    'num_unique_patients': FULL_INPUT['patient_id'].nunique(),
-    'num_patients_longterm': FULL_INPUT.groupby('patient_id')['long_term_180'].max().gt(0).sum(),
-    'num_patients_longterm_benzo': (FULL_INPUT.groupby('patient_id')[['long_term_180', 'concurrent_benzo']].max().all(axis=1).sum())
+    'num': FULL_INPUT['long_term_180'].sum(),
+    'num_prior': (FULL_INPUT['num_prior_prescriptions'] >= 1).sum(),
+    'num_days': (FULL_INPUT['days_supply'] >= 10).sum(),
+    'num_dailymme': (FULL_INPUT['daily_dose'] >= 90).sum(),
+    'num_HMFO': (
+        (FULL_INPUT['Hydromorphone'] == 1) | 
+        (FULL_INPUT['Methadone'] == 1) | 
+        (FULL_INPUT['Fentanyl'] == 1) | 
+        (FULL_INPUT['Oxymorphone'] == 1)
+    ).sum(),
+    'num_longacting': (FULL_INPUT['long_acting'] == 1).sum(),
+    'num_topprescriber': (FULL_INPUT['prescriber_yr_avg_days_above75'] == 1).sum()
 }])
 
 summary = pd.concat([summary, total_row], ignore_index=True)
-summary["prec_benzo_longterm"] = (summary["num_longterm_benzo"] / summary["num_longterm"]).round(3)
-summary["prec_age_longterm"] = (summary["num_longterm_age30"] / summary["num_longterm"]).round(3)
-summary["prec_mme30_longterm"] = (summary["num_longterm_mme30"] / summary["num_longterm"]).round(3)
-summary["prec_mme75_longterm"] = (summary["num_longterm_mme75"] / summary["num_longterm"]).round(3)
-summary["prec_mme100_longterm"] = (summary["num_longterm_dailymme100"] / summary["num_longterm"]).round(3)
-summary["prec_dailymme100_longterm"] = (summary["num_longterm_mme100"] / summary["num_longterm"]).round(3)
-summary["prec_HMFO_longterm"] = (summary["num_longterm_HMFO"] / summary["num_longterm"]).round(3)
-summary["prec_Hydrocodone_longterm"] = (summary["num_longterm_Hydrocodone"] / summary["num_longterm"]).round(3)
-summary["prec_medicaid_longterm"] = (summary["num_longterm_medicaid"] / summary["num_longterm"]).round(3)
-summary["prec_prescribers3_longterm"] = (summary["num_longterm_prescribers3"] / summary["num_longterm"]).round(3)
-
+summary['presc_prior'] = (summary['num_prior'] / summary['num_prescriptions']).round(3)
+summary['presc_days'] = (summary['num_days'] / summary['num_prescriptions']).round(3)
+summary['presc_dailymme'] = (summary['num_dailymme'] / summary['num_prescriptions']).round(3)
+summary['presc_HMFO'] = (summary['num_HMFO'] / summary['num_prescriptions']).round(3)
+summary['presc_longacting'] = (summary['num_longacting'] / summary['num_prescriptions']).round(3)
+summary['presc_topprescriber'] = (summary['num_topprescriber'] / summary['num_prescriptions']).round(3)
 summary.to_csv(f"{resultdir}county_summary_{year}.csv", index=False)
