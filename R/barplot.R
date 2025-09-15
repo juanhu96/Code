@@ -101,7 +101,7 @@ ggplot(data=SUMMARY) + facet_wrap(~Feature, nrow=1) +
   geom_text(aes(x=Group, y=-0.03, label=paste("", scales::comma(n))), size=4.1, color="black") +
   geom_text(aes(x=Group, y=LTOUR+0.048, label=scales::percent(LTOUR, accuracy = 0.1)), size=4.2, color="black") +
   scale_color_manual("Mean predicted probability (LTOUR)", values = "black") +
-  scale_fill_manual("Rule outcome", values=c("azure3", "azure4")) +
+  scale_fill_manual("Rule outcome", values=c("azure3", "azure4"), guide = "none") +
   scale_x_discrete("Rule outcome") +
   scale_y_continuous("Proportion that become \n long-term opioid users", labels=scales::percent, limits=c(-0.05,0.55)) +
   theme_bw(base_size = 16) + theme(legend.position = "bottom", strip.text = element_text(size = 14))
@@ -261,12 +261,12 @@ GENDER = LTOUR %>%
 ggplot(data=GENDER) +
   geom_col(aes(x=Group, y=PropPos, fill=Group), width=0.35) +
   geom_point(aes(x=Group, y=LTOUR, color=""), size=3) +
-  geom_text(aes(x=Group, y=-0.015, label=paste("n = ", scales::comma(n))), size=5.2, color="black") +
+  geom_text(aes(x=Group, y=-0.01, label=paste("n = ", scales::comma(n))), size=5.2, color="black") +
   geom_text(aes(x=Group, y=LTOUR+0.01, label=scales::percent(LTOUR, accuracy = 0.1)), size=5.2, color="black") +
   scale_color_manual("Mean predicted probability (LTOUR)", values = "black") +
   scale_fill_manual("Patient Gender", values=c("azure3", "azure4"), guide = "none") +
   scale_x_discrete("Patient Gender") +
-  scale_y_continuous("Proportion that become \n long-term opioid users", labels=scales::percent, limits=c(-0.05,0.13)) +
+  scale_y_continuous("Proportion that become \n long-term opioid users", labels=scales::percent, limits=c(-0.015,0.13)) +
   theme_bw(base_size = 16) + theme(legend.position = "bottom", strip.text = element_text(size = 16))
 
 ggsave(paste(export_path, "GenderBar.pdf", sep = ""),  width = 10, height = 6, dpi=500)

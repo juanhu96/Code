@@ -1,0 +1,44 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Setting tag: _test_CV_countyRiverside
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Riverside, Setting Tag: _test_CV_countyRiverside
+Start testing...
+Start testing with LTOUR_6:
+Intercept: -5
+
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: daily_dose, Cutoff: 90, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_above75, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_6_countyRiverside
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
+Subsetting dataset to county Riverside with 421696 prescriptions.
+Test reults are saved with setting tag: _LTOUR_6_countyRiverside_2019
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_LTOUR_6_countyRiverside_2019.pkl, threshodls: [       inf 0.95257413 0.88079708 0.73105858 0.5        0.26894142
+ 0.11920292 0.04742587 0.01798621 0.00669285] with optimal threshold: 0.11920292202211755
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_LTOUR_6_countyRiverside_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.789
+Recall             0.875
+Precision          0.348
+ROC AUC             0.89
+PR AUC             0.463
+Calibration error  0.014
+       Prob  Num_presc      TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.006693     179554  178666  ...       0.004946        179554          1308
+1  0.017986      22498   21895  ...       0.026802         22497           810
+2  0.047426      92981   88209  ...       0.051322         59407          2426
+3  0.119203      44870       0  ...       0.173211         32913          6507
+4  0.268941      26976       0  ...       0.253781         16146          2882
+5  0.500000      46820       0  ...       0.523046         22227          8321
+6  0.731059       6191       0  ...       0.598772          2865          1293
+7  0.880797       1627       0  ...       0.673018           756           402
+8  0.952574        179       0  ...       0.709497            88            53
+
+[9 rows x 10 columns]

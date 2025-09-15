@@ -1,0 +1,42 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Setting tag: _test_CV_countyMono
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Mono, Setting Tag: _test_CV_countyMono
+Start testing...
+Start testing with LTOUR_6:
+Intercept: -5
+
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: daily_dose, Cutoff: 90, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_above75, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_6_countyMono
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
+Subsetting dataset to county Mono with 1895 prescriptions.
+Test reults are saved with setting tag: _LTOUR_6_countyMono_2019
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_LTOUR_6_countyMono_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285] with optimal threshold: 0.04742587317756678
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_LTOUR_6_countyMono_2019.pkl
+Test done!
+
+                   Value
+Accuracy            0.64
+Recall             0.971
+Precision          0.131
+ROC AUC            0.874
+PR AUC             0.297
+Calibration error  0.021
+       Prob  Num_presc   TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.006693        984  981  ...       0.003049           984             4
+1  0.017986        130  130  ...       0.000000           130             1
+2  0.047426        526    0  ...       0.072243           319             9
+3  0.119203        124    0  ...       0.072581            92             9
+4  0.268941         65    0  ...       0.400000            33             8
+5  0.500000         53    0  ...       0.433962            32            10
+6  0.731059         13    0  ...       0.461538             6             2
+
+[7 rows x 10 columns]

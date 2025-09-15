@@ -1,0 +1,43 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:40: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Setting tag: _test_CV_first_countySanta Barbara
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: True, Upto180: False, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Santa Barbara, Setting Tag: _test_CV_first_countySanta Barbara
+Start testing...
+Start testing with LTOUR_6:
+Intercept: -5
+
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: daily_dose, Cutoff: 90, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_above75, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_6_countySanta Barbara_first
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
+Subsetting dataset to first prescription only with (3635072, 151) prescriptions.
+Subsetting dataset to county Santa Barbara with 34982 prescriptions.
+Test reults are saved with setting tag: _LTOUR_6_countySanta Barbara_first_2019
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_LTOUR_6_countySanta Barbara_first_2019.pkl, threshodls: [       inf 0.73105858 0.5        0.26894142 0.11920292 0.04742587
+ 0.01798621 0.00669285] with optimal threshold: 0.04742587317756678
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_LTOUR_6_countySanta Barbara_first_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.885
+Recall              0.79
+Precision          0.157
+ROC AUC            0.881
+PR AUC             0.221
+Calibration error  0.011
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.006693      27034  26913  ...       0.004476         27034           164
+1  0.017986       3383   3313  ...       0.020692          3383           106
+2  0.047426       2390      0  ...       0.058577          2390           177
+3  0.119203       1942      0  ...       0.248198          1942           537
+4  0.268941        147      0  ...       0.401361           147            60
+5  0.500000         81      0  ...       0.419753            81            37
+6  0.731059          5      0  ...       0.600000             5             3
+
+[7 rows x 10 columns]

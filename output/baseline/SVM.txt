@@ -1,6 +1,6 @@
 /mnt/phd/jihu/opioid/Code/baseline_main.py:93: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:323: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /mnt/phd/jihu/opioid/Code/utils/model_selection.py:323: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
   test_results_by_MME = FULL.groupby('MME_bins').apply(lambda x: {'test_accuracy': accuracy_score(x['long_term_180'], x['Pred']),
@@ -8,14 +8,14 @@
 Baseline train with model LinearSVM
 
 Filtered columns: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
-GridSearchCV for LinearSVM: 392.2s
+GridSearchCV for LinearSVM: 524.4s
 
 66 features selected: ['(Intercept)', 'num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
 
-Fitting for LinearSVM: 110.2s
+Fitting for LinearSVM: 165.9s
 
 {'training_accuracy': 0.919, 'training_roc_auc': 0.915, 'training_calibration_error': 0.008}
-Finished training and fitting LinearSVM: 0.14 hours
+Finished training and fitting LinearSVM: 0.19 hours
 Testing on all data for LinearSVM with setting _LinearSVM
 ============================================================ 
 Baseline test with model LinearSVM
@@ -74,7 +74,7 @@ above 100
 
 ROC information for LinearSVM saved to ../output/baseline/files/LinearSVM_roc_test_info.pkl
 Calibration information for LinearSVM saved to ../output/baseline/files/LinearSVM_calibration_test_info.pkl
-/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:323: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -98,52 +98,54 @@ Testing on naive data for LinearSVM with setting _LinearSVM_naive
 ============================================================ 
 Baseline test with model LinearSVM
 
-The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
+Subsetting dataset to first prescription only with (3614699, 151) prescriptions.
+Subsetting stumps dataset to first prescription only with (3614699, 96) prescriptions.
 Optimal threshold for binary classification: 0.025065663063291742
 test_accuracy
 0.868
 test_roc_auc
 0.917
 test_pr_auc
-0.311
+0.31
 test_calibration_error
 0.008
 
 
-0: Accuracy = 0.8649, ROC AUC = 0.9119, Calibration = 0.0070
-1: Accuracy = 0.8706, ROC AUC = 0.9206, Calibration = 0.0090
+0: Accuracy = 0.8653, ROC AUC = 0.9123, Calibration = 0.0069
+1: Accuracy = 0.8708, ROC AUC = 0.9208, Calibration = 0.0089
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (79339, 153)
+ (78345, 153)
 ----------------------------------------------------------------------------------------------------
 Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
 1
-{'test_accuracy': 0.868, 'test_recall': 0.851, 'test_precision': 0.146, 'test_roc_auc': 0.917, 'test_pr_auc': 0.311, 'test_calibration_error': 0.008}
+{'test_accuracy': 0.868, 'test_recall': 0.852, 'test_precision': 0.145, 'test_roc_auc': 0.917, 'test_pr_auc': 0.31, 'test_calibration_error': 0.008}
 
 
 [0, 10)
-{'test_accuracy': 0.5182813235479359, 'test_recall': 0.9006560449859419, 'test_roc_auc': 0.7904664643665851, 'test_pr_auc': 0.1721141343669368, 'test_calibration_error': 0.00780787001546981, 'correctly_predicted_positives_ratio': 0.05096892672222333}
+{'test_accuracy': 0.5180808067334498, 'test_recall': 0.9010910815939279, 'test_roc_auc': 0.7904590966714227, 'test_pr_auc': 0.17084471154663922, 'test_calibration_error': 0.007547461737136111, 'correctly_predicted_positives_ratio': 0.05067427870186344}
 [10, 20)
-{'test_accuracy': 0.8345798318143248, 'test_recall': 0.872156126069714, 'test_roc_auc': 0.9096795978460667, 'test_pr_auc': 0.22604111168090052, 'test_calibration_error': 0.00738980340594224, 'correctly_predicted_positives_ratio': 0.023558962244204697}
+{'test_accuracy': 0.8347281016647936, 'test_recall': 0.8729109371694521, 'test_roc_auc': 0.9099210689169768, 'test_pr_auc': 0.22495942308356665, 'test_calibration_error': 0.007278876793822704, 'correctly_predicted_positives_ratio': 0.02339100895249946}
 [20, 30)
-{'test_accuracy': 0.9226650898165314, 'test_recall': 0.7849122354155911, 'test_roc_auc': 0.9075476436858528, 'test_pr_auc': 0.24051893976657845, 'test_calibration_error': 0.006301108887442387, 'correctly_predicted_positives_ratio': 0.011434357032463309}
+{'test_accuracy': 0.9228932346792941, 'test_recall': 0.7855741564216584, 'test_roc_auc': 0.9078601572284402, 'test_pr_auc': 0.23985451171972033, 'test_calibration_error': 0.0062842877207967785, 'correctly_predicted_positives_ratio': 0.011347481554320648}
 [30, 40)
-{'test_accuracy': 0.9042648266115204, 'test_recall': 0.8529261108976821, 'test_roc_auc': 0.9300788259927645, 'test_pr_auc': 0.3180032044121628, 'test_calibration_error': 0.008660645946512727, 'correctly_predicted_positives_ratio': 0.017303775369171454}
+{'test_accuracy': 0.9046196354747472, 'test_recall': 0.8539734025300032, 'test_roc_auc': 0.9305340536687441, 'test_pr_auc': 0.31709403786740553, 'test_calibration_error': 0.00866321338704736, 'correctly_predicted_positives_ratio': 0.017189462770527724}
 [40, 50)
-{'test_accuracy': 0.8390522296762185, 'test_recall': 0.891241728298949, 'test_roc_auc': 0.9215556638122586, 'test_pr_auc': 0.36253205938744065, 'test_calibration_error': 0.015081396898682035, 'correctly_predicted_positives_ratio': 0.035277912168845856}
+{'test_accuracy': 0.8393553627789594, 'test_recall': 0.8914465904611746, 'test_roc_auc': 0.9217713499376635, 'test_pr_auc': 0.3613704304991885, 'test_calibration_error': 0.014974660601035113, 'correctly_predicted_positives_ratio': 0.03505943485728814}
 [50, 60)
-{'test_accuracy': 0.9581748476276134, 'test_recall': 0.6660421545667448, 'test_roc_auc': 0.8758410259001521, 'test_pr_auc': 0.32544687265013145, 'test_calibration_error': 0.007026324101930386, 'correctly_predicted_positives_ratio': 0.007145046452851235}
+{'test_accuracy': 0.9584524759778117, 'test_recall': 0.6650786088613626, 'test_roc_auc': 0.8757852874813867, 'test_pr_auc': 0.3257051845769339, 'test_calibration_error': 0.007069850182330068, 'correctly_predicted_positives_ratio': 0.00705257095512827}
 [60, 70)
-{'test_accuracy': 0.8042878747442398, 'test_recall': 0.8801046359540764, 'test_roc_auc': 0.9067892445661041, 'test_pr_auc': 0.3799560003224776, 'test_calibration_error': 0.01369079697764607, 'correctly_predicted_positives_ratio': 0.04144170036884208}
+{'test_accuracy': 0.8047679435400499, 'test_recall': 0.8812085482682388, 'test_roc_auc': 0.9073315923233696, 'test_pr_auc': 0.3797706098322512, 'test_calibration_error': 0.013652624548826037, 'correctly_predicted_positives_ratio': 0.041207768756805936}
 [70, 80)
-{'test_accuracy': 0.9450701316855432, 'test_recall': 0.7227979274611399, 'test_roc_auc': 0.8861354070460563, 'test_pr_auc': 0.31571339187902075, 'test_calibration_error': 0.007127800016236389, 'correctly_predicted_positives_ratio': 0.013295633250202532}
+{'test_accuracy': 0.9453337602048983, 'test_recall': 0.723834652594547, 'test_roc_auc': 0.8862544581054208, 'test_pr_auc': 0.31582742022557847, 'test_calibration_error': 0.0070668058071928505, 'correctly_predicted_positives_ratio': 0.013174323675364174}
 [80, 90)
-{'test_accuracy': 0.815625087537466, 'test_recall': 0.828761429758936, 'test_roc_auc': 0.8828865746309859, 'test_pr_auc': 0.22535058598289676, 'test_calibration_error': 0.012753358788417274, 'correctly_predicted_positives_ratio': 0.02792795316395417}
+{'test_accuracy': 0.8156490812092472, 'test_recall': 0.8296610169491525, 'test_roc_auc': 0.8829901097361986, 'test_pr_auc': 0.2238416868115685, 'test_calibration_error': 0.012854185515274322, 'correctly_predicted_positives_ratio': 0.027634290230615068}
 [90, 100)
-{'test_accuracy': 0.7790571953724728, 'test_recall': 0.8879377431906614, 'test_roc_auc': 0.898812034881789, 'test_pr_auc': 0.4321323961245764, 'test_calibration_error': 0.01666140863789004, 'correctly_predicted_positives_ratio': 0.06168234403719321}
+{'test_accuracy': 0.7798195242001641, 'test_recall': 0.8879651623119557, 'test_roc_auc': 0.8989893836331037, 'test_pr_auc': 0.4314175323728244, 'test_calibration_error': 0.016497641813356435, 'correctly_predicted_positives_ratio': 0.06133442712605961}
 above 100
-{'test_accuracy': 0.8095549545842029, 'test_recall': 0.8426656151419558, 'test_roc_auc': 0.8914635486603316, 'test_pr_auc': 0.4404259986863984, 'test_calibration_error': 0.013958157102274257, 'correctly_predicted_positives_ratio': 0.04711337781827802}
+{'test_accuracy': 0.8099896019013666, 'test_recall': 0.8445954951352792, 'test_roc_auc': 0.8924002440731995, 'test_pr_auc': 0.44091728210846187, 'test_calibration_error': 0.014077526649685231, 'correctly_predicted_positives_ratio': 0.04706625074272133}
 
 
 ROC information for LinearSVM saved to ../output/baseline/files/LinearSVM_roc_test_info_naive.pkl

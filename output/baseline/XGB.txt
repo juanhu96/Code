@@ -4,7 +4,7 @@
   return _methods._mean(a, axis=axis, dtype=dtype,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in divide
   ret = ret.dtype.type(ret / rcount)
-/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:323: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -24,14 +24,14 @@
 Baseline train with model XGB
 
 Filtered columns: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
-GridSearchCV for XGB: 4801.2s
+GridSearchCV for XGB: 4644.2s
 
 
-Fitting for XGB: 70.9s
+Fitting for XGB: 74.7s
 
 65 features selected: ['num_prescribers_past1802', 'num_prescribers_past1803', 'num_prescribers_past1804', 'num_prescribers_past1805', 'num_prescribers_past1806', 'num_pharmacies_past1802', 'num_pharmacies_past1803', 'num_pharmacies_past1804', 'num_pharmacies_past1805', 'num_pharmacies_past1806', 'concurrent_benzo1', 'days_supply3', 'days_supply5', 'days_supply7', 'days_supply10', 'daily_dose25', 'daily_dose50', 'daily_dose75', 'daily_dose90', 'num_prior_prescriptions1', 'diff_MME1', 'diff_days1', 'patient_gender', 'Hydrocodone', 'Oxycodone', 'Codeine', 'Morphine', 'HMFO', 'long_acting', 'CashCredit', 'Medicare', 'Medicaid', 'Other', 'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment', 'prescriber_yr_num_prescriptions_above50', 'prescriber_yr_num_prescriptions_above75', 'prescriber_yr_num_patients_above50', 'prescriber_yr_num_patients_above75', 'prescriber_yr_num_pharmacies_above50', 'prescriber_yr_num_pharmacies_above75', 'prescriber_yr_avg_MME_above50', 'prescriber_yr_avg_MME_above75', 'prescriber_yr_avg_days_above50', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50', 'pharmacy_yr_num_prescriptions_above75', 'pharmacy_yr_num_patients_above50', 'pharmacy_yr_num_patients_above75', 'pharmacy_yr_num_prescribers_above50', 'pharmacy_yr_num_prescribers_above75', 'pharmacy_yr_avg_MME_above50', 'pharmacy_yr_avg_MME_above75', 'pharmacy_yr_avg_days_above50', 'pharmacy_yr_avg_days_above75', 'zip_pop_density_above50', 'zip_pop_density_above75', 'median_household_income_above50', 'median_household_income_above75', 'family_poverty_pct_above50', 'family_poverty_pct_above75', 'unemployment_pct_above50', 'unemployment_pct_above75']
 {'training_accuracy': 0.924, 'training_roc_auc': 0.93, 'training_calibration_error': 0.003}
-Finished training and fitting XGB: 1.35 hours
+Finished training and fitting XGB: 1.31 hours
 Testing on all data for XGB with setting _XGB
 ============================================================ 
 Baseline test with model XGB
@@ -92,9 +92,9 @@ ROC information for XGB saved to ../output/baseline/files/XGB_roc_test_info.pkl
 Calibration information for XGB saved to ../output/baseline/files/XGB_calibration_test_info.pkl
 Proportions information for XGB saved to ../output/baseline/files/XGB_proportions_test_info.pkl
 
-Finished computing and exporting results: 0.03hours
+Finished computing and exporting results: 0.05hours
 
-/mnt/phd/jihu/opioid/Code/baseline_main.py:318: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/baseline_main.py:323: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL_TEST = pd.read_csv(test_file_path, delimiter=",", dtype={'concurrent_MME': float,
 /users/phd/jihu/anaconda3/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
@@ -118,52 +118,54 @@ Testing on naive data for XGB with setting _XGB_naive
 ============================================================ 
 Baseline test with model XGB
 
-The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv
+The test file path is /export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv
 
+Subsetting dataset to first prescription only with (3614699, 151) prescriptions.
+Subsetting stumps dataset to first prescription only with (3614699, 96) prescriptions.
 Optimal threshold for binary classification: 0.01871633157134056
 test_accuracy
 0.87
 test_roc_auc
-0.926
+0.927
 test_pr_auc
-0.334
+0.333
 test_calibration_error
 0.004
 
 
-0: Accuracy = 0.8665, ROC AUC = 0.9209, Calibration = 0.0037
-1: Accuracy = 0.8717, ROC AUC = 0.9301, Calibration = 0.0049
+0: Accuracy = 0.8668, ROC AUC = 0.9212, Calibration = 0.0036
+1: Accuracy = 0.8720, ROC AUC = 0.9305, Calibration = 0.0047
 ----------------------------------------------------------------------------------------------------
 Total prescriptions from true positive patients: 
- (80046, 153)
+ (79071, 153)
 ----------------------------------------------------------------------------------------------------
 Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
 1
-{'test_accuracy': 0.87, 'test_recall': 0.859, 'test_precision': 0.148, 'test_roc_auc': 0.926, 'test_pr_auc': 0.334, 'test_calibration_error': 0.004}
+{'test_accuracy': 0.87, 'test_recall': 0.86, 'test_precision': 0.147, 'test_roc_auc': 0.927, 'test_pr_auc': 0.333, 'test_calibration_error': 0.004}
 
 
 [0, 10)
-{'test_accuracy': 0.4999900554903638, 'test_recall': 0.9065135895032802, 'test_roc_auc': 0.7980386445980594, 'test_pr_auc': 0.17940832426074715, 'test_calibration_error': 0.008742140229906542, 'correctly_predicted_positives_ratio': 0.05130041037676432}
+{'test_accuracy': 0.499359735357281, 'test_recall': 0.9076138519924098, 'test_roc_auc': 0.7982913592200958, 'test_pr_auc': 0.17810760198109168, 'test_calibration_error': 0.008581029983568033, 'correctly_predicted_positives_ratio': 0.051041096986754526}
 [10, 20)
-{'test_accuracy': 0.8371606897698793, 'test_recall': 0.872625756627009, 'test_roc_auc': 0.9156058923371556, 'test_pr_auc': 0.23347701137819524, 'test_calibration_error': 0.005453897786063791, 'correctly_predicted_positives_ratio': 0.023571648056110756}
+{'test_accuracy': 0.837298915978022, 'test_recall': 0.873598476835202, 'test_roc_auc': 0.9159126468588427, 'test_pr_auc': 0.2324527724746963, 'test_calibration_error': 0.005278620797926073, 'correctly_predicted_positives_ratio': 0.02340943264934178}
 [20, 30)
-{'test_accuracy': 0.924565018745464, 'test_recall': 0.7874935467217347, 'test_roc_auc': 0.9189721976919927, 'test_pr_auc': 0.2502800741983623, 'test_calibration_error': 0.0032838096306586437, 'correctly_predicted_positives_ratio': 0.011471960771779146}
+{'test_accuracy': 0.9247597645678596, 'test_recall': 0.7888438399162961, 'test_roc_auc': 0.9192659989162715, 'test_pr_auc': 0.249502853614137, 'test_calibration_error': 0.0032701860731544213, 'correctly_predicted_positives_ratio': 0.011394711561622407}
 [30, 40)
-{'test_accuracy': 0.9148801296906338, 'test_recall': 0.8504930208733512, 'test_roc_auc': 0.9372207617795371, 'test_pr_auc': 0.3378999809547783, 'test_calibration_error': 0.003207601555684825, 'correctly_predicted_positives_ratio': 0.017254413950056637}
+{'test_accuracy': 0.9152109247889185, 'test_recall': 0.8517677586766137, 'test_roc_auc': 0.937536365306719, 'test_pr_auc': 0.3371664011478324, 'test_calibration_error': 0.0031920669822133366, 'correctly_predicted_positives_ratio': 0.017145065798923505}
 [40, 50)
-{'test_accuracy': 0.8463093473524618, 'test_recall': 0.893966523939276, 'test_roc_auc': 0.9285196086348323, 'test_pr_auc': 0.3851778407009038, 'test_calibration_error': 0.009100442853106263, 'correctly_predicted_positives_ratio': 0.0353857674209344}
+{'test_accuracy': 0.846591719425308, 'test_recall': 0.8942057548285376, 'test_roc_auc': 0.9286611095725748, 'test_pr_auc': 0.3840964493218658, 'test_calibration_error': 0.008925159793452434, 'correctly_predicted_positives_ratio': 0.03516794920288462}
 [50, 60)
-{'test_accuracy': 0.9550344439475628, 'test_recall': 0.6857142857142857, 'test_roc_auc': 0.8959253233290354, 'test_pr_auc': 0.34427193610885437, 'test_calibration_error': 0.002578663384159109, 'correctly_predicted_positives_ratio': 0.007356081580150639}
+{'test_accuracy': 0.9553657131887119, 'test_recall': 0.6869938065745593, 'test_roc_auc': 0.8963779036263497, 'test_pr_auc': 0.3454215345921927, 'test_calibration_error': 0.002596793080781993, 'correctly_predicted_positives_ratio': 0.007284962261672611}
 [60, 70)
-{'test_accuracy': 0.8074288490621557, 'test_recall': 0.8923121639296614, 'test_roc_auc': 0.9172278747530669, 'test_pr_auc': 0.40945049871457273, 'test_calibration_error': 0.007756303670079499, 'correctly_predicted_positives_ratio': 0.042016519198264594}
+{'test_accuracy': 0.808055467490041, 'test_recall': 0.8932940309506264, 'test_roc_auc': 0.9178165688436154, 'test_pr_auc': 0.40876760118974487, 'test_calibration_error': 0.007580579194442372, 'correctly_predicted_positives_ratio': 0.041772919624519275}
 [70, 80)
-{'test_accuracy': 0.9233714040633488, 'test_recall': 0.7677029360967185, 'test_roc_auc': 0.9130511129268721, 'test_pr_auc': 0.42436729496398906, 'test_calibration_error': 0.003722418971625901, 'correctly_predicted_positives_ratio': 0.014121646307562784}
+{'test_accuracy': 0.923595325756363, 'test_recall': 0.7695690413368513, 'test_roc_auc': 0.913229875733092, 'test_pr_auc': 0.42316524500497443, 'test_calibration_error': 0.0037454908213226177, 'correctly_predicted_positives_ratio': 0.014006723227149031}
 [80, 90)
-{'test_accuracy': 0.7853441272864786, 'test_recall': 0.8753117206982544, 'test_roc_auc': 0.9172629867238213, 'test_pr_auc': 0.42063146134622414, 'test_calibration_error': 0.006961118297162466, 'correctly_predicted_positives_ratio': 0.029496624555309672}
+{'test_accuracy': 0.7855872639512237, 'test_recall': 0.8754237288135593, 'test_roc_auc': 0.9177652576769064, 'test_pr_auc': 0.42109063471993485, 'test_calibration_error': 0.007140044548058767, 'correctly_predicted_positives_ratio': 0.029158551387359923}
 [90, 100)
-{'test_accuracy': 0.7392691101740728, 'test_recall': 0.9046692607003891, 'test_roc_auc': 0.9069552726979271, 'test_pr_auc': 0.45427617098154477, 'test_calibration_error': 0.008584577889088127, 'correctly_predicted_positives_ratio': 0.06284463185209212}
+{'test_accuracy': 0.7400875034181023, 'test_recall': 0.9049881235154394, 'test_roc_auc': 0.9073330233623425, 'test_pr_auc': 0.4533388823579781, 'test_calibration_error': 0.008380774122828123, 'correctly_predicted_positives_ratio': 0.06251025430680886}
 above 100
-{'test_accuracy': 0.7900217525500456, 'test_recall': 0.8865667718191378, 'test_roc_auc': 0.9158223122055018, 'test_pr_auc': 0.47290267057632074, 'test_calibration_error': 0.008331945126463479, 'correctly_predicted_positives_ratio': 0.04956788853287868}
+{'test_accuracy': 0.7907828282828283, 'test_recall': 0.8885779021724644, 'test_roc_auc': 0.9169488893683266, 'test_pr_auc': 0.47339626301485077, 'test_calibration_error': 0.008200782274360316, 'correctly_predicted_positives_ratio': 0.049517231134878194}
 
 
 ROC information for XGB saved to ../output/baseline/files/XGB_roc_test_info_naive.pkl

@@ -19,3 +19,6 @@ num_pharmacies >= 6:
 concurrent_benzo >= 1:
   long_term_180 == 0: 1308710 (82.7%)
   long_term_180 == 1: 274628 (17.3%)
+not_flagged:
+  long_term_180 == 0: 9893738 (93.2%)
+  long_term_180 == 1: 722655 (6.8%)

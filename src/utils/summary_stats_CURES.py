@@ -31,7 +31,15 @@ conditions = {
     'concurrentMME >= 40 & drug == "Methadone"': FULL_INPUT['concurrent_methadone_MME'] >= 40,
     'num_prescriber >= 6': FULL_INPUT['num_prescribers_past180'] >= 6,
     'num_pharmacies >= 6': FULL_INPUT['num_pharmacies_past180'] >= 6,
-    'concurrent_benzo >= 1': FULL_INPUT['concurrent_benzo'] >= 1
+    'concurrent_benzo >= 1': FULL_INPUT['concurrent_benzo'] >= 1,
+    'not_flagged': (
+        (FULL_INPUT['concurrent_MME'] < 90) &
+        (FULL_INPUT['concurrent_methadone_MME'] < 40) &
+        (FULL_INPUT['num_prescribers_past180'] < 6) &
+        (FULL_INPUT['num_pharmacies_past180'] < 6) &
+        (FULL_INPUT['consecutive_days'] < 90) &
+        (FULL_INPUT['concurrent_benzo'] < 1)
+    )
 }
 
 # Apply all

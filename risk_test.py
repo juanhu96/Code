@@ -24,13 +24,16 @@ import utils.model_selection as model_selection
 
 def risk_test(year, table, first, upto180, county_name, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
 
-    if first:
-        file_suffix = "_FIRST_INPUT"
-    elif upto180:
-        file_suffix = "_UPTOFIRST_INPUT"
-    else:
-        file_suffix = "_INPUT"
+    # if first:
+    #     file_suffix = "_FIRST_INPUT"
+    # elif upto180:
+    #     file_suffix = "_UPTOFIRST_INPUT"
+    # else:
+    #     file_suffix = "_INPUT"
 
+    # file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
+    
+    file_suffix = "_INPUT"
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
 
     FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
@@ -43,6 +46,10 @@ def risk_test(year, table, first, upto180, county_name, setting_tag, output_colu
 
     FULL = drop_na_rows(FULL)
     if output_columns: print(FULL.columns.values.tolist())
+
+    if first:
+        FULL = FULL[FULL['num_prior_prescriptions'] == 0]
+        print(f"Subsetting dataset to first prescription only with {FULL.shape} prescriptions.")
 
     if county_name is not None: 
         zip_county = pd.read_csv(f'{datadir}/../CA/zip_county.csv', delimiter=",")

@@ -308,13 +308,14 @@ def baseline_test(best_model,
 
     # ===========================================================================================
     
-    if first or naive:
-        file_suffix = "_FIRST_INPUT"
-    elif upto180:
-        file_suffix = "_UPTOFIRST_INPUT"
-    else:
-        file_suffix = "_INPUT"
-
+    # if first or naive:
+    #     file_suffix = "_FIRST_INPUT"
+    # elif upto180:
+    #     file_suffix = "_UPTOFIRST_INPUT"
+    # else:
+    #     file_suffix = "_INPUT"
+    file_suffix = "_INPUT"
+    
     test_file_path = f'{datadir}FULL_OPIOID_{year+1}{file_suffix}.csv'
     print(f"The test file path is {test_file_path}\n")
 
@@ -326,16 +327,22 @@ def baseline_test(best_model,
                                                                   'concurrent_benzo': int,
                                                                   'consecutive_days': int})#.fillna(0)
     FULL_TEST = drop_na_rows(FULL_TEST)
+
+    if naive:
+        FULL_TEST = FULL_TEST[FULL_TEST['num_prior_prescriptions'] == 0]
+        print(f"Subsetting dataset to first prescription only with {FULL_TEST.shape} prescriptions.")
+    
     y_test = FULL_TEST['long_term_180'].values
 
     # ================================================================================
 
-    if first or naive:
-        file_suffix = "_FIRST_STUMPS_"
-    elif upto180:
-        file_suffix = "_UPTOFIRST_STUMPS_"
-    else:
-        file_suffix = "_STUMPS_"
+    # if first or naive:
+    #     file_suffix = "_FIRST_STUMPS_"
+    # elif upto180:
+    #     file_suffix = "_UPTOFIRST_STUMPS_"
+    # else:
+    #     file_suffix = "_STUMPS_"
+    file_suffix = "_STUMPS_"
 
     data_frames = []
     for i in range(20):
@@ -344,6 +351,9 @@ def baseline_test(best_model,
         data_frames.append(df)
 
     FULL_STUMPS_TEST = pd.concat(data_frames, ignore_index=True)
+    if naive:
+        FULL_STUMPS_TEST = FULL_STUMPS_TEST[FULL_STUMPS_TEST['num_prior_prescriptions1'] == 0]
+        print(f"Subsetting stumps dataset to first prescription only with {FULL_STUMPS_TEST.shape} prescriptions.")
 
     FULL_STUMPS_TEST = FULL_STUMPS_TEST[filtered_columns]
     if bracket: 

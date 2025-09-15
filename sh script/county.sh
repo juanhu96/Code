@@ -36,21 +36,16 @@ mkdir -p ../output/riskslim/county
 # nohup python3 /mnt/phd/jihu/opioid/Code/src/utils/county_summary.py 2019 > ../output/riskslim/county/condition_stats_2019.txt &
 
 ### LTOUR BY COUNTY
-#Alameda         Alpine          Amador          Butte           Calaveras       Colusa          Contra Costa    Del Norte       El Dorado       Fresno          Glenn          
-# [12] Humboldt        Imperial        Inyo            Kern            Kings           Lake            Lassen          Los Angeles     Madera          Marin           Mariposa       
-# [23] Mendocino       Merced          Modoc           Mono            Monterey        Napa            Nevada          Orange          Placer          Plumas          Riverside      
-# [34] Sacramento      San Benito      San Bernardino  San Diego       San Francisco   San Joaquin     San Luis Obispo San Mateo       Santa Barbara   Santa Clara     Santa Cruz     
-# [45] Shasta          Sierra          Siskiyou        Solano          Sonoma          Stanislaus      Sutter          Tehama          Trinity         Tulare          Tuolumne       
-# [56] Ventura         Yolo            Yuba 
-
 # counties=("Alameda" "Alpine" "Amador" "Butte" "Calaveras" "Colusa" "Contra Costa" "Del Norte" "El Dorado" "Fresno" "Glenn")
 # counties=("Humboldt" "Imperial" "Inyo" "Kern" "Kings" "Lake" "Lassen" "Los Angeles" "Madera" "Marin" "Mariposa")
 # counties=("Mendocino" "Merced" "Modoc" "Mono" "Monterey" "Napa" "Nevada" "Orange" "Placer" "Plumas" "Riverside")
 # counties=("Sacramento" "San Benito" "San Bernardino" "San Diego" "San Francisco" "San Joaquin" "San Luis Obispo" "San Mateo" "Santa Barbara" "Santa Clara" "Santa Cruz")
-# counties=("Shasta" "Sierra" "Siskiyou" "Solano" "Sonoma" "Stanislaus" "Sutter" "Tehama" "Trinity" "Tulare" "Tuolumne")
+counties=("Shasta" "Sierra" "Siskiyou" "Solano" "Sonoma" "Stanislaus" "Sutter" "Tehama" "Trinity" "Tulare" "Tuolumne")
 # counties=("Ventura" "Yolo" "Yuba")
 
 for county in "${counties[@]}"; do
-  nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_LTOUR_$county.txt" &
-  # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_naive_LTOUR_$county.txt" &
+  # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_LTOUR_$county.txt" &
+  nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_naive_LTOUR_$county.txt" &
 done
+
+# python3 /mnt/phd/jihu/opioid/Code/src/convert_R.py

@@ -263,8 +263,8 @@ library(tibble)
 csv_dir <- "/export/storage_cures/CURES/Results_R/"
 export_path <- "/export/storage_cures/CURES/Plots/"
 
-# files <- list.files(csv_dir, pattern = "^LTOUR.*roc*\\.csv$", full.names = TRUE)
-files <- list.files(csv_dir, pattern = "^LTOUR_.*_roc(_naive)?\\.csv$", full.names = TRUE)
+files <- list.files(csv_dir, pattern = "^LTOUR.*roc*\\.csv$", full.names = TRUE)
+# files <- list.files(csv_dir, pattern = "^LTOUR_.*_roc(_naive)?\\.csv$", full.names = TRUE)
 roc_data <- lapply(files, function(f) {
   df <- read_csv(f)
   df$Model <- gsub("_roc.*", "", basename(f))  # Extract model name
@@ -312,8 +312,9 @@ library(tibble)
 csv_dir <- "/export/storage_cures/CURES/Results_R/"
 export_path <- "/export/storage_cures/CURES/Plots/"
 
-# files <- list.files(csv_dir, pattern = "^LTOUR.*calibration.*\\.csv$", full.names = TRUE)
-files <- list.files(csv_dir, pattern = "^LTOUR_.*calibration(_naive)?\\.csv$", full.names = TRUE)
+files <- list.files(csv_dir, pattern = "^LTOUR.*calibration.*\\.csv$", full.names = TRUE)
+# files <- list.files(csv_dir, pattern = "^LTOUR_.*calibration(_naive)?\\.csv$", full.names = TRUE)
+files <- files[files != "/export/storage_cures/CURES/Results_R//LTOUR_AllCounties_calibration.csv"]
 
 calibration_data <- lapply(files, function(f) {
   df <- read_csv(f)
@@ -321,42 +322,107 @@ calibration_data <- lapply(files, function(f) {
   df
 }) %>% bind_rows()
 
-calibration_data <- calibration_data %>% mutate(Presc = factor(Presc, levels = c("All", "Naive")), PrescLabel = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"))
+calibration_data <- calibration_data %>% mutate(Presc = recode(Presc, "All" = "All Rx", "Naive" = "1st Rx"),
+                                                Presc = factor(Presc, levels = c("All Rx", "1st Rx")), 
+                                                PrescLabel = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"))
 calibration_data <- calibration_data %>% filter(!is.na(County))
-ece_labels <- calibration_data %>%
-  group_by(County, Presc) %>%
-  summarize(ece = mean(ece), .groups = "drop") %>%
-  mutate(
-    label = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"),
-    x = 0.02,   # X/Y position for text
-    y = ifelse(Presc == "All", 0.95, 0.87)
-  )
 
-ggplot(calibration_data,
-       aes(x = prob_pred, y = prob_true, color = Presc, linetype = Presc, size = observations / 1e6)) +
-  geom_abline(linetype = "dotted", color = "black") +
-  geom_line(linewidth = 0.8) +
-  geom_point(alpha = 0.5) +
-  geom_text(data = ece_labels, aes(x = x, y = y, label = label, color = Presc),
-            inherit.aes = FALSE, size = 3.5, hjust = 0) +
-  facet_wrap(~County, scales = "free") +
-  scale_color_manual(values = c(All = "firebrick3", Naive = "mediumblue")) +
-  scale_linetype_manual(values = c(All = "solid", Naive = "dashed")) +
-  scale_size_continuous(
-    name = "Number of prescriptions (million)",
-    range = c(1, 5),
-    breaks = c(0.001, 0.01, 0.1, 1),
-    labels = c("0.001", "0.01", "0.1", "1")
-  ) +
-  scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
-  scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
-  labs(x = "Predicted Risk", y = "Observed Risk") +
-  guides(
-    color = "none",
-    linetype = "none"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(legend.position = "bottom")
+# counties1 <- unique(calibration_data$County)[1:16]
+# counties2 <- unique(calibration_data$County)[17:32]
+# counties3 <- unique(calibration_data$County)[33:48]
+# counties4 <- unique(calibration_data$County)[49:58]
+# county_groups <- list(counties1, counties2, counties3, counties4)
+# group_names <- c("county1", "county2", "county3", "county4")
 
-ggsave(paste(export_path, "Calibration_county.pdf", sep = ""),  width = 10, height = 6, dpi=600)
+counties1 <- unique(calibration_data$County)[1:20]
+counties2 <- unique(calibration_data$County)[21:40]
+counties3 <- unique(calibration_data$County)[41:58]
+county_groups <- list(counties1, counties2, counties3)
+group_names <- c("county1", "county2", "county3")
 
+for (i in seq_along(county_groups)) {
+  current_counties <- county_groups[[i]]
+  group_name <- group_names[[i]]
+  
+  calibration_subset <- calibration_data[calibration_data$County %in% current_counties, ]
+  
+  ece_labels <- calibration_subset %>%
+    group_by(County, Presc) %>%
+    summarize(ece = mean(ece), .groups = "drop") %>%
+    mutate(
+      label = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"),
+      x = 0.02,
+      y = ifelse(Presc == "All Rx", 0.95, 0.87)
+    )
+  
+  p <- ggplot(calibration_subset,
+              aes(x = prob_pred, y = prob_true, color = Presc, linetype = Presc, size = observations / 1e6)) +
+    geom_abline(linetype = "dotted", color = "black") +
+    geom_line(linewidth = 0.8) +
+    geom_point(alpha = 0.5) +
+    geom_text(data = ece_labels, aes(x = x, y = y, label = label, color = Presc),
+              inherit.aes = FALSE, size = 3.5, hjust = 0) +
+    facet_wrap(~County, nrow = 5) +
+    scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+    scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
+    scale_size_continuous(name = "Number of prescriptions (million)",
+                          range = c(2, 8.5),
+                          limits = c(0, 0.5),  # FIXED scale from 0 to 1 million
+                          breaks = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5),
+                          labels = c("0.001", "0.005", "0.01", "0.05", "0.1", "0.5")) +
+    scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
+    scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
+    labs(x = "Predicted Risk", y = "Observed Risk") +
+    guides(color = "none", linetype = "none") +
+    theme_minimal(base_size = 14) +
+    theme(legend.position = "bottom", strip.text = element_text(size = 12))
+    
+  # if (group_name == "county4") {
+  #   ggsave(filename = paste0(export_path, "Calibration_", group_name, ".pdf"), plot = p, width = 11, height = 9.5, dpi = 500)
+  #   } else {
+  #     ggsave(filename = paste0(export_path, "Calibration_", group_name, ".pdf"), plot = p, width = 11, height = 11.4, dpi = 500)
+  #   }
+  
+  ggsave(filename = paste0(export_path, "Calibration_", group_name, "_new.pdf"), plot = p, width = 11, height = 14, dpi = 500)
+}
+
+
+
+# calibration_subset <- calibration_data[calibration_data$County %in% counties1, ]
+# 
+# ece_labels <- calibration_subset %>%
+#   group_by(County, Presc) %>%
+#   summarize(ece = mean(ece), .groups = "drop") %>%
+#   mutate(
+#     label = paste0(Presc, " (ECE = ", sprintf("%.3f", ece), ")"),
+#     x = 0.02,   # X/Y position for text
+#     y = ifelse(Presc == "All Rx", 0.95, 0.87)
+#   )
+
+# ggplot(calibration_subset,
+#        aes(x = prob_pred, y = prob_true, color = Presc, linetype = Presc, size = observations / 1e6)) +
+#   geom_abline(linetype = "dotted", color = "black") +
+#   geom_line(linewidth = 0.8) +
+#   geom_point(alpha = 0.5) +
+#   geom_text(data = ece_labels, aes(x = x, y = y, label = label, color = Presc),
+#             inherit.aes = FALSE, size = 3.5, hjust = 0) +
+#   facet_wrap(~County) +
+#   scale_color_manual(values = c("All Rx" = "firebrick3", "1st Rx" = "mediumblue")) +
+#   scale_linetype_manual(values = c("All Rx" = "solid", "1st Rx" = "dashed")) +
+#   scale_size_continuous(
+#     name = "Number of prescriptions (million)",
+#     range = c(1, 8),
+#     breaks = c(0.01, 0.05, 0.1, 0.5, 1),
+#     labels = c("0.01", "0.05", "0.1", "0.5", "1")
+#   ) +
+#   scale_x_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
+#   scale_y_continuous(breaks = seq(0, 1, 0.25), limits = c(0, 1)) +
+#   labs(x = "Predicted Risk", y = "Observed Risk") +
+#   guides(
+#     color = "none",
+#     linetype = "none"
+#   ) +
+#   theme_minimal(base_size = 14) +
+#   theme(legend.position = "bottom", strip.text = element_text(size = 12))
+# 
+# ggsave(paste(export_path, "Calibration_county.pdf", sep = ""),  width = 10, height = 6, dpi=500)

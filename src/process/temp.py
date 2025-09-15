@@ -4,7 +4,7 @@ import sys
 from datetime import timedelta
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-import seaborn as sns
+# import seaborn as sns
 
 
 datadir = "/export/storage_cures/CURES/Processed/"
@@ -87,7 +87,7 @@ if False:
     print(f"Summary stats saved to {summary_csv}")
 
 
-if True:
+if False:
 
     basedir = "/export/storage_cures/CURES/"
     export_dir = basedir + "Processed/"
@@ -97,3 +97,77 @@ if True:
     print(f"Unique classes in {year}: {unique_classes}")
     print("Class counts:")
     print(class_counts)
+
+
+if False:
+
+    # debug calibration issues: naive has more prescriptions full
+    # import FULL_2019_INPUT and FIRST
+    FULL_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+
+    FULL_2019_FROMFULL = FULL_2019.groupby('patient_id', as_index=False).first()
+    FULL_2019_FIRST = pd.read_csv(f"{datadir}FULL_OPIOID_2019_FIRST_INPUT.csv")
+
+    diff_df = pd.concat([FULL_2019_FROMFULL, FULL_2019_FIRST]).drop_duplicates(keep=False)
+    print(f"Number of differing rows between FULL_2019_FROMFULL and FULL_2019_FIRST: {diff_df.shape[0]}")
+
+
+    def drop_na_rows(FULL):
+
+        FULL.rename(columns={'quantity_diff': 'diff_quantity', 'dose_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
+
+        feature_list = ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo', 
+                        'patient_gender', 'days_supply', 'daily_dose',
+                        'num_prior_prescriptions', 'diff_MME', 'diff_days',
+                        'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
+                        'patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME']
+
+        percentile_list = ['patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 
+                            'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 
+                            'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 
+                            'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop',
+                            'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 
+                            'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 
+                            'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity',
+                            'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 
+                            'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 
+                            'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity',
+                            'zip_pop_density', 'median_household_income', 
+                            'family_poverty_pct', 'unemployment_pct']
+        percentile_features = [col for col in FULL.columns if any(col.startswith(f"{prefix}_above") for prefix in percentile_list)]
+        feature_list_extended = feature_list + percentile_features
+        FULL = FULL.dropna(subset=feature_list_extended) # drop NA rows to match the stumps
+
+        return FULL
+
+    print("Dropping NA rows to match the stumps...")
+    FULL_2019 = drop_na_rows(FULL_2019)
+    FULL_2019_FROMFULL = FULL_2019.groupby('patient_id', as_index=False).first()
+
+    FULL_2019_FIRST = drop_na_rows(FULL_2019_FIRST)
+
+    # check if there's row in FULL_2019 but not in FULL_2019_FIRST
+    diff_df = pd.concat([FULL_2019_FROMFULL, FULL_2019_FIRST]).drop_duplicates(keep=False)
+    print(f"Number of differing rows between FULL_2019_FROMFULL and FULL_2019_FIRST: {diff_df.shape[0]}")
+
+
+if True:
+
+    # patient_ids = [22548077, 23368467, 38636296, 48650568, 50890526, 58122909, 72147379, 73656418]
+    patient_ids = [22548077, 23368467, 38636296]
+
+    FULL_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+
+    FULL_2019_FROMFULL = FULL_2019.groupby('patient_id', as_index=False).first()
+    FULL_2019_FIRST = pd.read_csv(f"{datadir}FULL_OPIOID_2019_FIRST_INPUT.csv")
+
+    # get the rows for the patient_ids
+    df_full = FULL_2019[FULL_2019['patient_id'].isin(patient_ids)]
+    df_fromfull = FULL_2019_FROMFULL[FULL_2019_FROMFULL['patient_id'].isin(patient_ids)]
+    df_first = FULL_2019_FIRST[FULL_2019_FIRST['patient_id'].isin(patient_ids)]
+    print("Rows from FULL_2019:")
+    print(df_full)
+    print("Rows from FULL_2019_FROMFULL:")
+    print(df_fromfull)
+    print("Rows from FULL_2019_FIRST:")
+    print(df_first)

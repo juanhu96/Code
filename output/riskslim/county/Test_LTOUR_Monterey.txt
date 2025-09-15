@@ -1,0 +1,44 @@
+/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
+Setting tag: _test_CV_countyMonterey
+Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: False, Upto180: False, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: Monterey, Setting Tag: _test_CV_countyMonterey
+Start testing...
+Start testing with LTOUR_6:
+Intercept: -5
+
+ - Condition: days_supply, Cutoff: 10, Score: 2
+ - Condition: num_prior_prescriptions, Cutoff: 1, Score: 2
+ - Condition: daily_dose, Cutoff: 90, Score: 1
+ - Condition: HMFO, Cutoff: 1, Score: 1
+ - Condition: long_acting, Cutoff: 1, Score: 1
+ - Condition: prescriber_yr_avg_days_above75, Cutoff: 1, Score: 1
+Setting tag: _LTOUR_6_countyMonterey
+
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
+Subsetting dataset to county Monterey with 62564 prescriptions.
+Test reults are saved with setting tag: _LTOUR_6_countyMonterey_2019
+Current working directory: /mnt/phd/jihu/opioid/Code
+ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_LTOUR_6_countyMonterey_2019.pkl, threshodls: [       inf 0.95257413 0.88079708 0.73105858 0.5        0.26894142
+ 0.11920292 0.04742587 0.01798621 0.00669285] with optimal threshold: 0.11920292202211755
+Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_LTOUR_6_countyMonterey_2019.pkl
+Test done!
+
+                   Value
+Accuracy           0.824
+Recall             0.829
+Precision          0.303
+ROC AUC            0.894
+PR AUC             0.395
+Calibration error   0.01
+       Prob  Num_presc     TN  ...  Observed Risk  Num_patients  Num_longterm
+0  0.006693      30012  29912  ...       0.003332         30012           153
+1  0.017986       3162   3109  ...       0.016762          3162            72
+2  0.047426      14886  14132  ...       0.050652          9124           349
+3  0.119203       4953      0  ...       0.141328          3617           574
+4  0.268941       4211      0  ...       0.254571          2489           399
+5  0.500000       4396      0  ...       0.484076          2194           737
+6  0.731059        765      0  ...       0.508497           369           134
+7  0.880797        173      0  ...       0.630058            86            45
+8  0.952574          6      0  ...       0.333333             6             2
+
+[9 rows x 10 columns]

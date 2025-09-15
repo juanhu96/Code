@@ -18,6 +18,6 @@ mkdir -p ../output/riskslim/percentile
 
 
 # Test
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 > ../output/riskslim/percentile/LTOUR_6_test.txt &
-# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 > ../output/riskslim/percentile/LTOUR_6_test_first.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 > ../output/riskslim/percentile/LTOUR_6_test_sep12.txt &
+# nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 > ../output/riskslim/percentile/LTOUR_6_test_first_sep12.txt &
 # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_naive_6 > ../output/riskslim/percentile/LTOUR_naive_6_test.txt &
