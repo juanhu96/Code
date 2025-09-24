@@ -85,6 +85,14 @@ else: essential_num = None
 nodrug =  any(['nodrug' in arg for arg in sys.argv])
 noinsurance = any(['noinsurance' in arg for arg in sys.argv])
 
+gender_arg = next((arg for arg in sys.argv if arg.startswith('gender')), None)
+if gender_arg == 'gender_male':
+    gender = 'male'
+elif gender_arg == 'gender_female':
+    gender = 'female'
+else:
+    gender = None
+
 county_arg = next((arg for arg in sys.argv if arg.startswith('county')), None)
 if county_arg:
     county_name = county_arg.replace('county', '').strip()
@@ -118,6 +126,7 @@ setting_tag += f"_cutoff{cutoff_set}" if cutoff else ""
 setting_tag += f"_essential{essential_num}" if essential else ""
 setting_tag += f"_nodrug" if nodrug else ""
 setting_tag += f"_noinsurance" if noinsurance else ""
+setting_tag += f"_gender{gender}" if gender is not None else ""
 setting_tag += f"_county{county_name}" if county_name is not None else ""
 setting_tag += f"_stretch" if stretch else ""
 setting_tag += f"_exact" if exact else ""
@@ -129,7 +138,7 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
     print(f"Stage: {stage}, Scenario: {scenario}, Max Points: {max_points}, Max Features: {max_features}, C0: {c0},\
         Intercept Upper Bound: {interceptub}, Intercept Lower Bound: {interceptlb}, Balanced: {balanced},\
             First: {first}, Upto180: {upto180}, Feature Set: {feature_set}, Cutoff Set: {cutoff_set}, Essential Num: {essential_num}, No Drug: {nodrug},\
-                No Insurance: {noinsurance}, County Name: {county_name}, Setting Tag: {setting_tag}")
+                No Insurance: {noinsurance}, Gender: {gender}, County Name: {county_name}, Setting Tag: {setting_tag}")
 
     # =================================== Train ======================================
     if stage == 'train':
@@ -137,7 +146,7 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         if scenario == 'single':
             print(f'Start single training, file saved with setting tag {setting_tag}\n')
             weight = 'balanced' if balanced else 'original'
-            table = risk_train(scenario, 2018, max_points, max_features, c0, interceptub, interceptlb, weight, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, stretch, exact, setting_tag)
+            table = risk_train(scenario, 2018, max_points, max_features, c0, interceptub, interceptlb, weight, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, gender, county_name, stretch, exact, setting_tag)
         else: 
             print(f'Start CV training, points {max_points}, features {max_features}, file saved with name {name}\n')
             c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]

@@ -105,7 +105,8 @@ def convert_LTOUR_county(naive:bool = False,
                 df['County'] = county
                 df.to_csv(output_csv, index=False)
                 print(f"Exported to {output_csv}")
-                combined_dfs.append(df.iloc[[0]])
+                if metric == 'roc': combined_dfs.append(df.iloc[[0]])
+                else: combined_dfs.append(df)
 
         if combined_dfs:
             full_df = pd.concat(combined_dfs, ignore_index=True)
@@ -119,4 +120,4 @@ def convert_LTOUR_county(naive:bool = False,
 # convert_benchmark(naive=True)
 # convert_LTOUR()
 # convert_LTOUR(naive=True)
-# convert_LTOUR_county()
+convert_LTOUR_county()

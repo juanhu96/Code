@@ -37,6 +37,7 @@ def risk_train(scenario:str,
                essential_num,
                nodrug:bool,
                noinsurance:bool,
+               gender:str,
                county_name:str,
                stretch:bool,
                exact:bool,
@@ -62,13 +63,14 @@ def risk_train(scenario:str,
     roc: export fpr, tpr for roc visualization (only for single)
     '''
 
-    if first:
-        file_suffix = "_FIRST_INPUT"
-    elif upto180:
-        file_suffix = "_UPTOFIRST_INPUT"
-    else:
-        file_suffix = "_INPUT"
+    # if first:
+    #     file_suffix = "_FIRST_INPUT"
+    # elif upto180:
+    #     file_suffix = "_UPTOFIRST_INPUT"
+    # else:
+    #     file_suffix = "_INPUT"
 
+    file_suffix = "_INPUT"
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
 
     FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float, 
@@ -80,7 +82,17 @@ def risk_train(scenario:str,
     print(f'{file_path} imported with shape {FULL.shape}')
 
     FULL = drop_na_rows(FULL)
-    x, constraints = import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name)
+
+    if first:
+        FULL = FULL[FULL['num_prior_prescriptions'] == 0]
+        print(f"Subsetting dataset to first prescription only with {FULL.shape} prescriptions.")
+
+    if gender is not None: # Male: 0, Female: 1
+        gender_code = 0 if gender == 'male' else 1
+        FULL = FULL[FULL['patient_gender'] == gender_code]
+        print(f"Subsetting dataset to gender {gender} with {FULL.shape} prescriptions.")
+
+    x, constraints = import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, gender, county_name)
     y = FULL[[outcome]].to_numpy().astype('int')    
     y[y==0] = -1
 
@@ -153,20 +165,21 @@ def risk_train(scenario:str,
 
 
 
-def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, county_name, datadir='/export/storage_cures/CURES/Processed/'):
+def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, gender, county_name, datadir='/export/storage_cures/CURES/Processed/'):
 
     N = 20
     data_frames = []
 
-    if first:
-        file_suffix = "_FIRST_STUMPS_"
-    elif upto180:
-        file_suffix = "_UPTOFIRST_STUMPS_"
-    else:
-        file_suffix = "_STUMPS_"
-
-    print(f'FULL_{year}{file_suffix}')
+    # if first:
+    #     file_suffix = "_FIRST_STUMPS_"
+    # elif upto180:
+    #     file_suffix = "_UPTOFIRST_STUMPS_"
+    # else:
+    #     file_suffix = "_STUMPS_"
     
+    file_suffix = "_STUMPS_"
+    print(f'FULL_{year}{file_suffix}')
+
     for i in range(N):
         file_path = f'{datadir}/Stumps/FULL_{year}{file_suffix}{i}.csv'
         df = pd.read_csv(file_path, delimiter=",")
@@ -175,6 +188,15 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
     STUMPS = pd.concat(data_frames, ignore_index=True)
     print(f'Finished importing STUMPS, with shape {STUMPS.shape} and columns {STUMPS.columns.tolist()}')
     
+    if first:
+        STUMPS = STUMPS[STUMPS['num_prior_prescriptions1'] == 0]
+        print(f"Subsetting STUMPS to first prescription only with {STUMPS.shape} prescriptions.")
+    
+    if gender is not None: # Male: 0, Female: 1
+        gender_code = 0 if gender == 'male' else 1
+        STUMPS = STUMPS[STUMPS['patient_gender'] == gender_code]
+        print(f"Subsetting dataset to gender {gender} with {STUMPS.shape} prescriptions.")
+
     # ============================================================================================
 
     # LTOUR w/p avgDays
@@ -187,6 +209,8 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
                          'diff_MME', 'diff_days',
                          'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
                          'patient_gender']
+    
+    if gender is not None: base_feature_list.remove('patient_gender') # already subsetted
     
     if nodrug:
         base_feature_list = [feature for feature in base_feature_list if feature not in ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO']]

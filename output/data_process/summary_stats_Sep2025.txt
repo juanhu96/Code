@@ -1,0 +1,5 @@
+/mnt/phd/jihu/opioid/Code/src/utils/summary_stats.py:15: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+  FULL_INPUT = pd.read_csv(f"{datadir}FULL_OPIOID_{year}_INPUT.csv")
+(6409165, 151)
+(6124136, 151)
+LaTeX summary table saved to summary_stats_CA_2019.tex

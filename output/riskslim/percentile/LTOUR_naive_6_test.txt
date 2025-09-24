@@ -1,10 +1,5 @@
-/mnt/phd/jihu/opioid/Code/risk_test.py:36: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
+/mnt/phd/jihu/opioid/Code/risk_test.py:39: DtypeWarning: Columns (2) have mixed types. Specify dtype option on import or set low_memory=False.
   FULL = pd.read_csv(file_path, delimiter=",", dtype={'concurrent_MME': float,
-/mnt/phd/jihu/opioid/Code/risk_test.py:539: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  FULL_filtered.rename(columns={'prescriber_yr_avg_days_quartile_binary': 'prescriber_yr_avg_days_median_binary',\
 Setting tag: _test_CV_first
 Stage: test, Scenario: CV, Max Points: 5, Max Features: 10, C0: None,        Intercept Upper Bound: None, Intercept Lower Bound: None, Balanced: False,            First: True, Upto180: False, Feature Set: None, Cutoff Set: None, Essential Num: None, No Drug: False,                No Insurance: False, County Name: None, Setting Tag: _test_CV_first
 Start testing...
@@ -19,48 +14,32 @@ Intercept: -7
  - Condition: long_acting, Cutoff: 1, Score: 1
 Setting tag: _LTOUR_naive_6_first
 
-/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_FIRST_INPUT.csv imported with shape (3777671, 151)
+/export/storage_cures/CURES/Processed/FULL_OPIOID_2019_INPUT.csv imported with shape (6409165, 151)
+Subsetting dataset to first prescription only with (3614699, 151) prescriptions.
 Test reults are saved with setting tag: _LTOUR_naive_6_first_2019
-----------------------------------------------------------------------------------------------------
-Total prescriptions from true positive patients: 
- (77924, 153)
-----------------------------------------------------------------------------------------------------
-Proportion of LT users detected within a month: 100.0; two months: 100.0, three months: 100.0
-1
-{'test_accuracy': 0.8581936448622811, 'test_roc_auc': 0.8936412870630193, 'test_pr_auc': 0.24556768403255969, 'test_calibration_error': 0.00807382772127971}
-
-
-93214 578133
-Feature: days_supply, Cutoff: 10
-Feature: prescriber_yr_avg_days_above75, Cutoff: 1
-Feature: concurrent_benzo, Cutoff: 1
-Feature: daily_dose, Cutoff: 25
-Feature: HMFO, Cutoff: 1
-Feature: long_acting, Cutoff: 1
 Current working directory: /mnt/phd/jihu/opioid/Code
 ROC information for riskSLIM saved to output/baseline/files/riskSLIM_roc_test_info_LTOUR_naive_6_first_2019.pkl, threshodls: [       inf 0.88079708 0.73105858 0.5        0.26894142 0.11920292
  0.04742587 0.01798621 0.00669285 0.00247262 0.00091105] with optimal threshold: 0.01798620996209156
 Calibration information for riskSLIM saved to output/baseline/files/riskSLIM_calibration_test_info_LTOUR_naive_6_first_2019.pkl
-Proportions information for riskSLIM saved to output/baseline/files/riskSLIM_proportions_test_info_LTOUR_naive_6_first_2019.pkl
 Test done!
 
                    Value
 Accuracy           0.858
-Recall             0.836
-Precision          0.135
+Recall             0.837
+Precision          0.134
 ROC AUC            0.894
-PR AUC             0.246
+PR AUC             0.245
 Calibration error  0.008
        Prob  Num_presc       TN  ...  Observed Risk  Num_patients  Num_longterm
-0  0.000911    1113203  1109204  ...       0.003592       1113203          6102
-1  0.002473    1689617  1683011  ...       0.003910       1689617          9680
-2  0.006693     254279   249594  ...       0.018425        254279          6365
-3  0.017986     216072        0  ...       0.039001        216072         10520
-4  0.047426      98304        0  ...       0.071696         98304          8276
-5  0.119203     155927        0  ...       0.161659        155927         28368
-6  0.268941      82963        0  ...       0.325000         82963         29273
-7  0.500000      22349        0  ...       0.406551         22349          9677
-8  0.731059       2382        0  ...       0.474811          2382          1191
-9  0.880797        136        0  ...       0.455882           136            67
+0  0.000911    1107924  1103990  ...       0.003551       1107924          6023
+1  0.002473    1681263  1674761  ...       0.003867       1681245          9544
+2  0.006693     252050   247476  ...       0.018147        252046          6233
+3  0.017986     214093        0  ...       0.038507        214089         10304
+4  0.047426      97544        0  ...       0.071455         97536          8188
+5  0.119203     154919        0  ...       0.160974        154910         28071
+6  0.268941      82260        0  ...       0.323766         82257         28922
+7  0.500000      22154        0  ...       0.405660         22154          9569
+8  0.731059       2358        0  ...       0.474555          2358          1177
+9  0.880797        134        0  ...       0.455224           134            66
 
 [10 rows x 10 columns]

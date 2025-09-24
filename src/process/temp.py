@@ -111,6 +111,7 @@ if False:
     diff_df = pd.concat([FULL_2019_FROMFULL, FULL_2019_FIRST]).drop_duplicates(keep=False)
     print(f"Number of differing rows between FULL_2019_FROMFULL and FULL_2019_FIRST: {diff_df.shape[0]}")
 
+    print(FULL_2019.shape)
 
     def drop_na_rows(FULL):
 
@@ -151,7 +152,7 @@ if False:
     print(f"Number of differing rows between FULL_2019_FROMFULL and FULL_2019_FIRST: {diff_df.shape[0]}")
 
 
-if True:
+if False:
 
     # patient_ids = [22548077, 23368467, 38636296, 48650568, 50890526, 58122909, 72147379, 73656418]
     patient_ids = [22548077, 23368467, 38636296]
@@ -171,3 +172,40 @@ if True:
     print(df_fromfull)
     print("Rows from FULL_2019_FIRST:")
     print(df_first)
+
+if True:
+
+    FULL_2019 = pd.read_csv(f"{datadir}FULL_OPIOID_2019_INPUT.csv")
+    print(FULL_2019.shape)
+
+    def drop_na_rows(FULL):
+
+        FULL.rename(columns={'quantity_diff': 'diff_quantity', 'dose_diff': 'diff_MME', 'days_diff': 'diff_days'}, inplace=True)
+
+        feature_list = ['concurrent_MME', 'num_prescribers_past180', 'num_pharmacies_past180', 'concurrent_benzo', 
+                        'patient_gender', 'days_supply', 'daily_dose',
+                        'num_prior_prescriptions', 'diff_MME', 'diff_days',
+                        'switch_drug', 'switch_payment', 'ever_switch_drug', 'ever_switch_payment',
+                        'patient_zip_yr_avg_days', 'patient_zip_yr_avg_MME']
+
+        percentile_list = ['patient_zip_yr_num_prescriptions', 'patient_zip_yr_num_patients', 
+                            'patient_zip_yr_num_pharmacies', 'patient_zip_yr_avg_MME', 
+                            'patient_zip_yr_avg_days', 'patient_zip_yr_avg_quantity', 
+                            'patient_zip_yr_num_prescriptions_per_pop', 'patient_zip_yr_num_patients_per_pop',
+                            'prescriber_yr_num_prescriptions', 'prescriber_yr_num_patients', 
+                            'prescriber_yr_num_pharmacies', 'prescriber_yr_avg_MME', 
+                            'prescriber_yr_avg_days', 'prescriber_yr_avg_quantity',
+                            'pharmacy_yr_num_prescriptions', 'pharmacy_yr_num_patients', 
+                            'pharmacy_yr_num_prescribers', 'pharmacy_yr_avg_MME', 
+                            'pharmacy_yr_avg_days', 'pharmacy_yr_avg_quantity',
+                            'zip_pop_density', 'median_household_income', 
+                            'family_poverty_pct', 'unemployment_pct']
+        percentile_features = [col for col in FULL.columns if any(col.startswith(f"{prefix}_above") for prefix in percentile_list)]
+        feature_list_extended = feature_list + percentile_features
+        FULL = FULL.dropna(subset=feature_list_extended) # drop NA rows to match the stumps
+
+        return FULL
+    
+    print("Dropping NA rows to match the stumps...")
+    FULL_2019 = drop_na_rows(FULL_2019)
+    print(FULL_2019.shape)

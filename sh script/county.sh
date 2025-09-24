@@ -40,12 +40,12 @@ mkdir -p ../output/riskslim/county
 # counties=("Humboldt" "Imperial" "Inyo" "Kern" "Kings" "Lake" "Lassen" "Los Angeles" "Madera" "Marin" "Mariposa")
 # counties=("Mendocino" "Merced" "Modoc" "Mono" "Monterey" "Napa" "Nevada" "Orange" "Placer" "Plumas" "Riverside")
 # counties=("Sacramento" "San Benito" "San Bernardino" "San Diego" "San Francisco" "San Joaquin" "San Luis Obispo" "San Mateo" "Santa Barbara" "Santa Clara" "Santa Cruz")
-counties=("Shasta" "Sierra" "Siskiyou" "Solano" "Sonoma" "Stanislaus" "Sutter" "Tehama" "Trinity" "Tulare" "Tuolumne")
+# counties=("Shasta" "Sierra" "Siskiyou" "Solano" "Sonoma" "Stanislaus" "Sutter" "Tehama" "Trinity" "Tulare" "Tuolumne")
 # counties=("Ventura" "Yolo" "Yuba")
 
 for county in "${counties[@]}"; do
-  # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_LTOUR_$county.txt" &
-  nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_naive_LTOUR_$county.txt" &
+  nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_LTOUR_$county.txt" &
+  # nohup python3 /mnt/phd/jihu/opioid/Code/risk_main.py test first tableLTOUR_6 county"$county" > "../output/riskslim/county/Test_naive_LTOUR_$county.txt" &
 done
 
 # python3 /mnt/phd/jihu/opioid/Code/src/convert_R.py
