@@ -1,7 +1,7 @@
 ## Closer to Home: A Structural Estimate-then-Optimize Approach to Improve Access to Healthcare Services
 
 This repository contains all the code used in the numerical experiments in the paper: 
-> Bravo, F., Hu, J., & Long, E. F. (2025). [Predicting long-term opioid use risk via interpretable machine learning]
+> Bravo, F., Hu, J., & Long, E. F. (2025). Predicting long-term opioid use risk via interpretable machine learning
 
 
 
