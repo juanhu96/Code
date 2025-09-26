@@ -142,20 +142,9 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
 
     # =================================== Train ======================================
     if stage == 'train':
-        
-        if scenario == 'single':
-            print(f'Start single training, file saved with setting tag {setting_tag}\n')
-            weight = 'balanced' if balanced else 'original'
-            table = risk_train(scenario, 2018, max_points, max_features, c0, interceptub, interceptlb, weight, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, gender, county_name, stretch, exact, setting_tag)
-        else: 
-            print(f'Start CV training, points {max_points}, features {max_features}, file saved with name {name}\n')
-            c = [1e-6, 1e-8, 1e-10, 1e-12, 1e-14]
-            max_points = [2, 3, 4, 5]
-            raise SystemExit("CV training is not implemented yet.")
-            best_c = risk_train(year=2018, features='LTOUR', scenario=scenario, c=c, max_points=max_points, max_features=max_features, weight=weight, name=name)
-            print(f'Single training with the best c = {best_c}\n')
-            risk_train(year=2018, features='LTOUR', scenario='single', c=best_c, max_points=max_points, max_features=max_features, weight=weight, name=name)
-            return
+        print(f'Start single training, file saved with setting tag {setting_tag}\n')
+        weight = 'balanced' if balanced else 'original'
+        table = risk_train(scenario, 2018, max_points, max_features, c0, interceptub, interceptlb, weight, first, upto180, feature_set, cutoff_set, essential_num, nodrug, noinsurance, gender, county_name, stretch, exact, setting_tag)
 
     # =================================== Test ========================================
     elif stage == 'test':
@@ -168,12 +157,6 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         'cutoffs': [1, '1', 40, 30, 1, '1'],
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        LTOUR = {'intercept': -6, 
-        'conditions': ['num_prior_prescriptions', 'days_supply', 'daily_dose', 'HMFO', 
-        'long_acting', 'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'],
-        'cutoffs': [1, 10, 100, 1, 1, '1', '1'],
-        'scores': [2, 2, 1, 1, 1, 1, 1]}
-
         LTOUR_naive = {'intercept': -7, 
         'conditions': ['days_supply', 'daily_dose', 'HMFO', 'long_acting', 'Medicaid', 
         'prescriber_yr_avg_days_quartile', 'pharmacy_yr_avg_days_quartile'], 
@@ -185,30 +168,17 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         'cutoffs': [10, 1, 90, 1, 1, 1], 
         'scores': [2, 2, 1, 1, 1, 1]}
 
-        LTOUR_7 = {'intercept': -6, 
-        'conditions': ['days_supply', 'num_prior_prescriptions', 'daily_dose', 'HMFO', 'long_acting', 'prescriber_yr_avg_days_above75', 'pharmacy_yr_num_prescriptions_above50'],
-        'cutoffs': [10, 1, 90, 1, 1, 1, 1],
-        'scores': [2, 2, 1, 1, 1, 1, 1]}
-        
         LTOUR_naive_6 = {'intercept': -7,
         'conditions': ['days_supply', 'prescriber_yr_avg_days_above75', 'concurrent_benzo', 'daily_dose', 'HMFO', 'long_acting'],
         'cutoffs': [10, 1, 1, 25, 1, 1],
         'scores': [3, 2, 1, 1, 1, 1]}
 
-        LTOUR_naive_7 = {'intercept': -7, 
-        'conditions': ['days_supply', 'prescriber_yr_avg_days_above75', 'concurrent_benzo', 'daily_dose', 'HMFO', 'long_acting', 'Medicaid'], 
-        'cutoffs': [10, 1, 1, 25, 1, 1, 1], 
-        'scores': [3, 2, 1, 1, 1, 1, 1]}
-
         # iterate through tables
         tables = {
             'CURES': CURES,
-            'LTOUR': LTOUR,
             'LTOUR_naive': LTOUR_naive,
             'LTOUR_6': LTOUR_6,
-            'LTOUR_7': LTOUR_7,
             'LTOUR_naive_6': LTOUR_naive_6,
-            'LTOUR_naive_7': LTOUR_naive_7
         }
                 
         table = tables[table_name]
@@ -223,9 +193,8 @@ def main(stage, scenario, max_points, max_features, c0, interceptub, interceptlb
         
         print(f"Setting tag: {setting_tag}\n")
         
-        # risk_test(2018, table, first, upto180, county_name, f'{setting_tag}_2018')
+        risk_test(2018, table, first, upto180, county_name, f'{setting_tag}_2018')
         risk_test(2019, table, first, upto180, county_name, f'{setting_tag}_2019')
-        
 
     return
 

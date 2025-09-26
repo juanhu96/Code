@@ -178,28 +178,23 @@ def baseline_train(year:int,
     if model == 'DecisionTree':
         best_model, prob, pred = base.DecisionTree(X=x, 
                                        Y=y, 
-                                    #    depth=[5, 10], 
-                                    #    min_samples=[5, 10], 
-                                    #    impurity=[0.0001], 
-                                       depth=[5, 10], 
-                                       min_samples=[5, 10], 
-                                       impurity=[0.001, 0.01], 
+                                       depth=[5, 10, 20], 
+                                       min_samples=[5, 10, 20], 
+                                       impurity=[0.0001, 0.001, 0.01, 0.1], 
                                        class_weight=class_weight, 
                                        seed=42)
 
     elif model == 'L2':
         best_model, prob, pred = base.Logistic(X=x, 
                                    Y=y, 
-                                #    C=[1e-15, 1e-10, 1e-5, 1e-1, 10], 
-                                   C=[1e-5, 1e-4], 
+                                   C=[1e-15, 1e-10, 1e-5, 1e-3, 1e-1, 1], 
                                    class_weight=class_weight, 
                                    seed=42)
 
     elif model == 'L1':
         best_model, prob, pred = base.Lasso(X=x, 
                                 Y=y, 
-                                # smaller values specify stronger regularization.
-                                C=[1e-5, 1e-4], 
+                                C=[1e-15, 1e-10, 1e-5, 1e-3, 1e-1, 1], # smaller values specify stronger regularization.
                                 class_weight=class_weight, 
                                 seed=42)
 
@@ -241,24 +236,24 @@ def baseline_train(year:int,
     elif model == 'LinearSVM':
         best_model, prob, pred = base.LinearSVM(X=x, 
                                     Y=y, 
-                                    C=[1e-5, 1e-4, 1e-3], 
+                                    C=[1e-15, 1e-10, 1e-5, 1e-3, 1e-1, 1],
                                     class_weight=class_weight, 
                                     seed=42)
 
     elif model == 'RandomForest':
         best_model, prob, pred = base.RF(X=x, 
                              Y=y, 
-                             depth=[5, 10], 
+                             depth=[5, 10, 20], 
                              estimators=[10, 50, 100], # number of trees
-                             impurity=[0.001, 0.005, 0.01], 
+                             impurity=[0.0001, 0.001, 0.01, 0.1], 
                              class_weight=class_weight, 
                              seed=42)
 
     elif model == 'XGB':
         best_model, prob, pred = base.XGB(X=x, 
                               Y=y, 
-                              depth=[5, 10], 
-                              estimators=[20, 50], 
+                              depth=[5, 10, 20], 
+                              estimators=[10, 20, 50], 
                               gamma=[5, 10], 
                               child_weight=[5, 10], 
                               class_weight=class_weight, 
@@ -267,9 +262,9 @@ def baseline_train(year:int,
     elif model == 'NN':
         best_model, prob, pred = base.NeuralNetwork(X=x, 
                                         Y=y, 
-                                        alpha=[0.0001, 0.01], 
-                                        batch_size=[32], 
-                                        learning_rate_init=[0.001], 
+                                        alpha=[0.0001, 0.001, 0.01, 0.1], 
+                                        batch_size=[32, 64], 
+                                        learning_rate_init=[0.0001, 0.001, 0.01], 
                                         seed=42)
 
     end = time.time()
@@ -308,14 +303,7 @@ def baseline_test(best_model,
 
     # ===========================================================================================
     
-    # if first or naive:
-    #     file_suffix = "_FIRST_INPUT"
-    # elif upto180:
-    #     file_suffix = "_UPTOFIRST_INPUT"
-    # else:
-    #     file_suffix = "_INPUT"
     file_suffix = "_INPUT"
-    
     test_file_path = f'{datadir}FULL_OPIOID_{year+1}{file_suffix}.csv'
     print(f"The test file path is {test_file_path}\n")
 
@@ -336,12 +324,6 @@ def baseline_test(best_model,
 
     # ================================================================================
 
-    # if first or naive:
-    #     file_suffix = "_FIRST_STUMPS_"
-    # elif upto180:
-    #     file_suffix = "_UPTOFIRST_STUMPS_"
-    # else:
-    #     file_suffix = "_STUMPS_"
     file_suffix = "_STUMPS_"
 
     data_frames = []

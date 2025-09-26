@@ -63,13 +63,6 @@ def risk_train(scenario:str,
     roc: export fpr, tpr for roc visualization (only for single)
     '''
 
-    # if first:
-    #     file_suffix = "_FIRST_INPUT"
-    # elif upto180:
-    #     file_suffix = "_UPTOFIRST_INPUT"
-    # else:
-    #     file_suffix = "_INPUT"
-
     file_suffix = "_INPUT"
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
 
@@ -142,21 +135,6 @@ def risk_train(scenario:str,
         outer_train_prob = slim.riskslim_prediction(outer_train_x, np.array(cols), model_info).reshape(-1,1)
         outer_train_pred = (outer_train_prob >= 0.5)
         # export_results_single(FULL, outer_train_y, outer_train_pred, outer_train_prob, filename = f'{exportdir}/Results{setting_tag}.csv')
-    
-    elif scenario == 'CV':
-        # risk_summary = slim.risk_cv_constrain(x, y, 
-        #                                       max_coefficient=max_points, 
-        #                                       max_L0_value=max_features,
-        #                                       c=c, 
-        #                                       class_weight=weight,
-        #                                       single_cutoff=constraints['single_cutoff'],
-        #                                       two_cutoffs=constraints['two_cutoffs'],
-        #                                       three_cutoffs=constraints['three_cutoffs'],
-        #                                       essential_cutoffs=constraints['essential_cutoffs'],
-        #                                       essential_num=essential_num)
-
-        # export_results_cv(risk_summary, filename = f'{exportdir}/Results{setting_tag}.csv')
-        print('CV not implemented yet.')
 
     else:
         raise Exception("Scenario undefined.")
@@ -169,13 +147,6 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
 
     N = 20
     data_frames = []
-
-    # if first:
-    #     file_suffix = "_FIRST_STUMPS_"
-    # elif upto180:
-    #     file_suffix = "_UPTOFIRST_STUMPS_"
-    # else:
-    #     file_suffix = "_STUMPS_"
     
     file_suffix = "_STUMPS_"
     print(f'FULL_{year}{file_suffix}')
@@ -216,7 +187,7 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
         base_feature_list = [feature for feature in base_feature_list if feature not in ['Codeine', 'Hydrocodone', 'Oxycodone', 'Morphine', 'HMFO']]
         drug_payment = [['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']]
         feature_drug_payment = ['Medicaid', 'Medicare', 'CashCredit', 'Medicare_Medicaid']
-    elif noinsurance: # TODO: need to check if this is correct
+    elif noinsurance:
         base_feature_list = [feature for feature in base_feature_list if feature not in ['Medicare_Medicaid']]
         drug_payment = [['Medicaid', 'Medicare', 'CashCredit']]
         feature_drug_payment = ['Medicaid', 'Medicare', 'CashCredit']
@@ -264,8 +235,6 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
     if county_name is None: 
         columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
     else:
-        # columns_to_drop += [f'concurrent_MME{i}' for i in [100, 120]]
-        # columns_to_drop += [col for col in filtered_columns if col.startswith('concurrent_MME')]
         features_set_temp = features_set_3 + features_set_4
 
     if first:
@@ -408,10 +377,6 @@ def import_stumps(year, first, upto180, feature_set, cutoff_set, essential_num, 
         single_cutoff.extend(updated_drug_payment)
 
         essential_cutoffs = [[col for col in x if any(col.startswith(feature) for feature in features_to_keep)]] # at least one condition
-
-        # print('Quick test forcing switch payment...')
-        # essential_cutoffs += [['ever_switch_payment']]
-        # single_cutoff = [[col for col in x if any(col.startswith(feature) for feature in sublist)] for sublist in features_to_keep] # this is for [['A', 'C'], ['B']]
         
         two_cutoff = None
 

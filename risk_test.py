@@ -23,15 +23,6 @@ import utils.model_selection as model_selection
 
 
 def risk_test(year, table, first, upto180, county_name, setting_tag, output_columns=False, datadir='/export/storage_cures/CURES/Processed/'):
-
-    # if first:
-    #     file_suffix = "_FIRST_INPUT"
-    # elif upto180:
-    #     file_suffix = "_UPTOFIRST_INPUT"
-    # else:
-    #     file_suffix = "_INPUT"
-
-    # file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
     
     file_suffix = "_INPUT"
     file_path = f'{datadir}FULL_OPIOID_{year}{file_suffix}.csv'
