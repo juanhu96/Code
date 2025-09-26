@@ -1,24 +1,12 @@
-## Closer to Home: A Structural Estimate-then-Optimize Approach to Improve Access to Healthcare Services
+## Predicting long-term opioid use risk via interpretable machine learning
 
 This repository contains all the code used in the numerical experiments in the paper: 
 > Bravo, F., Hu, J., & Long, E. F. (2025). Predicting long-term opioid use risk via interpretable machine learning
-
-
-
-### Overview
-This repository provides all necessary scripts from the paper. The code includes steps for data processing/engineering, numerical experiments, and visualization.
-
-Workflow
-- Data processing: 
-- Data Preparation: Download, preprocess and structure the required datasets.
-- Demand Estimation: Run demand models for analysis.
-- Optimization & Evaluation: Solve location optimization problems and assess outcomes.
-- Summary results and visualization: Generate summary tables and figures for the paper.
+The code includes steps for data processing/engineering, numerical experiments, and visualization.
 
 
 ### Software Requirements
 RiskSLIM requires Python 3.5+ and CPLEX 12.6+. For download and installation instructions, click here. For more detailed guidance on installing and running RiskSLIM, please refer to the GitHub repository by [Ustun and Rudin (2019)](https://github.com/ustunb/risk-slim). In addition, [Wang, Han, Patel, and Rudin (2023)](https://github.com/BeanHam/2019-interpretable-machine-learning) provide an excellent example of using RiskSLIM alongside other benchmark ML models, which we have partially adapted.
-
 
 
 ### Folder and File Structure
@@ -73,6 +61,6 @@ The repository is organized into the following main directories and files:
 ```
 **Please ensure code is placed correctly before running scripts.**
 
-This repository integrates and extends the original RiskSLIM implementation by Ustun and Rudin (2019) with additional preprocessing, training, and evaluation tools. The top-level scripts (risk_main.py, risk_train.py, risk_test.py, and risk_stumps.py) handle model execution, training, testing, and stump construction. The sh/ folder provides shell scripts to streamline experiment workflows. The src/ folder contains scripts for figure generation (in both R and Python) and a structured process/ pipeline for data cleaning, filtering, and feature engineering, while src/utils/ generates summary tables used in the paper. Finally, the utils/ directory includes helper functions for benchmarking and fairness evaluation, adapted from Wang, Han, Patel, and Rudin (2023).
+This repository integrates and extends the original RiskSLIM implementation by Ustun and Rudin (2019) with additional preprocessing, training, and evaluation tools. The top-level scripts (risk_main.py, risk_train.py, risk_test.py, and risk_stumps.py) handle model execution, training, testing, and stump construction. The sh/ folder provides shell scripts to streamline experiment workflows. The src/ folder contains scripts for figure generation (in both R and Python) and a structured process/ pipeline for data cleaning, filtering, and feature engineering, while src/utils/ generates summary tables used in the paper. Finally, the utils/ directory includes helper functions for benchmarking, adapted from Wang, Han, Patel, and Rudin (2023).
 
 
